@@ -88,6 +88,8 @@ class SerialPortScanner:
             ports = comports()
 
             for port in ports:
+                if port.device.startswith('/dev/ttyS') and (not port.description or port.description == 'n/a'):
+                    continue
                 desc: str = f'{port.device} - {port.description}' if port.description else port.device
                 detected.append(desc)
 

@@ -44,11 +44,33 @@ class CanvasToolHandler:
         It defines:
 
             :methods:
+                | discretize_line - Generates linear segment start and end waypoints.
                 | discretize_circle - Generates circle perimeter waypoints.
                 | discretize_rectangle - Generates 4 corner waypoints of rectangle boundary.
                 | find_hit_index - Finds nearest waypoint index matching cursor hit-radius.
                 | is_freehand_distance_met - Checks if cursor has moved beyond minimum freehand threshold.
     '''
+
+    @classmethod
+    def discretize_line(
+        cls,
+        p1: tuple[float, float],
+        p2: tuple[float, float],
+        settings: CanvasSettingsDTO
+    ) -> list[Waypoint]:
+        '''
+            Generates start and end waypoints of straight linear segment.
+
+            :param p1: Start point (x, y) coordinate tuple in mm.
+            :param p2: End point (x, y) coordinate tuple in mm.
+            :param settings: Active CanvasSettingsDTO.
+            :return: List of Waypoint instances.
+            :exceptions: None.
+        '''
+        return [
+            Waypoint(x=p1[0], y=p1[1], z=settings.default_z, phi=0.0, speed=settings.default_speed),
+            Waypoint(x=p2[0], y=p2[1], z=settings.default_z, phi=0.0, speed=settings.default_speed)
+        ]
 
     @classmethod
     def discretize_circle(
@@ -69,11 +91,13 @@ class CanvasToolHandler:
             :exceptions: None.
         '''
         pts: list[Waypoint] = []
-        for i in range(steps):
+
+        for i in range(steps + 1):
             angle: float = 2.0 * math.pi * (i / steps)
             px: float = center[0] + radius * math.cos(angle)
             py: float = center[1] + radius * math.sin(angle)
             pts.append(Waypoint(x=px, y=py, z=settings.default_z, phi=0.0, speed=settings.default_speed))
+
         return pts
 
     @classmethod
@@ -84,7 +108,7 @@ class CanvasToolHandler:
         settings: CanvasSettingsDTO
     ) -> list[Waypoint]:
         '''
-            Generates 4 corner waypoints of rectangle boundary.
+            Generates 4 corner waypoints of rectangle boundary with closing start waypoint.
 
             :param p1: Initial corner (x, y) tuple in mm.
             :param p2: Opposite corner (x, y) tuple in mm.
@@ -96,7 +120,8 @@ class CanvasToolHandler:
             Waypoint(x=p1[0], y=p1[1], z=settings.default_z, phi=0.0, speed=settings.default_speed),
             Waypoint(x=p2[0], y=p1[1], z=settings.default_z, phi=0.0, speed=settings.default_speed),
             Waypoint(x=p2[0], y=p2[1], z=settings.default_z, phi=0.0, speed=settings.default_speed),
-            Waypoint(x=p1[0], y=p2[1], z=settings.default_z, phi=0.0, speed=settings.default_speed)
+            Waypoint(x=p1[0], y=p2[1], z=settings.default_z, phi=0.0, speed=settings.default_speed),
+            Waypoint(x=p1[0], y=p1[1], z=settings.default_z, phi=0.0, speed=settings.default_speed)
         ]
 
     @classmethod
@@ -122,6 +147,7 @@ class CanvasToolHandler:
 
         for idx, pt in enumerate(waypoints):
             dist: float = math.hypot(pt.x - wx, pt.y - wy)
+
             if dist < best_dist:
                 best_dist = dist
                 best_idx = idx

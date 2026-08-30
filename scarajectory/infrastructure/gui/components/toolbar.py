@@ -98,6 +98,7 @@ class Toolbar(ttk.Frame):
         self._tool_var = tk.StringVar(value='POINT')
         tools = [
             ('Point', 'POINT', CanvasToolMode.POINT),
+            ('Line', 'LINE', CanvasToolMode.LINE),
             ('Select/Move', 'SELECT', CanvasToolMode.SELECT),
             ('Circle', 'CIRCLE', CanvasToolMode.CIRCLE),
             ('Rectangle', 'RECTANGLE', CanvasToolMode.RECTANGLE),
@@ -137,7 +138,7 @@ class Toolbar(ttk.Frame):
         self._deadzone_var = tk.BooleanVar(value=True)
         ttk.Checkbutton(
             self,
-            text='Lock Deadzone (30-270mm)',
+            text='Enforce Reach Limits (30-270mm)',
             variable=self._deadzone_var,
             command=self._on_defaults_changed
         ).pack(side=tk.LEFT, padx=3)

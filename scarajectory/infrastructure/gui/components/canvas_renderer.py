@@ -211,5 +211,5 @@ class CanvasRenderer:
             canvas.create_line(x1, y1, x2, y2, fill='#e5c07b', dash=(2, 2))
         elif tool_mode == CanvasToolMode.RECTANGLE:
             canvas.create_rectangle(x1, y1, x2, y2, outline='#e5c07b', width=1, dash=(3, 3))
-        elif tool_mode in (CanvasToolMode.POINT, CanvasToolMode.SELECT):
+        elif tool_mode in (CanvasToolMode.POINT, CanvasToolMode.SELECT, CanvasToolMode.LINE):
             canvas.create_line(x1, y1, x2, y2, fill='#e5c07b', dash=(2, 2))

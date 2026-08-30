@@ -42,6 +42,7 @@ class CanvasToolMode(Enum):
             :attributes:
                 | SELECT - Select and move existing waypoints.
                 | POINT - Click to append discrete waypoints.
+                | LINE - Click and drag to create straight linear segments.
                 | CIRCLE - Click and drag to create circular patterns.
                 | RECTANGLE - Click and drag to create rectangular paths.
                 | FREEHAND - Drag to stream freeform continuous paths.
@@ -49,6 +50,7 @@ class CanvasToolMode(Enum):
 
     SELECT = auto()
     POINT = auto()
+    LINE = auto()
     CIRCLE = auto()
     RECTANGLE = auto()
     FREEHAND = auto()

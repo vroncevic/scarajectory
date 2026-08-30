@@ -321,7 +321,7 @@ class TrajectoryCanvas(tk.Canvas):
             last = self._plan.waypoints[-1]
             if CanvasToolHandler.is_freehand_distance_met(last, wx, wy, self.FREEHAND_MIN_DISTANCE_MM):
                 self._plan.add_point(Waypoint(x=wx, y=wy, z=self._settings.default_z, phi=0.0, speed=self._settings.default_speed))
-        elif self._tool_mode in (CanvasToolMode.CIRCLE, CanvasToolMode.RECTANGLE):
+        elif self._tool_mode in (CanvasToolMode.CIRCLE, CanvasToolMode.RECTANGLE, CanvasToolMode.LINE):
             self.redraw()
 
     def _on_mouse_up(self, event: tk.Event) -> None:
@@ -342,19 +342,23 @@ class TrajectoryCanvas(tk.Canvas):
             x0, y0 = self._drag_start_world
             if self._tool_mode == CanvasToolMode.POINT:
                 self._plan.add_point(Waypoint(x=wx, y=wy, z=self._settings.default_z, phi=0.0, speed=self._settings.default_speed))
+            elif self._tool_mode == CanvasToolMode.LINE:
+                if math.hypot(wx - x0, wy - y0) > 1.0:
+                    line_pts = CanvasToolHandler.discretize_line((x0, y0), (wx, wy), self._settings)
+                    self._plan.set_waypoints(list(self._plan.waypoints) + line_pts)
             elif self._tool_mode == CanvasToolMode.CIRCLE:
                 radius: float = math.hypot(wx - x0, wy - y0)
                 if radius >= self.CIRCLE_MIN_RADIUS_MM:
                     circle_pts = CanvasToolHandler.discretize_circle(
                         (x0, y0), radius, self.CIRCLE_DEFAULT_STEPS, self._settings
                     )
-                    self._plan.add_points(circle_pts)
+                    self._plan.set_waypoints(list(self._plan.waypoints) + circle_pts)
             elif self._tool_mode == CanvasToolMode.RECTANGLE:
                 if abs(wx - x0) > 2.0 and abs(wy - y0) > 2.0:
                     rect_pts = CanvasToolHandler.discretize_rectangle(
                         (x0, y0), (wx, wy), self._settings
                     )
-                    self._plan.add_points(rect_pts)
+                    self._plan.set_waypoints(list(self._plan.waypoints) + rect_pts)
 
         self._drag_start_world = None
         self._drag_current_world = None

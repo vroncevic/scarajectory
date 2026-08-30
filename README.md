@@ -83,7 +83,7 @@ The application strictly adheres to SOLID design principles and uses **Data Tran
     * `Ctrl+Z` / `Ctrl+Y` — Undo / Redo history.
     * `+` / `-` — Zoom in / Zoom out.
     * `Ctrl+N` / `Ctrl+O` / `Ctrl+S` — New, Open, and Save motion plans.
-* **Deadzone & Reach Protection (`Lock Deadzone (30-270mm)` checkbox):**
+* **Deadzone & Reach Protection (`Enforce Reach Limits (30-270mm)` checkbox):**
   * **Translucent Red Shaded Disc:** Highlights the inner forbidden deadzone ($r < 30\,\text{mm}$) around the base.
   * **Active Boundary Enforcement:** When enabled, automatically blocks clicks inside the deadzone or outside maximum reach ($r > 270\,\text{mm}$), and smoothly clamps drag-and-drop actions to valid physical boundaries.
 * **Point / Polyline Tool:** Click anywhere on the workspace to add waypoints.
