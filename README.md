@@ -1,3 +1,20 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**
+
+- [SCARAjectory — Motion Trajectory Studio & Streamer](#scarajectory--motion-trajectory-studio--streamer)
+  - [1. Overview](#1-overview)
+  - [2. SOLID Architecture & DTO Pattern](#2-solid-architecture--dto-pattern)
+    - [Module Structure:](#module-structure)
+  - [3. Features & Workflow](#3-features--workflow)
+    - [🖌️ Step 1: Design Trajectory & Navigation](#-step-1-design-trajectory--navigation)
+    - [🔍 Step 2: Validate Plan (`Validate Motion Plan` button)](#-step-2-validate-plan-validate-motion-plan-button)
+    - [⚙️ Step 3: Generate ASCII Code (`Generate ASCII Code` button)](#-step-3-generate-ascii-code-generate-ascii-code-button)
+    - [🚀 Step 4: Stream to Robot (`Stream to Robot` button)](#-step-4-stream-to-robot-stream-to-robot-button)
+  - [4. How to Run](#4-how-to-run)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # SCARAjectory — Motion Trajectory Studio & Streamer
 
 ## 1. Overview
