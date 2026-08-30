@@ -16,30 +16,31 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Defines abstract interface IService for trajectory business logic.
+    Defines interface IService for trajectory business logic.
 '''
 
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
+from typing import Protocol, runtime_checkable
 
 from scarajectory.core.model.trajectory_plan import TrajectoryPlan
 from scarajectory.core.service.itrajectory_validator import ITrajectoryValidator
 from scarajectory.core.service.iserial_streamer import ISerialStreamer
 
-__author__: str = 'Vladimir Roncevic'
-__copyright__: str = '(C) 2026, https://vroncevic.github.io/scarajectory'
-__credits__: list[str] = ['Vladimir Roncevic', 'Python Software Foundation']
-__license__: str = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
+__author__ = 'Vladimir Roncevic'
+__copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
+__credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
+__license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
 __version__ = '1.0.0'
-__maintainer__: str = 'Vladimir Roncevic'
+__maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class IService(ABC):
+@runtime_checkable
+class IService(Protocol):
     '''
-        Abstract interface for orchestrating trajectory operations and services.
+        Interface for orchestrating trajectory operations and services.
 
         It defines:
 
@@ -55,7 +56,6 @@ class IService(ABC):
                 | stop_streaming - Aborts active streaming.
     '''
 
-    @abstractmethod
     def is_initialized(self) -> bool:
         '''
             Checks if the service is properly initialized.
@@ -64,7 +64,6 @@ class IService(ABC):
             :exceptions: None.
         '''
 
-    @abstractmethod
     def get_plan(self) -> TrajectoryPlan:
         '''
             Returns the active TrajectoryPlan.
@@ -73,7 +72,6 @@ class IService(ABC):
             :exceptions: None.
         '''
 
-    @abstractmethod
     def get_validator(self) -> ITrajectoryValidator:
         '''
             Returns the active ITrajectoryValidator.
@@ -82,7 +80,6 @@ class IService(ABC):
             :exceptions: None.
         '''
 
-    @abstractmethod
     def get_streamer(self) -> ISerialStreamer:
         '''
             Returns the active ISerialStreamer.
@@ -91,7 +88,6 @@ class IService(ABC):
             :exceptions: None.
         '''
 
-    @abstractmethod
     def validate_plan(self) -> tuple[bool, list[str]]:
         '''
             Validates the current trajectory plan against robot kinematic bounds.
@@ -100,7 +96,6 @@ class IService(ABC):
             :exceptions: None.
         '''
 
-    @abstractmethod
     def save_plan(self, filepath: str) -> None:
         '''
             Saves current plan to file path.
@@ -109,7 +104,6 @@ class IService(ABC):
             :exceptions: OSError.
         '''
 
-    @abstractmethod
     def load_plan(self, filepath: str) -> None:
         '''
             Loads plan from file path.
@@ -118,7 +112,6 @@ class IService(ABC):
             :exceptions: OSError.
         '''
 
-    @abstractmethod
     def start_streaming(self) -> bool:
         '''
             Initiates streaming of current plan.
@@ -127,7 +120,6 @@ class IService(ABC):
             :exceptions: None.
         '''
 
-    @abstractmethod
     def stop_streaming(self) -> None:
         '''
             Aborts active streaming.

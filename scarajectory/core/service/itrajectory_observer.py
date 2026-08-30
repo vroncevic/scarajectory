@@ -21,19 +21,20 @@ Info
 
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
+from typing import Protocol, runtime_checkable
 
-__author__: str = 'Vladimir Roncevic'
-__copyright__: str = '(C) 2026, https://vroncevic.github.io/scarajectory'
-__credits__: list[str] = ['Vladimir Roncevic', 'Python Software Foundation']
-__license__: str = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
+__author__ = 'Vladimir Roncevic'
+__copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
+__credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
+__license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
 __version__ = '1.0.0'
-__maintainer__: str = 'Vladimir Roncevic'
+__maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class ITrajectoryObserver(ABC):
+@runtime_checkable
+class ITrajectoryObserver(Protocol):
     '''
         Contract for UI widgets and viewers listening to trajectory changes.
 
@@ -44,7 +45,6 @@ class ITrajectoryObserver(ABC):
                 | on_point_selected - Called when a specific waypoint is selected in canvas or table.
     '''
 
-    @abstractmethod
     def on_trajectory_updated(self) -> None:
         '''
             Called whenever points are added, modified, reordered, or cleared.
@@ -52,7 +52,6 @@ class ITrajectoryObserver(ABC):
             :exceptions: None.
         '''
 
-    @abstractmethod
     def on_point_selected(self, index: int) -> None:
         '''
             Called when a specific waypoint is selected in canvas or table.

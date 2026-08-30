@@ -16,29 +16,30 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Defines abstract interface ITrajectoryValidator for validating kinematic reachability.
+    Defines interface ITrajectoryValidator for validating kinematic reachability.
 '''
 
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
+from typing import Protocol, runtime_checkable
 
 from scarajectory.core.model.point_dto import PointDTO
 from scarajectory.core.model.validation_result_dto import ValidationResultDTO
 
-__author__: str = 'Vladimir Roncevic'
-__copyright__: str = '(C) 2026, https://vroncevic.github.io/scarajectory'
-__credits__: list[str] = ['Vladimir Roncevic', 'Python Software Foundation']
-__license__: str = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
+__author__ = 'Vladimir Roncevic'
+__copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
+__credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
+__license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
 __version__ = '1.0.0'
-__maintainer__: str = 'Vladimir Roncevic'
+__maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class ITrajectoryValidator(ABC):
+@runtime_checkable
+class ITrajectoryValidator(Protocol):
     '''
-        Abstract contract for kinematic and workspace validators using DTOs.
+        Contract for kinematic and workspace validators using DTOs.
 
         It defines:
 
@@ -47,7 +48,6 @@ class ITrajectoryValidator(ABC):
                 | validate_feedrate - Validates whether the feedrate is within safe mechanical limits.
     '''
 
-    @abstractmethod
     def validate_point_dto(self, point: PointDTO) -> ValidationResultDTO:
         '''
             Validates whether a point DTO is within reachable workspace.
@@ -57,7 +57,6 @@ class ITrajectoryValidator(ABC):
             :exceptions: None.
         '''
 
-    @abstractmethod
     def validate_feedrate(self, speed: float) -> ValidationResultDTO:
         '''
             Validates whether the feedrate is within safe mechanical limits.

@@ -16,29 +16,30 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Defines abstract interface ICanvas for vector CAD canvas components.
+    Defines interface ICanvas for vector CAD canvas components.
 '''
 
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
+from typing import Protocol, runtime_checkable
 
 from scarajectory.core.model.canvas_tool_mode import CanvasToolMode
 from scarajectory.core.model.canvas_settings_dto import CanvasSettingsDTO
 
-__author__: str = 'Vladimir Roncevic'
-__copyright__: str = '(C) 2026, https://vroncevic.github.io/scarajectory'
-__credits__: list[str] = ['Vladimir Roncevic', 'Python Software Foundation']
-__license__: str = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
+__author__ = 'Vladimir Roncevic'
+__copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
+__credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
+__license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
 __version__ = '1.0.0'
-__maintainer__: str = 'Vladimir Roncevic'
+__maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class ICanvas(ABC):
+@runtime_checkable
+class ICanvas(Protocol):
     '''
-        Abstract contract for vector CAD canvas operations.
+        Contract for vector CAD canvas operations.
 
         It defines:
 
@@ -51,7 +52,6 @@ class ICanvas(ABC):
                 | fit_reach_view - Fits maximum reach circle to canvas view.
     '''
 
-    @abstractmethod
     def set_tool_mode(self, mode: CanvasToolMode) -> None:
         '''
             Sets the active drawing/selection tool mode.
@@ -60,7 +60,6 @@ class ICanvas(ABC):
             :exceptions: None.
         '''
 
-    @abstractmethod
     def update_settings(self, settings: CanvasSettingsDTO) -> None:
         '''
             Updates default point properties.
@@ -69,7 +68,6 @@ class ICanvas(ABC):
             :exceptions: None.
         '''
 
-    @abstractmethod
     def zoom_in(self) -> None:
         '''
             Scales canvas view in by 1.25x.
@@ -77,7 +75,6 @@ class ICanvas(ABC):
             :exceptions: None.
         '''
 
-    @abstractmethod
     def zoom_out(self) -> None:
         '''
             Scales canvas view out by 0.8x.
@@ -85,7 +82,6 @@ class ICanvas(ABC):
             :exceptions: None.
         '''
 
-    @abstractmethod
     def reset_view(self) -> None:
         '''
             Resets viewport zoom to 100%.
@@ -93,7 +89,6 @@ class ICanvas(ABC):
             :exceptions: None.
         '''
 
-    @abstractmethod
     def fit_reach_view(self) -> None:
         '''
             Fits maximum reach circle to canvas view.

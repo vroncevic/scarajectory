@@ -23,32 +23,29 @@ from __future__ import annotations
 
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
-from typing import Final, override
+from typing import Final
 
 from scarajectory.core.model.canvas_settings_dto import CanvasSettingsDTO
 from scarajectory.core.model.canvas_tool_mode import CanvasToolMode
 from scarajectory.core.model.stream_progress import StreamProgress
-from scarajectory.core.model.studio_waypoint import StudioWaypoint
+from scarajectory.core.model.waypoint import Waypoint
 from scarajectory.core.service.iservice import IService
-from scarajectory.core.service.istream_observer import IStreamObserver
-from scarajectory.core.service.itrajectory_observer import ITrajectoryObserver
 from scarajectory.infrastructure.gui.canvas import TrajectoryCanvas
 from scarajectory.infrastructure.gui.controls import ControlsPanel
 from scarajectory.infrastructure.gui.theme import ThemeManager
-from scarajectory.infrastructure.gui.igui import IGUI
 from scarajectory.infrastructure.gui.table import TrajectoryTable
 
-__author__: str = 'Vladimir Roncevic'
-__copyright__: str = '(C) 2026, https://vroncevic.github.io/scarajectory'
-__credits__: list[str] = ['Vladimir Roncevic', 'Python Software Foundation']
-__license__: str = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
+__author__ = 'Vladimir Roncevic'
+__copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
+__credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
+__license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
 __version__ = '1.0.0'
-__maintainer__: str = 'Vladimir Roncevic'
+__maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class ScarajectoryGUI(IGUI, IStreamObserver, ITrajectoryObserver):
+class ScarajectoryGUI:
     '''
         Main Tkinter GUI adapter coordinating vector canvas, tabular view, and controls.
 
@@ -124,7 +121,6 @@ class ScarajectoryGUI(IGUI, IStreamObserver, ITrajectoryObserver):
 
         self._root.after(150, lambda: self._canvas.fit_reach_view())
 
-    @override
     def is_initialized(self) -> bool:
         '''
             Checks if GUI components are initialized.
@@ -134,7 +130,6 @@ class ScarajectoryGUI(IGUI, IStreamObserver, ITrajectoryObserver):
         '''
         return self._root is not None and self._canvas is not None and self._table is not None
 
-    @override
     def start(self) -> None:
         '''
             Starts the Tkinter main event loop.
@@ -143,7 +138,6 @@ class ScarajectoryGUI(IGUI, IStreamObserver, ITrajectoryObserver):
         '''
         self._root.mainloop()
 
-    @override
     def stop(self) -> None:
         '''
             Closes and destroys the window.
@@ -152,7 +146,6 @@ class ScarajectoryGUI(IGUI, IStreamObserver, ITrajectoryObserver):
         '''
         self._root.quit()
 
-    @override
     def load_file(self, filepath: str) -> None:
         '''
             Loads trajectory JSON file into plan.
@@ -165,7 +158,6 @@ class ScarajectoryGUI(IGUI, IStreamObserver, ITrajectoryObserver):
         except (OSError, ValueError) as exc:
             messagebox.showerror('File Load Error', f'Failed to load {filepath}: {exc}')
 
-    @override
     def on_stream_progress(self, progress: StreamProgress) -> None:
         '''
             Receives streamer progress updates.
@@ -175,7 +167,6 @@ class ScarajectoryGUI(IGUI, IStreamObserver, ITrajectoryObserver):
         '''
         self._controls.update_progress(progress)
 
-    @override
     def on_serial_log(self, text: str, is_outgoing: bool = False) -> None:
         '''
             Receives serial traffic messages.
@@ -186,7 +177,6 @@ class ScarajectoryGUI(IGUI, IStreamObserver, ITrajectoryObserver):
         '''
         self._controls.append_log(text, is_outgoing=is_outgoing)
 
-    @override
     def on_trajectory_updated(self) -> None:
         '''
             Receives plan modification notifications.
@@ -207,7 +197,6 @@ class ScarajectoryGUI(IGUI, IStreamObserver, ITrajectoryObserver):
                 ent.delete(0, tk.END)
                 ent.insert(0, val)
 
-    @override
     def on_point_selected(self, index: int) -> None:
         '''
             Receives waypoint selection notifications.
@@ -415,7 +404,7 @@ class ScarajectoryGUI(IGUI, IStreamObserver, ITrajectoryObserver):
         if 0 <= idx < plan.count:
             try:
                 cur = plan.waypoints[idx]
-                updated = StudioWaypoint(
+                updated = Waypoint(
                     x=float(self._entry_x.get()),
                     y=float(self._entry_y.get()),
                     z=float(self._entry_z.get()),

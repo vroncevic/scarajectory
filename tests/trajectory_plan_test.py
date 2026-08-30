@@ -16,7 +16,7 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Unit tests for TrajectoryPlan, TrajectoryValidator, and StudioWaypoint serialization with DTOs.
+    Unit tests for TrajectoryPlan, TrajectoryValidator, and Waypoint serialization with DTOs.
 '''
 
 from __future__ import annotations
@@ -29,7 +29,7 @@ pkg_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if pkg_dir not in sys.path:
     sys.path.insert(0, pkg_dir)
 
-from scarajectory.core.model.studio_waypoint import StudioWaypoint
+from scarajectory.core.model.waypoint import Waypoint
 from scarajectory.core.model.scara_bounds_dto import ScaraBoundsDTO
 from scarajectory.core.model.point_dto import PointDTO
 from scarajectory.core.model.trajectory_metrics import TrajectoryMetrics
@@ -50,7 +50,7 @@ class TestTrajectoryPlan(unittest.TestCase):
             :methods:
                 | setUp - Configures test fixtures.
                 | test_add_and_metrics - Tests adding waypoints and computing path distance/time.
-                | test_point_dto_conversion - Tests conversion between StudioWaypoint and PointDTO.
+                | test_point_dto_conversion - Tests conversion between Waypoint and PointDTO.
                 | test_validation_pass - Tests valid reachable points.
                 | test_validation_out_of_reach - Tests out of reach points.
                 | test_validation_deadzone - Tests deadzone points.
@@ -77,8 +77,8 @@ class TestTrajectoryPlan(unittest.TestCase):
 
             :exceptions: None.
         '''
-        p1 = StudioWaypoint(x=150.0, y=0.0, z=20.0, speed=40.0)
-        p2 = StudioWaypoint(x=180.0, y=0.0, z=20.0, speed=40.0)
+        p1 = Waypoint(x=150.0, y=0.0, z=20.0, speed=40.0)
+        p2 = Waypoint(x=180.0, y=0.0, z=20.0, speed=40.0)
         self.plan.add_point(p1)
         self.plan.add_point(p2)
 
@@ -90,15 +90,15 @@ class TestTrajectoryPlan(unittest.TestCase):
 
     def test_point_dto_conversion(self) -> None:
         '''
-            Tests conversion between StudioWaypoint entity and PointDTO.
+            Tests conversion between Waypoint entity and PointDTO.
 
             :exceptions: None.
         '''
-        wp = StudioWaypoint(x=120.0, y=30.0, z=10.0, phi=0.5, speed=50.0, name='P_TEST')
+        wp = Waypoint(x=120.0, y=30.0, z=10.0, phi=0.5, speed=50.0, name='P_TEST')
         dto: PointDTO = wp.to_dto()
         self.assertEqual(dto.x, 120.0)
         self.assertEqual(dto.name, 'P_TEST')
-        wp_reconstructed = StudioWaypoint.from_dto(dto)
+        wp_reconstructed = Waypoint.from_dto(dto)
         self.assertEqual(wp, wp_reconstructed)
 
     def test_validation_pass(self) -> None:
@@ -107,8 +107,8 @@ class TestTrajectoryPlan(unittest.TestCase):
 
             :exceptions: None.
         '''
-        self.plan.add_point(StudioWaypoint(x=180.0, y=0.0, z=20.0))
-        self.plan.add_point(StudioWaypoint(x=150.0, y=50.0, z=10.0))
+        self.plan.add_point(Waypoint(x=180.0, y=0.0, z=20.0))
+        self.plan.add_point(Waypoint(x=150.0, y=50.0, z=10.0))
         valid, msgs = self.service.validate_plan()
         self.assertTrue(valid)
 
@@ -118,7 +118,7 @@ class TestTrajectoryPlan(unittest.TestCase):
 
             :exceptions: None.
         '''
-        self.plan.add_point(StudioWaypoint(x=250.0, y=150.0, z=20.0))
+        self.plan.add_point(Waypoint(x=250.0, y=150.0, z=20.0))
         valid, msgs = self.service.validate_plan()
         self.assertFalse(valid)
         self.assertTrue(any('exceeds maximum reach' in m for m in msgs))
@@ -129,7 +129,7 @@ class TestTrajectoryPlan(unittest.TestCase):
 
             :exceptions: None.
         '''
-        self.plan.add_point(StudioWaypoint(x=10.0, y=10.0, z=20.0))
+        self.plan.add_point(Waypoint(x=10.0, y=10.0, z=20.0))
         valid, msgs = self.service.validate_plan()
         self.assertFalse(valid)
         self.assertTrue(any('inside deadzone' in m for m in msgs))
@@ -140,7 +140,7 @@ class TestTrajectoryPlan(unittest.TestCase):
 
             :exceptions: None.
         '''
-        self.plan.add_point(StudioWaypoint(x=150.0, y=50.0, z=10.0, phi=0.0, speed=40.0))
+        self.plan.add_point(Waypoint(x=150.0, y=50.0, z=10.0, phi=0.0, speed=40.0))
         program: str = TrajectoryMetrics.to_ascii_program(self.plan.waypoints)
         self.assertIn('<pt#150.00#50.00#10.00#40.0#end>', program)
 
@@ -152,7 +152,7 @@ class TestTrajectoryPlan(unittest.TestCase):
         '''
         tmp_file: str = '/tmp/test_scara_plan.json'
         try:
-            self.plan.add_point(StudioWaypoint(x=160.0, y=20.0, z=15.0, phi=1.57, speed=50.0))
+            self.plan.add_point(Waypoint(x=160.0, y=20.0, z=15.0, phi=1.57, speed=50.0))
             self.service.save_plan(tmp_file)
 
             new_plan = TrajectoryPlan()

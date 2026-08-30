@@ -23,24 +23,21 @@ from __future__ import annotations
 
 import tkinter as tk
 from tkinter import ttk
-from typing import Final, override
+from typing import Final
 
-from scarajectory.core.model.studio_waypoint import StudioWaypoint
 from scarajectory.core.model.trajectory_plan import TrajectoryPlan
-from scarajectory.core.service.itrajectory_observer import ITrajectoryObserver
-from scarajectory.infrastructure.gui.itable import ITable
 
-__author__: str = 'Vladimir Roncevic'
-__copyright__: str = '(C) 2026, https://vroncevic.github.io/scarajectory'
-__credits__: list[str] = ['Vladimir Roncevic', 'Python Software Foundation']
-__license__: str = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
+__author__ = 'Vladimir Roncevic'
+__copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
+__credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
+__license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
 __version__ = '1.0.0'
-__maintainer__: str = 'Vladimir Roncevic'
+__maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class TrajectoryTable(ttk.Frame, ITable, ITrajectoryObserver):
+class TrajectoryTable(ttk.Frame):
     '''
         Tabular display of waypoints with selection synchronization and inspection.
 
@@ -106,7 +103,6 @@ class TrajectoryTable(ttk.Frame, ITable, ITrajectoryObserver):
 
         self._tree.bind('<<TreeviewSelect>>', self._on_tree_select)
 
-    @override
     def delete_selected(self) -> None:
         '''
             Deletes the currently selected waypoint.
@@ -117,7 +113,6 @@ class TrajectoryTable(ttk.Frame, ITable, ITrajectoryObserver):
         if 0 <= idx < self._plan.count:
             self._plan.remove_point(idx)
 
-    @override
     def refresh_table(self) -> None:
         '''
             Refreshes table rows from active plan.
@@ -162,7 +157,6 @@ class TrajectoryTable(ttk.Frame, ITable, ITrajectoryObserver):
             except ValueError:
                 pass
 
-    @override
     def on_trajectory_updated(self) -> None:
         '''
             Refreshes table data on plan change.
@@ -171,7 +165,6 @@ class TrajectoryTable(ttk.Frame, ITable, ITrajectoryObserver):
         '''
         self.refresh_table()
 
-    @override
     def on_point_selected(self, index: int) -> None:
         '''
             Synchronizes row selection with canvas selection.

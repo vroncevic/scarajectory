@@ -24,7 +24,7 @@ from __future__ import annotations
 import glob
 import tkinter as tk
 from tkinter import ttk, messagebox
-from typing import Final, override
+from typing import Final
 
 import serial.tools.list_ports
 
@@ -33,19 +33,18 @@ from scarajectory.core.model.stream_progress import StreamProgress
 from scarajectory.core.model.stream_state import StreamState
 from scarajectory.core.model.trajectory_metrics import TrajectoryMetrics
 from scarajectory.core.service.iservice import IService
-from scarajectory.infrastructure.gui.icontrols import IControls
 
-__author__: str = 'Vladimir Roncevic'
-__copyright__: str = '(C) 2026, https://vroncevic.github.io/scarajectory'
-__credits__: list[str] = ['Vladimir Roncevic', 'Python Software Foundation']
-__license__: str = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
+__author__ = 'Vladimir Roncevic'
+__copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
+__credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
+__license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
 __version__ = '1.0.0'
-__maintainer__: str = 'Vladimir Roncevic'
+__maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class ControlsPanel(ttk.Frame, IControls):
+class ControlsPanel(ttk.Frame):
     '''
         Tabbed controller housing Serial Streamer, Validation, Jog and Program preview panels.
 
@@ -268,7 +267,6 @@ class ControlsPanel(ttk.Frame, IControls):
         self._txt_preview = tk.Text(tab, height=6, bg='#14161a', fg='#abb2bf', font=('DejaVu Sans Mono', 8), wrap='none')
         self._txt_preview.pack(fill=tk.BOTH, expand=True, pady=4)
 
-    @override
     def refresh_ports(self) -> None:
         '''
             Updates available serial ports list with USB devices prioritized.
@@ -292,7 +290,6 @@ class ControlsPanel(ttk.Frame, IControls):
         elif sorted_ports and not self._cbo_ports.get():
             self._cbo_ports.set(sorted_ports[0])
 
-    @override
     def append_log(self, text: str, is_outgoing: bool = False) -> None:
         '''
             Appends message to terminal log console.
@@ -305,7 +302,6 @@ class ControlsPanel(ttk.Frame, IControls):
         self._txt_log.insert(tk.END, f'{prefix}{text}\n')
         self._txt_log.see(tk.END)
 
-    @override
     def update_progress(self, progress: StreamProgress) -> None:
         '''
             Updates streamer progress bar and metrics.

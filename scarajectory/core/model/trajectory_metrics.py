@@ -24,14 +24,14 @@ from __future__ import annotations
 import json
 from collections.abc import Sequence
 
-from scarajectory.core.model.studio_waypoint import StudioWaypoint
+from scarajectory.core.model.waypoint import Waypoint
 
-__author__: str = 'Vladimir Roncevic'
-__copyright__: str = '(C) 2026, https://vroncevic.github.io/scarajectory'
-__credits__: list[str] = ['Vladimir Roncevic', 'Python Software Foundation']
-__license__: str = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
+__author__ = 'Vladimir Roncevic'
+__copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
+__credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
+__license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
 __version__ = '1.0.0'
-__maintainer__: str = 'Vladimir Roncevic'
+__maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
@@ -51,7 +51,7 @@ class TrajectoryMetrics:
     '''
 
     @staticmethod
-    def calculate_distance(waypoints: Sequence[StudioWaypoint]) -> float:
+    def calculate_distance(waypoints: Sequence[Waypoint]) -> float:
         '''
             Computes total 3D Cartesian distance along the path in mm.
 
@@ -67,7 +67,7 @@ class TrajectoryMetrics:
         return total
 
     @staticmethod
-    def calculate_duration(waypoints: Sequence[StudioWaypoint]) -> float:
+    def calculate_duration(waypoints: Sequence[Waypoint]) -> float:
         '''
             Computes estimated execution duration based on waypoint speeds in seconds.
 
@@ -85,7 +85,7 @@ class TrajectoryMetrics:
         return total_sec
 
     @classmethod
-    def to_ascii_program(cls, waypoints: Sequence[StudioWaypoint]) -> str:
+    def to_ascii_program(cls, waypoints: Sequence[Waypoint]) -> str:
         '''
             Generates full sequential ASCII firmware instruction stream.
 
@@ -105,7 +105,7 @@ class TrajectoryMetrics:
         return '\n'.join(lines)
 
     @staticmethod
-    def save_json(waypoints: Sequence[StudioWaypoint], filepath: str) -> None:
+    def save_json(waypoints: Sequence[Waypoint], filepath: str) -> None:
         '''
             Saves waypoints sequence to JSON file.
 
@@ -121,20 +121,20 @@ class TrajectoryMetrics:
             json.dump(data, file_handle, indent=2)
 
     @staticmethod
-    def load_json(filepath: str) -> list[StudioWaypoint]:
+    def load_json(filepath: str) -> list[Waypoint]:
         '''
             Loads waypoints sequence from JSON file.
 
             :param filepath: Source file path.
-            :return: List of loaded StudioWaypoint instances.
+            :return: List of loaded Waypoint instances.
             :exceptions: OSError, json.JSONDecodeError.
         '''
         with open(filepath, 'r', encoding='utf-8') as file_handle:
             data: dict[str, object] = json.load(file_handle)
-        loaded_pts: list[StudioWaypoint] = []
+        loaded_pts: list[Waypoint] = []
         raw_list = data.get('waypoints', [])
         if isinstance(raw_list, list):
             for item in raw_list:
                 if isinstance(item, dict):
-                    loaded_pts.append(StudioWaypoint.from_dict(item))
+                    loaded_pts.append(Waypoint.from_dict(item))
         return loaded_pts

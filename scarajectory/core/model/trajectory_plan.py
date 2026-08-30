@@ -24,16 +24,16 @@ from __future__ import annotations
 from typing import Final
 from collections.abc import Sequence
 
-from scarajectory.core.model.studio_waypoint import StudioWaypoint
+from scarajectory.core.model.waypoint import Waypoint
 from scarajectory.core.model.plan_history import PlanHistory
 from scarajectory.core.service.itrajectory_observer import ITrajectoryObserver
 
-__author__: str = 'Vladimir Roncevic'
-__copyright__: str = '(C) 2026, https://vroncevic.github.io/scarajectory'
-__credits__: list[str] = ['Vladimir Roncevic', 'Python Software Foundation']
-__license__: str = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
+__author__ = 'Vladimir Roncevic'
+__copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
+__credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
+__license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
 __version__ = '1.0.0'
-__maintainer__: str = 'Vladimir Roncevic'
+__maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
@@ -66,7 +66,7 @@ class TrajectoryPlan:
                 | redo - Re-applies previously undone action.
     '''
 
-    _waypoints: list[StudioWaypoint]
+    _waypoints: list[Waypoint]
     _observers: list[ITrajectoryObserver]
     _selected_index: int
     _history: Final[PlanHistory]
@@ -83,11 +83,11 @@ class TrajectoryPlan:
         self._history = PlanHistory()
 
     @property
-    def waypoints(self) -> Sequence[StudioWaypoint]:
+    def waypoints(self) -> Sequence[Waypoint]:
         '''
             Returns read-only view of waypoints.
 
-            :return: Tuple of StudioWaypoint instances.
+            :return: Tuple of Waypoint instances.
             :exceptions: None.
         '''
         return tuple(self._waypoints)
@@ -146,7 +146,7 @@ class TrajectoryPlan:
             for obs in self._observers:
                 obs.on_point_selected(index)
 
-    def add_point(self, point: StudioWaypoint) -> None:
+    def add_point(self, point: Waypoint) -> None:
         '''
             Appends a new waypoint to the plan.
 
@@ -158,7 +158,7 @@ class TrajectoryPlan:
         self._selected_index = len(self._waypoints) - 1
         self._notify()
 
-    def insert_point(self, index: int, point: StudioWaypoint) -> None:
+    def insert_point(self, index: int, point: Waypoint) -> None:
         '''
             Inserts a waypoint at a specific index.
 
@@ -172,7 +172,7 @@ class TrajectoryPlan:
         self._selected_index = idx
         self._notify()
 
-    def update_point(self, index: int, new_point: StudioWaypoint) -> bool:
+    def update_point(self, index: int, new_point: Waypoint) -> bool:
         '''
             Replaces waypoint at index with updated parameters.
 
@@ -217,11 +217,11 @@ class TrajectoryPlan:
             self._selected_index = -1
             self._notify()
 
-    def set_waypoints(self, waypoints: list[StudioWaypoint]) -> None:
+    def set_waypoints(self, waypoints: list[Waypoint]) -> None:
         '''
             Replaces all waypoints with a new list.
 
-            :param waypoints: New list of StudioWaypoint instances.
+            :param waypoints: New list of Waypoint instances.
             :exceptions: None.
         '''
         self._history.save_state(self._waypoints)

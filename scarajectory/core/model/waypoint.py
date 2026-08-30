@@ -2,7 +2,7 @@
 
 '''
 Module
-    studio_waypoint.py
+    waypoint.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     scarajectory is free software: you can redistribute it and/or modify it
@@ -16,7 +16,7 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Defines StudioWaypoint data model representing a single 4-DOF motion target point.
+    Defines Waypoint data model representing a single 4-DOF motion target point.
 '''
 
 from __future__ import annotations
@@ -26,17 +26,17 @@ from typing import NamedTuple
 
 from scarajectory.core.model.point_dto import PointDTO
 
-__author__: str = 'Vladimir Roncevic'
-__copyright__: str = '(C) 2026, https://vroncevic.github.io/scarajectory'
-__credits__: list[str] = ['Vladimir Roncevic', 'Python Software Foundation']
-__license__: str = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__: str = '1.0.0'
-__maintainer__: str = 'Vladimir Roncevic'
-__email__: str = 'elektron.ronca@gmail.com'
-__status__: str = 'Updated'
+__author__ = 'Vladimir Roncevic'
+__copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
+__credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
+__license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
+__version__ = '1.0.0'
+__maintainer__ = 'Vladimir Roncevic'
+__email__ = 'elektron.ronca@gmail.com'
+__status__ = 'Updated'
 
 
-class StudioWaypoint(NamedTuple):
+class Waypoint(NamedTuple):
     '''
         Immutable waypoint entity representing target coordinates, tool orientation and speed.
 
@@ -83,12 +83,12 @@ class StudioWaypoint(NamedTuple):
         )
 
     @classmethod
-    def from_dto(cls, dto: PointDTO) -> StudioWaypoint:
+    def from_dto(cls, dto: PointDTO) -> Waypoint:
         '''
             Creates waypoint from PointDTO.
 
             :param dto: PointDTO data transfer object.
-            :return: StudioWaypoint instance.
+            :return: Waypoint instance.
             :exceptions: None.
         '''
         return cls(
@@ -110,7 +110,7 @@ class StudioWaypoint(NamedTuple):
         '''
         return math.hypot(self.x, self.y)
 
-    def distance_to(self, other: StudioWaypoint) -> float:
+    def distance_to(self, other: Waypoint) -> float:
         '''
             Calculates 3D Euclidean distance to another waypoint.
 
@@ -151,12 +151,12 @@ class StudioWaypoint(NamedTuple):
         }
 
     @classmethod
-    def from_dict(cls, data: dict[str, float | str]) -> StudioWaypoint:
+    def from_dict(cls, data: dict[str, float | str]) -> Waypoint:
         '''
             Deserializes waypoint from dictionary.
 
             :param data: Input dictionary.
-            :return: StudioWaypoint instance.
+            :return: Waypoint instance.
             :exceptions: None.
         '''
         return cls(

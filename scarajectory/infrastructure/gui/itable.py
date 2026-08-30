@@ -16,26 +16,27 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Defines abstract interface ITable for waypoint list/table components.
+    Defines interface ITable for waypoint list/table components.
 '''
 
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
+from typing import Protocol, runtime_checkable
 
-__author__: str = 'Vladimir Roncevic'
-__copyright__: str = '(C) 2026, https://vroncevic.github.io/scarajectory'
-__credits__: list[str] = ['Vladimir Roncevic', 'Python Software Foundation']
-__license__: str = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
+__author__ = 'Vladimir Roncevic'
+__copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
+__credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
+__license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
 __version__ = '1.0.0'
-__maintainer__: str = 'Vladimir Roncevic'
+__maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class ITable(ABC):
+@runtime_checkable
+class ITable(Protocol):
     '''
-        Abstract contract for tabular waypoint display and selection.
+        Contract for tabular waypoint display and selection.
 
         It defines:
 
@@ -44,7 +45,6 @@ class ITable(ABC):
                 | delete_selected - Deletes the currently selected waypoint.
     '''
 
-    @abstractmethod
     def refresh_table(self) -> None:
         '''
             Refreshes table rows from active plan.
@@ -52,7 +52,6 @@ class ITable(ABC):
             :exceptions: None.
         '''
 
-    @abstractmethod
     def delete_selected(self) -> None:
         '''
             Deletes the currently selected waypoint.

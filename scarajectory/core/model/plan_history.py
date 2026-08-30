@@ -21,14 +21,14 @@ Info
 
 from __future__ import annotations
 
-from scarajectory.core.model.studio_waypoint import StudioWaypoint
+from scarajectory.core.model.waypoint import Waypoint
 
-__author__: str = 'Vladimir Roncevic'
-__copyright__: str = '(C) 2026, https://vroncevic.github.io/scarajectory'
-__credits__: list[str] = ['Vladimir Roncevic', 'Python Software Foundation']
-__license__: str = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
+__author__ = 'Vladimir Roncevic'
+__copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
+__credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
+__license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
 __version__ = '1.0.0'
-__maintainer__: str = 'Vladimir Roncevic'
+__maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
@@ -50,8 +50,8 @@ class PlanHistory:
                 | clear - Clears all history.
     '''
 
-    _undo_stack: list[list[StudioWaypoint]]
-    _redo_stack: list[list[StudioWaypoint]]
+    _undo_stack: list[list[Waypoint]]
+    _redo_stack: list[list[Waypoint]]
 
     def __init__(self) -> None:
         '''
@@ -62,7 +62,7 @@ class PlanHistory:
         self._undo_stack = []
         self._redo_stack = []
 
-    def save_state(self, current: list[StudioWaypoint]) -> None:
+    def save_state(self, current: list[Waypoint]) -> None:
         '''
             Pushes current snapshot onto undo stack.
 
@@ -74,7 +74,7 @@ class PlanHistory:
             self._undo_stack.pop(0)
         self._redo_stack.clear()
 
-    def undo(self, current: list[StudioWaypoint]) -> list[StudioWaypoint] | None:
+    def undo(self, current: list[Waypoint]) -> list[Waypoint] | None:
         '''
             Pops last state from undo stack into redo stack.
 
@@ -87,7 +87,7 @@ class PlanHistory:
         self._redo_stack.append(list(current))
         return self._undo_stack.pop()
 
-    def redo(self, current: list[StudioWaypoint]) -> list[StudioWaypoint] | None:
+    def redo(self, current: list[Waypoint]) -> list[Waypoint] | None:
         '''
             Pops last state from redo stack into undo stack.
 

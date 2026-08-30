@@ -16,28 +16,29 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Defines abstract interface ISerialStreamer for motion execution.
+    Defines interface ISerialStreamer for motion execution.
 '''
 
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
+from typing import Protocol, runtime_checkable
 from collections.abc import Sequence
 
-from scarajectory.core.model.studio_waypoint import StudioWaypoint
+from scarajectory.core.model.waypoint import Waypoint
 from scarajectory.core.model.stream_config_dto import StreamConfigDTO
 
-__author__: str = 'Vladimir Roncevic'
-__copyright__: str = '(C) 2026, https://vroncevic.github.io/scarajectory'
-__credits__: list[str] = ['Vladimir Roncevic', 'Python Software Foundation']
-__license__: str = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
+__author__ = 'Vladimir Roncevic'
+__copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
+__credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
+__license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
 __version__ = '1.0.0'
-__maintainer__: str = 'Vladimir Roncevic'
+__maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class ISerialStreamer(ABC):
+@runtime_checkable
+class ISerialStreamer(Protocol):
     '''
         Contract for serial communication and flow-controlled packet streamers.
 
@@ -54,7 +55,6 @@ class ISerialStreamer(ABC):
                 | send_raw_command - Sends single immediate command string.
     '''
 
-    @abstractmethod
     def is_connected(self) -> bool:
         '''
             Checks if serial connection is open.
@@ -63,7 +63,6 @@ class ISerialStreamer(ABC):
             :exceptions: None.
         '''
 
-    @abstractmethod
     def connect_with_config(self, config: StreamConfigDTO) -> bool:
         '''
             Opens connection to serial port with config DTO.
@@ -73,7 +72,6 @@ class ISerialStreamer(ABC):
             :exceptions: None.
         '''
 
-    @abstractmethod
     def disconnect(self) -> None:
         '''
             Closes active serial connection.
@@ -81,17 +79,15 @@ class ISerialStreamer(ABC):
             :exceptions: None.
         '''
 
-    @abstractmethod
-    def start_streaming(self, waypoints: Sequence[StudioWaypoint]) -> bool:
+    def start_streaming(self, waypoints: Sequence[Waypoint]) -> bool:
         '''
             Starts streaming sequence of waypoints to the robot.
 
-            :param waypoints: Sequence of StudioWaypoint instances.
+            :param waypoints: Sequence of Waypoint instances.
             :return: True if streaming started.
             :exceptions: None.
         '''
 
-    @abstractmethod
     def pause_streaming(self) -> None:
         '''
             Pauses transmission.
@@ -99,7 +95,6 @@ class ISerialStreamer(ABC):
             :exceptions: None.
         '''
 
-    @abstractmethod
     def resume_streaming(self) -> None:
         '''
             Resumes transmission.
@@ -107,7 +102,6 @@ class ISerialStreamer(ABC):
             :exceptions: None.
         '''
 
-    @abstractmethod
     def stop_streaming(self) -> None:
         '''
             Aborts streaming and sends E-STOP.
@@ -115,7 +109,6 @@ class ISerialStreamer(ABC):
             :exceptions: None.
         '''
 
-    @abstractmethod
     def send_raw_command(self, cmd: str) -> None:
         '''
             Sends single immediate command string.

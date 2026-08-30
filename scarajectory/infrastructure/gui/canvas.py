@@ -24,30 +24,28 @@ from __future__ import annotations
 import math
 import tkinter as tk
 from tkinter import ttk
-from typing import Final, override
+from typing import Final
 
-from scarajectory.core.model.studio_waypoint import StudioWaypoint
+from scarajectory.core.model.waypoint import Waypoint
 from scarajectory.core.model.trajectory_plan import TrajectoryPlan
 from scarajectory.core.model.canvas_settings_dto import CanvasSettingsDTO
 from scarajectory.core.model.canvas_tool_mode import CanvasToolMode
 from scarajectory.core.model.viewport_transform import ViewportTransform, DEFAULT_ZOOM, R_MAX_MM
-from scarajectory.core.service.itrajectory_observer import ITrajectoryObserver
 from scarajectory.core.service.itrajectory_validator import ITrajectoryValidator
-from scarajectory.infrastructure.gui.icanvas import ICanvas
 
-__author__: str = 'Vladimir Roncevic'
-__copyright__: str = '(C) 2026, https://vroncevic.github.io/scarajectory'
-__credits__: list[str] = ['Vladimir Roncevic', 'Python Software Foundation']
-__license__: str = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
+__author__ = 'Vladimir Roncevic'
+__copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
+__credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
+__license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
 __version__ = '1.0.0'
-__maintainer__: str = 'Vladimir Roncevic'
+__maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 R_MIN_MM: Final[float] = 30.0
 
 
-class TrajectoryCanvas(tk.Canvas, ICanvas, ITrajectoryObserver):
+class TrajectoryCanvas(tk.Canvas):
     '''
         Vector CAD drawing canvas with dynamic sizing, interactive zoom/pan, and deadzone protection.
 
@@ -129,7 +127,6 @@ class TrajectoryCanvas(tk.Canvas, ICanvas, ITrajectoryObserver):
         self.bind('<Button-4>', lambda e: self.zoom_in())
         self.bind('<Button-5>', lambda e: self.zoom_out())
 
-    @override
     def set_tool_mode(self, mode: CanvasToolMode) -> None:
         '''
             Sets the active drawing tool mode.
@@ -139,7 +136,6 @@ class TrajectoryCanvas(tk.Canvas, ICanvas, ITrajectoryObserver):
         '''
         self._tool_mode = mode
 
-    @override
     def update_settings(self, settings: CanvasSettingsDTO) -> None:
         '''
             Updates default point properties.
@@ -159,7 +155,6 @@ class TrajectoryCanvas(tk.Canvas, ICanvas, ITrajectoryObserver):
         '''
         self._hover_label = label
 
-    @override
     def zoom_in(self) -> None:
         '''
             Scales view in by 1.25x.
@@ -169,7 +164,6 @@ class TrajectoryCanvas(tk.Canvas, ICanvas, ITrajectoryObserver):
         self._vp.zoom_in()
         self._redraw()
 
-    @override
     def zoom_out(self) -> None:
         '''
             Scales view out by 0.8x.
@@ -179,7 +173,6 @@ class TrajectoryCanvas(tk.Canvas, ICanvas, ITrajectoryObserver):
         self._vp.zoom_out()
         self._redraw()
 
-    @override
     def reset_view(self) -> None:
         '''
             Resets viewport zoom to 100%.
@@ -189,7 +182,6 @@ class TrajectoryCanvas(tk.Canvas, ICanvas, ITrajectoryObserver):
         self._vp.reset()
         self._redraw()
 
-    @override
     def fit_reach_view(self) -> None:
         '''
             Fits maximum reach circle to canvas.
@@ -199,7 +191,6 @@ class TrajectoryCanvas(tk.Canvas, ICanvas, ITrajectoryObserver):
         self._vp.fit_reach(self.winfo_width(), self.winfo_height())
         self._redraw()
 
-    @override
     def on_trajectory_updated(self) -> None:
         '''
             Redraws canvas on plan change.
@@ -208,7 +199,6 @@ class TrajectoryCanvas(tk.Canvas, ICanvas, ITrajectoryObserver):
         '''
         self._redraw()
 
-    @override
     def on_point_selected(self, index: int) -> None:
         '''
             Redraws selection highlighting.
@@ -296,7 +286,7 @@ class TrajectoryCanvas(tk.Canvas, ICanvas, ITrajectoryObserver):
             return
 
         if self._tool_mode == CanvasToolMode.POINT:
-            self._plan.add_point(StudioWaypoint(x=wx, y=wy, z=self._settings.default_z, speed=self._settings.default_speed))
+            self._plan.add_point(Waypoint(x=wx, y=wy, z=self._settings.default_z, speed=self._settings.default_speed))
         elif self._tool_mode == CanvasToolMode.SELECT:
             for i, pt in enumerate(self._plan.waypoints):
                 if math.hypot(pt.x - wx, pt.y - wy) <= (10.0 / self._vp.scale):
@@ -323,11 +313,11 @@ class TrajectoryCanvas(tk.Canvas, ICanvas, ITrajectoryObserver):
         wx, wy = self._vp.screen_to_world(event.x, event.y, w, h)
         if self._tool_mode == CanvasToolMode.SELECT and self._drag_idx >= 0:
             cur = self._plan.waypoints[self._drag_idx]
-            self._plan.update_point(self._drag_idx, StudioWaypoint(x=wx, y=wy, z=cur.z, phi=cur.phi, speed=cur.speed, name=cur.name))
+            self._plan.update_point(self._drag_idx, Waypoint(x=wx, y=wy, z=cur.z, phi=cur.phi, speed=cur.speed, name=cur.name))
         elif self._tool_mode == CanvasToolMode.FREEHAND:
             wps = self._plan.waypoints
             if not wps or math.hypot(wps[-1].x - wx, wps[-1].y - wy) > 10.0:
-                self._plan.add_point(StudioWaypoint(x=wx, y=wy, z=self._settings.default_z, speed=self._settings.default_speed))
+                self._plan.add_point(Waypoint(x=wx, y=wy, z=self._settings.default_z, speed=self._settings.default_speed))
 
     def _on_mouse_up(self, event: tk.Event) -> None:
         '''
@@ -346,7 +336,7 @@ class TrajectoryCanvas(tk.Canvas, ICanvas, ITrajectoryObserver):
                 steps: int = 16
                 for s in range(steps + 1):
                     ang: float = 2.0 * math.pi * (s % steps) / steps
-                    self._plan.add_point(StudioWaypoint(
+                    self._plan.add_point(Waypoint(
                         x=cx + radius * math.cos(ang),
                         y=cy + radius * math.sin(ang),
                         z=self._settings.default_z,
@@ -356,7 +346,7 @@ class TrajectoryCanvas(tk.Canvas, ICanvas, ITrajectoryObserver):
             x1, y1 = self._drag_start
             x2, y2 = self._vp.screen_to_world(event.x, event.y, w, h)
             for px, py in [(x1, y1), (x2, y1), (x2, y2), (x1, y2), (x1, y1)]:
-                self._plan.add_point(StudioWaypoint(x=px, y=py, z=self._settings.default_z, speed=self._settings.default_speed))
+                self._plan.add_point(Waypoint(x=px, y=py, z=self._settings.default_z, speed=self._settings.default_speed))
 
         self._drag_idx = -1
         self._drag_start = None

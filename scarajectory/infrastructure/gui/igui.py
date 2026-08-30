@@ -16,26 +16,27 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Defines abstract interface IGUI for graphical user interface adapters.
+    Defines interface IGUI for graphical user interface adapters.
 '''
 
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
+from typing import Protocol, runtime_checkable
 
-__author__: str = 'Vladimir Roncevic'
-__copyright__: str = '(C) 2026, https://vroncevic.github.io/scarajectory'
-__credits__: list[str] = ['Vladimir Roncevic', 'Python Software Foundation']
-__license__: str = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
+__author__ = 'Vladimir Roncevic'
+__copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
+__credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
+__license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
 __version__ = '1.0.0'
-__maintainer__: str = 'Vladimir Roncevic'
+__maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class IGUI(ABC):
+@runtime_checkable
+class IGUI(Protocol):
     '''
-        Abstract interface for GUI presentation adapters.
+        Interface for GUI presentation adapters.
 
         It defines:
 
@@ -46,7 +47,6 @@ class IGUI(ABC):
                 | load_file - Loads a trajectory plan file into the GUI.
     '''
 
-    @abstractmethod
     def is_initialized(self) -> bool:
         '''
             Checks if the GUI adapter is initialized.
@@ -55,7 +55,6 @@ class IGUI(ABC):
             :exceptions: None.
         '''
 
-    @abstractmethod
     def start(self) -> None:
         '''
             Starts the GUI main event loop.
@@ -63,7 +62,6 @@ class IGUI(ABC):
             :exceptions: None.
         '''
 
-    @abstractmethod
     def stop(self) -> None:
         '''
             Closes and destroys the GUI window.
@@ -71,7 +69,6 @@ class IGUI(ABC):
             :exceptions: None.
         '''
 
-    @abstractmethod
     def load_file(self, filepath: str) -> None:
         '''
             Loads a trajectory plan file into the GUI.

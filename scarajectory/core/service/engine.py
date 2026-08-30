@@ -21,27 +21,26 @@ Info
 
 from __future__ import annotations
 
-from typing import Final, override
+from typing import Final
 
-from scarajectory.core.model.studio_waypoint import StudioWaypoint
+from scarajectory.core.model.waypoint import Waypoint
 from scarajectory.core.model.trajectory_plan import TrajectoryPlan
 from scarajectory.core.model.trajectory_metrics import TrajectoryMetrics
 from scarajectory.core.model.validation_result_dto import ValidationResultDTO
-from scarajectory.core.service.iservice import IService
 from scarajectory.core.service.itrajectory_validator import ITrajectoryValidator
 from scarajectory.core.service.iserial_streamer import ISerialStreamer
 
-__author__: str = 'Vladimir Roncevic'
-__copyright__: str = '(C) 2026, https://vroncevic.github.io/scarajectory'
-__credits__: list[str] = ['Vladimir Roncevic', 'Python Software Foundation']
-__license__: str = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
+__author__ = 'Vladimir Roncevic'
+__copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
+__credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
+__license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
 __version__ = '1.0.0'
-__maintainer__: str = 'Vladimir Roncevic'
+__maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class Service(IService):
+class Service:
     '''
         Service orchestrating trajectory domain modeling, validation and execution.
 
@@ -86,7 +85,6 @@ class Service(IService):
         self._streamer = streamer
         self._plan = plan if plan is not None else TrajectoryPlan()
 
-    @override
     def is_initialized(self) -> bool:
         '''
             Checks if the service is properly initialized.
@@ -96,7 +94,6 @@ class Service(IService):
         '''
         return self._plan is not None and self._validator is not None and self._streamer is not None
 
-    @override
     def get_plan(self) -> TrajectoryPlan:
         '''
             Returns the active TrajectoryPlan.
@@ -106,7 +103,6 @@ class Service(IService):
         '''
         return self._plan
 
-    @override
     def get_validator(self) -> ITrajectoryValidator:
         '''
             Returns the active ITrajectoryValidator.
@@ -116,7 +112,6 @@ class Service(IService):
         '''
         return self._validator
 
-    @override
     def get_streamer(self) -> ISerialStreamer:
         '''
             Returns the active ISerialStreamer.
@@ -126,7 +121,6 @@ class Service(IService):
         '''
         return self._streamer
 
-    @override
     def validate_plan(self) -> tuple[bool, list[str]]:
         '''
             Validates the current trajectory plan against robot kinematic bounds.
@@ -163,7 +157,6 @@ class Service(IService):
 
         return all_valid, messages
 
-    @override
     def save_plan(self, filepath: str) -> None:
         '''
             Saves current plan to file path.
@@ -173,7 +166,6 @@ class Service(IService):
         '''
         TrajectoryMetrics.save_json(self._plan.waypoints, filepath)
 
-    @override
     def load_plan(self, filepath: str) -> None:
         '''
             Loads plan from file path.
@@ -181,10 +173,9 @@ class Service(IService):
             :param filepath: Source file path.
             :exceptions: OSError.
         '''
-        loaded_pts: list[StudioWaypoint] = TrajectoryMetrics.load_json(filepath)
+        loaded_pts: list[Waypoint] = TrajectoryMetrics.load_json(filepath)
         self._plan.set_waypoints(loaded_pts)
 
-    @override
     def start_streaming(self) -> bool:
         '''
             Initiates streaming of current plan.
@@ -194,7 +185,6 @@ class Service(IService):
         '''
         return self._streamer.start_streaming(self._plan.waypoints)
 
-    @override
     def stop_streaming(self) -> None:
         '''
             Aborts active streaming.

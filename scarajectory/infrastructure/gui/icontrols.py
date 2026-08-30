@@ -16,28 +16,29 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Defines abstract interface IControls for multi-tab control panels.
+    Defines interface IControls for multi-tab control panels.
 '''
 
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
+from typing import Protocol, runtime_checkable
 
 from scarajectory.core.model.stream_progress import StreamProgress
 
-__author__: str = 'Vladimir Roncevic'
-__copyright__: str = '(C) 2026, https://vroncevic.github.io/scarajectory'
-__credits__: list[str] = ['Vladimir Roncevic', 'Python Software Foundation']
-__license__: str = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
+__author__ = 'Vladimir Roncevic'
+__copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
+__credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
+__license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
 __version__ = '1.0.0'
-__maintainer__: str = 'Vladimir Roncevic'
+__maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class IControls(ABC):
+@runtime_checkable
+class IControls(Protocol):
     '''
-        Abstract interface for robot streamer, validation, and jog control panels.
+        Interface for robot streamer, validation, and jog control panels.
 
         It defines:
 
@@ -47,7 +48,6 @@ class IControls(ABC):
                 | update_progress - Updates streamer progress bar and metrics.
     '''
 
-    @abstractmethod
     def refresh_ports(self) -> None:
         '''
             Updates available serial ports list.
@@ -55,7 +55,6 @@ class IControls(ABC):
             :exceptions: None.
         '''
 
-    @abstractmethod
     def append_log(self, text: str, is_outgoing: bool = False) -> None:
         '''
             Appends message to terminal log console.
@@ -65,7 +64,6 @@ class IControls(ABC):
             :exceptions: None.
         '''
 
-    @abstractmethod
     def update_progress(self, progress: StreamProgress) -> None:
         '''
             Updates streamer progress bar and metrics.

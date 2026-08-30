@@ -16,30 +16,29 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Concrete implementation of ITrajectoryValidator enforcing SCARA physical geometry bounds.
+    Implementation of kinematic reachability validator enforcing SCARA physical geometry bounds.
 '''
 
 from __future__ import annotations
 
 import math
-from typing import Final, override
+from typing import Final
 
 from scarajectory.core.model.point_dto import PointDTO
 from scarajectory.core.model.validation_result_dto import ValidationResultDTO
 from scarajectory.core.model.scara_bounds_dto import ScaraBoundsDTO
-from scarajectory.core.service.itrajectory_validator import ITrajectoryValidator
 
-__author__: str = 'Vladimir Roncevic'
-__copyright__: str = '(C) 2026, https://vroncevic.github.io/scarajectory'
-__credits__: list[str] = ['Vladimir Roncevic', 'Python Software Foundation']
-__license__: str = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
+__author__ = 'Vladimir Roncevic'
+__copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
+__credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
+__license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
 __version__ = '1.0.0'
-__maintainer__: str = 'Vladimir Roncevic'
+__maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class TrajectoryValidator(ITrajectoryValidator):
+class TrajectoryValidator:
     '''
         Enforces SCARA mechanical reachability and kinematic envelope validation.
 
@@ -103,7 +102,6 @@ class TrajectoryValidator(ITrajectoryValidator):
         '''
         return self._r_max
 
-    @override
     def validate_point_dto(self, point: PointDTO) -> ValidationResultDTO:
         '''
             Validates PointDTO coordinates against annular horizontal reach and vertical bounds.
@@ -130,7 +128,6 @@ class TrajectoryValidator(ITrajectoryValidator):
             )
         return ValidationResultDTO(is_valid=True, message='Point is reachable')
 
-    @override
     def validate_feedrate(self, speed: float) -> ValidationResultDTO:
         '''
             Validates that speed is within safe mechanical operation range.

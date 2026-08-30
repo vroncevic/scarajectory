@@ -24,32 +24,31 @@ from __future__ import annotations
 import datetime
 import threading
 import time
-from typing import Final, override
+from typing import Final
 from collections.abc import Sequence
 
 import serial
 import serial.tools.list_ports
 
-from scarajectory.core.model.studio_waypoint import StudioWaypoint
+from scarajectory.core.model.waypoint import Waypoint
 from scarajectory.core.model.stream_config_dto import StreamConfigDTO
 from scarajectory.core.model.stream_state import StreamState
 from scarajectory.core.model.stream_progress import StreamProgress
-from scarajectory.core.service.iserial_streamer import ISerialStreamer
 from scarajectory.core.service.istream_observer import IStreamObserver
 
-__author__: str = 'Vladimir Roncevic'
-__copyright__: str = '(C) 2026, https://vroncevic.github.io/scarajectory'
-__credits__: list[str] = ['Vladimir Roncevic', 'Python Software Foundation']
-__license__: str = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
+__author__ = 'Vladimir Roncevic'
+__copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
+__credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
+__license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
 __version__ = '1.0.0'
-__maintainer__: str = 'Vladimir Roncevic'
+__maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 MAX_PICO_QUEUE_CAPACITY: Final[int] = 30
 
 
-class SerialStreamer(ISerialStreamer):
+class SerialStreamer:
     '''
         Thread-safe background streamer transmitting waypoints to hardware over USB serial.
 
@@ -80,7 +79,7 @@ class SerialStreamer(ISerialStreamer):
     _observer: IStreamObserver | None
     _serial: serial.Serial | None
     _state: StreamState
-    _waypoints: list[StudioWaypoint]
+    _waypoints: list[Waypoint]
     _sent_count: int
     _done_count: int
     _remote_queue_depth: int
@@ -121,7 +120,6 @@ class SerialStreamer(ISerialStreamer):
         '''
         self._observer = observer
 
-    @override
     def is_connected(self) -> bool:
         '''
             Checks whether serial port is currently open.
@@ -131,7 +129,6 @@ class SerialStreamer(ISerialStreamer):
         '''
         return bool(self._serial and self._serial.is_open)
 
-    @override
     def connect_with_config(self, config: StreamConfigDTO) -> bool:
         '''
             Opens serial port using StreamConfigDTO and starts reader thread.
@@ -161,7 +158,6 @@ class SerialStreamer(ISerialStreamer):
             self.disconnect()
             return False
 
-    @override
     def disconnect(self) -> None:
         '''
             Stops threads and closes serial connection.
@@ -185,7 +181,6 @@ class SerialStreamer(ISerialStreamer):
         if self._observer:
             self._observer.on_serial_log('[HOST]: Disconnected from serial port')
 
-    @override
     def send_raw_command(self, cmd: str) -> None:
         '''
             Sends single command packet directly.
@@ -206,8 +201,7 @@ class SerialStreamer(ISerialStreamer):
                 if self._observer:
                     self._observer.on_serial_log(f'[TX ERR]: {exc}')
 
-    @override
-    def start_streaming(self, waypoints: Sequence[StudioWaypoint]) -> bool:
+    def start_streaming(self, waypoints: Sequence[Waypoint]) -> bool:
         '''
             Launches background streaming of waypoints with flow control.
 
@@ -243,7 +237,6 @@ class SerialStreamer(ISerialStreamer):
         self._notify_progress()
         return True
 
-    @override
     def pause_streaming(self) -> None:
         '''
             Pauses transmission.
@@ -257,7 +250,6 @@ class SerialStreamer(ISerialStreamer):
             if self._observer:
                 self._observer.on_serial_log('[HOST]: Streaming PAUSED')
 
-    @override
     def resume_streaming(self) -> None:
         '''
             Resumes paused transmission.
@@ -271,7 +263,6 @@ class SerialStreamer(ISerialStreamer):
             if self._observer:
                 self._observer.on_serial_log('[HOST]: Streaming RESUMED')
 
-    @override
     def stop_streaming(self) -> None:
         '''
             Aborts active stream and stops robot immediately.
@@ -318,7 +309,7 @@ class SerialStreamer(ISerialStreamer):
                 continue
 
             if self._remote_queue_depth < MAX_PICO_QUEUE_CAPACITY:
-                pt: StudioWaypoint = self._waypoints[self._sent_count]
+                pt: Waypoint = self._waypoints[self._sent_count]
                 pkt: str = pt.to_ascii_packet()
                 self.send_raw_command(pkt)
                 self._sent_count += 1
