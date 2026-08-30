@@ -127,9 +127,12 @@ class SerialStreamer:
             :return: True if connected successfully.
             :exceptions: None.
         '''
-        self.disconnect()
+        if self.is_connected():
+            self.disconnect()
+
         self._stop_event.clear()
         self._pause_event.clear()
+
         return self._transport.connect_with_config(config)
 
     def disconnect(self) -> None:
@@ -138,8 +141,10 @@ class SerialStreamer:
 
             :exceptions: None.
         '''
-        self.stop_streaming()
+        if self._state in (StreamState.STREAMING, StreamState.PAUSED):
+            self.stop_streaming()
         self._transport.disconnect()
+        self._state = StreamState.IDLE
 
     def send_raw_command(self, cmd: str) -> None:
         '''
@@ -222,12 +227,14 @@ class SerialStreamer:
 
             :exceptions: None.
         '''
+        was_streaming: bool = self._state in (StreamState.STREAMING, StreamState.PAUSED)
         self._state = StreamState.STOPPED
         self._stop_event.set()
         self._pause_event.clear()
-        self.send_raw_command(CommandFormatter.format_estop())
+        if self.is_connected():
+            self.send_raw_command(CommandFormatter.format_estop())
         self._notify_progress()
-        if self._observer:
+        if was_streaming and self._observer:
             self._observer.on_serial_log('[HOST]: Streaming ABORTED (E-STOP sent)')
 
     def _on_connection_log(self, msg: str, is_outgoing: bool) -> None:

@@ -199,6 +199,7 @@ class TcpTransport:
             :exceptions: None.
         '''
         buffer: str = ''
+        abnormal_disconnect: bool = False
         while not self._stop_event.is_set():
             sock = self._sock
             if not sock:
@@ -214,8 +215,22 @@ class TcpTransport:
                         if line and self._on_line:
                             self._on_line(line)
                 else:
+                    if not self._stop_event.is_set():
+                        abnormal_disconnect = True
                     break
             except socket.timeout:
                 sleep(0.01)
             except (OSError, socket.error):
+                if not self._stop_event.is_set():
+                    abnormal_disconnect = True
                 break
+
+        if abnormal_disconnect:
+            if self._sock:
+                try:
+                    self._sock.close()
+                except (OSError, socket.error):
+                    pass
+                self._sock = None
+            if self._on_log:
+                self._on_log('[HOST]: Connection lost (remote socket closed)', False)

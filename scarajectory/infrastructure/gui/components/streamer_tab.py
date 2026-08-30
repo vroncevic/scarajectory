@@ -131,10 +131,16 @@ class StreamerTab(ttk.Frame):
 
             :exceptions: None.
         '''
+        current_selection: str = self._cbo_ports.get()
         ports = SerialPortScanner.scan_ports()
         self._cbo_ports['values'] = ports
-        if ports:
+
+        if current_selection in ports:
+            self._cbo_ports.set(current_selection)
+        elif ports:
             self._cbo_ports.current(0)
+        else:
+            self._cbo_ports.set('')
 
     def append_log(self, text: str, is_outgoing: bool = False) -> None:
         '''
@@ -145,6 +151,10 @@ class StreamerTab(ttk.Frame):
             :exceptions: None.
         '''
         self._console.append_log(text, is_outgoing)
+
+        if 'Connection lost' in text or 'Disconnected from' in text:
+            self._btn_connect.configure(text='Connect', style='Accent.TButton')
+            self._status_bar.set_status_text('Streamer: Disconnected')
 
     def update_progress(self, progress: StreamProgress) -> None:
         '''

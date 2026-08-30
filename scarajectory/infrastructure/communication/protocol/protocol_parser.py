@@ -21,6 +21,9 @@ Info
 
 from __future__ import annotations
 
+import re
+from typing import ClassVar
+
 from scarajectory.infrastructure.communication.protocol.robot_response_dto import RobotResponseDTO
 
 __author__ = 'Vladimir Roncevic'
@@ -47,6 +50,8 @@ class ProtocolParser:
                 | is_error - Checks if packet signals an error condition.
     '''
 
+    _QUEUE_REGEX: ClassVar[re.Pattern[str]] = re.compile(r'QUEUE=(\d+)', re.IGNORECASE)
+
     @classmethod
     def parse_response(cls, line: str) -> RobotResponseDTO:
         '''
@@ -62,25 +67,33 @@ class ProtocolParser:
         msg: str = clean
         success: bool = True
 
-        if clean.startswith('<ACK:') and clean.endswith('>'):
+        if clean.startswith('<RESP:ACK') or clean.startswith('<ACK'):
             resp_type = 'ACK'
-            depth_str: str = clean[5:-1]
-            try:
-                q_depth = int(depth_str)
-                msg = ''
-            except ValueError:
-                msg = depth_str
+            match = cls._QUEUE_REGEX.search(clean)
+            if match:
+                q_depth = int(match.group(1))
+            msg = clean[1:-1] if clean.startswith('<') and clean.endswith('>') else clean
+        elif clean.startswith('<RESP:CONFIG') or clean.startswith('<CONFIG'):
+            resp_type = 'CONFIG'
+            msg = clean[1:-1] if clean.startswith('<') and clean.endswith('>') else clean
+        elif clean.startswith('<RESP:NACK') or clean.startswith('<NACK'):
+            resp_type = 'NACK'
+            success = False
+            msg = clean[1:-1] if clean.startswith('<') and clean.endswith('>') else clean
         elif 'MOVE_DONE' in clean or clean == '<DONE>':
             resp_type = 'DONE'
         elif 'BUFFER_FULL' in clean or clean == '<FULL>':
             resp_type = 'FULL'
             success = False
-        elif 'ERR' in clean or clean.startswith('<ERR:'):
+        elif 'ERR' in clean or clean.startswith('<ERR'):
             resp_type = 'ERR'
             success = False
-        elif clean.startswith('<STATUS:') and clean.endswith('>'):
+        elif clean.startswith('<STATUS') or clean.startswith('<RESP:STATUS'):
             resp_type = 'STATUS'
-            msg = clean[8:-1]
+            msg = clean[1:-1] if clean.startswith('<') and clean.endswith('>') else clean
+        elif clean.startswith('<POS') or clean.startswith('<RESP:POS'):
+            resp_type = 'POS'
+            msg = clean[1:-1] if clean.startswith('<') and clean.endswith('>') else clean
 
         return RobotResponseDTO(
             response_type=resp_type,
@@ -111,7 +124,8 @@ class ProtocolParser:
             :return: True if buffer full packet, False otherwise.
             :exceptions: None.
         '''
-        return cls.parse_response(line).response_type == 'FULL'
+        resp: RobotResponseDTO = cls.parse_response(line)
+        return resp.response_type in ('FULL', 'NACK') and 'BUFFER_FULL' in resp.raw_line
 
     @classmethod
     def is_move_done(cls, line: str) -> bool:
@@ -133,4 +147,5 @@ class ProtocolParser:
             :return: True if error condition, False otherwise.
             :exceptions: None.
         '''
-        return cls.parse_response(line).response_type == 'ERR'
+        resp: RobotResponseDTO = cls.parse_response(line)
+        return resp.response_type in ('ERR', 'NACK') or not resp.is_success

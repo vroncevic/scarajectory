@@ -47,12 +47,16 @@ class CommandTemplates:
                 | PAUSE - Command string pausing trajectory execution.
                 | RESUME - Command string resuming trajectory execution.
                 | HOME - Command string triggering robot homing routine.
+                | GET_CONFIG - Command querying persistent robot configuration.
+                | SAVE_CONFIG - Command persisting runtime config to Flash.
+                | RESET_CONFIG - Command resetting config to defaults.
                 | PUMP_ON - Command turning vacuum pump on.
                 | PUMP_OFF - Command turning vacuum pump off.
                 | VALVE_ON - Command opening release valve.
                 | VALVE_OFF - Command closing release valve.
                 | MOVE_TEMPLATE - Interpolation template for waypoint motion command.
                 | JOG_TEMPLATE - Interpolation template for manual jog step command.
+                | SET_CONFIG_TEMPLATE - Interpolation template for runtime kinematics configuration.
             :methods:
                 | get_template - Retrieves command template by action identifier.
                 | list_actions - Returns tuple of supported command action keys.
@@ -65,12 +69,18 @@ class CommandTemplates:
     PAUSE: ClassVar[str] = '<CMD:PAUSE>'
     RESUME: ClassVar[str] = '<CMD:RESUME>'
     HOME: ClassVar[str] = '<CMD:HOME>'
+    GET_CONFIG: ClassVar[str] = '<CMD:GET_CONFIG>'
+    SAVE_CONFIG: ClassVar[str] = '<CMD:SAVE_CONFIG>'
+    RESET_CONFIG: ClassVar[str] = '<CMD:RESET_CONFIG>'
     PUMP_ON: ClassVar[str] = '<CMD:PUMP#1>'
     PUMP_OFF: ClassVar[str] = '<CMD:PUMP#0>'
     VALVE_ON: ClassVar[str] = '<CMD:VALVE#1>'
     VALVE_OFF: ClassVar[str] = '<CMD:VALVE#0>'
-    MOVE_TEMPLATE: ClassVar[str] = '<MOVE:{x:.2f},{y:.2f},{z:.2f},{phi:.2f},{speed:.1f}>'
+    MOVE_TEMPLATE: ClassVar[str] = '<pt#{x:.2f}#{y:.2f}#{z:.2f}#{phi:.2f}#{speed:.1f}#end>'
     JOG_TEMPLATE: ClassVar[str] = '<CMD:JOG#{axis}#{step:.1f}>'
+    SET_CONFIG_TEMPLATE: ClassVar[str] = (
+        '<CMD:SET_CONFIG#L1={l1:.2f}#L2={l2:.2f}#Z_MIN={z_min:.2f}#Z_MAX={z_max:.2f}#MIN_SPEED={min_speed:.1f}#MAX_SPEED={max_speed:.1f}>'
+    )
 
     _LOOKUP: ClassVar[dict[str, str]] = {
         'ENABLE': '<CMD:ENABLE>',
@@ -80,12 +90,18 @@ class CommandTemplates:
         'PAUSE': '<CMD:PAUSE>',
         'RESUME': '<CMD:RESUME>',
         'HOME': '<CMD:HOME>',
+        'GET_CONFIG': '<CMD:GET_CONFIG>',
+        'SAVE_CONFIG': '<CMD:SAVE_CONFIG>',
+        'RESET_CONFIG': '<CMD:RESET_CONFIG>',
         'PUMP_ON': '<CMD:PUMP#1>',
         'PUMP_OFF': '<CMD:PUMP#0>',
         'VALVE_ON': '<CMD:VALVE#1>',
         'VALVE_OFF': '<CMD:VALVE#0>',
-        'MOVE': '<MOVE:{x:.2f},{y:.2f},{z:.2f},{phi:.2f},{speed:.1f}>',
-        'JOG': '<CMD:JOG#{axis}#{step:.1f}>'
+        'MOVE': '<pt#{x:.2f}#{y:.2f}#{z:.2f}#{phi:.2f}#{speed:.1f}#end>',
+        'JOG': '<CMD:JOG#{axis}#{step:.1f}>',
+        'SET_CONFIG': (
+            '<CMD:SET_CONFIG#L1={l1:.2f}#L2={l2:.2f}#Z_MIN={z_min:.2f}#Z_MAX={z_max:.2f}#MIN_SPEED={min_speed:.1f}#MAX_SPEED={max_speed:.1f}>'
+        )
     }
 
     @classmethod

@@ -187,6 +187,7 @@ class SerialTransport:
             :exceptions: None.
         '''
         buffer: str = ''
+        abnormal_disconnect: bool = False
         while not self._stop_event.is_set():
             ser = self._serial
             if not ser or not ser.is_open:
@@ -204,4 +205,16 @@ class SerialTransport:
                 else:
                     sleep(0.01)
             except (OSError, SerialException, TypeError, AttributeError):
+                if not self._stop_event.is_set():
+                    abnormal_disconnect = True
                 break
+
+        if abnormal_disconnect:
+            if self._serial:
+                try:
+                    self._serial.close()
+                except (OSError, SerialException, TypeError, AttributeError):
+                    pass
+                self._serial = None
+            if self._on_log:
+                self._on_log('[HOST]: Connection lost (device disconnected / unplugged)', False)

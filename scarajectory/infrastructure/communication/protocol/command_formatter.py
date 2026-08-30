@@ -22,6 +22,7 @@ Info
 from __future__ import annotations
 
 from scarajectory.core.model.waypoint import Waypoint
+from scarajectory.core.model.scara_bounds import ScaraBounds
 from scarajectory.infrastructure.communication.protocol.command_templates import CommandTemplates
 
 __author__ = 'Vladimir Roncevic'
@@ -52,6 +53,9 @@ class CommandFormatter:
                 | format_valve - Formats release valve state command.
                 | format_move - Formats waypoint motion command from Waypoint model.
                 | format_jog - Formats manual axis jog step command.
+                | format_get_config - Formats robot kinematics query command.
+                | format_save_config - Formats command persisting config to Flash.
+                | format_set_config - Formats configuration update command from ScaraBounds.
     '''
 
     @classmethod
@@ -176,3 +180,42 @@ class CommandFormatter:
         '''
         template: str = CommandTemplates.JOG_TEMPLATE
         return template.format(axis=axis.upper(), step=step)
+
+    @classmethod
+    def format_get_config(cls) -> str:
+        '''
+            Formats robot kinematics query command.
+
+            :return: Formatted get config command packet.
+            :exceptions: None.
+        '''
+        return CommandTemplates.GET_CONFIG
+
+    @classmethod
+    def format_save_config(cls) -> str:
+        '''
+            Formats command persisting runtime config to Flash.
+
+            :return: Formatted save config command packet.
+            :exceptions: None.
+        '''
+        return CommandTemplates.SAVE_CONFIG
+
+    @classmethod
+    def format_set_config(cls, bounds: ScaraBounds) -> str:
+        '''
+            Formats configuration update command from ScaraBounds.
+
+            :param bounds: ScaraBounds domain model.
+            :return: Formatted set config command packet.
+            :exceptions: None.
+        '''
+        template: str = CommandTemplates.SET_CONFIG_TEMPLATE
+        return template.format(
+            l1=bounds.l1,
+            l2=bounds.l2,
+            z_min=bounds.z_min,
+            z_max=bounds.z_max,
+            min_speed=bounds.min_speed,
+            max_speed=bounds.max_speed
+        )
