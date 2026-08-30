@@ -42,7 +42,21 @@ class SCARAjectoryBundleOptions(TypedDict, total=False):
             :attributes:
                 | info_file - The path to the ats configuration file.
                 | file_path - Optional initial trajectory plan file path to load.
+                | robot_config - Path to custom robot kinematics configuration file.
+                | l1 - Primary SCARA link length in mm.
+                | l2 - Secondary SCARA link length in mm.
+                | z_min - Minimum vertical height limit in mm.
+                | z_max - Maximum vertical height limit in mm.
+                | min_speed - Minimum feedrate speed limit in mm/s.
+                | max_speed - Maximum feedrate speed limit in mm/s.
     '''
 
     info_file: str
     file_path: str
+    robot_config: str
+    l1: float
+    l2: float
+    z_min: float
+    z_max: float
+    min_speed: float
+    max_speed: float

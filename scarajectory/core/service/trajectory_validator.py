@@ -26,7 +26,9 @@ from typing import Final
 
 from scarajectory.core.model.point_dto import PointDTO
 from scarajectory.core.model.validation_result_dto import ValidationResultDTO
-from scarajectory.core.model.scara_bounds_dto import ScaraBoundsDTO
+from scarajectory.core.model.scara_bounds import ScaraBounds
+from scarajectory.core.model.itrajectory_plan import ITrajectoryPlan
+from scarajectory.core.model.trajectory_metrics import TrajectoryMetrics
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -50,22 +52,23 @@ class TrajectoryValidator:
                 | _r_max - Maximum reach distance from origin in mm.
             :methods:
                 | __init__ - Initializes validator geometry boundaries.
-                | bounds - Returns active bounds DTO.
+                | bounds - Returns active bounds model.
                 | r_min - Returns inner workspace radius.
                 | r_max - Returns outer workspace radius.
                 | validate_point_dto - Validates PointDTO coordinates against annular reach.
                 | validate_feedrate - Validates that speed is within safe mechanical range.
+                | validate_plan - Validates entire trajectory plan against kinematic bounds.
     '''
 
-    _bounds: Final[ScaraBoundsDTO]
+    _bounds: Final[ScaraBounds]
     _r_min: Final[float]
     _r_max: Final[float]
 
-    def __init__(self, bounds: ScaraBoundsDTO = ScaraBoundsDTO()) -> None:
+    def __init__(self, bounds: ScaraBounds = ScaraBounds()) -> None:
         '''
-            Initializes validator geometry boundaries using ScaraBoundsDTO.
+            Initializes validator geometry boundaries using ScaraBounds.
 
-            :param bounds: ScaraBoundsDTO encapsulating link lengths and limits.
+            :param bounds: ScaraBounds encapsulating link lengths and limits.
             :exceptions: None.
         '''
         self._bounds = bounds
@@ -73,11 +76,11 @@ class TrajectoryValidator:
         self._r_max = bounds.l1 + bounds.l2
 
     @property
-    def bounds(self) -> ScaraBoundsDTO:
+    def bounds(self) -> ScaraBounds:
         '''
-            Returns active bounds DTO.
+            Returns active bounds model.
 
-            :return: ScaraBoundsDTO instance.
+            :return: ScaraBounds instance.
             :exceptions: None.
         '''
         return self._bounds
@@ -147,3 +150,40 @@ class TrajectoryValidator:
                 message=f'Speed {speed:.1f} mm/s exceeds max safe feedrate {self._bounds.max_speed:.1f} mm/s'
             )
         return ValidationResultDTO(is_valid=True, message='Speed is valid')
+
+    def validate_plan(self, plan: ITrajectoryPlan) -> tuple[bool, list[str]]:
+        '''
+            Validates the current trajectory plan against robot kinematic bounds.
+
+            :param plan: ITrajectoryPlan instance to validate.
+            :return: Tuple of (is_valid, messages_list).
+            :exceptions: None.
+        '''
+        waypoints = plan.waypoints
+        if not waypoints:
+            return False, ['Trajectory plan is empty. Please add waypoints.']
+
+        messages: list[str] = []
+        all_valid: bool = True
+
+        for index, pt in enumerate(waypoints, start=1):
+            pt_dto = pt.to_dto()
+            res_pt: ValidationResultDTO = self.validate_point_dto(pt_dto)
+            if not res_pt.is_valid:
+                all_valid = False
+                messages.append(f'Point P{index} ({pt.x:.1f}, {pt.y:.1f}, {pt.z:.1f}): {res_pt.message}')
+
+            res_spd: ValidationResultDTO = self.validate_feedrate(pt.speed)
+            if not res_spd.is_valid:
+                all_valid = False
+                messages.append(f'Point P{index} Speed ({pt.speed:.1f} mm/s): {res_spd.message}')
+
+        if all_valid:
+            total_dist: float = TrajectoryMetrics.calculate_distance(waypoints)
+            est_time: float = TrajectoryMetrics.calculate_duration(waypoints)
+            messages.append(
+                f'Validation PASSED: All {len(waypoints)} waypoints are within reachable workspace.\n'
+                f'Total Path Distance: {total_dist:.2f} mm | Estimated Time: {est_time:.2f} s'
+            )
+
+        return all_valid, messages

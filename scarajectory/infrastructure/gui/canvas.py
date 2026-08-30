@@ -24,14 +24,16 @@ from __future__ import annotations
 import math
 import tkinter as tk
 from tkinter import ttk
-from typing import Final
+from typing import ClassVar, Final
 
 from scarajectory.core.model.waypoint import Waypoint
-from scarajectory.core.model.trajectory_plan import TrajectoryPlan
+from scarajectory.core.model.itrajectory_plan import ITrajectoryPlan
 from scarajectory.core.model.canvas_settings_dto import CanvasSettingsDTO
 from scarajectory.core.model.canvas_tool_mode import CanvasToolMode
-from scarajectory.core.model.viewport_transform import ViewportTransform, DEFAULT_ZOOM, R_MAX_MM
+from scarajectory.core.model.viewport_transform import ViewportTransform
 from scarajectory.core.service.itrajectory_validator import ITrajectoryValidator
+from scarajectory.infrastructure.gui.components.canvas_renderer import CanvasRenderer
+from scarajectory.infrastructure.gui.components.canvas_tool_handler import CanvasToolHandler
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -42,8 +44,6 @@ __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
-R_MIN_MM: Final[float] = 30.0
-
 
 class TrajectoryCanvas(tk.Canvas):
     '''
@@ -52,49 +52,71 @@ class TrajectoryCanvas(tk.Canvas):
         It defines:
 
             :attributes:
-                | _plan - Trajectory plan instance.
+                | R_MIN_MM - Minimum radius deadzone boundary in mm.
+                | SELECT_HIT_RADIUS_PX - Hit detection pixel radius for selecting waypoints.
+                | FREEHAND_MIN_DISTANCE_MM - Minimum distance threshold in mm for freehand point sampling.
+                | CIRCLE_MIN_RADIUS_MM - Minimum radius threshold in mm for inserting circle shapes.
+                | CIRCLE_DEFAULT_STEPS - Number of waypoint segments used for circle discretization.
+                | _plan - ITrajectoryPlan instance.
                 | _validator - Kinematic reachability validator.
-                | _settings - Active canvas settings DTO.
-                | _tool_mode - Active interaction mode enum.
-                | _vp - ViewportTransform coordinate manager.
+                | _settings - Active canvas configuration DTO.
+                | _tool_mode - Active interactive drawing tool.
+                | _vp - Viewport transformation matrix.
+                | _hover_label - Hover status readout widget.
+                | _pan_x - Viewport panning origin coordinate X.
+                | _pan_y - Viewport panning origin coordinate Y.
+                | _is_panning - Viewport panning active flag.
+                | _drag_start_world - Drag start point in world space.
+                | _drag_current_world - Active cursor drag position in world space.
+                | _dragged_node_idx - Index of selected waypoint being dragged.
             :methods:
-                | __init__ - Initializes vector canvas.
-                | set_tool_mode - Sets the active drawing tool mode.
-                | update_settings - Updates default point properties.
-                | set_hover_label - Sets label widget for cursor coordinates.
-                | zoom_in - Scales view in by 1.25x.
-                | zoom_out - Scales view out by 0.8x.
-                | reset_view - Resets viewport zoom to 100%.
-                | fit_reach_view - Fits maximum reach circle to canvas.
+                | __init__ - Initializes the vector CAD canvas and binds events.
                 | on_trajectory_updated - Redraws canvas on plan change.
-                | on_point_selected - Redraws selection highlighting.
+                | on_point_selected - Redraws selection ring when waypoint selection changes.
+                | set_hover_label - Configures status bar label for cursor readouts.
+                | set_tool_mode - Changes active drawing/selection tool.
+                | update_settings - Updates default parameters and deadzone settings.
+                | fit_reach_view - Auto-fits the SCARA maximum reach circle into view.
+                | reset_view - Resets zoom to 100% and centers workspace.
+                | zoom_in - Scales view by factor.
+                | zoom_out - Scales view by factor.
+                | redraw - Clears and redraws entire vector scene.
     '''
 
-    _plan: Final[TrajectoryPlan]
+    R_MIN_MM: ClassVar[float] = 30.0
+    SELECT_HIT_RADIUS_PX: ClassVar[float] = 12.0
+    FREEHAND_MIN_DISTANCE_MM: ClassVar[float] = 5.0
+    CIRCLE_MIN_RADIUS_MM: ClassVar[float] = 5.0
+    CIRCLE_DEFAULT_STEPS: ClassVar[int] = 16
+
+    _plan: Final[ITrajectoryPlan]
     _validator: Final[ITrajectoryValidator]
     _settings: CanvasSettingsDTO
     _tool_mode: CanvasToolMode
-    _vp: Final[ViewportTransform]
-    _hover_label: ttk.Label | tk.Label | None
-    _drag_idx: int
-    _drag_start: tuple[float, float] | None
-    _pan_start: tuple[float, float] | None
+    _vp: ViewportTransform
+    _hover_label: ttk.Label | None
+    _pan_x: int
+    _pan_y: int
+    _is_panning: bool
+    _drag_start_world: tuple[float, float] | None
+    _drag_current_world: tuple[float, float] | None
+    _dragged_node_idx: int
 
     def __init__(
         self,
         parent: tk.Widget,
-        plan: TrajectoryPlan,
+        plan: ITrajectoryPlan,
         validator: ITrajectoryValidator,
         settings: CanvasSettingsDTO = CanvasSettingsDTO(),
         **kwargs: object
     ) -> None:
         '''
-            Initializes vector canvas with plan, validator, and settings DTO.
+            Initializes the vector CAD canvas and binds events.
 
-            :param parent: Parent container widget.
+            :param parent: Parent Tk widget.
             :param plan: TrajectoryPlan instance.
             :param validator: ITrajectoryValidator instance.
-            :param settings: CanvasSettingsDTO configuration.
+            :param settings: CanvasSettingsDTO instance.
             :exceptions: None.
         '''
         super().__init__(
@@ -102,7 +124,7 @@ class TrajectoryCanvas(tk.Canvas):
             bg='#181a1f',
             highlightthickness=1,
             highlightbackground='#333842',
-            **kwargs  # type: ignore[arg-type]
+            **kwargs
         )
         self._plan = plan
         self._validator = validator
@@ -110,86 +132,27 @@ class TrajectoryCanvas(tk.Canvas):
         self._tool_mode = CanvasToolMode.POINT
         self._vp = ViewportTransform()
         self._hover_label = None
-        self._drag_idx = -1
-        self._drag_start = None
-        self._pan_start = None
+        self._pan_x = 0
+        self._pan_y = 0
+        self._is_panning = False
+        self._drag_start_world = None
+        self._drag_current_world = None
+        self._dragged_node_idx = -1
 
         self._plan.add_observer(self)
 
-        self.bind('<Configure>', lambda e: self._redraw())
+        self.bind('<Configure>', lambda e: self.redraw())
         self.bind('<ButtonPress-1>', self._on_mouse_down)
-        self.bind('<B1-Motion>', self._on_mouse_drag)
-        self.bind('<ButtonRelease-1>', self._on_mouse_up)
+        self.bind('<ButtonPress-2>', self._on_mouse_down)
         self.bind('<ButtonPress-3>', self._on_mouse_down)
+        self.bind('<B1-Motion>', self._on_mouse_drag)
+        self.bind('<B2-Motion>', self._on_mouse_drag)
         self.bind('<B3-Motion>', self._on_mouse_drag)
-        self.bind('<Motion>', self._on_mouse_motion)
-        self.bind('<MouseWheel>', self._on_mouse_motion)
-        self.bind('<Button-4>', lambda e: self.zoom_in())
-        self.bind('<Button-5>', lambda e: self.zoom_out())
-
-    def set_tool_mode(self, mode: CanvasToolMode) -> None:
-        '''
-            Sets the active drawing tool mode.
-
-            :param mode: CanvasToolMode enum.
-            :exceptions: None.
-        '''
-        self._tool_mode = mode
-
-    def update_settings(self, settings: CanvasSettingsDTO) -> None:
-        '''
-            Updates default point properties.
-
-            :param settings: CanvasSettingsDTO instance.
-            :exceptions: None.
-        '''
-        self._settings = settings
-        self._redraw()
-
-    def set_hover_label(self, label: ttk.Label | tk.Label) -> None:
-        '''
-            Sets label widget for cursor coordinates.
-
-            :param label: Tkinter label widget.
-            :exceptions: None.
-        '''
-        self._hover_label = label
-
-    def zoom_in(self) -> None:
-        '''
-            Scales view in by 1.25x.
-
-            :exceptions: None.
-        '''
-        self._vp.zoom_in()
-        self._redraw()
-
-    def zoom_out(self) -> None:
-        '''
-            Scales view out by 0.8x.
-
-            :exceptions: None.
-        '''
-        self._vp.zoom_out()
-        self._redraw()
-
-    def reset_view(self) -> None:
-        '''
-            Resets viewport zoom to 100%.
-
-            :exceptions: None.
-        '''
-        self._vp.reset()
-        self._redraw()
-
-    def fit_reach_view(self) -> None:
-        '''
-            Fits maximum reach circle to canvas.
-
-            :exceptions: None.
-        '''
-        self._vp.fit_reach(self.winfo_width(), self.winfo_height())
-        self._redraw()
+        self.bind('<ButtonRelease-1>', self._on_mouse_up)
+        self.bind('<ButtonRelease-2>', self._on_mouse_up)
+        self.bind('<ButtonRelease-3>', self._on_mouse_up)
+        self.bind('<MouseWheel>', self._on_mouse_wheel_or_move)
+        self.bind('<Motion>', self._on_mouse_wheel_or_move)
 
     def on_trajectory_updated(self) -> None:
         '''
@@ -197,163 +160,210 @@ class TrajectoryCanvas(tk.Canvas):
 
             :exceptions: None.
         '''
-        self._redraw()
+        self.redraw()
 
     def on_point_selected(self, index: int) -> None:
         '''
-            Redraws selection highlighting.
+            Redraws selection ring when waypoint selection changes.
 
             :param index: Selected index.
             :exceptions: None.
         '''
-        self._redraw()
+        _ = index
+        self.redraw()
 
-    def _redraw(self) -> None:
+    def set_hover_label(self, label: ttk.Label) -> None:
         '''
-            Renders CAD grid, workspace boundaries, trajectory path, and waypoint nodes.
+            Configures status bar label for cursor readouts.
+
+            :param label: ttk.Label instance.
+            :exceptions: None.
+        '''
+        self._hover_label = label
+
+    def set_tool_mode(self, mode: CanvasToolMode) -> None:
+        '''
+            Changes active drawing/selection tool.
+
+            :param mode: Target CanvasToolMode.
+            :exceptions: None.
+        '''
+        self._tool_mode = mode
+        self._drag_start_world = None
+        self._drag_current_world = None
+        self.redraw()
+
+    def update_settings(self, settings: CanvasSettingsDTO) -> None:
+        '''
+            Updates default parameters and deadzone settings.
+
+            :param settings: New CanvasSettingsDTO.
+            :exceptions: None.
+        '''
+        self._settings = settings
+        self.redraw()
+
+    def fit_reach_view(self) -> None:
+        '''
+            Auto-fits the SCARA maximum reach circle into view.
+
+            :exceptions: None.
+        '''
+        w, h = self.winfo_width(), self.winfo_height()
+        self._vp.fit_reach(w, h)
+        self.redraw()
+
+    def reset_view(self) -> None:
+        '''
+            Resets zoom to 100% and centers workspace.
+
+            :exceptions: None.
+        '''
+        self._vp.reset()
+        self.redraw()
+
+    def zoom_in(self) -> None:
+        '''
+            Scales view in by zoom factor.
+
+            :exceptions: None.
+        '''
+        self._vp.zoom_in()
+        self.redraw()
+
+    def zoom_out(self) -> None:
+        '''
+            Scales view out by zoom factor.
+
+            :exceptions: None.
+        '''
+        self._vp.zoom_out()
+        self.redraw()
+
+    def redraw(self) -> None:
+        '''
+            Clears and redraws entire vector scene.
 
             :exceptions: None.
         '''
         self.delete('all')
-        w: int = self.winfo_width()
-        h: int = self.winfo_height()
-        cx, cy = self._vp.world_to_screen(0, 0, w, h)
+        w, h = self.winfo_width(), self.winfo_height()
+        if w < 10 or h < 10:
+            return
 
-        # 1. Radial Polar Rays (every 30 degrees)
-        rmax_px: float = R_MAX_MM * self._vp.scale
-        for deg in (30, 60, 120, 150, 210, 240, 300, 330):
-            rad: float = math.radians(deg)
-            rx: float = cx + rmax_px * math.cos(rad)
-            ry: float = cy - rmax_px * math.sin(rad)
-            self.create_line(cx, cy, rx, ry, fill='#232830', dash=(2, 6))
+        CanvasRenderer.draw_background(self, self._vp, self.R_MIN_MM)
+        CanvasRenderer.draw_trajectory(self, self._vp, self._plan, self._validator)
 
-        # 2. Concentric Distance Grid Rings (every 50mm up to 250mm)
-        for r_mm in (50.0, 100.0, 150.0, 200.0, 250.0):
-            r_px: float = r_mm * self._vp.scale
-            self.create_oval(cx - r_px, cy - r_px, cx + r_px, cy + r_px, outline='#282c34', dash=(2, 4))
-            self.create_text(cx + r_px + 2, cy - 4, text=f'{int(r_mm)}', fill='#5c6370', font=('DejaVu Sans', 7), anchor='w')
-
-        # 3. Main Coordinate Axes & Ticks
-        self.create_line(0, cy, w, cy, fill='#3e4451', width=1)
-        self.create_line(cx, 0, cx, h, fill='#3e4451', width=1)
-        self.create_text(w - 15, cy - 10, text='+X', fill='#61afef', font=('DejaVu Sans', 8, 'bold'))
-        self.create_text(cx + 10, 15, text='+Y', fill='#61afef', font=('DejaVu Sans', 8, 'bold'))
-
-        # 4. Reach Envelope & Inner Deadzone Boundary
-        rmin_px: float = R_MIN_MM * self._vp.scale
-        self.create_oval(cx - rmax_px, cy - rmax_px, cx + rmax_px, cy + rmax_px, outline='#61afef', width=2)
-        self.create_oval(cx - rmin_px, cy - rmin_px, cx + rmin_px, cy + rmin_px, outline='#e06c75', width=1, dash=(4, 4))
-        self.create_text(cx + rmax_px - 40, cy + rmax_px + 12, text='R_MAX (270mm)', fill='#61afef', font=('DejaVu Sans', 7))
-        self.create_text(cx + rmin_px + 5, cy + rmin_px + 10, text='DEADZONE', fill='#e06c75', font=('DejaVu Sans', 7))
-
-        # 5. Base Origin Node
-        self.create_oval(cx - 5, cy - 5, cx + 5, cy + 5, fill='#61afef', outline='#ffffff')
-        self.create_text(cx + 8, cy - 8, text='(0,0) BASE', fill='#61afef', font=('DejaVu Sans', 8, 'bold'), anchor='w')
-
-        # 6. Waypoints and Path Segments
-        wps = self._plan.waypoints
-        if len(wps) > 1:
-            coords: list[float] = []
-            for pt in wps:
-                sx, sy = self._vp.world_to_screen(pt.x, pt.y, w, h)
-                coords.extend([sx, sy])
-            self.create_line(*coords, fill='#98c379', width=2)
-
-        for i, pt in enumerate(wps):
-            sx, sy = self._vp.world_to_screen(pt.x, pt.y, w, h)
-            is_sel: bool = (i == self._plan.selected_index)
-            color: str = '#e5c07b' if is_sel else '#98c379'
-            radius: float = 6.0 if is_sel else 4.0
-            self.create_oval(sx - radius, sy - radius, sx + radius, sy + radius, fill=color, outline='#ffffff', width=1)
-            self.create_text(sx + 7, sy - 7, text=f'P{i+1}', fill=color, font=('DejaVu Sans', 8, 'bold'), anchor='w')
+        if self._drag_start_world and self._drag_current_world:
+            CanvasRenderer.draw_preview(
+                self, self._vp,
+                self._tool_mode,
+                (self._drag_start_world, self._drag_current_world)
+            )
 
     def _on_mouse_down(self, event: tk.Event) -> None:
         '''
-            Handles mouse down events for left click tool action or right click panning.
+            Handles mouse button press for tool interaction or viewport pan.
 
             :param event: Tk event.
             :exceptions: None.
         '''
-        if event.num == 3:
-            self._pan_start = (event.x - self._vp.pan_x, event.y - self._vp.pan_y)
+        if getattr(event, 'num', 1) in (2, 3):
+            self._pan_x = event.x
+            self._pan_y = event.y
+            self._is_panning = True
             return
 
         w, h = self.winfo_width(), self.winfo_height()
         wx, wy = self._vp.screen_to_world(event.x, event.y, w, h)
-        r: float = math.hypot(wx, wy)
+        self._drag_start_world = (wx, wy)
+        self._drag_current_world = (wx, wy)
+        self._dragged_node_idx = -1
 
-        if self._settings.enforce_deadzone and (r < R_MIN_MM or r > R_MAX_MM):
-            return
+        hit_r_world: float = self.SELECT_HIT_RADIUS_PX / self._vp.scale
+        hit_idx: int = CanvasToolHandler.find_hit_index(self._plan.waypoints, wx, wy, hit_r_world)
 
-        if self._tool_mode == CanvasToolMode.POINT:
-            self._plan.add_point(Waypoint(x=wx, y=wy, z=self._settings.default_z, speed=self._settings.default_speed))
-        elif self._tool_mode == CanvasToolMode.SELECT:
-            for i, pt in enumerate(self._plan.waypoints):
-                if math.hypot(pt.x - wx, pt.y - wy) <= (10.0 / self._vp.scale):
-                    self._plan.set_selected_index(i)
-                    self._drag_idx = i
-                    break
-        elif self._tool_mode in (CanvasToolMode.CIRCLE, CanvasToolMode.RECTANGLE, CanvasToolMode.FREEHAND):
-            self._drag_start = (wx, wy)
+        if self._tool_mode == CanvasToolMode.SELECT:
+            if hit_idx >= 0:
+                self._dragged_node_idx = hit_idx
+                self._plan.select_point(hit_idx)
+            else:
+                self._plan.select_point(-1)
+        elif self._tool_mode == CanvasToolMode.FREEHAND:
+            self._plan.add_point(Waypoint(x=wx, y=wy, z=self._settings.default_z, phi=0.0, speed=self._settings.default_speed))
 
     def _on_mouse_drag(self, event: tk.Event) -> None:
         '''
-            Handles mouse drag events for panning, moving waypoints, or drawing.
+            Handles mouse drag motion for active CAD tool or panning.
 
             :param event: Tk event.
             :exceptions: None.
         '''
-        if self._pan_start:
-            self._vp.pan_x = event.x - self._pan_start[0]
-            self._vp.pan_y = event.y - self._pan_start[1]
-            self._redraw()
+        if self._is_panning:
+            self._vp.pan_x += event.x - self._pan_x
+            self._vp.pan_y += event.y - self._pan_y
+            self._pan_x = event.x
+            self._pan_y = event.y
+            self.redraw()
             return
 
         w, h = self.winfo_width(), self.winfo_height()
         wx, wy = self._vp.screen_to_world(event.x, event.y, w, h)
-        if self._tool_mode == CanvasToolMode.SELECT and self._drag_idx >= 0:
-            cur = self._plan.waypoints[self._drag_idx]
-            self._plan.update_point(self._drag_idx, Waypoint(x=wx, y=wy, z=cur.z, phi=cur.phi, speed=cur.speed, name=cur.name))
-        elif self._tool_mode == CanvasToolMode.FREEHAND:
-            wps = self._plan.waypoints
-            if not wps or math.hypot(wps[-1].x - wx, wps[-1].y - wy) > 10.0:
-                self._plan.add_point(Waypoint(x=wx, y=wy, z=self._settings.default_z, speed=self._settings.default_speed))
+        self._drag_current_world = (wx, wy)
+
+        if self._tool_mode == CanvasToolMode.SELECT and self._dragged_node_idx >= 0:
+            cur_pt = self._plan.waypoints[self._dragged_node_idx]
+            self._plan.update_point(
+                self._dragged_node_idx,
+                Waypoint(x=wx, y=wy, z=cur_pt.z, phi=cur_pt.phi, speed=cur_pt.speed, name=cur_pt.name)
+            )
+        elif self._tool_mode == CanvasToolMode.FREEHAND and self._plan.count > 0:
+            last = self._plan.waypoints[-1]
+            if CanvasToolHandler.is_freehand_distance_met(last, wx, wy, self.FREEHAND_MIN_DISTANCE_MM):
+                self._plan.add_point(Waypoint(x=wx, y=wy, z=self._settings.default_z, phi=0.0, speed=self._settings.default_speed))
+        elif self._tool_mode in (CanvasToolMode.CIRCLE, CanvasToolMode.RECTANGLE):
+            self.redraw()
 
     def _on_mouse_up(self, event: tk.Event) -> None:
         '''
-            Finalizes geometric shape insertion on release.
+            Finalizes shape insertion or pan operation on mouse release.
 
             :param event: Tk event.
             :exceptions: None.
         '''
-        self._pan_start = None
+        if self._is_panning:
+            self._is_panning = False
+            return
+
         w, h = self.winfo_width(), self.winfo_height()
-        if self._drag_start and self._tool_mode == CanvasToolMode.CIRCLE:
-            wx, wy = self._vp.screen_to_world(event.x, event.y, w, h)
-            cx, cy = self._drag_start
-            radius: float = math.hypot(wx - cx, wy - cy)
-            if radius > 5.0:
-                steps: int = 16
-                for s in range(steps + 1):
-                    ang: float = 2.0 * math.pi * (s % steps) / steps
-                    self._plan.add_point(Waypoint(
-                        x=cx + radius * math.cos(ang),
-                        y=cy + radius * math.sin(ang),
-                        z=self._settings.default_z,
-                        speed=self._settings.default_speed
-                    ))
-        elif self._drag_start and self._tool_mode == CanvasToolMode.RECTANGLE:
-            x1, y1 = self._drag_start
-            x2, y2 = self._vp.screen_to_world(event.x, event.y, w, h)
-            for px, py in [(x1, y1), (x2, y1), (x2, y2), (x1, y2), (x1, y1)]:
-                self._plan.add_point(Waypoint(x=px, y=py, z=self._settings.default_z, speed=self._settings.default_speed))
+        wx, wy = self._vp.screen_to_world(event.x, event.y, w, h)
 
-        self._drag_idx = -1
-        self._drag_start = None
+        if self._drag_start_world:
+            x0, y0 = self._drag_start_world
+            if self._tool_mode == CanvasToolMode.POINT:
+                self._plan.add_point(Waypoint(x=wx, y=wy, z=self._settings.default_z, phi=0.0, speed=self._settings.default_speed))
+            elif self._tool_mode == CanvasToolMode.CIRCLE:
+                radius: float = math.hypot(wx - x0, wy - y0)
+                if radius >= self.CIRCLE_MIN_RADIUS_MM:
+                    circle_pts = CanvasToolHandler.discretize_circle(
+                        (x0, y0), radius, self.CIRCLE_DEFAULT_STEPS, self._settings
+                    )
+                    self._plan.add_points(circle_pts)
+            elif self._tool_mode == CanvasToolMode.RECTANGLE:
+                if abs(wx - x0) > 2.0 and abs(wy - y0) > 2.0:
+                    rect_pts = CanvasToolHandler.discretize_rectangle(
+                        (x0, y0), (wx, wy), self._settings
+                    )
+                    self._plan.add_points(rect_pts)
 
-    def _on_mouse_motion(self, event: tk.Event) -> None:
+        self._drag_start_world = None
+        self._drag_current_world = None
+        self._dragged_node_idx = -1
+        self.redraw()
+
+    def _on_mouse_wheel_or_move(self, event: tk.Event) -> None:
         '''
-            Updates coordinate hover label or processes mouse wheel zoom.
+            Handles mouse wheel zooming and hover label coordinate readout.
 
             :param event: Tk event.
             :exceptions: None.
@@ -369,7 +379,7 @@ class TrajectoryCanvas(tk.Canvas):
             w, h = self.winfo_width(), self.winfo_height()
             wx, wy = self._vp.screen_to_world(event.x, event.y, w, h)
             r: float = math.hypot(wx, wy)
-            zoom_pct: int = int((self._vp.scale / DEFAULT_ZOOM) * 100)
+            zoom_pct: int = int((self._vp.scale / ViewportTransform.DEFAULT_ZOOM) * 100)
             self._hover_label['text'] = (
                 f'Cursor: X={wx:6.1f} mm | Y={wy:6.1f} mm | R={r:5.1f} mm | Zoom: {zoom_pct}%'
             )

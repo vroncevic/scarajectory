@@ -25,6 +25,7 @@ from typing import Protocol, runtime_checkable
 
 from scarajectory.core.model.point_dto import PointDTO
 from scarajectory.core.model.validation_result_dto import ValidationResultDTO
+from scarajectory.core.model.itrajectory_plan import ITrajectoryPlan
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -46,6 +47,7 @@ class ITrajectoryValidator(Protocol):
             :methods:
                 | validate_point_dto - Validates whether a point DTO is within reachable workspace.
                 | validate_feedrate - Validates whether the feedrate is within safe mechanical limits.
+                | validate_plan - Validates entire trajectory plan against kinematic and feedrate bounds.
     '''
 
     def validate_point_dto(self, point: PointDTO) -> ValidationResultDTO:
@@ -63,5 +65,14 @@ class ITrajectoryValidator(Protocol):
 
             :param speed: Linear speed in mm/s.
             :return: ValidationResultDTO with status and details.
+            :exceptions: None.
+        '''
+
+    def validate_plan(self, plan: ITrajectoryPlan) -> tuple[bool, list[str]]:
+        '''
+            Validates entire trajectory plan against kinematic and feedrate bounds.
+
+            :param plan: ITrajectoryPlan instance to validate.
+            :return: Tuple of (is_valid, messages_list).
             :exceptions: None.
         '''

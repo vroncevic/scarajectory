@@ -2,7 +2,7 @@
 
 '''
 Module
-    iserial_streamer.py
+    itrajectory_streamer.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     scarajectory is free software: you can redistribute it and/or modify it
@@ -16,7 +16,7 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Defines interface ISerialStreamer for motion execution.
+    Defines interface ITrajectoryStreamer for robot communication and motion streaming.
 '''
 
 from __future__ import annotations
@@ -26,6 +26,7 @@ from collections.abc import Sequence
 
 from scarajectory.core.model.waypoint import Waypoint
 from scarajectory.core.model.stream_config_dto import StreamConfigDTO
+from scarajectory.core.service.istream_observer import IStreamObserver
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -38,16 +39,17 @@ __status__ = 'Updated'
 
 
 @runtime_checkable
-class ISerialStreamer(Protocol):
+class ITrajectoryStreamer(Protocol):
     '''
-        Contract for serial communication and flow-controlled packet streamers.
+        Contract for robot communication and flow-controlled trajectory streamers.
 
         It defines:
 
             :methods:
-                | is_connected - Checks if serial connection is open.
-                | connect_with_config - Opens connection to serial port with config DTO.
-                | disconnect - Closes active serial connection.
+                | set_observer - Sets or updates the streaming progress observer.
+                | is_connected - Checks if communication connection is open.
+                | connect_with_config - Opens connection to robot with config DTO.
+                | disconnect - Closes active connection.
                 | start_streaming - Starts streaming sequence of waypoints to the robot.
                 | pause_streaming - Pauses transmission.
                 | resume_streaming - Resumes transmission.
@@ -55,9 +57,17 @@ class ISerialStreamer(Protocol):
                 | send_raw_command - Sends single immediate command string.
     '''
 
+    def set_observer(self, observer: IStreamObserver) -> None:
+        '''
+            Sets or updates the streaming progress observer.
+
+            :param observer: IStreamObserver instance.
+            :exceptions: None.
+        '''
+
     def is_connected(self) -> bool:
         '''
-            Checks if serial connection is open.
+            Checks if communication connection is open.
 
             :return: True if connected, False otherwise.
             :exceptions: None.
@@ -65,7 +75,7 @@ class ISerialStreamer(Protocol):
 
     def connect_with_config(self, config: StreamConfigDTO) -> bool:
         '''
-            Opens connection to serial port with config DTO.
+            Opens connection to robot with config DTO.
 
             :param config: StreamConfigDTO parameters.
             :return: True if connected successfully.
@@ -74,7 +84,7 @@ class ISerialStreamer(Protocol):
 
     def disconnect(self) -> None:
         '''
-            Closes active serial connection.
+            Closes active connection.
 
             :exceptions: None.
         '''

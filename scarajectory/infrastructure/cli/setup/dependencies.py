@@ -2,7 +2,7 @@
 
 '''
 Module
-    traj_point.py
+    dependencies.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     scarajectory is free software: you can redistribute it and/or modify it
@@ -16,14 +16,18 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Defines TrajPoint alias type for backward compatibility.
+    Encapsulates core CLI components for simplification of CLI bundle.
 '''
 
 from __future__ import annotations
 
-from typing import TypeAlias
+from collections.abc import Sequence
+from typing import TypedDict
 
-from scarajectory.core.model.waypoint import Waypoint
+from ats_utilities.option.imanager import IOptionManager
+
+from scarajectory.core.service.iservice import IService
+from scarajectory.infrastructure.command.command import CommandBundle
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -34,4 +38,19 @@ __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
-TrajPoint: TypeAlias = Waypoint
+
+class CLIBundleDependencies(TypedDict):
+    '''
+        Encapsulates core CLI components for simplification of CLI bundle.
+
+        It defines:
+
+            :attributes:
+                | service - The service for trajectory execution.
+                | parser - The parser for command line options.
+                | commands - The sequence of command pairs.
+    '''
+
+    service: IService
+    parser: IOptionManager
+    commands: Sequence[CommandBundle]

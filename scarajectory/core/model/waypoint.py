@@ -22,7 +22,7 @@ Info
 from __future__ import annotations
 
 import math
-from typing import NamedTuple
+from dataclasses import dataclass
 
 from scarajectory.core.model.point_dto import PointDTO
 
@@ -36,7 +36,8 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class Waypoint(NamedTuple):
+@dataclass(frozen=True, slots=True, kw_only=True)
+class Waypoint:
     '''
         Immutable waypoint entity representing target coordinates, tool orientation and speed.
 

@@ -27,8 +27,9 @@ from ats_utilities.base.setup.bundle import BaseBundle
 from ats_utilities.utils.reflection import instance_to_dict
 
 from scarajectory.core.service.iservice import IService
-from scarajectory.core.service.iserial_streamer import ISerialStreamer
+from scarajectory.core.service.itrajectory_streamer import ITrajectoryStreamer
 from scarajectory.infrastructure.gui.igui import IGUI
+from scarajectory.infrastructure.cli.icli import ICLI
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -51,7 +52,8 @@ class SCARAjectoryBundle:
                 | base - Base ATS bundle with logger, options, and info managers.
                 | service - Core trajectory orchestration service.
                 | gui - GUI presentation adapter.
-                | streamer - Serial communication streamer.
+                | streamer - Robot communication streamer.
+                | cli - Command-line interface adapter.
             :methods:
                 | to_dict - Converts the bundle to a dictionary.
     '''
@@ -59,7 +61,8 @@ class SCARAjectoryBundle:
     base: BaseBundle
     service: IService
     gui: IGUI
-    streamer: ISerialStreamer
+    streamer: ITrajectoryStreamer
+    cli: ICLI
 
     def to_dict(self) -> dict[str, object]:
         '''

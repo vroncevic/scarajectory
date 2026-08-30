@@ -68,10 +68,35 @@ class ThemeManager:
         style.configure('Header.TLabel', font=('DejaVu Sans', 9, 'bold'), foreground=accent_blue)
         style.configure('TLabelframe', background=bg_dark, foreground=accent_blue)
         style.configure('TLabelframe.Label', background=bg_dark, foreground=accent_blue, font=('DejaVu Sans', 9, 'bold'))
-        style.configure('TButton', font=('DejaVu Sans', 9, 'bold'), padding=5)
+
+        style.configure('TButton', font=('DejaVu Sans', 9, 'bold'), padding=5, background='#2c313a', foreground=fg_text)
+        style.map(
+            'TButton',
+            background=[('pressed', '#21252b'), ('active', '#3e4451'), ('disabled', '#1e2227')],
+            foreground=[('pressed', fg_text), ('active', '#ffffff'), ('disabled', '#5c6370')]
+        )
+
         style.configure('Accent.TButton', background='#3e4451', foreground=accent_blue)
+        style.map(
+            'Accent.TButton',
+            background=[('pressed', '#282c34'), ('active', '#4b5263'), ('disabled', '#21252b')],
+            foreground=[('pressed', accent_blue), ('active', '#ffffff'), ('disabled', '#5c6370')]
+        )
+
         style.configure('Success.TButton', background='#2e7d32', foreground='#ffffff')
+        style.map(
+            'Success.TButton',
+            background=[('pressed', '#1b5e20'), ('active', '#388e3c'), ('disabled', '#21252b')],
+            foreground=[('pressed', '#ffffff'), ('active', '#ffffff'), ('disabled', '#5c6370')]
+        )
+
         style.configure('Danger.TButton', background='#c62828', foreground='#ffffff')
+        style.map(
+            'Danger.TButton',
+            background=[('pressed', '#b71c1c'), ('active', '#e53935'), ('disabled', '#21252b')],
+            foreground=[('pressed', '#ffffff'), ('active', '#ffffff'), ('disabled', '#5c6370')]
+        )
+
         style.configure('Treeview', background='#181a1f', foreground=fg_text, fieldbackground='#181a1f', rowheight=22)
         style.map('Treeview', background=[('selected', '#3e4451')])
         style.configure('TNotebook', background=bg_dark, borderwidth=0)

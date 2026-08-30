@@ -21,12 +21,10 @@ Info
 
 from __future__ import annotations
 
-from sys import argv, exit as sys_exit
+from sys import exit as sys_exit
 
 from scarajectory.engine import SCARAjectory
 from scarajectory.setup.factory import SCARAjectoryBundleFactory
-from scarajectory.setup.options import SCARAjectoryBundleOptions
-from scarajectory.setup.keys import SCARAjectoryBundleKeys
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -45,11 +43,8 @@ def main() -> bool:
         :return: True if successful, False otherwise.
         :exceptions: None.
     '''
-    options: SCARAjectoryBundleOptions = SCARAjectoryBundleOptions()
-    if len(argv) > 1 and not argv[1].startswith('-'):
-        options[SCARAjectoryBundleKeys.OPTION_FILE_PATH] = argv[1]
+    scarajectory: SCARAjectory = SCARAjectory(SCARAjectoryBundleFactory.create_bundle())
 
-    scarajectory: SCARAjectory = SCARAjectory(SCARAjectoryBundleFactory.create_bundle(options=options))
     return scarajectory.process()
 
 

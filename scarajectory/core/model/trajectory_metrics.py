@@ -21,7 +21,6 @@ Info
 
 from __future__ import annotations
 
-import json
 from collections.abc import Sequence
 
 from scarajectory.core.model.waypoint import Waypoint
@@ -46,8 +45,6 @@ class TrajectoryMetrics:
                 | calculate_distance - Computes total 3D Cartesian distance along the path.
                 | calculate_duration - Computes estimated execution duration based on speeds.
                 | to_ascii_program - Generates full sequential ASCII firmware instruction stream.
-                | save_json - Saves waypoints sequence to JSON file.
-                | load_json - Loads waypoints sequence from JSON file.
     '''
 
     @staticmethod
@@ -61,9 +58,12 @@ class TrajectoryMetrics:
         '''
         if len(waypoints) < 2:
             return 0.0
+
         total: float = 0.0
+
         for i in range(len(waypoints) - 1):
             total += waypoints[i].distance_to(waypoints[i + 1])
+
         return total
 
     @staticmethod
@@ -77,11 +77,14 @@ class TrajectoryMetrics:
         '''
         if len(waypoints) < 2:
             return 0.0
+
         total_sec: float = 0.0
+
         for i in range(len(waypoints) - 1):
             dist: float = waypoints[i].distance_to(waypoints[i + 1])
             spd: float = max(1.0, waypoints[i + 1].speed)
             total_sec += dist / spd
+
         return total_sec
 
     @classmethod
@@ -100,41 +103,8 @@ class TrajectoryMetrics:
             f'; Total Distance: {total_dist:.2f} mm',
             '<CMD:ENABLE>'
         ]
+
         for pt in waypoints:
             lines.append(pt.to_ascii_packet())
+
         return '\n'.join(lines)
-
-    @staticmethod
-    def save_json(waypoints: Sequence[Waypoint], filepath: str) -> None:
-        '''
-            Saves waypoints sequence to JSON file.
-
-            :param waypoints: Sequence of waypoints.
-            :param filepath: Target destination file path.
-            :exceptions: OSError, json.JSONDecodeError.
-        '''
-        data: dict[str, object] = {
-            'version': '1.0.0',
-            'waypoints': [pt.to_dict() for pt in waypoints]
-        }
-        with open(filepath, 'w', encoding='utf-8') as file_handle:
-            json.dump(data, file_handle, indent=2)
-
-    @staticmethod
-    def load_json(filepath: str) -> list[Waypoint]:
-        '''
-            Loads waypoints sequence from JSON file.
-
-            :param filepath: Source file path.
-            :return: List of loaded Waypoint instances.
-            :exceptions: OSError, json.JSONDecodeError.
-        '''
-        with open(filepath, 'r', encoding='utf-8') as file_handle:
-            data: dict[str, object] = json.load(file_handle)
-        loaded_pts: list[Waypoint] = []
-        raw_list = data.get('waypoints', [])
-        if isinstance(raw_list, list):
-            for item in raw_list:
-                if isinstance(item, dict):
-                    loaded_pts.append(Waypoint.from_dict(item))
-        return loaded_pts

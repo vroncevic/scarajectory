@@ -16,16 +16,17 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Defines interface IService for trajectory business logic.
+    Defines interface IService for trajectory business logic and subsystem orchestration.
 '''
 
 from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
-from scarajectory.core.model.trajectory_plan import TrajectoryPlan
+from scarajectory.core.model.itrajectory_plan import ITrajectoryPlan
+from scarajectory.core.service.iplan_storage_service import IPlanStorageService
 from scarajectory.core.service.itrajectory_validator import ITrajectoryValidator
-from scarajectory.core.service.iserial_streamer import ISerialStreamer
+from scarajectory.core.service.itrajectory_streamer import ITrajectoryStreamer
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -46,9 +47,10 @@ class IService(Protocol):
 
             :methods:
                 | is_initialized - Checks if the service is properly initialized.
-                | get_plan - Returns the active TrajectoryPlan.
+                | get_plan - Returns the active ITrajectoryPlan.
+                | get_storage - Returns the active IPlanStorageService.
                 | get_validator - Returns the active ITrajectoryValidator.
-                | get_streamer - Returns the active ISerialStreamer.
+                | get_streamer - Returns the active ITrajectoryStreamer.
                 | validate_plan - Validates the current trajectory plan.
                 | save_plan - Saves current plan to file path.
                 | load_plan - Loads plan from file path.
@@ -64,11 +66,19 @@ class IService(Protocol):
             :exceptions: None.
         '''
 
-    def get_plan(self) -> TrajectoryPlan:
+    def get_plan(self) -> ITrajectoryPlan:
         '''
-            Returns the active TrajectoryPlan.
+            Returns the active ITrajectoryPlan.
 
-            :return: TrajectoryPlan instance.
+            :return: ITrajectoryPlan instance.
+            :exceptions: None.
+        '''
+
+    def get_storage(self) -> IPlanStorageService:
+        '''
+            Returns the active IPlanStorageService.
+
+            :return: IPlanStorageService instance.
             :exceptions: None.
         '''
 
@@ -80,11 +90,11 @@ class IService(Protocol):
             :exceptions: None.
         '''
 
-    def get_streamer(self) -> ISerialStreamer:
+    def get_streamer(self) -> ITrajectoryStreamer:
         '''
-            Returns the active ISerialStreamer.
+            Returns the active ITrajectoryStreamer.
 
-            :return: ISerialStreamer instance.
+            :return: ITrajectoryStreamer instance.
             :exceptions: None.
         '''
 

@@ -28,8 +28,9 @@ from ats_utilities.validation.check_type import istype
 
 from scarajectory.setup.bundle import SCARAjectoryBundle
 from scarajectory.core.service.iservice import IService
-from scarajectory.core.service.iserial_streamer import ISerialStreamer
+from scarajectory.core.service.itrajectory_streamer import ITrajectoryStreamer
 from scarajectory.infrastructure.gui.igui import IGUI
+from scarajectory.infrastructure.cli.icli import ICLI
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -69,10 +70,12 @@ class SCARAjectoryBundleValidator:
         msg_service_none: str = 'the service must be provided'
         msg_gui_none: str = 'the gui must be provided'
         msg_streamer_none: str = 'the streamer must be provided'
+        msg_cli_none: str = 'the cli must be provided'
         msg_base_istype: str = 'the base bundle must be an instance of BaseBundle'
         msg_service_istype: str = 'the service must be an instance of IService'
         msg_gui_istype: str = 'the gui must be an instance of IGUI'
-        msg_streamer_istype: str = 'the streamer must be an instance of ISerialStreamer'
+        msg_streamer_istype: str = 'the streamer must be an instance of ITrajectoryStreamer'
+        msg_cli_istype: str = 'the cli must be an instance of ICLI'
 
         not_none(bundle, ctx, msg_bundle_none)
         istype(bundle, SCARAjectoryBundle, ctx, msg_bundle_istype)
@@ -81,11 +84,13 @@ class SCARAjectoryBundleValidator:
         not_none(bundle.service, ctx, msg_service_none)
         not_none(bundle.gui, ctx, msg_gui_none)
         not_none(bundle.streamer, ctx, msg_streamer_none)
+        not_none(bundle.cli, ctx, msg_cli_none)
 
         istype(bundle.base, BaseBundle, ctx, msg_base_istype)
         istype(bundle.service, IService, ctx, msg_service_istype)
         istype(bundle.gui, IGUI, ctx, msg_gui_istype)
-        istype(bundle.streamer, ISerialStreamer, ctx, msg_streamer_istype)
+        istype(bundle.streamer, ITrajectoryStreamer, ctx, msg_streamer_istype)
+        istype(bundle.cli, ICLI, ctx, msg_cli_istype)
 
     @classmethod
     def is_valid(cls, bundle: SCARAjectoryBundle) -> bool:

@@ -21,7 +21,7 @@ Info
 
 from __future__ import annotations
 
-from typing import NamedTuple
+from dataclasses import dataclass
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -33,7 +33,8 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class CanvasSettingsDTO(NamedTuple):
+@dataclass(frozen=True, slots=True, kw_only=True)
+class CanvasSettingsDTO:
     '''
         DTO encapsulating default canvas creation settings and workspace restrictions.
 

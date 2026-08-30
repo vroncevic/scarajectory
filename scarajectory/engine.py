@@ -21,6 +21,7 @@ Info
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from logging import INFO, ERROR
 from sys import stdout
 
@@ -30,8 +31,7 @@ from ats_utilities.exceptions import ATSValueError, ATSTypeError
 
 from scarajectory.setup.bundle import SCARAjectoryBundle
 from scarajectory.setup.validator import SCARAjectoryBundleValidator
-from scarajectory.core.service.iservice import IService
-from scarajectory.infrastructure.gui.igui import IGUI
+from scarajectory.infrastructure.cli.icli import ICLI
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -50,44 +50,51 @@ class SCARAjectory(Base):
         It defines:
 
             :attributes:
-                | _is_initialized - Flag indicating whether engine is initialized.
-                | _logger - Logger for recording application events.
-                | _gui - GUI presentation adapter.
-                | _service - Trajectory domain service.
+                | _is_initialized - The flag indicating whether the scarajectory engine is initialized.
+                | _logger - The logger for logging messages during initialization and execution.
+                | _cli - The adapter for the command line interface.
             :methods:
-                | __init__ - Initializes the engine with bundle dependencies.
-                | process - Executes the main application loop.
+                | __init__ - Initializes the scarajectory engine with adapters and services.
+                | process - Processes the scarajectory commands.
     '''
 
     _is_initialized: bool
-    _logger: ILogger
-    _gui: IGUI
-    _service: IService
+    _logger: ILogger | None
+    _cli: ICLI
 
     def __init__(self, bundle: SCARAjectoryBundle) -> None:
         '''
             Initializes the scarajectory engine with adapters and services.
 
-            :param bundle: SCARAjectoryBundle containing components.
+            :param bundle: scarajectory bundle containing adapters and services.
             :exceptions: None.
         '''
         self._is_initialized = False
+        self._logger = None
 
         try:
             SCARAjectoryBundleValidator.validate(bundle)
+
+            # Initialize base engine
             super().__init__(bundle.base)
 
-            self._gui = bundle.gui
-            self._service = bundle.service
+            # Mark as not initialized (waiting for other components to be initialized)
+            self._is_initialized = False
 
+            # Setting up primary inbound adapter (CLI interface)
+            self._cli = bundle.cli
+
+            # Mark as initialized (all components initialized)
             self._is_initialized = all(
                 component.is_initialized() for component in [
                     bundle.base.option_manager,
                     bundle.service,
-                    self._gui
+                    bundle.gui,
+                    self._cli
                 ] if component
             )
 
+            # Setting up logger for tool engine
             self._logger = self.get_context().logger
             self._logger.write_log(INFO, '✅ scarajectory: engine initialized successfully!')
 
@@ -99,26 +106,44 @@ class SCARAjectory(Base):
 
     def process(self, verbose: bool = False) -> bool:
         '''
-            Launches the SCARAjectory GUI studio.
+            Processes the scarajectory commands.
 
-            :param verbose: Enable verbose logging.
-            :return: True if executed successfully, False otherwise.
+            :param verbose: Enable verbose output.
+            :return: True if successful, False otherwise.
             :exceptions: None.
         '''
+        result: Mapping[str, object] = {}
+
         try:
-            if self.is_initialized():
-                self._logger.write_log(INFO, '🔥 Launching SCARAjectory Motion Studio GUI...')
-                self._gui.start()
-                self._logger.write_log(INFO, '✅ SCARAjectory: application exiting successfully!')
+            if self.is_initialized() and self._logger is not None:
+                self._logger.write_log(INFO, '🔥 Starting execution command...')
+                result = self._cli.run()
+                self._logger.write_log(INFO, '✅ Execution finished!')
+
+                if result.get('returncode') != 0:
+                    self._logger.write_log(ERROR, f'❌ scarajectory: {result.get("stderr") or "failed!"}')
+                    return False
+
+                self._logger.write_log(INFO, '✅ scarajectory: done!')
+                self._logger.write_log(INFO, '✅ scarajectory: exiting successfully!')
                 return True
 
-            self._logger.write_log(ERROR, '❌ scarajectory: engine not initialized!')
+            if self._logger is not None:
+                self._logger.write_log(ERROR, '❌ scarajectory: engine not initialized!')
+            else:
+                stdout.write('❌ scarajectory: engine not initialized!\n')
             return False
 
         except (ATSValueError, ATSTypeError) as exc:
-            self._logger.write_log(ERROR, f'❌ scarajectory: {exc}!')
+            if self._logger is not None:
+                self._logger.write_log(ERROR, f'❌ scarajectory: {exc}!')
+            else:
+                stdout.write(f'❌ scarajectory: {exc}!\n')
             return False
 
         except Exception as exc:
-            self._logger.write_log(ERROR, f'❌ scarajectory unexpected exception: {exc}!')
+            if self._logger is not None:
+                self._logger.write_log(ERROR, f'❌ scarajectory unexpected exception: {exc}!')
+            else:
+                stdout.write(f'❌ scarajectory unexpected exception: {exc}!\n')
             return False

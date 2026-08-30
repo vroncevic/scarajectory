@@ -25,7 +25,7 @@ import tkinter as tk
 from tkinter import ttk
 from typing import Final
 
-from scarajectory.core.model.trajectory_plan import TrajectoryPlan
+from scarajectory.core.model.itrajectory_plan import ITrajectoryPlan
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -44,7 +44,7 @@ class TrajectoryTable(ttk.Frame):
         It defines:
 
             :attributes:
-                | _plan - TrajectoryPlan instance.
+                | _plan - ITrajectoryPlan instance.
                 | _tree - Treeview table widget.
             :methods:
                 | __init__ - Initializes table view widget.
@@ -54,18 +54,18 @@ class TrajectoryTable(ttk.Frame):
                 | on_point_selected - Synchronizes row selection.
     '''
 
-    _plan: Final[TrajectoryPlan]
+    _plan: Final[ITrajectoryPlan]
     _tree: ttk.Treeview
 
-    def __init__(self, parent: tk.Widget, plan: TrajectoryPlan, **kwargs: object) -> None:
+    def __init__(self, parent: tk.Widget, plan: ITrajectoryPlan, **kwargs: object) -> None:
         '''
             Initializes table view widget.
 
             :param parent: Parent container widget.
-            :param plan: TrajectoryPlan instance.
+            :param plan: ITrajectoryPlan instance.
             :exceptions: None.
         '''
-        super().__init__(parent, **kwargs)  # type: ignore[arg-type]
+        super().__init__(parent, **kwargs)
         self._plan = plan
         self._plan.add_observer(self)
         self._create_widgets()
@@ -147,10 +147,13 @@ class TrajectoryTable(ttk.Frame):
             :param event: Tk event.
             :exceptions: None.
         '''
+        _ = event
         selected = self._tree.selection()
+
         if selected:
             item_id: str = selected[0]
             idx_str: str = str(self._tree.item(item_id, 'values')[0])
+
             try:
                 idx: int = int(idx_str) - 1
                 self._plan.set_selected_index(idx)
@@ -173,8 +176,10 @@ class TrajectoryTable(ttk.Frame):
             :exceptions: None.
         '''
         children = self._tree.get_children()
+
         if 0 <= index < len(children):
             target = children[index]
+
             if self._tree.selection() != (target,):
                 self._tree.selection_set(target)
                 self._tree.see(target)

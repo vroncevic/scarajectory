@@ -21,10 +21,7 @@ Info
 
 from __future__ import annotations
 
-from typing import Final
-
-DEFAULT_ZOOM: Final[float] = 1.35
-R_MAX_MM: Final[float] = 270.0
+from typing import ClassVar
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -43,6 +40,14 @@ class ViewportTransform:
         It defines:
 
             :attributes:
+                | DEFAULT_ZOOM - Default initial zoom factor.
+                | R_MAX_MM - Maximum robot reach in millimeters.
+                | ZOOM_IN_FACTOR - Scale multiplier for zoom in operation.
+                | ZOOM_OUT_FACTOR - Scale multiplier for zoom out operation.
+                | ZOOM_MIN - Minimum allowable zoom scale.
+                | ZOOM_MAX - Maximum allowable zoom scale.
+                | REACH_COVERAGE_RATIO - Fraction of viewport dimension used for fit reach view.
+                | MIN_CANVAS_DIMENSION - Minimum canvas dimension threshold for fit reach.
                 | scale - Active zoom scale.
                 | pan_x - Horizontal pan offset in pixels.
                 | pan_y - Vertical pan offset in pixels.
@@ -50,11 +55,20 @@ class ViewportTransform:
                 | __init__ - Initializes default zoom scale and zero pan offset.
                 | world_to_screen - Converts world mm coordinates to canvas screen pixels.
                 | screen_to_world - Converts screen pixels to world mm coordinates.
-                | zoom_in - Increases zoom scale by 1.25x factor.
-                | zoom_out - Decreases zoom scale by 0.8x factor.
+                | zoom_in - Increases zoom scale by factor.
+                | zoom_out - Decreases zoom scale by factor.
                 | reset - Resets scale and pan offset to defaults.
                 | fit_reach - Adjusts scale and pan to fit robot reach boundary into window.
     '''
+
+    DEFAULT_ZOOM: ClassVar[float] = 1.35
+    R_MAX_MM: ClassVar[float] = 270.0
+    ZOOM_IN_FACTOR: ClassVar[float] = 1.25
+    ZOOM_OUT_FACTOR: ClassVar[float] = 0.8
+    ZOOM_MIN: ClassVar[float] = 0.3
+    ZOOM_MAX: ClassVar[float] = 5.0
+    REACH_COVERAGE_RATIO: ClassVar[float] = 0.45
+    MIN_CANVAS_DIMENSION: ClassVar[int] = 20
 
     scale: float
     pan_x: float
@@ -66,7 +80,7 @@ class ViewportTransform:
 
             :exceptions: None.
         '''
-        self.scale = DEFAULT_ZOOM
+        self.scale = self.DEFAULT_ZOOM
         self.pan_x = 0.0
         self.pan_y = 0.0
 
@@ -102,19 +116,19 @@ class ViewportTransform:
 
     def zoom_in(self) -> None:
         '''
-            Increases zoom scale by 1.25x factor.
+            Increases zoom scale by factor.
 
             :exceptions: None.
         '''
-        self.scale = min(5.0, self.scale * 1.25)
+        self.scale = min(self.ZOOM_MAX, self.scale * self.ZOOM_IN_FACTOR)
 
     def zoom_out(self) -> None:
         '''
-            Decreases zoom scale by 0.8x factor.
+            Decreases zoom scale by factor.
 
             :exceptions: None.
         '''
-        self.scale = max(0.3, self.scale * 0.8)
+        self.scale = max(self.ZOOM_MIN, self.scale * self.ZOOM_OUT_FACTOR)
 
     def reset(self) -> None:
         '''
@@ -122,7 +136,7 @@ class ViewportTransform:
 
             :exceptions: None.
         '''
-        self.scale = DEFAULT_ZOOM
+        self.scale = self.DEFAULT_ZOOM
         self.pan_x = 0.0
         self.pan_y = 0.0
 
@@ -134,8 +148,8 @@ class ViewportTransform:
             :param height: Canvas height in pixels.
             :exceptions: None.
         '''
-        if width > 20 and height > 20:
-            min_dim: float = min(width, height)
-            self.scale = (min_dim * 0.45) / R_MAX_MM
+        if width > self.MIN_CANVAS_DIMENSION and height > self.MIN_CANVAS_DIMENSION:
+            min_dim: float = float(min(width, height))
+            self.scale = (min_dim * self.REACH_COVERAGE_RATIO) / self.R_MAX_MM
             self.pan_x = 0.0
             self.pan_y = 0.0

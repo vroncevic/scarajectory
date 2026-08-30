@@ -21,7 +21,7 @@ Info
 
 from __future__ import annotations
 
-from typing import NamedTuple
+from dataclasses import dataclass
 
 from scarajectory.core.model.stream_state import StreamState
 
@@ -35,7 +35,8 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class StreamProgress(NamedTuple):
+@dataclass(frozen=True, slots=True, kw_only=True)
+class StreamProgress:
     '''
         Progress metrics during trajectory streaming.
 

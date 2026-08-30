@@ -69,7 +69,12 @@ class SCARAjectoryBundleOptionsValidator:
 
         for attr_name, expected_type in SCARAjectoryBundleKeys.get_option_to_type().items():
             if attr_name in options:
-                msg_attr_istype: str = f'the {attr_name.replace("_", " ")} must be an instance of {expected_type.__name__}'
+                type_name: str = (
+                    '/'.join(t.__name__ for t in expected_type)
+                    if isinstance(expected_type, tuple)
+                    else expected_type.__name__
+                )
+                msg_attr_istype: str = f'the {attr_name.replace("_", " ")} must be an instance of {type_name}'
                 attribute = options.get(attr_name)
                 istype(attribute, expected_type, ctx, msg_attr_istype)
 

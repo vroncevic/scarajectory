@@ -7,4 +7,4 @@
 # @author  Vladimir Roncevic <elektron.ronca@gmail.com>
 #
 
-python3 main.py "$@"
+python3 main.py studio --dead-zone "enable" --verbose "disable"

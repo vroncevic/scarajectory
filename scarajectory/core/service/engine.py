@@ -16,19 +16,17 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Core service implementation orchestrating trajectory modeling, validation and streaming.
+    Core service implementation orchestrating trajectory modeling, validation, storage and streaming.
 '''
 
 from __future__ import annotations
 
 from typing import Final
 
-from scarajectory.core.model.waypoint import Waypoint
-from scarajectory.core.model.trajectory_plan import TrajectoryPlan
-from scarajectory.core.model.trajectory_metrics import TrajectoryMetrics
-from scarajectory.core.model.validation_result_dto import ValidationResultDTO
+from scarajectory.core.model.itrajectory_plan import ITrajectoryPlan
+from scarajectory.core.service.iplan_storage_service import IPlanStorageService
 from scarajectory.core.service.itrajectory_validator import ITrajectoryValidator
-from scarajectory.core.service.iserial_streamer import ISerialStreamer
+from scarajectory.core.service.itrajectory_streamer import ITrajectoryStreamer
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -47,15 +45,17 @@ class Service:
         It defines:
 
             :attributes:
-                | _plan - Trajectory plan domain entity.
+                | _plan - Trajectory plan domain abstraction.
+                | _storage - Dedicated plan serialization and storage service.
                 | _validator - Kinematic reachability validator.
-                | _streamer - Hardware serial communication streamer.
+                | _streamer - Robot communication and motion streamer.
             :methods:
-                | __init__ - Initializes the service with components.
+                | __init__ - Initializes the service with injected abstractions.
                 | is_initialized - Checks if the service is properly initialized.
-                | get_plan - Returns the active TrajectoryPlan.
+                | get_plan - Returns the active ITrajectoryPlan.
+                | get_storage - Returns the active IPlanStorageService.
                 | get_validator - Returns the active ITrajectoryValidator.
-                | get_streamer - Returns the active ISerialStreamer.
+                | get_streamer - Returns the active ITrajectoryStreamer.
                 | validate_plan - Validates the current trajectory plan.
                 | save_plan - Saves current plan to file path.
                 | load_plan - Loads plan from file path.
@@ -63,27 +63,31 @@ class Service:
                 | stop_streaming - Aborts active streaming.
     '''
 
-    _plan: Final[TrajectoryPlan]
+    _plan: Final[ITrajectoryPlan]
+    _storage: Final[IPlanStorageService]
     _validator: Final[ITrajectoryValidator]
-    _streamer: Final[ISerialStreamer]
+    _streamer: Final[ITrajectoryStreamer]
 
     def __init__(
         self,
         validator: ITrajectoryValidator,
-        streamer: ISerialStreamer,
-        plan: TrajectoryPlan | None = None
+        streamer: ITrajectoryStreamer,
+        storage: IPlanStorageService,
+        plan: ITrajectoryPlan
     ) -> None:
         '''
-            Initializes the service with components.
+            Initializes the service with injected abstractions.
 
             :param validator: ITrajectoryValidator instance.
-            :param streamer: ISerialStreamer instance.
-            :param plan: Optional TrajectoryPlan instance.
+            :param streamer: ITrajectoryStreamer instance.
+            :param storage: IPlanStorageService instance.
+            :param plan: ITrajectoryPlan instance.
             :exceptions: None.
         '''
         self._validator = validator
         self._streamer = streamer
-        self._plan = plan if plan is not None else TrajectoryPlan()
+        self._storage = storage
+        self._plan = plan
 
     def is_initialized(self) -> bool:
         '''
@@ -92,16 +96,30 @@ class Service:
             :return: True if initialized, False otherwise.
             :exceptions: None.
         '''
-        return self._plan is not None and self._validator is not None and self._streamer is not None
+        return (
+            self._plan is not None and
+            self._validator is not None and
+            self._streamer is not None and
+            self._storage is not None
+        )
 
-    def get_plan(self) -> TrajectoryPlan:
+    def get_plan(self) -> ITrajectoryPlan:
         '''
-            Returns the active TrajectoryPlan.
+            Returns the active ITrajectoryPlan.
 
-            :return: TrajectoryPlan instance.
+            :return: ITrajectoryPlan instance.
             :exceptions: None.
         '''
         return self._plan
+
+    def get_storage(self) -> IPlanStorageService:
+        '''
+            Returns the active IPlanStorageService.
+
+            :return: IPlanStorageService instance.
+            :exceptions: None.
+        '''
+        return self._storage
 
     def get_validator(self) -> ITrajectoryValidator:
         '''
@@ -112,11 +130,11 @@ class Service:
         '''
         return self._validator
 
-    def get_streamer(self) -> ISerialStreamer:
+    def get_streamer(self) -> ITrajectoryStreamer:
         '''
-            Returns the active ISerialStreamer.
+            Returns the active ITrajectoryStreamer.
 
-            :return: ISerialStreamer instance.
+            :return: ITrajectoryStreamer instance.
             :exceptions: None.
         '''
         return self._streamer
@@ -128,34 +146,7 @@ class Service:
             :return: Tuple of (is_valid, messages_list).
             :exceptions: None.
         '''
-        waypoints = self._plan.waypoints
-        if not waypoints:
-            return False, ['Trajectory plan is empty. Please add waypoints.']
-
-        messages: list[str] = []
-        all_valid: bool = True
-
-        for index, pt in enumerate(waypoints, start=1):
-            pt_dto = pt.to_dto()
-            res_pt: ValidationResultDTO = self._validator.validate_point_dto(pt_dto)
-            if not res_pt.is_valid:
-                all_valid = False
-                messages.append(f'Point P{index} ({pt.x:.1f}, {pt.y:.1f}, {pt.z:.1f}): {res_pt.message}')
-
-            res_spd: ValidationResultDTO = self._validator.validate_feedrate(pt.speed)
-            if not res_spd.is_valid:
-                all_valid = False
-                messages.append(f'Point P{index} Speed ({pt.speed:.1f} mm/s): {res_spd.message}')
-
-        if all_valid:
-            total_dist: float = TrajectoryMetrics.calculate_distance(waypoints)
-            est_time: float = TrajectoryMetrics.calculate_duration(waypoints)
-            messages.append(
-                f'Validation PASSED: All {len(waypoints)} waypoints are within reachable workspace.\n'
-                f'Total Path Distance: {total_dist:.2f} mm | Estimated Time: {est_time:.2f} s'
-            )
-
-        return all_valid, messages
+        return self._validator.validate_plan(self._plan)
 
     def save_plan(self, filepath: str) -> None:
         '''
@@ -164,7 +155,7 @@ class Service:
             :param filepath: Target file path.
             :exceptions: OSError.
         '''
-        TrajectoryMetrics.save_json(self._plan.waypoints, filepath)
+        self._storage.save_plan(self._plan, filepath)
 
     def load_plan(self, filepath: str) -> None:
         '''
@@ -173,7 +164,7 @@ class Service:
             :param filepath: Source file path.
             :exceptions: OSError.
         '''
-        loaded_pts: list[Waypoint] = TrajectoryMetrics.load_json(filepath)
+        loaded_pts = self._storage.load_plan(filepath)
         self._plan.set_waypoints(loaded_pts)
 
     def start_streaming(self) -> bool:

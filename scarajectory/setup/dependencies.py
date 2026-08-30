@@ -26,8 +26,9 @@ from typing import TypedDict
 from ats_utilities.base.setup.bundle import BaseBundle
 
 from scarajectory.core.service.iservice import IService
-from scarajectory.core.service.iserial_streamer import ISerialStreamer
+from scarajectory.core.service.itrajectory_streamer import ITrajectoryStreamer
 from scarajectory.infrastructure.gui.igui import IGUI
+from scarajectory.infrastructure.cli.icli import ICLI
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -49,10 +50,12 @@ class SCARAjectoryBundleDependencies(TypedDict):
                 | base - Base ATS bundle.
                 | service - Core trajectory service.
                 | gui - GUI presentation adapter.
-                | streamer - Hardware serial streamer.
+                | streamer - Robot communication streamer.
+                | cli - Command-line interface adapter.
     '''
 
     base: BaseBundle
     service: IService
     gui: IGUI
-    streamer: ISerialStreamer
+    streamer: ITrajectoryStreamer
+    cli: ICLI

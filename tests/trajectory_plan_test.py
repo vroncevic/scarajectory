@@ -30,12 +30,14 @@ if pkg_dir not in sys.path:
     sys.path.insert(0, pkg_dir)
 
 from scarajectory.core.model.waypoint import Waypoint
-from scarajectory.core.model.scara_bounds_dto import ScaraBoundsDTO
+from scarajectory.core.model.scara_bounds import ScaraBounds
 from scarajectory.core.model.point_dto import PointDTO
 from scarajectory.core.model.trajectory_metrics import TrajectoryMetrics
 from scarajectory.core.model.trajectory_plan import TrajectoryPlan
 from scarajectory.core.service.trajectory_validator import TrajectoryValidator
-from scarajectory.core.service.serial_streamer import SerialStreamer
+from scarajectory.core.service.plan_storage_service import PlanStorageService
+from scarajectory.infrastructure.communication.transport.serial_transport import SerialTransport
+from scarajectory.infrastructure.communication.serial_streamer import SerialStreamer
 from scarajectory.core.service.engine import Service
 from scarajectory.setup.factory import SCARAjectoryBundleFactory
 from scarajectory.engine import SCARAjectory
@@ -43,20 +45,21 @@ from scarajectory.engine import SCARAjectory
 
 class TestTrajectoryPlan(unittest.TestCase):
     '''
-        Test suite for domain model and kinematic verification with DTOs.
+        Test cases for TrajectoryPlan, TrajectoryValidator, and Service.
 
         It defines:
 
             :methods:
-                | setUp - Configures test fixtures.
+                | setUp - Initializes test fixtures.
                 | test_add_and_metrics - Tests adding waypoints and computing path distance/time.
-                | test_point_dto_conversion - Tests conversion between Waypoint and PointDTO.
-                | test_validation_pass - Tests valid reachable points.
+                | test_point_dto_conversion - Tests conversion between Waypoint entity and PointDTO.
+                | test_validation_pass - Tests reachable points within valid SCARA radius.
                 | test_validation_out_of_reach - Tests out of reach points.
                 | test_validation_deadzone - Tests deadzone points.
                 | test_ascii_generation - Tests ASCII packet format.
                 | test_json_persistence - Tests saving and loading JSON plan.
                 | test_bundle_factory - Tests ATS bundle creation and engine initialization.
+                | test_bundle_factory_custom_geometry - Tests ATS bundle creation with custom kinematic options.
     '''
 
     def setUp(self) -> None:
@@ -65,11 +68,13 @@ class TestTrajectoryPlan(unittest.TestCase):
 
             :exceptions: None.
         '''
-        bounds: ScaraBoundsDTO = ScaraBoundsDTO(l1=150.0, l2=120.0, z_min=0.0, z_max=100.0)
+        bounds: ScaraBounds = ScaraBounds(l1=150.0, l2=120.0, z_min=0.0, z_max=100.0)
         self.validator: TrajectoryValidator = TrajectoryValidator(bounds)
-        self.streamer: SerialStreamer = SerialStreamer()
+        self.transport: SerialTransport = SerialTransport()
+        self.streamer: SerialStreamer = SerialStreamer(transport=self.transport)
+        self.storage: PlanStorageService = PlanStorageService()
         self.plan: TrajectoryPlan = TrajectoryPlan()
-        self.service: Service = Service(validator=self.validator, streamer=self.streamer, plan=self.plan)
+        self.service: Service = Service(validator=self.validator, streamer=self.streamer, storage=self.storage, plan=self.plan)
 
     def test_add_and_metrics(self) -> None:
         '''
@@ -156,7 +161,7 @@ class TestTrajectoryPlan(unittest.TestCase):
             self.service.save_plan(tmp_file)
 
             new_plan = TrajectoryPlan()
-            new_service = Service(validator=self.validator, streamer=self.streamer, plan=new_plan)
+            new_service = Service(validator=self.validator, streamer=self.streamer, storage=self.storage, plan=new_plan)
             new_service.load_plan(tmp_file)
             self.assertEqual(new_plan.count, 1)
             loaded_pt = new_plan.waypoints[0]
@@ -176,6 +181,34 @@ class TestTrajectoryPlan(unittest.TestCase):
         bundle = SCARAjectoryBundleFactory.create_bundle()
         engine = SCARAjectory(bundle)
         self.assertTrue(engine.is_initialized())
+        service = bundle.service
+        bounds = service.get_validator().bounds
+        self.assertAlmostEqual(bounds.l1, 150.0)
+        self.assertAlmostEqual(bounds.l2, 120.0)
+
+    def test_bundle_factory_custom_geometry(self) -> None:
+        '''
+            Tests ATS bundle creation with custom kinematic options.
+
+            :exceptions: None.
+        '''
+        bundle = SCARAjectoryBundleFactory.create_bundle(
+            options={
+                'l1': 200.0,
+                'l2': 180.0,
+                'z_min': 5.0,
+                'z_max': 250.0,
+                'min_speed': 5.0,
+                'max_speed': 200.0
+            }
+        )
+        engine = SCARAjectory(bundle)
+        self.assertTrue(engine.is_initialized())
+        service = bundle.service
+        bounds = service.get_validator().bounds
+        self.assertAlmostEqual(bounds.l1, 200.0)
+        self.assertAlmostEqual(bounds.l2, 180.0)
+        self.assertAlmostEqual(bounds.z_max, 250.0)
 
 
 if __name__ == '__main__':

@@ -27,8 +27,9 @@ from types import MappingProxyType
 from ats_utilities.base.setup.bundle import BaseBundle
 
 from scarajectory.core.service.iservice import IService
-from scarajectory.core.service.iserial_streamer import ISerialStreamer
+from scarajectory.core.service.itrajectory_streamer import ITrajectoryStreamer
 from scarajectory.infrastructure.gui.igui import IGUI
+from scarajectory.infrastructure.cli.icli import ICLI
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -50,9 +51,17 @@ class SCARAjectoryBundleKeys:
                 | DEPENDENCY_BASE - Base bundle key.
                 | DEPENDENCY_SERVICE - Service key.
                 | DEPENDENCY_GUI - GUI adapter key.
-                | DEPENDENCY_STREAMER - Serial streamer key.
+                | DEPENDENCY_STREAMER - Robot communication streamer key.
+                | DEPENDENCY_CLI - CLI adapter key.
                 | OPTION_INFO_FILE - Info file configuration key.
                 | OPTION_FILE_PATH - Initial plan file path key.
+                | OPTION_ROBOT_CONFIG - Custom kinematics configuration file path key.
+                | OPTION_L1 - Primary link length key.
+                | OPTION_L2 - Secondary link length key.
+                | OPTION_Z_MIN - Minimum vertical height limit key.
+                | OPTION_Z_MAX - Maximum vertical height limit key.
+                | OPTION_MIN_SPEED - Minimum feedrate speed key.
+                | OPTION_MAX_SPEED - Maximum feedrate speed key.
             :methods:
                 | get_dependency_to_type - Returns mapping of dependencies to types.
                 | get_option_to_type - Returns mapping of options to types.
@@ -62,9 +71,17 @@ class SCARAjectoryBundleKeys:
     DEPENDENCY_SERVICE: ClassVar[str] = 'service'
     DEPENDENCY_GUI: ClassVar[str] = 'gui'
     DEPENDENCY_STREAMER: ClassVar[str] = 'streamer'
+    DEPENDENCY_CLI: ClassVar[str] = 'cli'
 
     OPTION_INFO_FILE: ClassVar[str] = 'info_file'
     OPTION_FILE_PATH: ClassVar[str] = 'file_path'
+    OPTION_ROBOT_CONFIG: ClassVar[str] = 'robot_config'
+    OPTION_L1: ClassVar[str] = 'l1'
+    OPTION_L2: ClassVar[str] = 'l2'
+    OPTION_Z_MIN: ClassVar[str] = 'z_min'
+    OPTION_Z_MAX: ClassVar[str] = 'z_max'
+    OPTION_MIN_SPEED: ClassVar[str] = 'min_speed'
+    OPTION_MAX_SPEED: ClassVar[str] = 'max_speed'
 
     @classmethod
     def get_dependency_to_type(cls) -> MappingProxyType[str, type]:
@@ -78,11 +95,12 @@ class SCARAjectoryBundleKeys:
             cls.DEPENDENCY_BASE: BaseBundle,
             cls.DEPENDENCY_SERVICE: IService,
             cls.DEPENDENCY_GUI: IGUI,
-            cls.DEPENDENCY_STREAMER: ISerialStreamer,
+            cls.DEPENDENCY_STREAMER: ITrajectoryStreamer,
+            cls.DEPENDENCY_CLI: ICLI,
         })
 
     @classmethod
-    def get_option_to_type(cls) -> MappingProxyType[str, type]:
+    def get_option_to_type(cls) -> MappingProxyType[str, type | tuple[type, ...]]:
         '''
             Returns the mapping of bundle options to their expected types.
 
@@ -92,4 +110,11 @@ class SCARAjectoryBundleKeys:
         return MappingProxyType({
             cls.OPTION_INFO_FILE: str,
             cls.OPTION_FILE_PATH: str,
+            cls.OPTION_ROBOT_CONFIG: str,
+            cls.OPTION_L1: (int, float),
+            cls.OPTION_L2: (int, float),
+            cls.OPTION_Z_MIN: (int, float),
+            cls.OPTION_Z_MAX: (int, float),
+            cls.OPTION_MIN_SPEED: (int, float),
+            cls.OPTION_MAX_SPEED: (int, float),
         })

@@ -56,7 +56,7 @@ The application strictly adheres to SOLID design principles and uses **Data Tran
 ```
 
 ### Module Structure:
-* [`scarajectory/trajectory_dto.py`](file:///data/dev/python/3_tools/scarajectory/github/scarajectory/scarajectory/trajectory_dto.py) — Data Transfer Objects (`PointDTO`, `ValidationResultDTO`, `ScaraBoundsDTO`, `StreamConfigDTO`, `CanvasSettingsDTO`).
+* [`scarajectory/trajectory_dto.py`](file:///data/dev/python/3_tools/scarajectory/github/scarajectory/scarajectory/trajectory_dto.py) — Data Transfer Objects (`PointDTO`, `ValidationResultDTO`, `ScaraBounds`, `StreamConfigDTO`, `CanvasSettingsDTO`).
 * [`scarajectory/itrajectory_validator.py`](file:///data/dev/python/3_tools/scarajectory/github/scarajectory/scarajectory/itrajectory_validator.py) — **Interface Segregation & DIP**: Validation contract operating on `PointDTO`.
 * [`scarajectory/itrajectory_observer.py`](file:///data/dev/python/3_tools/scarajectory/github/scarajectory/scarajectory/itrajectory_observer.py) — **Observer Pattern**: Decouples canvas and data grid from model updates.
 * [`scarajectory/iserial_streamer.py`](file:///data/dev/python/3_tools/scarajectory/github/scarajectory/scarajectory/iserial_streamer.py) — **ISP & DIP**: Streamer interface taking `StreamConfigDTO`.

@@ -2,7 +2,7 @@
 
 '''
 Module
-    scara_bounds_dto.py
+    iplan_storage_service.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     scarajectory is free software: you can redistribute it and/or modify it
@@ -16,12 +16,15 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Defines ScaraBoundsDTO data transfer object for kinematic limits.
+    Defines interface IPlanStorageService for trajectory persistence.
 '''
 
 from __future__ import annotations
 
-from typing import NamedTuple
+from typing import Protocol, runtime_checkable
+
+from scarajectory.core.model.waypoint import Waypoint
+from scarajectory.core.model.itrajectory_plan import ITrajectoryPlan
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -33,24 +36,32 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class ScaraBoundsDTO(NamedTuple):
+@runtime_checkable
+class IPlanStorageService(Protocol):
     '''
-        DTO encapsulating kinematic geometry and operational limits for SCARA arm.
+        Protocol for storing and loading trajectory plan files.
 
         It defines:
 
-            :attributes:
-                | l1 - Length of primary SCARA link in mm.
-                | l2 - Length of secondary SCARA link in mm.
-                | z_min - Minimum vertical height limit in mm.
-                | z_max - Maximum vertical height limit in mm.
-                | min_speed - Minimum feedrate speed limit in mm/s.
-                | max_speed - Maximum feedrate speed limit in mm/s.
+            :methods:
+                | save_plan - Saves current trajectory plan to file path.
+                | load_plan - Loads waypoints from file path.
     '''
 
-    l1: float = 150.0
-    l2: float = 120.0
-    z_min: float = 0.0
-    z_max: float = 100.0
-    min_speed: float = 1.0
-    max_speed: float = 100.0
+    def save_plan(self, plan: ITrajectoryPlan, filepath: str) -> None:
+        '''
+            Saves current trajectory plan to file path.
+
+            :param plan: ITrajectoryPlan instance to save.
+            :param filepath: Target JSON file path.
+            :exceptions: OSError.
+        '''
+
+    def load_plan(self, filepath: str) -> list[Waypoint]:
+        '''
+            Loads waypoints from file path.
+
+            :param filepath: Source JSON file path.
+            :return: List of loaded Waypoint entities.
+            :exceptions: OSError.
+        '''

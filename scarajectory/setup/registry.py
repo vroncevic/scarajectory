@@ -24,8 +24,9 @@ from __future__ import annotations
 from ats_utilities.base.setup.bundle import BaseBundle
 
 from scarajectory.core.service.iservice import IService
-from scarajectory.core.service.iserial_streamer import ISerialStreamer
+from scarajectory.core.service.itrajectory_streamer import ITrajectoryStreamer
 from scarajectory.infrastructure.gui.igui import IGUI
+from scarajectory.infrastructure.cli.icli import ICLI
 from scarajectory.setup.bundle import SCARAjectoryBundle
 from scarajectory.setup.validator import SCARAjectoryBundleValidator
 from scarajectory.setup.keys import SCARAjectoryBundleKeys
@@ -69,10 +70,14 @@ class SCARAjectoryBundleRegistry:
         base: BaseBundle | None = dependencies.get(SCARAjectoryBundleKeys.DEPENDENCY_BASE) if dependencies else None
         service: IService | None = dependencies.get(SCARAjectoryBundleKeys.DEPENDENCY_SERVICE) if dependencies else None
         gui: IGUI | None = dependencies.get(SCARAjectoryBundleKeys.DEPENDENCY_GUI) if dependencies else None
-        streamer: ISerialStreamer | None = dependencies.get(SCARAjectoryBundleKeys.DEPENDENCY_STREAMER) if dependencies else None
+        streamer: ITrajectoryStreamer | None = dependencies.get(SCARAjectoryBundleKeys.DEPENDENCY_STREAMER) if dependencies else None
+        cli: ICLI | None = dependencies.get(SCARAjectoryBundleKeys.DEPENDENCY_CLI) if dependencies else None
 
-        bundle: SCARAjectoryBundle = SCARAjectoryBundle(base=base, service=service, gui=gui, streamer=streamer)  # type: ignore[arg-type]
+        bundle: SCARAjectoryBundle = SCARAjectoryBundle(
+            base=base, service=service, gui=gui, streamer=streamer, cli=cli
+        )
         SCARAjectoryBundleValidator.validate(bundle)
+
         return bundle
 
     @classmethod
