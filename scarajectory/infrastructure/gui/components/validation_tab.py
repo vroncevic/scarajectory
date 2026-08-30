@@ -53,8 +53,8 @@ class ValidationTab(ttk.Frame):
                 | run_validation - Executes full validation on current plan and updates view.
     '''
 
-    _plan: Final[ITrajectoryPlan]
-    _validator: Final[ITrajectoryValidator]
+    _plan: ITrajectoryPlan
+    _validator: ITrajectoryValidator
     _txt_val: tk.Text
 
     def __init__(
@@ -73,8 +73,8 @@ class ValidationTab(ttk.Frame):
             :exceptions: None.
         '''
         super().__init__(parent, padding=6, **kwargs)
-        self._plan = plan
-        self._validator = validator
+        self._plan: Final[ITrajectoryPlan] = plan
+        self._validator: Final[ITrajectoryValidator] = validator
         self._build_layout()
 
     def _build_layout(self) -> None:

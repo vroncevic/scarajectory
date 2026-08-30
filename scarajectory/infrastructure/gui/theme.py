@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import tkinter as tk
 from tkinter import ttk
+from typing import ClassVar
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -36,51 +37,75 @@ __status__ = 'Updated'
 
 class ThemeManager:
     '''
-        Configures dark theme styles for the Tkinter desktop user interface.
+        Configures dark theme styles and design tokens for the Tkinter desktop user interface.
 
         It defines:
 
+            :attributes:
+                | PALETTE - Dictionary of hex color design tokens.
             :methods:
-                | apply_theme - Applies dark theme stylesheet and color palette.
+                | get_palette - Returns immutable copy of theme color palette tokens.
+                | get_color - Returns color hex value for given design token key.
+                | apply_theme - Applies dark theme stylesheet and color palette to root window.
     '''
 
-    @classmethod
-    def apply_theme(cls, root: tk.Tk) -> None:
-        '''
-            Applies dark theme stylesheet and color palette.
+    PALETTE: ClassVar[dict[str, str]] = {
+        'bg_dark': '#1e2227',
+        'bg_card': '#282c34',
+        'bg_canvas': '#181a1f',
+        'fg_text': '#abb2bf',
+        'accent_blue': '#61afef',
+        'accent_green': '#98c379',
+        'accent_red': '#e06c75',
+        'accent_yellow': '#e5c07b',
+        'border': '#333842'
+    }
 
-            :param root: Root Tk application window.
+    @classmethod
+    def get_palette(cls) -> dict[str, str]:
+        '''
+            Returns immutable copy of theme color palette tokens.
+
+            :return: Dictionary mapping color token names to hex color strings.
             :exceptions: None.
         '''
-        style = ttk.Style(root)
-        style.theme_use('clam')
+        return cls.PALETTE.copy()
 
-        bg_dark: str = '#1e2227'
-        bg_card: str = '#282c34'
-        fg_text: str = '#abb2bf'
-        accent_blue: str = '#61afef'
+    @classmethod
+    def get_color(cls, key: str) -> str:
+        '''
+            Returns color hex value for given design token key.
 
-        root.configure(bg=bg_dark)
-        style.configure('.', background=bg_dark, foreground=fg_text, font=('DejaVu Sans', 9))
-        style.configure('TFrame', background=bg_dark)
-        style.configure('Card.TFrame', background=bg_card)
-        style.configure('TLabel', background=bg_dark, foreground=fg_text, font=('DejaVu Sans', 9))
-        style.configure('Header.TLabel', font=('DejaVu Sans', 9, 'bold'), foreground=accent_blue)
-        style.configure('TLabelframe', background=bg_dark, foreground=accent_blue)
-        style.configure('TLabelframe.Label', background=bg_dark, foreground=accent_blue, font=('DejaVu Sans', 9, 'bold'))
+            :param key: Design token name (e.g. 'accent_blue', 'bg_dark').
+            :return: Hex color string.
+            :exceptions: None.
+        '''
+        return cls.PALETTE.get(key, '#ffffff')
 
-        style.configure('TButton', font=('DejaVu Sans', 9, 'bold'), padding=5, background='#2c313a', foreground=fg_text)
+    @classmethod
+    def _configure_button_styles(cls, style: ttk.Style, palette: dict[str, str]) -> None:
+        '''
+            Configures button and accent button pseudo-state styles.
+
+            :param style: Active ttk.Style instance.
+            :param palette: Color palette dictionary.
+            :exceptions: None.
+        '''
+        fg: str = palette['fg_text']
+        blue: str = palette['accent_blue']
+
+        style.configure('TButton', font=('DejaVu Sans', 9, 'bold'), padding=5, background='#2c313a', foreground=fg)
         style.map(
             'TButton',
             background=[('pressed', '#21252b'), ('active', '#3e4451'), ('disabled', '#1e2227')],
-            foreground=[('pressed', fg_text), ('active', '#ffffff'), ('disabled', '#5c6370')]
+            foreground=[('pressed', fg), ('active', '#ffffff'), ('disabled', '#5c6370')]
         )
 
-        style.configure('Accent.TButton', background='#3e4451', foreground=accent_blue)
+        style.configure('Accent.TButton', background='#3e4451', foreground=blue)
         style.map(
             'Accent.TButton',
             background=[('pressed', '#282c34'), ('active', '#4b5263'), ('disabled', '#21252b')],
-            foreground=[('pressed', accent_blue), ('active', '#ffffff'), ('disabled', '#5c6370')]
+            foreground=[('pressed', blue), ('active', '#ffffff'), ('disabled', '#5c6370')]
         )
 
         style.configure('Success.TButton', background='#2e7d32', foreground='#ffffff')
@@ -97,12 +122,63 @@ class ThemeManager:
             foreground=[('pressed', '#ffffff'), ('active', '#ffffff'), ('disabled', '#5c6370')]
         )
 
-        style.configure('Treeview', background='#181a1f', foreground=fg_text, fieldbackground='#181a1f', rowheight=22)
-        style.map('Treeview', background=[('selected', '#3e4451')])
-        style.configure('TNotebook', background=bg_dark, borderwidth=0)
-        style.configure('TNotebook.Tab', background='#181a1f', foreground='#abb2bf', font=('DejaVu Sans', 9, 'bold'), padding=[14, 6])
+    @classmethod
+    def _configure_notebook_styles(cls, style: ttk.Style, palette: dict[str, str]) -> None:
+        '''
+            Configures tabbed notebook container styles.
+
+            :param style: Active ttk.Style instance.
+            :param palette: Color palette dictionary.
+            :exceptions: None.
+        '''
+        style.configure('TNotebook', background=palette['bg_dark'], borderwidth=0)
+        style.configure(
+            'TNotebook.Tab',
+            background='#181a1f',
+            foreground='#abb2bf',
+            font=('DejaVu Sans', 9, 'bold'),
+            padding=[14, 6]
+        )
         style.map(
             'TNotebook.Tab',
             background=[('selected', '#2c313a'), ('active', '#21252b')],
-            foreground=[('selected', '#61afef'), ('active', '#ffffff')]
+            foreground=[('selected', palette['accent_blue']), ('active', '#ffffff')]
         )
+
+    @classmethod
+    def apply_theme(cls, root: tk.Tk) -> None:
+        '''
+            Applies dark theme stylesheet and color palette to root window.
+
+            :param root: Root Tk application window.
+            :exceptions: None.
+        '''
+        style = ttk.Style(root)
+        style.theme_use('clam')
+
+        palette = cls.get_palette()
+        bg_dark: str = palette['bg_dark']
+        bg_card: str = palette['bg_card']
+        fg_text: str = palette['fg_text']
+        accent_blue: str = palette['accent_blue']
+
+        root.configure(bg=bg_dark)
+        style.configure('.', background=bg_dark, foreground=fg_text, font=('DejaVu Sans', 9))
+        style.configure('TFrame', background=bg_dark)
+        style.configure('Card.TFrame', background=bg_card)
+        style.configure('TLabel', background=bg_dark, foreground=fg_text, font=('DejaVu Sans', 9))
+        style.configure('Header.TLabel', font=('DejaVu Sans', 9, 'bold'), foreground=accent_blue)
+        style.configure('TLabelframe', background=bg_dark, foreground=accent_blue)
+        style.configure('TLabelframe.Label', background=bg_dark, foreground=accent_blue, font=('DejaVu Sans', 9, 'bold'))
+
+        cls._configure_button_styles(style, palette)
+        cls._configure_notebook_styles(style, palette)
+
+        style.configure(
+            'Treeview',
+            background='#181a1f',
+            foreground=fg_text,
+            fieldbackground='#181a1f',
+            rowheight=22
+        )
+        style.map('Treeview', background=[('selected', '#3e4451')])

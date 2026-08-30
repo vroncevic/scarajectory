@@ -78,12 +78,12 @@ class SerialStreamer:
     MAX_PICO_QUEUE_CAPACITY: ClassVar[int] = 30
 
     _observer: IStreamObserver | None
-    _transport: Final[ITransport]
+    _transport: ITransport
     _state: StreamState
     _session: StreamSession
     _worker_thread: Thread | None
-    _stop_event: Final[Event]
-    _pause_event: Final[Event]
+    _stop_event: Event
+    _pause_event: Event
 
     def __init__(self, transport: ITransport) -> None:
         '''
@@ -93,13 +93,13 @@ class SerialStreamer:
             :exceptions: None.
         '''
         self._observer = None
-        self._transport = transport
+        self._transport: Final[ITransport] = transport
         self._transport.set_callbacks(on_line=self._handle_serial_line, on_log=self._on_connection_log)
         self._state = StreamState.IDLE
         self._session = StreamSession()
         self._worker_thread = None
-        self._stop_event = Event()
-        self._pause_event = Event()
+        self._stop_event: Final[Event] = Event()
+        self._pause_event: Final[Event] = Event()
 
     def set_observer(self, observer: IStreamObserver) -> None:
         '''

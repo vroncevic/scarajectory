@@ -60,7 +60,7 @@ class WaypointEditor(ttk.LabelFrame):
                 | on_point_selected - Populates coordinate entries on waypoint selection.
     '''
 
-    _plan: Final[ITrajectoryPlan]
+    _plan: ITrajectoryPlan
     _table: TrajectoryTable
     _entry_x: ttk.Entry
     _entry_y: ttk.Entry
@@ -77,7 +77,7 @@ class WaypointEditor(ttk.LabelFrame):
             :exceptions: None.
         '''
         super().__init__(parent, text=' [ Trajectory Waypoints ] ', padding=6, **kwargs)
-        self._plan = plan
+        self._plan: Final[ITrajectoryPlan] = plan
         self._plan.add_observer(self)
         self._create_widgets()
 

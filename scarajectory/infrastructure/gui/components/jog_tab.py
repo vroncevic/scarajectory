@@ -54,7 +54,7 @@ class JogTab(ttk.Frame):
                 | send_raw - Transmits text command from entry field.
     '''
 
-    _streamer: Final[ITrajectoryStreamer]
+    _streamer: ITrajectoryStreamer
     _step_var: tk.DoubleVar
     _entry_raw: ttk.Entry
 
@@ -66,8 +66,8 @@ class JogTab(ttk.Frame):
             :param streamer: ITrajectoryStreamer instance.
             :exceptions: None.
         '''
-        super().__init__(parent, padding=6, **kwargs)  # type: ignore[arg-type]
-        self._streamer = streamer
+        super().__init__(parent, padding=6, **kwargs)
+        self._streamer: Final[ITrajectoryStreamer] = streamer
         self._step_var = tk.DoubleVar(value=10.0)
         self._build_layout()
 

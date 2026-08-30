@@ -63,10 +63,10 @@ class Service:
                 | stop_streaming - Aborts active streaming.
     '''
 
-    _plan: Final[ITrajectoryPlan]
-    _storage: Final[IPlanStorageService]
-    _validator: Final[ITrajectoryValidator]
-    _streamer: Final[ITrajectoryStreamer]
+    _plan: ITrajectoryPlan
+    _storage: IPlanStorageService
+    _validator: ITrajectoryValidator
+    _streamer: ITrajectoryStreamer
 
     def __init__(
         self,
@@ -84,10 +84,10 @@ class Service:
             :param plan: ITrajectoryPlan instance.
             :exceptions: None.
         '''
-        self._validator = validator
-        self._streamer = streamer
-        self._storage = storage
-        self._plan = plan
+        self._validator: Final[ITrajectoryValidator] = validator
+        self._streamer: Final[ITrajectoryStreamer] = streamer
+        self._storage: Final[IPlanStorageService] = storage
+        self._plan: Final[ITrajectoryPlan] = plan
 
     def is_initialized(self) -> bool:
         '''

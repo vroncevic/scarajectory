@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>SCARA Motion Trajectory Studio &amp; Streamer &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
+    
+    <script src="_static/documentation_options.js?v=57319df4"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="scarajectory" href="modules.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="scarajectory"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">SCARA Motion Trajectory Studio &amp; Streamer</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="scara-motion-trajectory-studio-streamer">
+<h1>SCARA Motion Trajectory Studio &amp; Streamer<a class="headerlink" href="#scara-motion-trajectory-studio-streamer" title="Link to this heading">¶</a></h1>
+<p><strong>scarajectory</strong> is a standalone CAD/CAM motion planning, kinematic validation, and real-time trajectory streaming software for SCARA robotic manipulators.</p>
+<p>Developed in <a class="reference external" href="https://www.python.org/">python</a> code.</p>
+<p>The README is used to introduce the tool and provide instructions on
+how to install the tool, any machine dependencies it may have and any
+other information that should be provided before the tool is installed.</p>
+<p><a class="reference external" href="https://github.com/vroncevic/scarajectory/actions/workflows/scarajectory_python_checker.yml"><img alt="scarajectory python checker" src="https://github.com/vroncevic/scarajectory/actions/workflows/scarajectory_python_checker.yml/badge.svg" /></a> <a class="reference external" href="https://github.com/vroncevic/scarajectory/actions/workflows/scarajectory_package.yml"><img alt="scarajectory python package" src="https://github.com/vroncevic/scarajectory/actions/workflows/scarajectory_package_checker.yml/badge.svg" /></a> <a class="reference external" href="https://github.com/vroncevic/scarajectory/actions/workflows/scarajectory_interface_checker.yml"><img alt="scarajectory interface checker" src="https://github.com/vroncevic/scarajectory/actions/workflows/scarajectory_interface_checker.yml/badge.svg" /></a> <a class="reference external" href="https://github.com/vroncevic/scarajectory/actions/workflows/scarajectory_isp_checker.yml"><img alt="scarajectory isp checker" src="https://github.com/vroncevic/scarajectory/actions/workflows/scarajectory_isp_checker.yml/badge.svg" /></a> <a class="reference external" href="https://github.com/vroncevic/scarajectory/actions/workflows/scarajectory_srp_checker.yml"><img alt="scarajectory srp checker" src="https://github.com/vroncevic/scarajectory/actions/workflows/scarajectory_srp_checker.yml/badge.svg" /></a> <a class="reference external" href="https://www.gnu.org/licenses/gpl-3.0"><img alt="gplv3 license" src="https://img.shields.io/badge/License-GPLv3-blue.svg" /></a> <a class="reference external" href="https://opensource.org/licenses/Apache-2.0"><img alt="apache license" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" /></a> <a class="reference external" href="https://www.python.org/downloads/"><img alt="python version" src="https://img.shields.io/badge/python-3.10+-blue.svg" /></a> <a class="reference external" href="https://github.com/vroncevic/scarajectory/issues"><img alt="github issues" src="https://img.shields.io/github/issues/vroncevic/scarajectory.svg" /></a> <a class="reference external" href="https://scarajectory.readthedocs.io/en/latest/?badge=latest"><img alt="documentation status" src="https://readthedocs.org/projects/scarajectory/badge/?version=latest" /></a> <a class="reference external" href="https://github.com/vroncevic/scarajectory/graphs/contributors"><img alt="github contributors" src="https://img.shields.io/github/contributors/vroncevic/scarajectory.svg" /></a></p>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">SCARA Motion Trajectory Studio &amp; Streamer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">scarajectory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="main.html">main module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="main.html#main.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.html">scarajectory package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.core.html">scarajectory.core package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.html">scarajectory.infrastructure package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.setup.html">scarajectory.setup package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.html#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.engine.html">scarajectory.engine module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.html#module-scarajectory">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="installation">
+<h1>🚀 Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h1>
+<p><a class="reference external" href="https://github.com/vroncevic/scarajectory/actions/workflows/scarajectory_python3_build.yml"><img alt="scarajectory python3 build" src="https://github.com/vroncevic/scarajectory/actions/workflows/scarajectory_python3_build.yml/badge.svg" /></a></p>
+<p>Navigate to release <a class="reference external" href="https://github.com/vroncevic/scarajectory/releases">page</a> download and extract release archive.</p>
+<p>To install <strong>scarajectory</strong> type the following</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tar<span class="w"> </span>xvzf<span class="w"> </span>scarajectory-x.y.z.tar.gz
+<span class="nb">cd</span><span class="w"> </span>scarajectory-x.y.z/
+<span class="c1"># python3</span>
+wget<span class="w"> </span>https://bootstrap.pypa.io/get-pip.py
+python3<span class="w"> </span>get-pip.py
+python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>setuptools
+python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
+python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>build
+pip3<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+python3<span class="w"> </span>-m<span class="w"> </span>build<span class="w"> </span>--no-isolation<span class="w"> </span>--wheel
+pip3<span class="w"> </span>install<span class="w"> </span>./dist/scarajectory-*-py3-none-any.whl
+rm<span class="w"> </span>-f<span class="w"> </span>get-pip.py
+chmod<span class="w"> </span><span class="m">755</span><span class="w"> </span>/usr/local/lib/python3.10/dist-packages/usr/local/bin/scarajectory_run.py
+ln<span class="w"> </span>-s<span class="w"> </span>/usr/local/lib/python3.10/dist-packages/usr/local/bin/scarajectory_run.py<span class="w"> </span>/usr/local/bin/scarajectory_run.py
+</pre></div>
+</div>
+<p>You can use Docker to create image/container, or You can use pip to install</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># python3</span>
+pip3<span class="w"> </span>install<span class="w"> </span>scarajectory
+</pre></div>
+</div>
+</section>
+<section id="dependencies">
+<h1>📦 Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading">¶</a></h1>
+<p><strong>scarajectory</strong> requires next modules and libraries</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://pypi.org/project/ats-utilities/">ats-utilities - Python App/Tool/Script Utilities</a> <a class="reference external" href="https://www.gnu.org/licenses/gpl-3.0"><img alt="ats gplv3" src="https://img.shields.io/badge/License-GPLv3-blue.svg" /></a> <a class="reference external" href="https://opensource.org/licenses/Apache-2.0"><img alt="ats apache" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" /></a></p></li>
+<li><p><a class="reference external" href="https://pypi.org/project/pyserial/">pyserial - Python Serial Port Extension</a> <a class="reference external" href="https://opensource.org/licenses/BSD-3-Clause"><img alt="pyserial bsd" src="https://img.shields.io/badge/License-BSD_3--Clause-blue.svg" /></a></p></li>
+</ul>
+</section>
+<section id="tool-structure">
+<h1>📁 Tool structure<a class="headerlink" href="#tool-structure" title="Link to this heading">¶</a></h1>
+<p><strong>scarajectory</strong> is based on OOP and Clean Architecture.</p>
+<p>Tool structure</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>scarajectory/
+<span class="w">     </span>├──<span class="w"> </span>core/
+<span class="w">     </span>│<span class="w">   </span>├──<span class="w"> </span>__init__.py
+<span class="w">     </span>│<span class="w">   </span>├──<span class="w"> </span>model/
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>canvas_interaction_state.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>canvas_settings_dto.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>canvas_tool_mode.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>__init__.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>itrajectory_plan.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>plan_history.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>point_dto.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>scara_bounds.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>stream_config_dto.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>stream_progress.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>stream_state.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>trajectory_metrics.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>trajectory_plan.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>trajectory_serializer.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>validation_result_dto.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>viewport_transform.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>waypoint.py
+<span class="w">     </span>│<span class="w">   </span>└──<span class="w"> </span>service/
+<span class="w">     </span>│<span class="w">       </span>├──<span class="w"> </span>engine.py
+<span class="w">     </span>│<span class="w">       </span>├──<span class="w"> </span>__init__.py
+<span class="w">     </span>│<span class="w">       </span>├──<span class="w"> </span>iplan_storage_service.py
+<span class="w">     </span>│<span class="w">       </span>├──<span class="w"> </span>iservice.py
+<span class="w">     </span>│<span class="w">       </span>├──<span class="w"> </span>istream_observer.py
+<span class="w">     </span>│<span class="w">       </span>├──<span class="w"> </span>itrajectory_observer.py
+<span class="w">     </span>│<span class="w">       </span>├──<span class="w"> </span>itrajectory_streamer.py
+<span class="w">     </span>│<span class="w">       </span>├──<span class="w"> </span>itrajectory_validator.py
+<span class="w">     </span>│<span class="w">       </span>├──<span class="w"> </span>plan_storage_service.py
+<span class="w">     </span>│<span class="w">       </span>└──<span class="w"> </span>trajectory_validator.py
+<span class="w">     </span>├──<span class="w"> </span>engine.py
+<span class="w">     </span>├──<span class="w"> </span>infrastructure/
+<span class="w">     </span>│<span class="w">   </span>├──<span class="w"> </span>cli/
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>engine.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>icli.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>__init__.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>setup/
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">       </span>├──<span class="w"> </span>bundle.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">       </span>├──<span class="w"> </span>dep_validator.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">       </span>├──<span class="w"> </span>dependencies.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">       </span>├──<span class="w"> </span>factory.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">       </span>├──<span class="w"> </span>__init__.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">       </span>├──<span class="w"> </span>keys.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">       </span>├──<span class="w"> </span>opt_validator.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">       </span>├──<span class="w"> </span>options.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">       </span>├──<span class="w"> </span>registry.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">       </span>└──<span class="w"> </span>validator.py
+<span class="w">     </span>│<span class="w">   </span>├──<span class="w"> </span>command/
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>command.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>icommand_definition.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>icommand_executor.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>__init__.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>studio_command_definition.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>studio_command_executor.py
+<span class="w">     </span>│<span class="w">   </span>├──<span class="w"> </span>communication/
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>__init__.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>protocol/
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>command_formatter.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>command_templates.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>__init__.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>protocol_parser.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>robot_response_dto.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>serial_port_scanner.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>serial_streamer.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>stream_session.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>transport/
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">       </span>├──<span class="w"> </span>__init__.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">       </span>├──<span class="w"> </span>itransport.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">       </span>├──<span class="w"> </span>serial_transport.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">       </span>└──<span class="w"> </span>tcp_transport.py
+<span class="w">     </span>│<span class="w">   </span>├──<span class="w"> </span>config/
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>scara_geometry.json
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>scarajectory.cfg
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>scarajectory.logo
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>scheme.json
+<span class="w">     </span>│<span class="w">   </span>├──<span class="w"> </span>gui/
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>canvas.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>components/
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>canvas_renderer.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>canvas_tool_handler.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>__init__.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>jog_tab.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>menu_bar.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>preview_tab.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>serial_console.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>stream_status_bar.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>streamer_tab.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>toolbar.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>validation_tab.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>waypoint_editor.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>controls.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>engine.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>icanvas.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>icontrols.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>igui.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>__init__.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>itable.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>table.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>theme.py
+<span class="w">     </span>│<span class="w">   </span>└──<span class="w"> </span>__init__.py
+<span class="w">     </span>├──<span class="w"> </span>__init__.py
+<span class="w">     </span>├──<span class="w"> </span>py.typed
+<span class="w">     </span>└──<span class="w"> </span>setup/
+<span class="w">         </span>├──<span class="w"> </span>bundle.py
+<span class="w">         </span>├──<span class="w"> </span>dep_validator.py
+<span class="w">         </span>├──<span class="w"> </span>dependencies.py
+<span class="w">         </span>├──<span class="w"> </span>factory.py
+<span class="w">         </span>├──<span class="w"> </span>__init__.py
+<span class="w">         </span>├──<span class="w"> </span>keys.py
+<span class="w">         </span>├──<span class="w"> </span>opt_validator.py
+<span class="w">         </span>├──<span class="w"> </span>options.py
+<span class="w">         </span>├──<span class="w"> </span>registry.py
+<span class="w">         </span>└──<span class="w"> </span>validator.py
+
+<span class="w"> </span><span class="m">15</span><span class="w"> </span>directories,<span class="w"> </span><span class="m">100</span><span class="w"> </span>files
+</pre></div>
+</div>
+</section>
+<section id="features">
+<h1>✨ Features<a class="headerlink" href="#features" title="Link to this heading">¶</a></h1>
+<ul class="simple">
+<li><p><strong>Interactive Vector CAD Editor</strong>: Real-time vector drafting with dedicated Point, Line, Rectangle, Circle, and Freehand tools with live vertex dragging and viewport zoom/pan.</p></li>
+<li><p><strong>Kinematic Reachability &amp; Deadzone Enforcement</strong>: Annular geometric validation ensuring trajectories stay within reachable workspace boundaries (<span class="math notranslate nohighlight">\(R_{min} = |L_1 - L_2|\)</span>, <span class="math notranslate nohighlight">\(R_{max} = L_1 + L_2\)</span>).</p></li>
+<li><p><strong>Undo / Redo Transaction Stack</strong>: Non-destructive history management for waypoint additions, modifications, insertions, and deletions (<code class="docutils literal notranslate"><span class="pre">Ctrl+Z</span></code>, <code class="docutils literal notranslate"><span class="pre">Ctrl+Y</span></code>).</p></li>
+<li><p><strong>ASCII Protocol Generation</strong>: Generates micro-command streaming packets for RP2040 firmware (<code class="docutils literal notranslate"><span class="pre">&lt;pt#X#Y#Z#PHI#SPEED#end&gt;</span></code>).</p></li>
+<li><p><strong>Sliding Window Hardware Streaming</strong>: Multi-threaded USB serial (<code class="docutils literal notranslate"><span class="pre">/dev/ttyACM0</span></code>) and TCP socket streaming with dynamic ACK tracking, auto-pause on buffer full, and progress monitoring.</p></li>
+<li><p><strong>Manual Jogging &amp; Diagnostics</strong>: Interactive jog grid (X, Y, Z, Phi), vacuum pump and release valve toggles, homing, status queries, and raw serial command console.</p></li>
+<li><p><strong>Configurable Kinematics &amp; Dimensions</strong>: Dynamic robot link lengths (<span class="math notranslate nohighlight">\(L_1, L_2\)</span>), stroke limits (<span class="math notranslate nohighlight">\(Z_{min}, Z_{max}\)</span>), and speed bounds configurable via CLI options and JSON schema.</p></li>
+<li><p><strong>Strict Quality &amp; SOLID Standards</strong>: 100% protocol conformity, zero ISP/SRP violations, 81% test coverage, and 10.00 / 10.00 Pylint score.</p></li>
+</ul>
+</section>
+<section id="scara-kinematic-geometric-configuration">
+<h1>📐 SCARA Kinematic &amp; Geometric Configuration<a class="headerlink" href="#scara-kinematic-geometric-configuration" title="Link to this heading">¶</a></h1>
+<p>The robot dimensions and physical boundaries can be customized in <code class="docutils literal notranslate"><span class="pre">scara_geometry.json</span></code> or injected programmatically:</p>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Kinematic Limits</span><a class="headerlink" href="#id1" title="Link to this table">¶</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Default Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>l1</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">150.0</span> <span class="pre">mm</span></code></p></td>
+<td><p>Primary arm link length (shoulder to elbow).</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>l2</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">120.0</span> <span class="pre">mm</span></code></p></td>
+<td><p>Secondary arm link length (elbow to wrist).</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>r_min</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">30.0</span> <span class="pre">mm</span></code></p></td>
+<td><p>Inner singular deadzone radius (<span class="math notranslate nohighlight">\(|L_1 - L_2|\)</span>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>r_max</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">270.0</span> <span class="pre">mm</span></code></p></td>
+<td><p>Maximum horizontal reach boundary (<span class="math notranslate nohighlight">\(L_1 + L_2\)</span>).</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>z_min</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.0</span> <span class="pre">mm</span></code></p></td>
+<td><p>Minimum vertical height limit (bed level).</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>z_max</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">100.0</span> <span class="pre">mm</span></code></p></td>
+<td><p>Maximum vertical stroke limit.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>min_speed</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1.0</span> <span class="pre">mm/s</span></code></p></td>
+<td><p>Minimum allowable feedrate speed.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>max_speed</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">100.0</span> <span class="pre">mm/s</span></code></p></td>
+<td><p>Maximum allowable safe feedrate speed.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="code-coverage">
+<h1>📊 Code coverage<a class="headerlink" href="#code-coverage" title="Link to this heading">¶</a></h1>
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-text">Code coverage</span><a class="headerlink" href="#id2" title="Link to this table">¶</a></caption>
+<colgroup>
+<col style="width: 60.0%" />
+<col style="width: 10.0%" />
+<col style="width: 10.0%" />
+<col style="width: 20.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Stmts</p></th>
+<th class="head"><p>Miss</p></th>
+<th class="head"><p>Cover</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>scarajectory/__init__.py</p></td>
+<td><p>9</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/__init__.py</p></td>
+<td><p>9</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/model/__init__.py</p></td>
+<td><p>9</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/model/canvas_interaction_state.py</p></td>
+<td><p>26</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/model/canvas_settings_dto.py</p></td>
+<td><p>15</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/model/canvas_tool_mode.py</p></td>
+<td><p>17</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/model/itrajectory_plan.py</p></td>
+<td><p>31</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/model/plan_history.py</p></td>
+<td><p>34</p></td>
+<td><p>1</p></td>
+<td><p>97%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/model/point_dto.py</p></td>
+<td><p>18</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/model/scara_bounds.py</p></td>
+<td><p>18</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/model/stream_config_dto.py</p></td>
+<td><p>15</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/model/stream_progress.py</p></td>
+<td><p>25</p></td>
+<td><p>3</p></td>
+<td><p>88%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/model/stream_state.py</p></td>
+<td><p>17</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/model/trajectory_metrics.py</p></td>
+<td><p>37</p></td>
+<td><p>7</p></td>
+<td><p>81%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/model/trajectory_plan.py</p></td>
+<td><p>100</p></td>
+<td><p>14</p></td>
+<td><p>86%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/model/trajectory_serializer.py</p></td>
+<td><p>29</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/model/validation_result_dto.py</p></td>
+<td><p>15</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/model/viewport_transform.py</p></td>
+<td><p>48</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/model/waypoint.py</p></td>
+<td><p>42</p></td>
+<td><p>4</p></td>
+<td><p>90%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/service/__init__.py</p></td>
+<td><p>9</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/service/engine.py</p></td>
+<td><p>45</p></td>
+<td><p>3</p></td>
+<td><p>93%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/service/iplan_storage_service.py</p></td>
+<td><p>16</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/service/iservice.py</p></td>
+<td><p>26</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/service/istream_observer.py</p></td>
+<td><p>15</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/service/itrajectory_observer.py</p></td>
+<td><p>14</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/service/itrajectory_streamer.py</p></td>
+<td><p>25</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/service/itrajectory_validator.py</p></td>
+<td><p>18</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/service/plan_storage_service.py</p></td>
+<td><p>17</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/service/trajectory_validator.py</p></td>
+<td><p>69</p></td>
+<td><p>9</p></td>
+<td><p>87%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/engine.py</p></td>
+<td><p>64</p></td>
+<td><p>30</p></td>
+<td><p>53%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/__init__.py</p></td>
+<td><p>9</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/cli/__init__.py</p></td>
+<td><p>9</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/cli/engine.py</p></td>
+<td><p>39</p></td>
+<td><p>7</p></td>
+<td><p>82%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/cli/icli.py</p></td>
+<td><p>15</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/cli/setup/__init__.py</p></td>
+<td><p>9</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/cli/setup/bundle.py</p></td>
+<td><p>22</p></td>
+<td><p>1</p></td>
+<td><p>95%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/cli/setup/dep_validator.py</p></td>
+<td><p>36</p></td>
+<td><p>5</p></td>
+<td><p>86%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/cli/setup/dependencies.py</p></td>
+<td><p>18</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/cli/setup/factory.py</p></td>
+<td><p>37</p></td>
+<td><p>1</p></td>
+<td><p>97%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/cli/setup/keys.py</p></td>
+<td><p>28</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/cli/setup/opt_validator.py</p></td>
+<td><p>36</p></td>
+<td><p>5</p></td>
+<td><p>86%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/cli/setup/options.py</p></td>
+<td><p>17</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/cli/setup/registry.py</p></td>
+<td><p>24</p></td>
+<td><p>1</p></td>
+<td><p>96%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/cli/setup/validator.py</p></td>
+<td><p>43</p></td>
+<td><p>5</p></td>
+<td><p>88%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/command/__init__.py</p></td>
+<td><p>9</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/command/command.py</p></td>
+<td><p>16</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/command/icommand_definition.py</p></td>
+<td><p>14</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/command/icommand_executor.py</p></td>
+<td><p>14</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/command/studio_command_definition.py</p></td>
+<td><p>24</p></td>
+<td><p>1</p></td>
+<td><p>96%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/command/studio_command_executor.py</p></td>
+<td><p>38</p></td>
+<td><p>15</p></td>
+<td><p>61%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/communication/__init__.py</p></td>
+<td><p>9</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/communication/protocol/__init__.py</p></td>
+<td><p>8</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/communication/protocol/command_formatter.py</p></td>
+<td><p>58</p></td>
+<td><p>9</p></td>
+<td><p>84%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/communication/protocol/command_templates.py</p></td>
+<td><p>35</p></td>
+<td><p>2</p></td>
+<td><p>94%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/communication/protocol/protocol_parser.py</p></td>
+<td><p>64</p></td>
+<td><p>17</p></td>
+<td><p>73%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/communication/protocol/robot_response_dto.py</p></td>
+<td><p>17</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/communication/serial_port_scanner.py</p></td>
+<td><p>36</p></td>
+<td><p>5</p></td>
+<td><p>86%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/communication/serial_streamer.py</p></td>
+<td><p>150</p></td>
+<td><p>83</p></td>
+<td><p>45%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/communication/stream_session.py</p></td>
+<td><p>18</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/communication/transport/__init__.py</p></td>
+<td><p>8</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/communication/transport/itransport.py</p></td>
+<td><p>19</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/communication/transport/serial_transport.py</p></td>
+<td><p>104</p></td>
+<td><p>63</p></td>
+<td><p>39%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/communication/transport/tcp_transport.py</p></td>
+<td><p>120</p></td>
+<td><p>80</p></td>
+<td><p>33%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/__init__.py</p></td>
+<td><p>9</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/gui/canvas.py</p></td>
+<td><p>170</p></td>
+<td><p>92</p></td>
+<td><p>46%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/components/__init__.py</p></td>
+<td><p>9</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/gui/components/canvas_renderer.py</p></td>
+<td><p>79</p></td>
+<td><p>23</p></td>
+<td><p>71%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/components/canvas_tool_handler.py</p></td>
+<td><p>42</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/gui/components/jog_tab.py</p></td>
+<td><p>67</p></td>
+<td><p>8</p></td>
+<td><p>88%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/components/menu_bar.py</p></td>
+<td><p>75</p></td>
+<td><p>14</p></td>
+<td><p>81%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/gui/components/preview_tab.py</p></td>
+<td><p>32</p></td>
+<td><p>4</p></td>
+<td><p>88%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/components/serial_console.py</p></td>
+<td><p>34</p></td>
+<td><p>6</p></td>
+<td><p>82%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/gui/components/stream_status_bar.py</p></td>
+<td><p>29</p></td>
+<td><p>4</p></td>
+<td><p>86%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/components/streamer_tab.py</p></td>
+<td><p>96</p></td>
+<td><p>31</p></td>
+<td><p>68%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/gui/components/toolbar.py</p></td>
+<td><p>73</p></td>
+<td><p>9</p></td>
+<td><p>88%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/components/validation_tab.py</p></td>
+<td><p>35</p></td>
+<td><p>5</p></td>
+<td><p>86%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/gui/components/waypoint_editor.py</p></td>
+<td><p>71</p></td>
+<td><p>17</p></td>
+<td><p>76%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/controls.py</p></td>
+<td><p>44</p></td>
+<td><p>3</p></td>
+<td><p>93%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/gui/engine.py</p></td>
+<td><p>98</p></td>
+<td><p>19</p></td>
+<td><p>81%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/icanvas.py</p></td>
+<td><p>20</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/gui/icontrols.py</p></td>
+<td><p>16</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/igui.py</p></td>
+<td><p>17</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/gui/itable.py</p></td>
+<td><p>14</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/table.py</p></td>
+<td><p>77</p></td>
+<td><p>29</p></td>
+<td><p>62%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/gui/theme.py</p></td>
+<td><p>58</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/setup/__init__.py</p></td>
+<td><p>9</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/setup/bundle.py</p></td>
+<td><p>25</p></td>
+<td><p>1</p></td>
+<td><p>96%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/setup/dep_validator.py</p></td>
+<td><p>36</p></td>
+<td><p>5</p></td>
+<td><p>86%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/setup/dependencies.py</p></td>
+<td><p>21</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/setup/factory.py</p></td>
+<td><p>84</p></td>
+<td><p>4</p></td>
+<td><p>95%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/setup/keys.py</p></td>
+<td><p>37</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/setup/opt_validator.py</p></td>
+<td><p>36</p></td>
+<td><p>5</p></td>
+<td><p>86%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/setup/options.py</p></td>
+<td><p>20</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/setup/registry.py</p></td>
+<td><p>34</p></td>
+<td><p>1</p></td>
+<td><p>97%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/setup/validator.py</p></td>
+<td><p>53</p></td>
+<td><p>5</p></td>
+<td><p>91%</p></td>
+</tr>
+<tr class="row-odd"><td><p>Total</p></td>
+<td><p>3455</p></td>
+<td><p>656</p></td>
+<td><p>81%</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="usage">
+<h1>🛠 Usage<a class="headerlink" href="#usage" title="Link to this heading">¶</a></h1>
+<p>Install package</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip3<span class="w"> </span>install<span class="w"> </span>scarajectory
+</pre></div>
+</div>
+<p>Prepare main entry point by downloading <cite>main.py</cite> or create your own.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wget<span class="w"> </span>-O<span class="w"> </span>main.py<span class="w"> </span>https://raw.githubusercontent.com/vroncevic/scarajectory/main/main.py
+</pre></div>
+</div>
+<section id="cli-command-options">
+<h2>CLI Command Options<a class="headerlink" href="#cli-command-options" title="Link to this heading">¶</a></h2>
+<p>Launch the graphical studio with default configuration:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>main.py<span class="w"> </span>studio
+</pre></div>
+</div>
+<p>Launch with initial trajectory plan file and disabled deadzone restriction:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>main.py<span class="w"> </span>studio<span class="w"> </span>--file<span class="w"> </span>./trajectories/rectangle_demo.json<span class="w"> </span>--dead-zone<span class="w"> </span>disable<span class="w"> </span>--verbose<span class="w"> </span><span class="nb">enable</span>
+</pre></div>
+</div>
+<table class="docutils align-default" id="id3">
+<caption><span class="caption-text">Studio CLI Options</span><a class="headerlink" href="#id3" title="Link to this table">¶</a></caption>
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 25.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Option</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Choices</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>–file</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p><em>File path</em></p></td>
+<td><p>Path to initial trajectory JSON plan file to load on startup.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>–dead-zone</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">enable</span></code>, <code class="docutils literal notranslate"><span class="pre">disable</span></code></p></td>
+<td><p>Enable or disable inner deadzone geometric validation (<span class="math notranslate nohighlight">\(R_{min}\)</span>).</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>–verbose</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">enable</span></code>, <code class="docutils literal notranslate"><span class="pre">disable</span></code></p></td>
+<td><p>Enable or disable verbose ATS operational logging.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="interactive-motion-planning-workflow">
+<h2>Interactive Motion Planning Workflow<a class="headerlink" href="#interactive-motion-planning-workflow" title="Link to this heading">¶</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Design Trajectory &amp; Geometry</strong>:
+* Use <strong>Point</strong>, <strong>Line</strong>, <strong>Rectangle</strong>, <strong>Circle</strong>, or <strong>Freehand</strong> tools directly on the interactive vector canvas.
+* Fine-tune Cartesian parameters (<span class="math notranslate nohighlight">\(X, Y, Z, \phi, \text{speed}\)</span>) using the Waypoint Data Table or interactive vertex drag.</p></li>
+<li><p><strong>Kinematic Validation</strong>:
+* Open the <strong>Plan Validation</strong> tab and run validation against reachability limits (<span class="math notranslate nohighlight">\(L_1 = 150\text{ mm}, L_2 = 120\text{ mm}\)</span>).
+* Verify total path length and estimated execution time.</p></li>
+<li><p><strong>ASCII Program Preview</strong>:
+* Inspect the formatted ASCII micro-command stream (<code class="docutils literal notranslate"><span class="pre">&lt;pt#...#end&gt;</span></code>) under the <strong>Program Preview</strong> tab.</p></li>
+<li><p><strong>Hardware Streaming &amp; Execution</strong>:
+* Connect to <code class="docutils literal notranslate"><span class="pre">/dev/ttyACM0</span></code> (or TCP host) under the <strong>Hardware Streamer</strong> tab.
+* Trigger streaming to execute real-time motion on the physical SCARA robot.</p></li>
+<li><p><strong>Manual Jogging &amp; Diagnostics</strong>:
+* Use the <strong>Manual Jog</strong> tab for directional jog movements, vacuum pump activation, release valve triggers, and homing.</p></li>
+</ol>
+</section>
+</section>
+<section id="docs">
+<h1>📚 Docs<a class="headerlink" href="#docs" title="Link to this heading">¶</a></h1>
+<p>More documentation and info at</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://scarajectory.readthedocs.io">scarajectory.readthedocs.io</a></p></li>
+<li><p><a class="reference external" href="https://www.python.org/">www.python.org</a></p></li>
+</ul>
+</section>
+<section id="contributing">
+<h1>👥 Contributing<a class="headerlink" href="#contributing" title="Link to this heading">¶</a></h1>
+<p><a class="reference external" href="https://github.com/vroncevic/scarajectory/blob/dev/CONTRIBUTING.md">Contributing to scarajectory</a></p>
+</section>
+<section id="copyright-and-licence">
+<h1>📄 Copyright and licence<a class="headerlink" href="#copyright-and-licence" title="Link to this heading">¶</a></h1>
+<p>Copyright (C) 2026 by <a class="reference external" href="https://vroncevic.github.io/scarajectory">vroncevic.github.io/scarajectory</a></p>
+<p><strong>scarajectory</strong> is free software; you can redistribute it and/or modify
+it under the same terms as Python itself, either Python version 3.x or,
+at your option, any later version of Python 3 you may have available.</p>
+<p>Special thanks to <strong>Google</strong> and the Google developer ecosystem for their tremendous support and innovative tools from the Google bundle that empowered the development and realization of this project. <em>Google, you make this world a better place!</em> 🌍✨</p>
+<p>Lets help and support PSF.</p>
+<p><a class="reference external" href="https://www.python.org/psf/"><img alt="python software foundation" src="https://raw.githubusercontent.com/vroncevic/scarajectory/dev/docs/psf-logo-alpha.png" /></a></p>
+<p><a class="reference external" href="https://www.python.org/psf/donations/"><img alt="donate" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" /></a></p>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="#">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">SCARA Motion Trajectory Studio &amp; Streamer</a></li>
+<li><a class="reference internal" href="#installation">🚀 Installation</a></li>
+<li><a class="reference internal" href="#dependencies">📦 Dependencies</a></li>
+<li><a class="reference internal" href="#tool-structure">📁 Tool structure</a></li>
+<li><a class="reference internal" href="#features">✨ Features</a></li>
+<li><a class="reference internal" href="#scara-kinematic-geometric-configuration">📐 SCARA Kinematic &amp; Geometric Configuration</a></li>
+<li><a class="reference internal" href="#code-coverage">📊 Code coverage</a></li>
+<li><a class="reference internal" href="#usage">🛠 Usage</a><ul>
+<li><a class="reference internal" href="#cli-command-options">CLI Command Options</a></li>
+<li><a class="reference internal" href="#interactive-motion-planning-workflow">Interactive Motion Planning Workflow</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#docs">📚 Docs</a></li>
+<li><a class="reference internal" href="#contributing">👥 Contributing</a></li>
+<li><a class="reference internal" href="#copyright-and-licence">📄 Copyright and licence</a></li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="modules.html"
+                          title="next chapter">scarajectory</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="scarajectory"
+             >next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">SCARA Motion Trajectory Studio &amp; Streamer</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

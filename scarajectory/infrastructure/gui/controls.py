@@ -64,10 +64,10 @@ class ControlsPanel(ttk.Frame):
     '''
 
     _notebook: ttk.Notebook
-    _streamer_tab: Final[StreamerTab]
-    _validation_tab: Final[ValidationTab]
-    _jog_tab: Final[JogTab]
-    _preview_tab: Final[PreviewTab]
+    _streamer_tab: StreamerTab
+    _validation_tab: ValidationTab
+    _jog_tab: JogTab
+    _preview_tab: PreviewTab
 
     def __init__(
         self,
@@ -91,10 +91,10 @@ class ControlsPanel(ttk.Frame):
         self._notebook = ttk.Notebook(self)
         self._notebook.pack(fill=tk.BOTH, expand=True)
 
-        self._streamer_tab = StreamerTab(self._notebook, plan=plan, validator=validator, streamer=streamer)
-        self._validation_tab = ValidationTab(self._notebook, plan=plan, validator=validator)
-        self._jog_tab = JogTab(self._notebook, streamer=streamer)
-        self._preview_tab = PreviewTab(self._notebook, plan=plan)
+        self._streamer_tab: Final[StreamerTab] = StreamerTab(self._notebook, plan=plan, validator=validator, streamer=streamer)
+        self._validation_tab: Final[ValidationTab] = ValidationTab(self._notebook, plan=plan, validator=validator)
+        self._jog_tab: Final[JogTab] = JogTab(self._notebook, streamer=streamer)
+        self._preview_tab: Final[PreviewTab] = PreviewTab(self._notebook, plan=plan)
 
         self._notebook.add(self._streamer_tab, text=' Hardware Streamer ')
         self._notebook.add(self._validation_tab, text=' Plan Validation ')

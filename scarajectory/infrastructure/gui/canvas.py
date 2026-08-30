@@ -30,6 +30,7 @@ from scarajectory.core.model.waypoint import Waypoint
 from scarajectory.core.model.itrajectory_plan import ITrajectoryPlan
 from scarajectory.core.model.canvas_settings_dto import CanvasSettingsDTO
 from scarajectory.core.model.canvas_tool_mode import CanvasToolMode
+from scarajectory.core.model.canvas_interaction_state import CanvasInteractionState
 from scarajectory.core.model.viewport_transform import ViewportTransform
 from scarajectory.core.service.itrajectory_validator import ITrajectoryValidator
 from scarajectory.infrastructure.gui.components.canvas_renderer import CanvasRenderer
@@ -62,13 +63,8 @@ class TrajectoryCanvas(tk.Canvas):
                 | _settings - Active canvas configuration DTO.
                 | _tool_mode - Active interactive drawing tool.
                 | _vp - Viewport transformation matrix.
+                | _state - Interactive mouse pan, drag and selection state.
                 | _hover_label - Hover status readout widget.
-                | _pan_x - Viewport panning origin coordinate X.
-                | _pan_y - Viewport panning origin coordinate Y.
-                | _is_panning - Viewport panning active flag.
-                | _drag_start_world - Drag start point in world space.
-                | _drag_current_world - Active cursor drag position in world space.
-                | _dragged_node_idx - Index of selected waypoint being dragged.
             :methods:
                 | __init__ - Initializes the vector CAD canvas and binds events.
                 | on_trajectory_updated - Redraws canvas on plan change.
@@ -89,18 +85,13 @@ class TrajectoryCanvas(tk.Canvas):
     CIRCLE_MIN_RADIUS_MM: ClassVar[float] = 5.0
     CIRCLE_DEFAULT_STEPS: ClassVar[int] = 16
 
-    _plan: Final[ITrajectoryPlan]
-    _validator: Final[ITrajectoryValidator]
+    _plan: ITrajectoryPlan
+    _validator: ITrajectoryValidator
     _settings: CanvasSettingsDTO
     _tool_mode: CanvasToolMode
     _vp: ViewportTransform
+    _state: CanvasInteractionState
     _hover_label: ttk.Label | None
-    _pan_x: int
-    _pan_y: int
-    _is_panning: bool
-    _drag_start_world: tuple[float, float] | None
-    _drag_current_world: tuple[float, float] | None
-    _dragged_node_idx: int
 
     def __init__(
         self,
@@ -126,18 +117,13 @@ class TrajectoryCanvas(tk.Canvas):
             highlightbackground='#333842',
             **kwargs
         )
-        self._plan = plan
-        self._validator = validator
+        self._plan: Final[ITrajectoryPlan] = plan
+        self._validator: Final[ITrajectoryValidator] = validator
         self._settings = settings
         self._tool_mode = CanvasToolMode.POINT
         self._vp = ViewportTransform()
+        self._state = CanvasInteractionState()
         self._hover_label = None
-        self._pan_x = 0
-        self._pan_y = 0
-        self._is_panning = False
-        self._drag_start_world = None
-        self._drag_current_world = None
-        self._dragged_node_idx = -1
 
         self._plan.add_observer(self)
 
@@ -189,8 +175,7 @@ class TrajectoryCanvas(tk.Canvas):
             :exceptions: None.
         '''
         self._tool_mode = mode
-        self._drag_start_world = None
-        self._drag_current_world = None
+        self._state.reset_drag()
         self.redraw()
 
     def update_settings(self, settings: CanvasSettingsDTO) -> None:
@@ -254,11 +239,11 @@ class TrajectoryCanvas(tk.Canvas):
         CanvasRenderer.draw_background(self, self._vp, self.R_MIN_MM)
         CanvasRenderer.draw_trajectory(self, self._vp, self._plan, self._validator)
 
-        if self._drag_start_world and self._drag_current_world:
+        if self._state.drag_start_world and self._state.drag_current_world:
             CanvasRenderer.draw_preview(
                 self, self._vp,
                 self._tool_mode,
-                (self._drag_start_world, self._drag_current_world)
+                (self._state.drag_start_world, self._state.drag_current_world)
             )
 
     def _on_mouse_down(self, event: tk.Event) -> None:
@@ -269,23 +254,23 @@ class TrajectoryCanvas(tk.Canvas):
             :exceptions: None.
         '''
         if getattr(event, 'num', 1) in (2, 3):
-            self._pan_x = event.x
-            self._pan_y = event.y
-            self._is_panning = True
+            self._state.pan_x = event.x
+            self._state.pan_y = event.y
+            self._state.is_panning = True
             return
 
         w, h = self.winfo_width(), self.winfo_height()
         wx, wy = self._vp.screen_to_world(event.x, event.y, w, h)
-        self._drag_start_world = (wx, wy)
-        self._drag_current_world = (wx, wy)
-        self._dragged_node_idx = -1
+        self._state.drag_start_world = (wx, wy)
+        self._state.drag_current_world = (wx, wy)
+        self._state.dragged_node_idx = -1
 
         hit_r_world: float = self.SELECT_HIT_RADIUS_PX / self._vp.scale
         hit_idx: int = CanvasToolHandler.find_hit_index(self._plan.waypoints, wx, wy, hit_r_world)
 
         if self._tool_mode == CanvasToolMode.SELECT:
             if hit_idx >= 0:
-                self._dragged_node_idx = hit_idx
+                self._state.dragged_node_idx = hit_idx
                 self._plan.select_point(hit_idx)
             else:
                 self._plan.select_point(-1)
@@ -299,22 +284,22 @@ class TrajectoryCanvas(tk.Canvas):
             :param event: Tk event.
             :exceptions: None.
         '''
-        if self._is_panning:
-            self._vp.pan_x += event.x - self._pan_x
-            self._vp.pan_y += event.y - self._pan_y
-            self._pan_x = event.x
-            self._pan_y = event.y
+        if self._state.is_panning:
+            self._vp.pan_x += event.x - self._state.pan_x
+            self._vp.pan_y += event.y - self._state.pan_y
+            self._state.pan_x = event.x
+            self._state.pan_y = event.y
             self.redraw()
             return
 
         w, h = self.winfo_width(), self.winfo_height()
         wx, wy = self._vp.screen_to_world(event.x, event.y, w, h)
-        self._drag_current_world = (wx, wy)
+        self._state.drag_current_world = (wx, wy)
 
-        if self._tool_mode == CanvasToolMode.SELECT and self._dragged_node_idx >= 0:
-            cur_pt = self._plan.waypoints[self._dragged_node_idx]
+        if self._tool_mode == CanvasToolMode.SELECT and self._state.dragged_node_idx >= 0:
+            cur_pt = self._plan.waypoints[self._state.dragged_node_idx]
             self._plan.update_point(
-                self._dragged_node_idx,
+                self._state.dragged_node_idx,
                 Waypoint(x=wx, y=wy, z=cur_pt.z, phi=cur_pt.phi, speed=cur_pt.speed, name=cur_pt.name)
             )
         elif self._tool_mode == CanvasToolMode.FREEHAND and self._plan.count > 0:
@@ -331,15 +316,15 @@ class TrajectoryCanvas(tk.Canvas):
             :param event: Tk event.
             :exceptions: None.
         '''
-        if self._is_panning:
-            self._is_panning = False
+        if self._state.is_panning:
+            self._state.is_panning = False
             return
 
         w, h = self.winfo_width(), self.winfo_height()
         wx, wy = self._vp.screen_to_world(event.x, event.y, w, h)
 
-        if self._drag_start_world:
-            x0, y0 = self._drag_start_world
+        if self._state.drag_start_world:
+            x0, y0 = self._state.drag_start_world
             if self._tool_mode == CanvasToolMode.POINT:
                 self._plan.add_point(Waypoint(x=wx, y=wy, z=self._settings.default_z, phi=0.0, speed=self._settings.default_speed))
             elif self._tool_mode == CanvasToolMode.LINE:
@@ -360,9 +345,7 @@ class TrajectoryCanvas(tk.Canvas):
                     )
                     self._plan.set_waypoints(list(self._plan.waypoints) + rect_pts)
 
-        self._drag_start_world = None
-        self._drag_current_world = None
-        self._dragged_node_idx = -1
+        self._state.reset_drag()
         self.redraw()
 
     def _on_mouse_wheel_or_move(self, event: tk.Event) -> None:

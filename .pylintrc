@@ -19,6 +19,8 @@ max-line-length=150
 [DESIGN]
 # Maximum number of lines in a module.
 max-module-lines=500
+# Maximum number of parents for a class (adjusted for GUI frameworks like Tkinter/TTK).
+max-parents=10
 
 [MESSAGES CONTROL]
 # Disable specific pylint warnings.

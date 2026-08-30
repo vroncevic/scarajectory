@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>scarajectory.core.model.trajectory_plan &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/classic.css?v=514cf933" />
+    
+    <script src="../../../../_static/documentation_options.js?v=57319df4"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.core.model.trajectory_plan</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for scarajectory.core.model.trajectory_plan</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Module</span>
+<span class="sd">    trajectory_plan.py</span>
+<span class="sd">Copyright</span>
+<span class="sd">    Copyright (C) 2026 Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;</span>
+<span class="sd">    scarajectory is free software: you can redistribute it and/or modify it</span>
+<span class="sd">    under the terms of the GNU General Public License as published by the</span>
+<span class="sd">    Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">    (at your option) any later version.</span>
+<span class="sd">    scarajectory is distributed in the hope that it will be useful, but</span>
+<span class="sd">    WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
+<span class="sd">    See the GNU General Public License for more details.</span>
+<span class="sd">    You should have received a copy of the GNU General Public License along</span>
+<span class="sd">    with this program. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">Info</span>
+<span class="sd">    Defines TrajectoryPlan managing ordered waypoint sequence, history and observers.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Sequence</span>
+
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.waypoint</span> <span class="kn">import</span> <span class="n">Waypoint</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.plan_history</span> <span class="kn">import</span> <span class="n">PlanHistory</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.itrajectory_observer</span> <span class="kn">import</span> <span class="n">ITrajectoryObserver</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
+<span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.0&#39;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
+
+
+<div class="viewcode-block" id="TrajectoryPlan">
+<a class="viewcode-back" href="../../../../scarajectory.core.model.trajectory_plan.html#scarajectory.core.model.trajectory_plan.TrajectoryPlan">[docs]</a>
+<span class="k">class</span> <span class="nc">TrajectoryPlan</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Core domain model managing waypoints, selection, undo/redo history, and observers.</span>
+
+<span class="sd">        It defines:</span>
+
+<span class="sd">            :attributes:</span>
+<span class="sd">                | _waypoints - List of motion waypoints.</span>
+<span class="sd">                | _observers - Registered observers for UI synchronisation.</span>
+<span class="sd">                | _selected_index - Index of currently selected waypoint.</span>
+<span class="sd">                | _history - PlanHistory instance.</span>
+<span class="sd">            :methods:</span>
+<span class="sd">                | __init__ - Initializes the trajectory plan.</span>
+<span class="sd">                | waypoints - Returns read-only view of waypoints.</span>
+<span class="sd">                | count - Returns total number of waypoints.</span>
+<span class="sd">                | selected_index - Returns index of currently selected waypoint.</span>
+<span class="sd">                | add_observer - Registers an observer widget.</span>
+<span class="sd">                | set_selected_index - Selects a waypoint by index.</span>
+<span class="sd">                | add_point - Appends a new waypoint to the plan.</span>
+<span class="sd">                | insert_point - Inserts a waypoint at a specific index.</span>
+<span class="sd">                | update_point - Replaces waypoint at index with updated parameters.</span>
+<span class="sd">                | remove_point - Removes waypoint at index.</span>
+<span class="sd">                | clear - Clears all waypoints in the plan.</span>
+<span class="sd">                | set_waypoints - Replaces all waypoints with a new list.</span>
+<span class="sd">                | undo - Reverts last modification.</span>
+<span class="sd">                | redo - Re-applies previously undone action.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">_waypoints</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Waypoint</span><span class="p">]</span>
+    <span class="n">_observers</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ITrajectoryObserver</span><span class="p">]</span>
+    <span class="n">_selected_index</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">_history</span><span class="p">:</span> <span class="n">PlanHistory</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Initializes the trajectory plan with empty stacks and observers.</span>
+
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_observers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_selected_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_history</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">PlanHistory</span><span class="p">]</span> <span class="o">=</span> <span class="n">PlanHistory</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">waypoints</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Waypoint</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Returns read-only view of waypoints.</span>
+
+<span class="sd">            :return: Tuple of Waypoint instances.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Returns total number of points.</span>
+
+<span class="sd">            :return: Number of waypoints.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">selected_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Returns index of currently selected waypoint.</span>
+
+<span class="sd">            :return: Selected waypoint index or -1.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_selected_index</span>
+
+<div class="viewcode-block" id="TrajectoryPlan.add_observer">
+<a class="viewcode-back" href="../../../../scarajectory.core.model.trajectory_plan.html#scarajectory.core.model.trajectory_plan.TrajectoryPlan.add_observer">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_observer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observer</span><span class="p">:</span> <span class="n">ITrajectoryObserver</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Registers an observer widget.</span>
+
+<span class="sd">            :param observer: ITrajectoryObserver instance.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">observer</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_observers</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_observers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">observer</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryPlan._notify">
+<a class="viewcode-back" href="../../../../scarajectory.core.model.trajectory_plan.html#scarajectory.core.model.trajectory_plan.TrajectoryPlan._notify">[docs]</a>
+    <span class="k">def</span> <span class="nf">_notify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">notify_selection</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Notifies all observers of data and selection updates.</span>
+
+<span class="sd">            :param notify_selection: Whether to also trigger selection callbacks.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">obs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_observers</span><span class="p">:</span>
+            <span class="n">obs</span><span class="o">.</span><span class="n">on_trajectory_updated</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">notify_selection</span><span class="p">:</span>
+                <span class="n">obs</span><span class="o">.</span><span class="n">on_point_selected</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_selected_index</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryPlan.set_selected_index">
+<a class="viewcode-back" href="../../../../scarajectory.core.model.trajectory_plan.html#scarajectory.core.model.trajectory_plan.TrajectoryPlan.set_selected_index">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_selected_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Selects a waypoint by index.</span>
+
+<span class="sd">            :param index: Target index (-1 for deselect).</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_selected_index</span> <span class="o">=</span> <span class="n">index</span>
+            <span class="k">for</span> <span class="n">obs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_observers</span><span class="p">:</span>
+                <span class="n">obs</span><span class="o">.</span><span class="n">on_point_selected</span><span class="p">(</span><span class="n">index</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryPlan.add_point">
+<a class="viewcode-back" href="../../../../scarajectory.core.model.trajectory_plan.html#scarajectory.core.model.trajectory_plan.TrajectoryPlan.add_point">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">:</span> <span class="n">Waypoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Appends a new waypoint to the plan.</span>
+
+<span class="sd">            :param point: Waypoint instance to add.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_history</span><span class="o">.</span><span class="n">save_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_selected_index</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_notify</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryPlan.insert_point">
+<a class="viewcode-back" href="../../../../scarajectory.core.model.trajectory_plan.html#scarajectory.core.model.trajectory_plan.TrajectoryPlan.insert_point">[docs]</a>
+    <span class="k">def</span> <span class="nf">insert_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">point</span><span class="p">:</span> <span class="n">Waypoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Inserts a waypoint at a specific index.</span>
+
+<span class="sd">            :param index: Target insertion position.</span>
+<span class="sd">            :param point: Waypoint to insert.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_history</span><span class="o">.</span><span class="n">save_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span><span class="p">)</span>
+        <span class="n">idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span><span class="p">),</span> <span class="n">index</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_selected_index</span> <span class="o">=</span> <span class="n">idx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_notify</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryPlan.update_point">
+<a class="viewcode-back" href="../../../../scarajectory.core.model.trajectory_plan.html#scarajectory.core.model.trajectory_plan.TrajectoryPlan.update_point">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">new_point</span><span class="p">:</span> <span class="n">Waypoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Replaces waypoint at index with updated parameters.</span>
+
+<span class="sd">            :param index: Target index.</span>
+<span class="sd">            :param new_point: New waypoint data.</span>
+<span class="sd">            :return: True if updated, False otherwise.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_history</span><span class="o">.</span><span class="n">save_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_point</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_notify</span><span class="p">(</span><span class="n">notify_selection</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryPlan.remove_point">
+<a class="viewcode-back" href="../../../../scarajectory.core.model.trajectory_plan.html#scarajectory.core.model.trajectory_plan.TrajectoryPlan.remove_point">[docs]</a>
+    <span class="k">def</span> <span class="nf">remove_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Removes waypoint at index.</span>
+
+<span class="sd">            :param index: Target index to remove.</span>
+<span class="sd">            :return: True if removed, False otherwise.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_history</span><span class="o">.</span><span class="n">save_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_selected_index</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_selected_index</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_notify</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryPlan.clear">
+<a class="viewcode-back" href="../../../../scarajectory.core.model.trajectory_plan.html#scarajectory.core.model.trajectory_plan.TrajectoryPlan.clear">[docs]</a>
+    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Clears all waypoints in the plan.</span>
+
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_history</span><span class="o">.</span><span class="n">save_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_selected_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_notify</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryPlan.set_waypoints">
+<a class="viewcode-back" href="../../../../scarajectory.core.model.trajectory_plan.html#scarajectory.core.model.trajectory_plan.TrajectoryPlan.set_waypoints">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_waypoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">waypoints</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Waypoint</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Replaces all waypoints with a new list.</span>
+
+<span class="sd">            :param waypoints: New list of Waypoint instances.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_history</span><span class="o">.</span><span class="n">save_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">waypoints</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_selected_index</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_notify</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryPlan.undo">
+<a class="viewcode-back" href="../../../../scarajectory.core.model.trajectory_plan.html#scarajectory.core.model.trajectory_plan.TrajectoryPlan.undo">[docs]</a>
+    <span class="k">def</span> <span class="nf">undo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Reverts last modification.</span>
+
+<span class="sd">            :return: True if undone, False otherwise.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">prev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_history</span><span class="o">.</span><span class="n">undo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">prev</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span> <span class="o">=</span> <span class="n">prev</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_selected_index</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_selected_index</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_notify</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryPlan.redo">
+<a class="viewcode-back" href="../../../../scarajectory.core.model.trajectory_plan.html#scarajectory.core.model.trajectory_plan.TrajectoryPlan.redo">[docs]</a>
+    <span class="k">def</span> <span class="nf">redo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Re-applies previously undone action.</span>
+
+<span class="sd">            :return: True if reapplied, False otherwise.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">nxt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_history</span><span class="o">.</span><span class="n">redo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">nxt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span> <span class="o">=</span> <span class="n">nxt</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_selected_index</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_selected_index</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_waypoints</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_notify</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+</div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.core.model.trajectory_plan</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

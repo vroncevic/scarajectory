@@ -2,12 +2,6 @@
 	"folders": [
 		{
 			"path": "."
-		},
-		{
-			"path": "../../../../../raspberry/scara/github/scara/sw/scara_base"
-		},
-		{
-			"path": "../../../../../raspberry/scara/github/scara/sw/emulator"
 		}
 	],
 	"settings": {}

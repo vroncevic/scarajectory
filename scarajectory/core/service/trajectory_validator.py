@@ -60,9 +60,9 @@ class TrajectoryValidator:
                 | validate_plan - Validates entire trajectory plan against kinematic bounds.
     '''
 
-    _bounds: Final[ScaraBounds]
-    _r_min: Final[float]
-    _r_max: Final[float]
+    _bounds: ScaraBounds
+    _r_min: float
+    _r_max: float
 
     def __init__(self, bounds: ScaraBounds = ScaraBounds()) -> None:
         '''
@@ -71,9 +71,9 @@ class TrajectoryValidator:
             :param bounds: ScaraBounds encapsulating link lengths and limits.
             :exceptions: None.
         '''
-        self._bounds = bounds
-        self._r_min = abs(bounds.l1 - bounds.l2)
-        self._r_max = bounds.l1 + bounds.l2
+        self._bounds: Final[ScaraBounds] = bounds
+        self._r_min: Final[float] = abs(bounds.l1 - bounds.l2)
+        self._r_max: Final[float] = bounds.l1 + bounds.l2
 
     @property
     def bounds(self) -> ScaraBounds:

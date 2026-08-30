@@ -62,8 +62,8 @@ class SerialTransport:
     '''
 
     _serial: Serial | None
-    _lock: Final[Lock]
-    _stop_event: Final[Event]
+    _lock: Lock
+    _stop_event: Event
     _reader_thread: Thread | None
     _on_line: Callable[[str], None] | None
     _on_log: Callable[[str, bool], None] | None
@@ -81,8 +81,8 @@ class SerialTransport:
             :exceptions: None.
         '''
         self._serial = None
-        self._lock = Lock()
-        self._stop_event = Event()
+        self._lock: Final[Lock] = Lock()
+        self._stop_event: Final[Event] = Event()
         self._reader_thread = None
         self._on_line = on_line
         self._on_log = on_log

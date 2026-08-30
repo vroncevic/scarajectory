@@ -60,8 +60,8 @@ class Toolbar(ttk.Frame):
                 | get_cursor_label - Returns cursor info label widget.
     '''
 
-    _canvas: Final[ICanvas]
-    _plan: Final[ITrajectoryPlan]
+    _canvas: ICanvas
+    _plan: ITrajectoryPlan
     _tool_var: tk.StringVar
     _spin_z: ttk.Spinbox
     _spin_speed: ttk.Spinbox
@@ -83,9 +83,9 @@ class Toolbar(ttk.Frame):
             :param plan: ITrajectoryPlan instance.
             :exceptions: None.
         '''
-        super().__init__(parent, padding=(8, 6), **kwargs)  # type: ignore[arg-type]
-        self._canvas = canvas
-        self._plan = plan
+        super().__init__(parent, padding=(8, 6), **kwargs)
+        self._canvas: Final[ICanvas] = canvas
+        self._plan: Final[ITrajectoryPlan] = plan
         self._build_layout()
 
     def _build_layout(self) -> None:

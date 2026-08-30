@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>scarajectory.infrastructure.gui.canvas module &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
+    
+    <script src="_static/documentation_options.js?v=57319df4"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="scarajectory.infrastructure.gui.controls module" href="scarajectory.infrastructure.gui.controls.html" />
+    <link rel="prev" title="scarajectory.infrastructure.gui.components.waypoint_editor module" href="scarajectory.infrastructure.gui.components.waypoint_editor.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.controls.html" title="scarajectory.infrastructure.gui.controls module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.components.waypoint_editor.html" title="scarajectory.infrastructure.gui.components.waypoint_editor module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.gui.html" accesskey="U">scarajectory.infrastructure.gui package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.canvas module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-scarajectory.infrastructure.gui.canvas">
+<span id="scarajectory-infrastructure-gui-canvas-module"></span><h1>scarajectory.infrastructure.gui.canvas module<a class="headerlink" href="#module-scarajectory.infrastructure.gui.canvas" title="Link to this heading">¶</a></h1>
+<dl class="simple">
+<dt>Module</dt><dd><p>canvas.py</p>
+</dd>
+<dt>Copyright</dt><dd><p>Copyright (C) 2026 Vladimir Roncevic &lt;<a class="reference external" href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+scarajectory is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+scarajectory is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along
+with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+</dd>
+<dt>Info</dt><dd><p>Interactive CAD Vector Canvas with dynamic resizing, zoom/pan and deadzone enforcement.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.TrajectoryCanvas">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.gui.canvas.</span></span><span class="sig-name descname"><span class="pre">TrajectoryCanvas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.itrajectory_plan.html#scarajectory.core.model.itrajectory_plan.ITrajectoryPlan" title="scarajectory.core.model.itrajectory_plan.ITrajectoryPlan"><span class="pre">ITrajectoryPlan</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">validator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.itrajectory_validator.html#scarajectory.core.service.itrajectory_validator.ITrajectoryValidator" title="scarajectory.core.service.itrajectory_validator.ITrajectoryValidator"><span class="pre">ITrajectoryValidator</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.canvas_settings_dto.html#scarajectory.core.model.canvas_settings_dto.CanvasSettingsDTO" title="scarajectory.core.model.canvas_settings_dto.CanvasSettingsDTO"><span class="pre">CanvasSettingsDTO</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">CanvasSettingsDTO(default_z=20.0,</span> <span class="pre">default_speed=40.0,</span> <span class="pre">enforce_deadzone=True)</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas.html#TrajectoryCanvas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Canvas</span></code></p>
+<p>Vector CAD drawing canvas with dynamic sizing, interactive zoom/pan, and deadzone protection.</p>
+<p>It defines:</p>
+<blockquote>
+<div><dl class="field-list">
+<dt class="field-odd">attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="line-block">
+<div class="line">R_MIN_MM - Minimum radius deadzone boundary in mm.</div>
+<div class="line">SELECT_HIT_RADIUS_PX - Hit detection pixel radius for selecting waypoints.</div>
+<div class="line">FREEHAND_MIN_DISTANCE_MM - Minimum distance threshold in mm for freehand point sampling.</div>
+<div class="line">CIRCLE_MIN_RADIUS_MM - Minimum radius threshold in mm for inserting circle shapes.</div>
+<div class="line">CIRCLE_DEFAULT_STEPS - Number of waypoint segments used for circle discretization.</div>
+<div class="line">_plan - ITrajectoryPlan instance.</div>
+<div class="line">_validator - Kinematic reachability validator.</div>
+<div class="line">_settings - Active canvas configuration DTO.</div>
+<div class="line">_tool_mode - Active interactive drawing tool.</div>
+<div class="line">_vp - Viewport transformation matrix.</div>
+<div class="line">_state - Interactive mouse pan, drag and selection state.</div>
+<div class="line">_hover_label - Hover status readout widget.</div>
+</div>
+</dd>
+<dt class="field-even">methods<span class="colon">:</span></dt>
+<dd class="field-even"><div class="line-block">
+<div class="line">__init__ - Initializes the vector CAD canvas and binds events.</div>
+<div class="line">on_trajectory_updated - Redraws canvas on plan change.</div>
+<div class="line">on_point_selected - Redraws selection ring when waypoint selection changes.</div>
+<div class="line">set_hover_label - Configures status bar label for cursor readouts.</div>
+<div class="line">set_tool_mode - Changes active drawing/selection tool.</div>
+<div class="line">update_settings - Updates default parameters and deadzone settings.</div>
+<div class="line">fit_reach_view - Auto-fits the SCARA maximum reach circle into view.</div>
+<div class="line">reset_view - Resets zoom to 100% and centers workspace.</div>
+<div class="line">zoom_in - Scales view by factor.</div>
+<div class="line">zoom_out - Scales view by factor.</div>
+<div class="line">redraw - Clears and redraws entire vector scene.</div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.CIRCLE_DEFAULT_STEPS">
+<span class="sig-name descname"><span class="pre">CIRCLE_DEFAULT_STEPS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">16</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.CIRCLE_DEFAULT_STEPS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.CIRCLE_MIN_RADIUS_MM">
+<span class="sig-name descname"><span class="pre">CIRCLE_MIN_RADIUS_MM</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5.0</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.CIRCLE_MIN_RADIUS_MM" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.FREEHAND_MIN_DISTANCE_MM">
+<span class="sig-name descname"><span class="pre">FREEHAND_MIN_DISTANCE_MM</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5.0</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.FREEHAND_MIN_DISTANCE_MM" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.R_MIN_MM">
+<span class="sig-name descname"><span class="pre">R_MIN_MM</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">30.0</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.R_MIN_MM" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.SELECT_HIT_RADIUS_PX">
+<span class="sig-name descname"><span class="pre">SELECT_HIT_RADIUS_PX</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">12.0</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.SELECT_HIT_RADIUS_PX" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._hover_label">
+<span class="sig-name descname"><span class="pre">_hover_label</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Label</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._hover_label" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._on_mouse_down">
+<span class="sig-name descname"><span class="pre">_on_mouse_down</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Event</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas.html#TrajectoryCanvas._on_mouse_down"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._on_mouse_down" title="Link to this definition">¶</a></dt>
+<dd><p>Handles mouse button press for tool interaction or viewport pan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>event</strong> – Tk event.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._on_mouse_drag">
+<span class="sig-name descname"><span class="pre">_on_mouse_drag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Event</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas.html#TrajectoryCanvas._on_mouse_drag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._on_mouse_drag" title="Link to this definition">¶</a></dt>
+<dd><p>Handles mouse drag motion for active CAD tool or panning.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>event</strong> – Tk event.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._on_mouse_up">
+<span class="sig-name descname"><span class="pre">_on_mouse_up</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Event</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas.html#TrajectoryCanvas._on_mouse_up"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._on_mouse_up" title="Link to this definition">¶</a></dt>
+<dd><p>Finalizes shape insertion or pan operation on mouse release.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>event</strong> – Tk event.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._on_mouse_wheel_or_move">
+<span class="sig-name descname"><span class="pre">_on_mouse_wheel_or_move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Event</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas.html#TrajectoryCanvas._on_mouse_wheel_or_move"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._on_mouse_wheel_or_move" title="Link to this definition">¶</a></dt>
+<dd><p>Handles mouse wheel zooming and hover label coordinate readout.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>event</strong> – Tk event.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._plan">
+<span class="sig-name descname"><span class="pre">_plan</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.model.itrajectory_plan.html#scarajectory.core.model.itrajectory_plan.ITrajectoryPlan" title="scarajectory.core.model.itrajectory_plan.ITrajectoryPlan"><span class="pre">ITrajectoryPlan</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._plan" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._settings">
+<span class="sig-name descname"><span class="pre">_settings</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.model.canvas_settings_dto.html#scarajectory.core.model.canvas_settings_dto.CanvasSettingsDTO" title="scarajectory.core.model.canvas_settings_dto.CanvasSettingsDTO"><span class="pre">CanvasSettingsDTO</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._settings" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._state">
+<span class="sig-name descname"><span class="pre">_state</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.model.canvas_interaction_state.html#scarajectory.core.model.canvas_interaction_state.CanvasInteractionState" title="scarajectory.core.model.canvas_interaction_state.CanvasInteractionState"><span class="pre">CanvasInteractionState</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._state" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._tool_mode">
+<span class="sig-name descname"><span class="pre">_tool_mode</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.model.canvas_tool_mode.html#scarajectory.core.model.canvas_tool_mode.CanvasToolMode" title="scarajectory.core.model.canvas_tool_mode.CanvasToolMode"><span class="pre">CanvasToolMode</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._tool_mode" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._validator">
+<span class="sig-name descname"><span class="pre">_validator</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.itrajectory_validator.html#scarajectory.core.service.itrajectory_validator.ITrajectoryValidator" title="scarajectory.core.service.itrajectory_validator.ITrajectoryValidator"><span class="pre">ITrajectoryValidator</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._validator" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._vp">
+<span class="sig-name descname"><span class="pre">_vp</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.model.viewport_transform.html#scarajectory.core.model.viewport_transform.ViewportTransform" title="scarajectory.core.model.viewport_transform.ViewportTransform"><span class="pre">ViewportTransform</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._vp" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.fit_reach_view">
+<span class="sig-name descname"><span class="pre">fit_reach_view</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas.html#TrajectoryCanvas.fit_reach_view"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.fit_reach_view" title="Link to this definition">¶</a></dt>
+<dd><p>Auto-fits the SCARA maximum reach circle into view.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.on_point_selected">
+<span class="sig-name descname"><span class="pre">on_point_selected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas.html#TrajectoryCanvas.on_point_selected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.on_point_selected" title="Link to this definition">¶</a></dt>
+<dd><p>Redraws selection ring when waypoint selection changes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> – Selected index.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.on_trajectory_updated">
+<span class="sig-name descname"><span class="pre">on_trajectory_updated</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas.html#TrajectoryCanvas.on_trajectory_updated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.on_trajectory_updated" title="Link to this definition">¶</a></dt>
+<dd><p>Redraws canvas on plan change.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.redraw">
+<span class="sig-name descname"><span class="pre">redraw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas.html#TrajectoryCanvas.redraw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.redraw" title="Link to this definition">¶</a></dt>
+<dd><p>Clears and redraws entire vector scene.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.reset_view">
+<span class="sig-name descname"><span class="pre">reset_view</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas.html#TrajectoryCanvas.reset_view"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.reset_view" title="Link to this definition">¶</a></dt>
+<dd><p>Resets zoom to 100% and centers workspace.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.set_hover_label">
+<span class="sig-name descname"><span class="pre">set_hover_label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Label</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas.html#TrajectoryCanvas.set_hover_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.set_hover_label" title="Link to this definition">¶</a></dt>
+<dd><p>Configures status bar label for cursor readouts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>label</strong> – ttk.Label instance.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.set_tool_mode">
+<span class="sig-name descname"><span class="pre">set_tool_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.canvas_tool_mode.html#scarajectory.core.model.canvas_tool_mode.CanvasToolMode" title="scarajectory.core.model.canvas_tool_mode.CanvasToolMode"><span class="pre">CanvasToolMode</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas.html#TrajectoryCanvas.set_tool_mode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.set_tool_mode" title="Link to this definition">¶</a></dt>
+<dd><p>Changes active drawing/selection tool.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mode</strong> – Target CanvasToolMode.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.update_settings">
+<span class="sig-name descname"><span class="pre">update_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.canvas_settings_dto.html#scarajectory.core.model.canvas_settings_dto.CanvasSettingsDTO" title="scarajectory.core.model.canvas_settings_dto.CanvasSettingsDTO"><span class="pre">CanvasSettingsDTO</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas.html#TrajectoryCanvas.update_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.update_settings" title="Link to this definition">¶</a></dt>
+<dd><p>Updates default parameters and deadzone settings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>settings</strong> – New CanvasSettingsDTO.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.zoom_in">
+<span class="sig-name descname"><span class="pre">zoom_in</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas.html#TrajectoryCanvas.zoom_in"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.zoom_in" title="Link to this definition">¶</a></dt>
+<dd><p>Scales view in by zoom factor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.zoom_out">
+<span class="sig-name descname"><span class="pre">zoom_out</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas.html#TrajectoryCanvas.zoom_out"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.zoom_out" title="Link to this definition">¶</a></dt>
+<dd><p>Scales view out by zoom factor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">scarajectory.infrastructure.gui.canvas module</a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.CIRCLE_DEFAULT_STEPS"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas.CIRCLE_DEFAULT_STEPS</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.CIRCLE_MIN_RADIUS_MM"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas.CIRCLE_MIN_RADIUS_MM</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.FREEHAND_MIN_DISTANCE_MM"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas.FREEHAND_MIN_DISTANCE_MM</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.R_MIN_MM"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas.R_MIN_MM</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.SELECT_HIT_RADIUS_PX"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas.SELECT_HIT_RADIUS_PX</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._hover_label"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas._hover_label</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._on_mouse_down"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas._on_mouse_down()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._on_mouse_drag"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas._on_mouse_drag()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._on_mouse_up"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas._on_mouse_up()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._on_mouse_wheel_or_move"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas._on_mouse_wheel_or_move()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._plan"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas._plan</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._settings"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas._settings</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._state"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas._state</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._tool_mode"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas._tool_mode</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._validator"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas._validator</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._vp"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas._vp</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.fit_reach_view"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas.fit_reach_view()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.on_point_selected"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas.on_point_selected()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.on_trajectory_updated"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas.on_trajectory_updated()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.redraw"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas.redraw()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.reset_view"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas.reset_view()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.set_hover_label"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas.set_hover_label()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.set_tool_mode"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas.set_tool_mode()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.update_settings"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas.update_settings()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.zoom_in"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas.zoom_in()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.zoom_out"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas.zoom_out()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.components.waypoint_editor.html"
+                          title="previous chapter">scarajectory.infrastructure.gui.components.waypoint_editor module</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.controls.html"
+                          title="next chapter">scarajectory.infrastructure.gui.controls module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/scarajectory.infrastructure.gui.canvas.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.controls.html" title="scarajectory.infrastructure.gui.controls module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.components.waypoint_editor.html" title="scarajectory.infrastructure.gui.components.waypoint_editor module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.gui.html" >scarajectory.infrastructure.gui package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.canvas module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

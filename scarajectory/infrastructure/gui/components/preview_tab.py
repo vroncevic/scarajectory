@@ -52,7 +52,7 @@ class PreviewTab(ttk.Frame):
                 | generate_preview - Generates and displays ASCII trajectory protocol program.
     '''
 
-    _plan: Final[ITrajectoryPlan]
+    _plan: ITrajectoryPlan
     _txt_preview: tk.Text
 
     def __init__(self, parent: tk.Widget, plan: ITrajectoryPlan, **kwargs: object) -> None:
@@ -64,7 +64,7 @@ class PreviewTab(ttk.Frame):
             :exceptions: None.
         '''
         super().__init__(parent, padding=6, **kwargs)
-        self._plan = plan
+        self._plan: Final[ITrajectoryPlan] = plan
         self._build_layout()
 
     def _build_layout(self) -> None:

@@ -61,8 +61,8 @@ class TcpTransport:
     '''
 
     _sock: socket.socket | None
-    _lock: Final[Lock]
-    _stop_event: Final[Event]
+    _lock: Lock
+    _stop_event: Event
     _reader_thread: Thread | None
     _on_line: Callable[[str], None] | None
     _on_log: Callable[[str, bool], None] | None
@@ -80,8 +80,8 @@ class TcpTransport:
             :exceptions: None.
         '''
         self._sock = None
-        self._lock = Lock()
-        self._stop_event = Event()
+        self._lock: Final[Lock] = Lock()
+        self._stop_event: Final[Event] = Event()
         self._reader_thread = None
         self._on_line = on_line
         self._on_log = on_log
@@ -192,6 +192,21 @@ class TcpTransport:
                     self._on_log(f'[TX ERR]: {exc}', False)
                 return False
 
+    def _cleanup_abnormal_disconnect(self) -> None:
+        '''
+            Cleans up socket resources and notifies observers on abnormal network termination.
+
+            :exceptions: None.
+        '''
+        if self._sock:
+            try:
+                self._sock.close()
+            except (OSError, socket.error):
+                pass
+            self._sock = None
+        if self._on_log:
+            self._on_log('[HOST]: Connection lost (remote socket closed)', False)
+
     def _reader_loop(self) -> None:
         '''
             Background thread polling and assembling incoming newline-terminated lines over TCP socket.
@@ -206,31 +221,23 @@ class TcpTransport:
                 break
             try:
                 data: bytes = sock.recv(128)
-                if data:
-                    buffer += data.decode('utf-8', errors='ignore')
-                    while '\n' in buffer:
-                        line: str
-                        line, buffer = buffer.split('\n', 1)
-                        line = line.strip()
-                        if line and self._on_line:
-                            self._on_line(line)
-                else:
-                    if not self._stop_event.is_set():
-                        abnormal_disconnect = True
+
+                if not data:
+                    abnormal_disconnect = not self._stop_event.is_set()
                     break
+                buffer += data.decode('utf-8', errors='ignore')
+
+                while '\n' in buffer:
+                    line, buffer = buffer.split('\n', 1)
+                    line = line.strip()
+                    if line and self._on_line:
+                        self._on_line(line)
+
             except socket.timeout:
                 sleep(0.01)
             except (OSError, socket.error):
-                if not self._stop_event.is_set():
-                    abnormal_disconnect = True
+                abnormal_disconnect = not self._stop_event.is_set()
                 break
 
         if abnormal_disconnect:
-            if self._sock:
-                try:
-                    self._sock.close()
-                except (OSError, socket.error):
-                    pass
-                self._sock = None
-            if self._on_log:
-                self._on_log('[HOST]: Connection lost (remote socket closed)', False)
+            self._cleanup_abnormal_disconnect()

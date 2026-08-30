@@ -65,9 +65,9 @@ class StreamerTab(ttk.Frame):
                 | update_progress - Updates streamer progress bar and metrics.
     '''
 
-    _plan: Final[ITrajectoryPlan]
-    _validator: Final[ITrajectoryValidator]
-    _streamer: Final[ITrajectoryStreamer]
+    _plan: ITrajectoryPlan
+    _validator: ITrajectoryValidator
+    _streamer: ITrajectoryStreamer
     _cbo_ports: ttk.Combobox
     _btn_connect: ttk.Button
     _status_bar: StreamStatusBar
@@ -91,9 +91,9 @@ class StreamerTab(ttk.Frame):
             :exceptions: None.
         '''
         super().__init__(parent, padding=6, **kwargs)
-        self._plan = plan
-        self._validator = validator
-        self._streamer = streamer
+        self._plan: Final[ITrajectoryPlan] = plan
+        self._validator: Final[ITrajectoryValidator] = validator
+        self._streamer: Final[ITrajectoryStreamer] = streamer
         self._build_layout()
         self.refresh_ports()
 

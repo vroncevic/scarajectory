@@ -54,7 +54,7 @@ class TrajectoryTable(ttk.Frame):
                 | on_point_selected - Synchronizes row selection.
     '''
 
-    _plan: Final[ITrajectoryPlan]
+    _plan: ITrajectoryPlan
     _tree: ttk.Treeview
 
     def __init__(self, parent: tk.Widget, plan: ITrajectoryPlan, **kwargs: object) -> None:
@@ -66,7 +66,7 @@ class TrajectoryTable(ttk.Frame):
             :exceptions: None.
         '''
         super().__init__(parent, **kwargs)
-        self._plan = plan
+        self._plan: Final[ITrajectoryPlan] = plan
         self._plan.add_observer(self)
         self._create_widgets()
 

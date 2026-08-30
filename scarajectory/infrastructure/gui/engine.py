@@ -75,8 +75,8 @@ class ScarajectoryGUI:
                 | on_point_selected - Receives waypoint selection notifications.
     '''
 
-    _root: Final[tk.Tk]
-    _service: Final[IService]
+    _root: tk.Tk
+    _service: IService
     _canvas: ICanvas
     _table: ITable
     _controls: IControls
@@ -91,8 +91,8 @@ class ScarajectoryGUI:
             :param root: Optional root Tk window.
             :exceptions: None.
         '''
-        self._service = service
-        self._root = root if root is not None else tk.Tk()
+        self._service: Final[IService] = service
+        self._root: Final[tk.Tk] = root if root is not None else tk.Tk()
         self._root.title('SCARAjectory — Motion Trajectory Studio & Streamer')
         sw: int = self._root.winfo_screenwidth()
         sh: int = self._root.winfo_screenheight()

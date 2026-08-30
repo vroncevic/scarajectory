@@ -56,10 +56,10 @@ class AppMenuBar:
                 | save_json_dialog - Shows save file dialog and saves current trajectory plan.
     '''
 
-    _root: Final[tk.Tk]
-    _service: Final[IService]
-    _canvas: Final[ICanvas]
-    _table: Final[ITable]
+    _root: tk.Tk
+    _service: IService
+    _canvas: ICanvas
+    _table: ITable
 
     def __init__(
         self,
@@ -77,10 +77,10 @@ class AppMenuBar:
             :param table: ITable interface instance.
             :exceptions: None.
         '''
-        self._root = root
-        self._service = service
-        self._canvas = canvas
-        self._table = table
+        self._root: Final[tk.Tk] = root
+        self._service: Final[IService] = service
+        self._canvas: Final[ICanvas] = canvas
+        self._table: Final[ITable] = table
 
         self._build_menu()
         self._bind_hotkeys()

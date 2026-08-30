@@ -69,7 +69,7 @@ class TrajectoryPlan:
     _waypoints: list[Waypoint]
     _observers: list[ITrajectoryObserver]
     _selected_index: int
-    _history: Final[PlanHistory]
+    _history: PlanHistory
 
     def __init__(self) -> None:
         '''
@@ -80,7 +80,7 @@ class TrajectoryPlan:
         self._waypoints = []
         self._observers = []
         self._selected_index = -1
-        self._history = PlanHistory()
+        self._history: Final[PlanHistory] = PlanHistory()
 
     @property
     def waypoints(self) -> Sequence[Waypoint]:
