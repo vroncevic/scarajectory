@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>scarajectory.infrastructure.gui.components.menu_bar module &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
+    
+    <script src="_static/documentation_options.js?v=57319df4"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="scarajectory.infrastructure.gui.components.preview_tab module" href="scarajectory.infrastructure.gui.components.preview_tab.html" />
+    <link rel="prev" title="scarajectory.infrastructure.gui.components.jog_tab module" href="scarajectory.infrastructure.gui.components.jog_tab.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.components.preview_tab.html" title="scarajectory.infrastructure.gui.components.preview_tab module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.components.jog_tab.html" title="scarajectory.infrastructure.gui.components.jog_tab module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.gui.html" >scarajectory.infrastructure.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.infrastructure.gui.components.html" accesskey="U">scarajectory.infrastructure.gui.components package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.components.menu_bar module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-scarajectory.infrastructure.gui.components.menu_bar">
+<span id="scarajectory-infrastructure-gui-components-menu-bar-module"></span><h1>scarajectory.infrastructure.gui.components.menu_bar module<a class="headerlink" href="#module-scarajectory.infrastructure.gui.components.menu_bar" title="Link to this heading">¶</a></h1>
+<dl class="simple">
+<dt>Module</dt><dd><p>menu_bar.py</p>
+</dd>
+<dt>Copyright</dt><dd><p>Copyright (C) 2026 Vladimir Roncevic &lt;<a class="reference external" href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+scarajectory is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+scarajectory is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along
+with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+</dd>
+<dt>Info</dt><dd><p>Top application menu bar constructing File, Edit, View menus and hotkeys.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.gui.components.menu_bar.</span></span><span class="sig-name descname"><span class="pre">AppMenuBar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.iservice.html#scarajectory.core.service.iservice.IService" title="scarajectory.core.service.iservice.IService"><span class="pre">IService</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">canvas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.icanvas.html#scarajectory.infrastructure.gui.icanvas.ICanvas" title="scarajectory.infrastructure.gui.icanvas.ICanvas"><span class="pre">ICanvas</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.itable.html#scarajectory.infrastructure.gui.itable.ITable" title="scarajectory.infrastructure.gui.itable.ITable"><span class="pre">ITable</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/components/menu_bar.html#AppMenuBar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Application menu bar component building File, Edit, View menus and binding hotkeys.</p>
+<p>It defines:</p>
+<blockquote>
+<div><dl class="field-list">
+<dt class="field-odd">attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="line-block">
+<div class="line">_root - Application root Tk window.</div>
+<div class="line">_service - Core trajectory service instance.</div>
+<div class="line">_canvas - CAD canvas interface.</div>
+<div class="line">_table - Waypoint table interface.</div>
+</div>
+</dd>
+<dt class="field-even">methods<span class="colon">:</span></dt>
+<dd class="field-even"><div class="line-block">
+<div class="line">__init__ - Initializes and attaches menu bar to root window.</div>
+<div class="line">open_json_dialog - Shows open file dialog and loads selected trajectory plan.</div>
+<div class="line">save_json_dialog - Shows save file dialog and saves current trajectory plan.</div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar._bind_hotkeys">
+<span class="sig-name descname"><span class="pre">_bind_hotkeys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/components/menu_bar.html#AppMenuBar._bind_hotkeys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar._bind_hotkeys" title="Link to this definition">¶</a></dt>
+<dd><p>Binds keyboard shortcuts to window.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar._build_menu">
+<span class="sig-name descname"><span class="pre">_build_menu</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/components/menu_bar.html#AppMenuBar._build_menu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar._build_menu" title="Link to this definition">¶</a></dt>
+<dd><p>Constructs File, Edit, View cascades and sets root menu.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar._canvas">
+<span class="sig-name descname"><span class="pre">_canvas</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.icanvas.html#scarajectory.infrastructure.gui.icanvas.ICanvas" title="scarajectory.infrastructure.gui.icanvas.ICanvas"><span class="pre">ICanvas</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar._canvas" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar._root">
+<span class="sig-name descname"><span class="pre">_root</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tk</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar._root" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar._service">
+<span class="sig-name descname"><span class="pre">_service</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.iservice.html#scarajectory.core.service.iservice.IService" title="scarajectory.core.service.iservice.IService"><span class="pre">IService</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar._service" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar._table">
+<span class="sig-name descname"><span class="pre">_table</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.itable.html#scarajectory.infrastructure.gui.itable.ITable" title="scarajectory.infrastructure.gui.itable.ITable"><span class="pre">ITable</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar._table" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar.open_json_dialog">
+<span class="sig-name descname"><span class="pre">open_json_dialog</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/components/menu_bar.html#AppMenuBar.open_json_dialog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar.open_json_dialog" title="Link to this definition">¶</a></dt>
+<dd><p>Shows open file dialog and loads selected trajectory plan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar.save_json_dialog">
+<span class="sig-name descname"><span class="pre">save_json_dialog</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/components/menu_bar.html#AppMenuBar.save_json_dialog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar.save_json_dialog" title="Link to this definition">¶</a></dt>
+<dd><p>Shows save file dialog and saves current trajectory plan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">scarajectory.infrastructure.gui.components.menu_bar module</a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar"><code class="docutils literal notranslate"><span class="pre">AppMenuBar</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar._bind_hotkeys"><code class="docutils literal notranslate"><span class="pre">AppMenuBar._bind_hotkeys()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar._build_menu"><code class="docutils literal notranslate"><span class="pre">AppMenuBar._build_menu()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar._canvas"><code class="docutils literal notranslate"><span class="pre">AppMenuBar._canvas</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar._root"><code class="docutils literal notranslate"><span class="pre">AppMenuBar._root</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar._service"><code class="docutils literal notranslate"><span class="pre">AppMenuBar._service</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar._table"><code class="docutils literal notranslate"><span class="pre">AppMenuBar._table</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar.open_json_dialog"><code class="docutils literal notranslate"><span class="pre">AppMenuBar.open_json_dialog()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar.save_json_dialog"><code class="docutils literal notranslate"><span class="pre">AppMenuBar.save_json_dialog()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.components.jog_tab.html"
+                          title="previous chapter">scarajectory.infrastructure.gui.components.jog_tab module</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.components.preview_tab.html"
+                          title="next chapter">scarajectory.infrastructure.gui.components.preview_tab module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/scarajectory.infrastructure.gui.components.menu_bar.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.components.preview_tab.html" title="scarajectory.infrastructure.gui.components.preview_tab module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.components.jog_tab.html" title="scarajectory.infrastructure.gui.components.jog_tab module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.gui.html" >scarajectory.infrastructure.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.infrastructure.gui.components.html" >scarajectory.infrastructure.gui.components package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.components.menu_bar module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

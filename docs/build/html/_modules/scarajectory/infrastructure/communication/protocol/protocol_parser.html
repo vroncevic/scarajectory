@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>scarajectory.infrastructure.communication.protocol.protocol_parser &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/classic.css?v=514cf933" />
+    
+    <script src="../../../../../_static/documentation_options.js?v=57319df4"></script>
+    <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.communication.protocol.protocol_parser</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for scarajectory.infrastructure.communication.protocol.protocol_parser</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Module</span>
+<span class="sd">    protocol_parser.py</span>
+<span class="sd">Copyright</span>
+<span class="sd">    Copyright (C) 2026 Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;</span>
+<span class="sd">    scarajectory is free software: you can redistribute it and/or modify it</span>
+<span class="sd">    under the terms of the GNU General Public License as published by the</span>
+<span class="sd">    Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">    (at your option) any later version.</span>
+<span class="sd">    scarajectory is distributed in the hope that it will be useful, but</span>
+<span class="sd">    WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
+<span class="sd">    See the GNU General Public License for more details.</span>
+<span class="sd">    You should have received a copy of the GNU General Public License along</span>
+<span class="sd">    with this program. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">Info</span>
+<span class="sd">    Parser for ASCII communication packets and telemetry received from microcontroller.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">ClassVar</span>
+
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.protocol.robot_response_dto</span> <span class="kn">import</span> <span class="n">RobotResponseDTO</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
+<span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.0&#39;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
+
+
+<div class="viewcode-block" id="ProtocolParser">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.protocol.protocol_parser.html#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser">[docs]</a>
+<span class="k">class</span> <span class="nc">ProtocolParser</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Parser decoding incoming newline-terminated ASCII protocol responses.</span>
+
+<span class="sd">        It defines:</span>
+
+<span class="sd">            :methods:</span>
+<span class="sd">                | parse_response - Parses raw response line into typed RobotResponseDTO.</span>
+<span class="sd">                | parse_queue_depth - Extracts remote queue depth from ACK packet if present.</span>
+<span class="sd">                | is_buffer_full - Checks if packet indicates microcontroller buffer saturation.</span>
+<span class="sd">                | is_move_done - Checks if packet confirms completion of a waypoint move.</span>
+<span class="sd">                | is_error - Checks if packet signals an error condition.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">_QUEUE_REGEX</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">re</span><span class="o">.</span><span class="n">Pattern</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;QUEUE=(\d+)&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ProtocolParser.parse_response">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.protocol.protocol_parser.html#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.parse_response">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">parse_response</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RobotResponseDTO</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Parses raw response line into typed RobotResponseDTO.</span>
+
+<span class="sd">            :param line: Raw response text line.</span>
+<span class="sd">            :return: Structured RobotResponseDTO.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">clean</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">resp_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;UNKNOWN&#39;</span>
+        <span class="n">q_depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">clean</span>
+        <span class="n">success</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;RESP:ACK&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;ACK&#39;</span><span class="p">):</span>
+            <span class="n">resp_type</span> <span class="o">=</span> <span class="s1">&#39;ACK&#39;</span>
+            <span class="n">match</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_QUEUE_REGEX</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">clean</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+                <span class="n">q_depth</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">clean</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">clean</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">clean</span>
+        <span class="k">elif</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;RESP:CONFIG&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;CONFIG&#39;</span><span class="p">):</span>
+            <span class="n">resp_type</span> <span class="o">=</span> <span class="s1">&#39;CONFIG&#39;</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">clean</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">clean</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">clean</span>
+        <span class="k">elif</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;RESP:NACK&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;NACK&#39;</span><span class="p">):</span>
+            <span class="n">resp_type</span> <span class="o">=</span> <span class="s1">&#39;NACK&#39;</span>
+            <span class="n">success</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">clean</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">clean</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">clean</span>
+        <span class="k">elif</span> <span class="s1">&#39;MOVE_DONE&#39;</span> <span class="ow">in</span> <span class="n">clean</span> <span class="ow">or</span> <span class="n">clean</span> <span class="o">==</span> <span class="s1">&#39;&lt;DONE&gt;&#39;</span><span class="p">:</span>
+            <span class="n">resp_type</span> <span class="o">=</span> <span class="s1">&#39;DONE&#39;</span>
+        <span class="k">elif</span> <span class="s1">&#39;BUFFER_FULL&#39;</span> <span class="ow">in</span> <span class="n">clean</span> <span class="ow">or</span> <span class="n">clean</span> <span class="o">==</span> <span class="s1">&#39;&lt;FULL&gt;&#39;</span><span class="p">:</span>
+            <span class="n">resp_type</span> <span class="o">=</span> <span class="s1">&#39;FULL&#39;</span>
+            <span class="n">success</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">elif</span> <span class="s1">&#39;ERR&#39;</span> <span class="ow">in</span> <span class="n">clean</span> <span class="ow">or</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;ERR&#39;</span><span class="p">):</span>
+            <span class="n">resp_type</span> <span class="o">=</span> <span class="s1">&#39;ERR&#39;</span>
+            <span class="n">success</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">elif</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;STATUS&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;RESP:STATUS&#39;</span><span class="p">):</span>
+            <span class="n">resp_type</span> <span class="o">=</span> <span class="s1">&#39;STATUS&#39;</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">clean</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">clean</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">clean</span>
+        <span class="k">elif</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;POS&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;RESP:POS&#39;</span><span class="p">):</span>
+            <span class="n">resp_type</span> <span class="o">=</span> <span class="s1">&#39;POS&#39;</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">clean</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">clean</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">clean</span>
+
+        <span class="k">return</span> <span class="n">RobotResponseDTO</span><span class="p">(</span>
+            <span class="n">response_type</span><span class="o">=</span><span class="n">resp_type</span><span class="p">,</span>
+            <span class="n">queue_depth</span><span class="o">=</span><span class="n">q_depth</span><span class="p">,</span>
+            <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">,</span>
+            <span class="n">raw_line</span><span class="o">=</span><span class="n">clean</span><span class="p">,</span>
+            <span class="n">is_success</span><span class="o">=</span><span class="n">success</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ProtocolParser.parse_queue_depth">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.protocol.protocol_parser.html#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.parse_queue_depth">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">parse_queue_depth</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Extracts remote queue depth integer from ACK packet if present.</span>
+
+<span class="sd">            :param line: Received line string.</span>
+<span class="sd">            :return: Integer queue depth or None if line is not an ACK packet.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">resp</span><span class="p">:</span> <span class="n">RobotResponseDTO</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">parse_response</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">queue_depth</span> <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">response_type</span> <span class="o">==</span> <span class="s1">&#39;ACK&#39;</span> <span class="k">else</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="ProtocolParser.is_buffer_full">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.protocol.protocol_parser.html#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.is_buffer_full">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">is_buffer_full</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Checks if packet indicates microcontroller buffer saturation.</span>
+
+<span class="sd">            :param line: Received line string.</span>
+<span class="sd">            :return: True if buffer full packet, False otherwise.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">resp</span><span class="p">:</span> <span class="n">RobotResponseDTO</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">parse_response</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">response_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;FULL&#39;</span><span class="p">,</span> <span class="s1">&#39;NACK&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;BUFFER_FULL&#39;</span> <span class="ow">in</span> <span class="n">resp</span><span class="o">.</span><span class="n">raw_line</span></div>
+
+
+<div class="viewcode-block" id="ProtocolParser.is_move_done">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.protocol.protocol_parser.html#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.is_move_done">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">is_move_done</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Checks if packet confirms completion of a waypoint move.</span>
+
+<span class="sd">            :param line: Received line string.</span>
+<span class="sd">            :return: True if move completed confirmation, False otherwise.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">parse_response</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="o">.</span><span class="n">response_type</span> <span class="o">==</span> <span class="s1">&#39;DONE&#39;</span></div>
+
+
+<div class="viewcode-block" id="ProtocolParser.is_error">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.protocol.protocol_parser.html#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.is_error">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">is_error</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Checks if packet signals an error condition.</span>
+
+<span class="sd">            :param line: Received line string.</span>
+<span class="sd">            :return: True if error condition, False otherwise.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">resp</span><span class="p">:</span> <span class="n">RobotResponseDTO</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">parse_response</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">response_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;ERR&#39;</span><span class="p">,</span> <span class="s1">&#39;NACK&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">resp</span><span class="o">.</span><span class="n">is_success</span></div>
+</div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.communication.protocol.protocol_parser</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

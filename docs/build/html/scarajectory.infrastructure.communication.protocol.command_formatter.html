@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>scarajectory.infrastructure.communication.protocol.command_formatter module &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
+    
+    <script src="_static/documentation_options.js?v=57319df4"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="scarajectory.infrastructure.communication.protocol.command_templates module" href="scarajectory.infrastructure.communication.protocol.command_templates.html" />
+    <link rel="prev" title="scarajectory.infrastructure.communication.protocol package" href="scarajectory.infrastructure.communication.protocol.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.communication.protocol.command_templates.html" title="scarajectory.infrastructure.communication.protocol.command_templates module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.communication.protocol.html" title="scarajectory.infrastructure.communication.protocol package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.communication.html" >scarajectory.infrastructure.communication package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.infrastructure.communication.protocol.html" accesskey="U">scarajectory.infrastructure.communication.protocol package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.communication.protocol.command_formatter module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-scarajectory.infrastructure.communication.protocol.command_formatter">
+<span id="scarajectory-infrastructure-communication-protocol-command-formatter-module"></span><h1>scarajectory.infrastructure.communication.protocol.command_formatter module<a class="headerlink" href="#module-scarajectory.infrastructure.communication.protocol.command_formatter" title="Link to this heading">¶</a></h1>
+<dl class="simple">
+<dt>Module</dt><dd><p>command_formatter.py</p>
+</dd>
+<dt>Copyright</dt><dd><p>Copyright (C) 2026 Vladimir Roncevic &lt;<a class="reference external" href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+scarajectory is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+scarajectory is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along
+with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+</dd>
+<dt>Info</dt><dd><p>Formats and interpolates robotic commands using template lookup registry.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.communication.protocol.command_formatter.</span></span><span class="sig-name descname"><span class="pre">CommandFormatter</span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/command_formatter.html#CommandFormatter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Formats and interpolates robotic commands using template lookup registry.</p>
+<p>It defines:</p>
+<blockquote>
+<div><dl class="field-list">
+<dt class="field-odd">methods<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="line-block">
+<div class="line">format_enable - Formats motor enable command.</div>
+<div class="line">format_disable - Formats motor disable command.</div>
+<div class="line">format_estop - Formats emergency stop command.</div>
+<div class="line">format_status - Formats status query command.</div>
+<div class="line">format_pause - Formats streaming pause command.</div>
+<div class="line">format_resume - Formats streaming resume command.</div>
+<div class="line">format_home - Formats homing sequence command.</div>
+<div class="line">format_pump - Formats vacuum pump state command.</div>
+<div class="line">format_valve - Formats release valve state command.</div>
+<div class="line">format_move - Formats waypoint motion command from Waypoint model.</div>
+<div class="line">format_jog - Formats manual axis jog step command.</div>
+<div class="line">format_get_config - Formats robot kinematics query command.</div>
+<div class="line">format_save_config - Formats command persisting config to Flash.</div>
+<div class="line">format_set_config - Formats configuration update command from ScaraBounds.</div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_disable">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_disable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/command_formatter.html#CommandFormatter.format_disable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_disable" title="Link to this definition">¶</a></dt>
+<dd><p>Formats motor disable command.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Formatted disable command string.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_enable">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_enable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/command_formatter.html#CommandFormatter.format_enable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_enable" title="Link to this definition">¶</a></dt>
+<dd><p>Formats motor enable command.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Formatted enable command string.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_estop">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_estop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/command_formatter.html#CommandFormatter.format_estop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_estop" title="Link to this definition">¶</a></dt>
+<dd><p>Formats emergency stop command.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Formatted emergency stop command string.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_get_config">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_get_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/command_formatter.html#CommandFormatter.format_get_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_get_config" title="Link to this definition">¶</a></dt>
+<dd><p>Formats robot kinematics query command.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Formatted get config command packet.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_home">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_home</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/command_formatter.html#CommandFormatter.format_home"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_home" title="Link to this definition">¶</a></dt>
+<dd><p>Formats homing sequence command.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Formatted home command string.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_jog">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_jog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/command_formatter.html#CommandFormatter.format_jog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_jog" title="Link to this definition">¶</a></dt>
+<dd><p>Formats manual axis jog step command.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>axis</strong> – Axis name (‘X’, ‘Y’, ‘Z’, ‘Phi’).</p></li>
+<li><p><strong>step</strong> – Step displacement value.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted jog command packet.</p>
+</dd>
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_move">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">waypoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.waypoint.html#scarajectory.core.model.waypoint.Waypoint" title="scarajectory.core.model.waypoint.Waypoint"><span class="pre">Waypoint</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/command_formatter.html#CommandFormatter.format_move"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_move" title="Link to this definition">¶</a></dt>
+<dd><p>Formats waypoint motion command from Waypoint model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>waypoint</strong> – Waypoint domain object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted move command packet.</p>
+</dd>
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_pause">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_pause</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/command_formatter.html#CommandFormatter.format_pause"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_pause" title="Link to this definition">¶</a></dt>
+<dd><p>Formats streaming pause command.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Formatted pause command string.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_pump">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_pump</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/command_formatter.html#CommandFormatter.format_pump"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_pump" title="Link to this definition">¶</a></dt>
+<dd><p>Formats vacuum pump control command.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>state</strong> – True for pump ON, False for OFF.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted pump command string.</p>
+</dd>
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_resume">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_resume</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/command_formatter.html#CommandFormatter.format_resume"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_resume" title="Link to this definition">¶</a></dt>
+<dd><p>Formats streaming resume command.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Formatted resume command string.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_save_config">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_save_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/command_formatter.html#CommandFormatter.format_save_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_save_config" title="Link to this definition">¶</a></dt>
+<dd><p>Formats command persisting runtime config to Flash.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Formatted save config command packet.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_set_config">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_set_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.scara_bounds.html#scarajectory.core.model.scara_bounds.ScaraBounds" title="scarajectory.core.model.scara_bounds.ScaraBounds"><span class="pre">ScaraBounds</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/command_formatter.html#CommandFormatter.format_set_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_set_config" title="Link to this definition">¶</a></dt>
+<dd><p>Formats configuration update command from ScaraBounds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>bounds</strong> – ScaraBounds domain model.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted set config command packet.</p>
+</dd>
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_status">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_status</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/command_formatter.html#CommandFormatter.format_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_status" title="Link to this definition">¶</a></dt>
+<dd><p>Formats status query command.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Formatted status query command string.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_valve">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_valve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/command_formatter.html#CommandFormatter.format_valve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_valve" title="Link to this definition">¶</a></dt>
+<dd><p>Formats release valve control command.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>state</strong> – True for valve ON, False for OFF.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted valve command string.</p>
+</dd>
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">scarajectory.infrastructure.communication.protocol.command_formatter module</a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter"><code class="docutils literal notranslate"><span class="pre">CommandFormatter</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_disable"><code class="docutils literal notranslate"><span class="pre">CommandFormatter.format_disable()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_enable"><code class="docutils literal notranslate"><span class="pre">CommandFormatter.format_enable()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_estop"><code class="docutils literal notranslate"><span class="pre">CommandFormatter.format_estop()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_get_config"><code class="docutils literal notranslate"><span class="pre">CommandFormatter.format_get_config()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_home"><code class="docutils literal notranslate"><span class="pre">CommandFormatter.format_home()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_jog"><code class="docutils literal notranslate"><span class="pre">CommandFormatter.format_jog()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_move"><code class="docutils literal notranslate"><span class="pre">CommandFormatter.format_move()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_pause"><code class="docutils literal notranslate"><span class="pre">CommandFormatter.format_pause()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_pump"><code class="docutils literal notranslate"><span class="pre">CommandFormatter.format_pump()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_resume"><code class="docutils literal notranslate"><span class="pre">CommandFormatter.format_resume()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_save_config"><code class="docutils literal notranslate"><span class="pre">CommandFormatter.format_save_config()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_set_config"><code class="docutils literal notranslate"><span class="pre">CommandFormatter.format_set_config()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_status"><code class="docutils literal notranslate"><span class="pre">CommandFormatter.format_status()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter.format_valve"><code class="docutils literal notranslate"><span class="pre">CommandFormatter.format_valve()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.communication.protocol.html"
+                          title="previous chapter">scarajectory.infrastructure.communication.protocol package</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.communication.protocol.command_templates.html"
+                          title="next chapter">scarajectory.infrastructure.communication.protocol.command_templates module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/scarajectory.infrastructure.communication.protocol.command_formatter.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.communication.protocol.command_templates.html" title="scarajectory.infrastructure.communication.protocol.command_templates module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.communication.protocol.html" title="scarajectory.infrastructure.communication.protocol package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.communication.html" >scarajectory.infrastructure.communication package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.infrastructure.communication.protocol.html" >scarajectory.infrastructure.communication.protocol package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.communication.protocol.command_formatter module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

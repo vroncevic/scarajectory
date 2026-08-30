@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>scarajectory.core.model.trajectory_plan module &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
+    
+    <script src="_static/documentation_options.js?v=57319df4"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="scarajectory.core.model.trajectory_serializer module" href="scarajectory.core.model.trajectory_serializer.html" />
+    <link rel="prev" title="scarajectory.core.model.trajectory_metrics module" href="scarajectory.core.model.trajectory_metrics.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.core.model.trajectory_serializer.html" title="scarajectory.core.model.trajectory_serializer module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.core.model.trajectory_metrics.html" title="scarajectory.core.model.trajectory_metrics module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.core.html" >scarajectory.core package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.core.model.html" accesskey="U">scarajectory.core.model package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.core.model.trajectory_plan module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-scarajectory.core.model.trajectory_plan">
+<span id="scarajectory-core-model-trajectory-plan-module"></span><h1>scarajectory.core.model.trajectory_plan module<a class="headerlink" href="#module-scarajectory.core.model.trajectory_plan" title="Link to this heading">¶</a></h1>
+<dl class="simple">
+<dt>Module</dt><dd><p>trajectory_plan.py</p>
+</dd>
+<dt>Copyright</dt><dd><p>Copyright (C) 2026 Vladimir Roncevic &lt;<a class="reference external" href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+scarajectory is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+scarajectory is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along
+with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+</dd>
+<dt>Info</dt><dd><p>Defines TrajectoryPlan managing ordered waypoint sequence, history and observers.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="scarajectory.core.model.trajectory_plan.TrajectoryPlan">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.core.model.trajectory_plan.</span></span><span class="sig-name descname"><span class="pre">TrajectoryPlan</span></span><a class="reference internal" href="_modules/scarajectory/core/model/trajectory_plan.html#TrajectoryPlan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Core domain model managing waypoints, selection, undo/redo history, and observers.</p>
+<p>It defines:</p>
+<blockquote>
+<div><dl class="field-list">
+<dt class="field-odd">attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="line-block">
+<div class="line">_waypoints - List of motion waypoints.</div>
+<div class="line">_observers - Registered observers for UI synchronisation.</div>
+<div class="line">_selected_index - Index of currently selected waypoint.</div>
+<div class="line">_history - PlanHistory instance.</div>
+</div>
+</dd>
+<dt class="field-even">methods<span class="colon">:</span></dt>
+<dd class="field-even"><div class="line-block">
+<div class="line">__init__ - Initializes the trajectory plan.</div>
+<div class="line">waypoints - Returns read-only view of waypoints.</div>
+<div class="line">count - Returns total number of waypoints.</div>
+<div class="line">selected_index - Returns index of currently selected waypoint.</div>
+<div class="line">add_observer - Registers an observer widget.</div>
+<div class="line">set_selected_index - Selects a waypoint by index.</div>
+<div class="line">add_point - Appends a new waypoint to the plan.</div>
+<div class="line">insert_point - Inserts a waypoint at a specific index.</div>
+<div class="line">update_point - Replaces waypoint at index with updated parameters.</div>
+<div class="line">remove_point - Removes waypoint at index.</div>
+<div class="line">clear - Clears all waypoints in the plan.</div>
+<div class="line">set_waypoints - Replaces all waypoints with a new list.</div>
+<div class="line">undo - Reverts last modification.</div>
+<div class="line">redo - Re-applies previously undone action.</div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.core.model.trajectory_plan.TrajectoryPlan._history">
+<span class="sig-name descname"><span class="pre">_history</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.model.plan_history.html#scarajectory.core.model.plan_history.PlanHistory" title="scarajectory.core.model.plan_history.PlanHistory"><span class="pre">PlanHistory</span></a></em><a class="headerlink" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan._history" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.core.model.trajectory_plan.TrajectoryPlan._notify">
+<span class="sig-name descname"><span class="pre">_notify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">notify_selection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/core/model/trajectory_plan.html#TrajectoryPlan._notify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan._notify" title="Link to this definition">¶</a></dt>
+<dd><p>Notifies all observers of data and selection updates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>notify_selection</strong> – Whether to also trigger selection callbacks.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.core.model.trajectory_plan.TrajectoryPlan._observers">
+<span class="sig-name descname"><span class="pre">_observers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.service.itrajectory_observer.html#scarajectory.core.service.itrajectory_observer.ITrajectoryObserver" title="scarajectory.core.service.itrajectory_observer.ITrajectoryObserver"><span class="pre">ITrajectoryObserver</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan._observers" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.core.model.trajectory_plan.TrajectoryPlan._selected_index">
+<span class="sig-name descname"><span class="pre">_selected_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan._selected_index" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.core.model.trajectory_plan.TrajectoryPlan._waypoints">
+<span class="sig-name descname"><span class="pre">_waypoints</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.waypoint.html#scarajectory.core.model.waypoint.Waypoint" title="scarajectory.core.model.waypoint.Waypoint"><span class="pre">Waypoint</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan._waypoints" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.core.model.trajectory_plan.TrajectoryPlan.add_observer">
+<span class="sig-name descname"><span class="pre">add_observer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.itrajectory_observer.html#scarajectory.core.service.itrajectory_observer.ITrajectoryObserver" title="scarajectory.core.service.itrajectory_observer.ITrajectoryObserver"><span class="pre">ITrajectoryObserver</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/core/model/trajectory_plan.html#TrajectoryPlan.add_observer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan.add_observer" title="Link to this definition">¶</a></dt>
+<dd><p>Registers an observer widget.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>observer</strong> – ITrajectoryObserver instance.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.core.model.trajectory_plan.TrajectoryPlan.add_point">
+<span class="sig-name descname"><span class="pre">add_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.waypoint.html#scarajectory.core.model.waypoint.Waypoint" title="scarajectory.core.model.waypoint.Waypoint"><span class="pre">Waypoint</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/core/model/trajectory_plan.html#TrajectoryPlan.add_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan.add_point" title="Link to this definition">¶</a></dt>
+<dd><p>Appends a new waypoint to the plan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>point</strong> – Waypoint instance to add.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.core.model.trajectory_plan.TrajectoryPlan.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/core/model/trajectory_plan.html#TrajectoryPlan.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan.clear" title="Link to this definition">¶</a></dt>
+<dd><p>Clears all waypoints in the plan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="scarajectory.core.model.trajectory_plan.TrajectoryPlan.count">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">count</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan.count" title="Link to this definition">¶</a></dt>
+<dd><p>Returns total number of points.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of waypoints.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.core.model.trajectory_plan.TrajectoryPlan.insert_point">
+<span class="sig-name descname"><span class="pre">insert_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.waypoint.html#scarajectory.core.model.waypoint.Waypoint" title="scarajectory.core.model.waypoint.Waypoint"><span class="pre">Waypoint</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/core/model/trajectory_plan.html#TrajectoryPlan.insert_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan.insert_point" title="Link to this definition">¶</a></dt>
+<dd><p>Inserts a waypoint at a specific index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index</strong> – Target insertion position.</p></li>
+<li><p><strong>point</strong> – Waypoint to insert.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.core.model.trajectory_plan.TrajectoryPlan.redo">
+<span class="sig-name descname"><span class="pre">redo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/core/model/trajectory_plan.html#TrajectoryPlan.redo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan.redo" title="Link to this definition">¶</a></dt>
+<dd><p>Re-applies previously undone action.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if reapplied, False otherwise.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.core.model.trajectory_plan.TrajectoryPlan.remove_point">
+<span class="sig-name descname"><span class="pre">remove_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/core/model/trajectory_plan.html#TrajectoryPlan.remove_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan.remove_point" title="Link to this definition">¶</a></dt>
+<dd><p>Removes waypoint at index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> – Target index to remove.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if removed, False otherwise.</p>
+</dd>
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="scarajectory.core.model.trajectory_plan.TrajectoryPlan.selected_index">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">selected_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan.selected_index" title="Link to this definition">¶</a></dt>
+<dd><p>Returns index of currently selected waypoint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Selected waypoint index or -1.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.core.model.trajectory_plan.TrajectoryPlan.set_selected_index">
+<span class="sig-name descname"><span class="pre">set_selected_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/core/model/trajectory_plan.html#TrajectoryPlan.set_selected_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan.set_selected_index" title="Link to this definition">¶</a></dt>
+<dd><p>Selects a waypoint by index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> – Target index (-1 for deselect).</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.core.model.trajectory_plan.TrajectoryPlan.set_waypoints">
+<span class="sig-name descname"><span class="pre">set_waypoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">waypoints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.waypoint.html#scarajectory.core.model.waypoint.Waypoint" title="scarajectory.core.model.waypoint.Waypoint"><span class="pre">Waypoint</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/core/model/trajectory_plan.html#TrajectoryPlan.set_waypoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan.set_waypoints" title="Link to this definition">¶</a></dt>
+<dd><p>Replaces all waypoints with a new list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>waypoints</strong> – New list of Waypoint instances.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.core.model.trajectory_plan.TrajectoryPlan.undo">
+<span class="sig-name descname"><span class="pre">undo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/core/model/trajectory_plan.html#TrajectoryPlan.undo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan.undo" title="Link to this definition">¶</a></dt>
+<dd><p>Reverts last modification.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if undone, False otherwise.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.core.model.trajectory_plan.TrajectoryPlan.update_point">
+<span class="sig-name descname"><span class="pre">update_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.waypoint.html#scarajectory.core.model.waypoint.Waypoint" title="scarajectory.core.model.waypoint.Waypoint"><span class="pre">Waypoint</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/core/model/trajectory_plan.html#TrajectoryPlan.update_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan.update_point" title="Link to this definition">¶</a></dt>
+<dd><p>Replaces waypoint at index with updated parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index</strong> – Target index.</p></li>
+<li><p><strong>new_point</strong> – New waypoint data.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if updated, False otherwise.</p>
+</dd>
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="scarajectory.core.model.trajectory_plan.TrajectoryPlan.waypoints">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">waypoints</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.waypoint.html#scarajectory.core.model.waypoint.Waypoint" title="scarajectory.core.model.waypoint.Waypoint"><span class="pre">Waypoint</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan.waypoints" title="Link to this definition">¶</a></dt>
+<dd><p>Returns read-only view of waypoints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple of Waypoint instances.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">scarajectory.core.model.trajectory_plan module</a><ul>
+<li><a class="reference internal" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan"><code class="docutils literal notranslate"><span class="pre">TrajectoryPlan</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan._history"><code class="docutils literal notranslate"><span class="pre">TrajectoryPlan._history</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan._notify"><code class="docutils literal notranslate"><span class="pre">TrajectoryPlan._notify()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan._observers"><code class="docutils literal notranslate"><span class="pre">TrajectoryPlan._observers</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan._selected_index"><code class="docutils literal notranslate"><span class="pre">TrajectoryPlan._selected_index</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan._waypoints"><code class="docutils literal notranslate"><span class="pre">TrajectoryPlan._waypoints</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan.add_observer"><code class="docutils literal notranslate"><span class="pre">TrajectoryPlan.add_observer()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan.add_point"><code class="docutils literal notranslate"><span class="pre">TrajectoryPlan.add_point()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan.clear"><code class="docutils literal notranslate"><span class="pre">TrajectoryPlan.clear()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan.count"><code class="docutils literal notranslate"><span class="pre">TrajectoryPlan.count</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan.insert_point"><code class="docutils literal notranslate"><span class="pre">TrajectoryPlan.insert_point()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan.redo"><code class="docutils literal notranslate"><span class="pre">TrajectoryPlan.redo()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan.remove_point"><code class="docutils literal notranslate"><span class="pre">TrajectoryPlan.remove_point()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan.selected_index"><code class="docutils literal notranslate"><span class="pre">TrajectoryPlan.selected_index</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan.set_selected_index"><code class="docutils literal notranslate"><span class="pre">TrajectoryPlan.set_selected_index()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan.set_waypoints"><code class="docutils literal notranslate"><span class="pre">TrajectoryPlan.set_waypoints()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan.undo"><code class="docutils literal notranslate"><span class="pre">TrajectoryPlan.undo()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan.update_point"><code class="docutils literal notranslate"><span class="pre">TrajectoryPlan.update_point()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.model.trajectory_plan.TrajectoryPlan.waypoints"><code class="docutils literal notranslate"><span class="pre">TrajectoryPlan.waypoints</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="scarajectory.core.model.trajectory_metrics.html"
+                          title="previous chapter">scarajectory.core.model.trajectory_metrics module</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="scarajectory.core.model.trajectory_serializer.html"
+                          title="next chapter">scarajectory.core.model.trajectory_serializer module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/scarajectory.core.model.trajectory_plan.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.core.model.trajectory_serializer.html" title="scarajectory.core.model.trajectory_serializer module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.core.model.trajectory_metrics.html" title="scarajectory.core.model.trajectory_metrics module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.core.html" >scarajectory.core package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.core.model.html" >scarajectory.core.model package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.core.model.trajectory_plan module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

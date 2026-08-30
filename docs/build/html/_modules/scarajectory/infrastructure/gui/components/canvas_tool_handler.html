@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>scarajectory.infrastructure.gui.components.canvas_tool_handler &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/classic.css?v=514cf933" />
+    
+    <script src="../../../../../_static/documentation_options.js?v=57319df4"></script>
+    <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.components.canvas_tool_handler</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for scarajectory.infrastructure.gui.components.canvas_tool_handler</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Module</span>
+<span class="sd">    canvas_tool_handler.py</span>
+<span class="sd">Copyright</span>
+<span class="sd">    Copyright (C) 2026 Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;</span>
+<span class="sd">    scarajectory is free software: you can redistribute it and/or modify it</span>
+<span class="sd">    under the terms of the GNU General Public License as published by the</span>
+<span class="sd">    Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">    (at your option) any later version.</span>
+<span class="sd">    scarajectory is distributed in the hope that it will be useful, but</span>
+<span class="sd">    WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
+<span class="sd">    See the GNU General Public License for more details.</span>
+<span class="sd">    You should have received a copy of the GNU General Public License along</span>
+<span class="sd">    with this program. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">Info</span>
+<span class="sd">    CAD tool shape discretization, point sampling and hit-testing operations.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Sequence</span>
+
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.waypoint</span> <span class="kn">import</span> <span class="n">Waypoint</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.canvas_settings_dto</span> <span class="kn">import</span> <span class="n">CanvasSettingsDTO</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
+<span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.0&#39;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
+
+
+<div class="viewcode-block" id="CanvasToolHandler">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.components.canvas_tool_handler.html#scarajectory.infrastructure.gui.components.canvas_tool_handler.CanvasToolHandler">[docs]</a>
+<span class="k">class</span> <span class="nc">CanvasToolHandler</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Geometric discretization and spatial calculation engine for interactive CAD tools.</span>
+
+<span class="sd">        It defines:</span>
+
+<span class="sd">            :methods:</span>
+<span class="sd">                | discretize_line - Generates linear segment start and end waypoints.</span>
+<span class="sd">                | discretize_circle - Generates circle perimeter waypoints.</span>
+<span class="sd">                | discretize_rectangle - Generates 4 corner waypoints of rectangle boundary.</span>
+<span class="sd">                | find_hit_index - Finds nearest waypoint index matching cursor hit-radius.</span>
+<span class="sd">                | is_freehand_distance_met - Checks if cursor has moved beyond minimum freehand threshold.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="CanvasToolHandler.discretize_line">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.components.canvas_tool_handler.html#scarajectory.infrastructure.gui.components.canvas_tool_handler.CanvasToolHandler.discretize_line">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">discretize_line</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">p1</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">p2</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">settings</span><span class="p">:</span> <span class="n">CanvasSettingsDTO</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Waypoint</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Generates start and end waypoints of straight linear segment.</span>
+
+<span class="sd">            :param p1: Start point (x, y) coordinate tuple in mm.</span>
+<span class="sd">            :param p2: End point (x, y) coordinate tuple in mm.</span>
+<span class="sd">            :param settings: Active CanvasSettingsDTO.</span>
+<span class="sd">            :return: List of Waypoint instances.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">Waypoint</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">z</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_z</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_speed</span><span class="p">),</span>
+            <span class="n">Waypoint</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">z</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_z</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_speed</span><span class="p">)</span>
+        <span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="CanvasToolHandler.discretize_circle">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.components.canvas_tool_handler.html#scarajectory.infrastructure.gui.components.canvas_tool_handler.CanvasToolHandler.discretize_circle">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">discretize_circle</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">center</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">steps</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">settings</span><span class="p">:</span> <span class="n">CanvasSettingsDTO</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Waypoint</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Generates circle perimeter waypoints.</span>
+
+<span class="sd">            :param center: Center (x, y) coordinate tuple in mm.</span>
+<span class="sd">            :param radius: Circle radius in mm.</span>
+<span class="sd">            :param steps: Discretization step count.</span>
+<span class="sd">            :param settings: Active CanvasSettingsDTO.</span>
+<span class="sd">            :return: List of Waypoint instances.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">pts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Waypoint</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="n">steps</span><span class="p">)</span>
+            <span class="n">px</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+            <span class="n">py</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+            <span class="n">pts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Waypoint</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">px</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">py</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_z</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_speed</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">pts</span></div>
+
+
+<div class="viewcode-block" id="CanvasToolHandler.discretize_rectangle">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.components.canvas_tool_handler.html#scarajectory.infrastructure.gui.components.canvas_tool_handler.CanvasToolHandler.discretize_rectangle">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">discretize_rectangle</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">p1</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">p2</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">settings</span><span class="p">:</span> <span class="n">CanvasSettingsDTO</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Waypoint</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Generates 4 corner waypoints of rectangle boundary with closing start waypoint.</span>
+
+<span class="sd">            :param p1: Initial corner (x, y) tuple in mm.</span>
+<span class="sd">            :param p2: Opposite corner (x, y) tuple in mm.</span>
+<span class="sd">            :param settings: Active CanvasSettingsDTO.</span>
+<span class="sd">            :return: List of Waypoint instances.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">Waypoint</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">z</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_z</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_speed</span><span class="p">),</span>
+            <span class="n">Waypoint</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">z</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_z</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_speed</span><span class="p">),</span>
+            <span class="n">Waypoint</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">z</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_z</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_speed</span><span class="p">),</span>
+            <span class="n">Waypoint</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">z</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_z</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_speed</span><span class="p">),</span>
+            <span class="n">Waypoint</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">z</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_z</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_speed</span><span class="p">)</span>
+        <span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="CanvasToolHandler.find_hit_index">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.components.canvas_tool_handler.html#scarajectory.infrastructure.gui.components.canvas_tool_handler.CanvasToolHandler.find_hit_index">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">find_hit_index</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">waypoints</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Waypoint</span><span class="p">],</span>
+        <span class="n">wx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">wy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">max_radius</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Finds nearest waypoint index matching cursor hit-radius.</span>
+
+<span class="sd">            :param waypoints: Sequence of Waypoints.</span>
+<span class="sd">            :param wx: Cursor world X coordinate.</span>
+<span class="sd">            :param wy: Cursor world Y coordinate.</span>
+<span class="sd">            :param max_radius: Maximum hit-test radius in mm.</span>
+<span class="sd">            :return: Waypoint index or -1 if no hit.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">best_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">best_dist</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">max_radius</span>
+
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">pt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">waypoints</span><span class="p">):</span>
+            <span class="n">dist</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">wx</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">wy</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">dist</span> <span class="o">&lt;</span> <span class="n">best_dist</span><span class="p">:</span>
+                <span class="n">best_dist</span> <span class="o">=</span> <span class="n">dist</span>
+                <span class="n">best_idx</span> <span class="o">=</span> <span class="n">idx</span>
+
+        <span class="k">return</span> <span class="n">best_idx</span></div>
+
+
+<div class="viewcode-block" id="CanvasToolHandler.is_freehand_distance_met">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.components.canvas_tool_handler.html#scarajectory.infrastructure.gui.components.canvas_tool_handler.CanvasToolHandler.is_freehand_distance_met">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">is_freehand_distance_met</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">last_pt</span><span class="p">:</span> <span class="n">Waypoint</span><span class="p">,</span>
+        <span class="n">wx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">wy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">min_dist</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Checks if cursor has moved beyond minimum freehand threshold.</span>
+
+<span class="sd">            :param last_pt: Last sampled Waypoint.</span>
+<span class="sd">            :param wx: Current world X.</span>
+<span class="sd">            :param wy: Current world Y.</span>
+<span class="sd">            :param min_dist: Minimum distance threshold in mm.</span>
+<span class="sd">            :return: True if distance met, False otherwise.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">wx</span> <span class="o">-</span> <span class="n">last_pt</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">wy</span> <span class="o">-</span> <span class="n">last_pt</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">min_dist</span></div>
+</div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.components.canvas_tool_handler</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

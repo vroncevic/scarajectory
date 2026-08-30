@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>scarajectory.infrastructure.communication.protocol.command_templates module &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
+    
+    <script src="_static/documentation_options.js?v=57319df4"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="scarajectory.infrastructure.communication.protocol.protocol_parser module" href="scarajectory.infrastructure.communication.protocol.protocol_parser.html" />
+    <link rel="prev" title="scarajectory.infrastructure.communication.protocol.command_formatter module" href="scarajectory.infrastructure.communication.protocol.command_formatter.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.communication.protocol.protocol_parser.html" title="scarajectory.infrastructure.communication.protocol.protocol_parser module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.communication.protocol.command_formatter.html" title="scarajectory.infrastructure.communication.protocol.command_formatter module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.communication.html" >scarajectory.infrastructure.communication package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.infrastructure.communication.protocol.html" accesskey="U">scarajectory.infrastructure.communication.protocol package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.communication.protocol.command_templates module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-scarajectory.infrastructure.communication.protocol.command_templates">
+<span id="scarajectory-infrastructure-communication-protocol-command-templates-module"></span><h1>scarajectory.infrastructure.communication.protocol.command_templates module<a class="headerlink" href="#module-scarajectory.infrastructure.communication.protocol.command_templates" title="Link to this heading">¶</a></h1>
+<dl class="simple">
+<dt>Module</dt><dd><p>command_templates.py</p>
+</dd>
+<dt>Copyright</dt><dd><p>Copyright (C) 2026 Vladimir Roncevic &lt;<a class="reference external" href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+scarajectory is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+scarajectory is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along
+with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+</dd>
+<dt>Info</dt><dd><p>Declarative template registry for SCARA robot firmware commands.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.communication.protocol.command_templates.</span></span><span class="sig-name descname"><span class="pre">CommandTemplates</span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/command_templates.html#CommandTemplates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Declarative template registry for SCARA robot firmware commands.</p>
+<p>It defines:</p>
+<blockquote>
+<div><dl class="field-list">
+<dt class="field-odd">attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="line-block">
+<div class="line">ENABLE - Command string enabling robot steppers.</div>
+<div class="line">DISABLE - Command string disabling robot steppers.</div>
+<div class="line">ESTOP - Command string triggering immediate emergency stop.</div>
+<div class="line">STATUS - Command string querying microcontroller telemetry.</div>
+<div class="line">PAUSE - Command string pausing trajectory execution.</div>
+<div class="line">RESUME - Command string resuming trajectory execution.</div>
+<div class="line">HOME - Command string triggering robot homing routine.</div>
+<div class="line">GET_CONFIG - Command querying persistent robot configuration.</div>
+<div class="line">SAVE_CONFIG - Command persisting runtime config to Flash.</div>
+<div class="line">RESET_CONFIG - Command resetting config to defaults.</div>
+<div class="line">PUMP_ON - Command turning vacuum pump on.</div>
+<div class="line">PUMP_OFF - Command turning vacuum pump off.</div>
+<div class="line">VALVE_ON - Command opening release valve.</div>
+<div class="line">VALVE_OFF - Command closing release valve.</div>
+<div class="line">MOVE_TEMPLATE - Interpolation template for waypoint motion command.</div>
+<div class="line">JOG_TEMPLATE - Interpolation template for manual jog step command.</div>
+<div class="line">SET_CONFIG_TEMPLATE - Interpolation template for runtime kinematics configuration.</div>
+</div>
+</dd>
+<dt class="field-even">methods<span class="colon">:</span></dt>
+<dd class="field-even"><div class="line-block">
+<div class="line">get_template - Retrieves command template by action identifier.</div>
+<div class="line">list_actions - Returns tuple of supported command action keys.</div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.DISABLE">
+<span class="sig-name descname"><span class="pre">DISABLE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;CMD:DISABLE&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.DISABLE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.ENABLE">
+<span class="sig-name descname"><span class="pre">ENABLE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;CMD:ENABLE&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.ENABLE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.ESTOP">
+<span class="sig-name descname"><span class="pre">ESTOP</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;CMD:ESTOP&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.ESTOP" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.GET_CONFIG">
+<span class="sig-name descname"><span class="pre">GET_CONFIG</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;CMD:GET_CONFIG&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.GET_CONFIG" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.HOME">
+<span class="sig-name descname"><span class="pre">HOME</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;CMD:HOME&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.HOME" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.JOG_TEMPLATE">
+<span class="sig-name descname"><span class="pre">JOG_TEMPLATE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;CMD:JOG#{axis}#{step:.1f}&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.JOG_TEMPLATE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.MOVE_TEMPLATE">
+<span class="sig-name descname"><span class="pre">MOVE_TEMPLATE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;pt#{x:.2f}#{y:.2f}#{z:.2f}#{phi:.2f}#{speed:.1f}#end&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.MOVE_TEMPLATE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.PAUSE">
+<span class="sig-name descname"><span class="pre">PAUSE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;CMD:PAUSE&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.PAUSE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.PUMP_OFF">
+<span class="sig-name descname"><span class="pre">PUMP_OFF</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;CMD:PUMP#0&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.PUMP_OFF" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.PUMP_ON">
+<span class="sig-name descname"><span class="pre">PUMP_ON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;CMD:PUMP#1&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.PUMP_ON" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.RESET_CONFIG">
+<span class="sig-name descname"><span class="pre">RESET_CONFIG</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;CMD:RESET_CONFIG&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.RESET_CONFIG" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.RESUME">
+<span class="sig-name descname"><span class="pre">RESUME</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;CMD:RESUME&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.RESUME" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SAVE_CONFIG">
+<span class="sig-name descname"><span class="pre">SAVE_CONFIG</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;CMD:SAVE_CONFIG&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SAVE_CONFIG" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SET_CONFIG_TEMPLATE">
+<span class="sig-name descname"><span class="pre">SET_CONFIG_TEMPLATE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;CMD:SET_CONFIG#L1={l1:.2f}#L2={l2:.2f}#Z_MIN={z_min:.2f}#Z_MAX={z_max:.2f}#MIN_SPEED={min_speed:.1f}#MAX_SPEED={max_speed:.1f}&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SET_CONFIG_TEMPLATE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.STATUS">
+<span class="sig-name descname"><span class="pre">STATUS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;CMD:STATUS&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.STATUS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.VALVE_OFF">
+<span class="sig-name descname"><span class="pre">VALVE_OFF</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;CMD:VALVE#0&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.VALVE_OFF" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.VALVE_ON">
+<span class="sig-name descname"><span class="pre">VALVE_ON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;CMD:VALVE#1&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.VALVE_ON" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates._LOOKUP">
+<span class="sig-name descname"><span class="pre">_LOOKUP</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'DISABLE':</span> <span class="pre">'&lt;CMD:DISABLE&gt;',</span> <span class="pre">'ENABLE':</span> <span class="pre">'&lt;CMD:ENABLE&gt;',</span> <span class="pre">'ESTOP':</span> <span class="pre">'&lt;CMD:ESTOP&gt;',</span> <span class="pre">'GET_CONFIG':</span> <span class="pre">'&lt;CMD:GET_CONFIG&gt;',</span> <span class="pre">'HOME':</span> <span class="pre">'&lt;CMD:HOME&gt;',</span> <span class="pre">'JOG':</span> <span class="pre">'&lt;CMD:JOG#{axis}#{step:.1f}&gt;',</span> <span class="pre">'MOVE':</span> <span class="pre">'&lt;pt#{x:.2f}#{y:.2f}#{z:.2f}#{phi:.2f}#{speed:.1f}#end&gt;',</span> <span class="pre">'PAUSE':</span> <span class="pre">'&lt;CMD:PAUSE&gt;',</span> <span class="pre">'PUMP_OFF':</span> <span class="pre">'&lt;CMD:PUMP#0&gt;',</span> <span class="pre">'PUMP_ON':</span> <span class="pre">'&lt;CMD:PUMP#1&gt;',</span> <span class="pre">'RESET_CONFIG':</span> <span class="pre">'&lt;CMD:RESET_CONFIG&gt;',</span> <span class="pre">'RESUME':</span> <span class="pre">'&lt;CMD:RESUME&gt;',</span> <span class="pre">'SAVE_CONFIG':</span> <span class="pre">'&lt;CMD:SAVE_CONFIG&gt;',</span> <span class="pre">'SET_CONFIG':</span> <span class="pre">'&lt;CMD:SET_CONFIG#L1={l1:.2f}#L2={l2:.2f}#Z_MIN={z_min:.2f}#Z_MAX={z_max:.2f}#MIN_SPEED={min_speed:.1f}#MAX_SPEED={max_speed:.1f}&gt;',</span> <span class="pre">'STATUS':</span> <span class="pre">'&lt;CMD:STATUS&gt;',</span> <span class="pre">'VALVE_OFF':</span> <span class="pre">'&lt;CMD:VALVE#0&gt;',</span> <span class="pre">'VALVE_ON':</span> <span class="pre">'&lt;CMD:VALVE#1&gt;'}</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates._LOOKUP" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.get_template">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_template</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/command_templates.html#CommandTemplates.get_template"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.get_template" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves command template by action identifier.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>action</strong> – Action name string.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Template string or empty string if not found.</p>
+</dd>
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.list_actions">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">list_actions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/command_templates.html#CommandTemplates.list_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.list_actions" title="Link to this definition">¶</a></dt>
+<dd><p>Returns tuple of supported command action keys.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple of action key strings.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">scarajectory.infrastructure.communication.protocol.command_templates module</a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates"><code class="docutils literal notranslate"><span class="pre">CommandTemplates</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.DISABLE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.DISABLE</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.ENABLE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.ENABLE</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.ESTOP"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.ESTOP</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.GET_CONFIG"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.GET_CONFIG</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.HOME"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.HOME</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.JOG_TEMPLATE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.JOG_TEMPLATE</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.MOVE_TEMPLATE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.MOVE_TEMPLATE</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.PAUSE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.PAUSE</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.PUMP_OFF"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.PUMP_OFF</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.PUMP_ON"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.PUMP_ON</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.RESET_CONFIG"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.RESET_CONFIG</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.RESUME"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.RESUME</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SAVE_CONFIG"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.SAVE_CONFIG</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SET_CONFIG_TEMPLATE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.SET_CONFIG_TEMPLATE</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.STATUS"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.STATUS</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.VALVE_OFF"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.VALVE_OFF</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.VALVE_ON"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.VALVE_ON</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates._LOOKUP"><code class="docutils literal notranslate"><span class="pre">CommandTemplates._LOOKUP</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.get_template"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.get_template()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.list_actions"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.list_actions()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.communication.protocol.command_formatter.html"
+                          title="previous chapter">scarajectory.infrastructure.communication.protocol.command_formatter module</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.communication.protocol.protocol_parser.html"
+                          title="next chapter">scarajectory.infrastructure.communication.protocol.protocol_parser module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/scarajectory.infrastructure.communication.protocol.command_templates.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.communication.protocol.protocol_parser.html" title="scarajectory.infrastructure.communication.protocol.protocol_parser module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.communication.protocol.command_formatter.html" title="scarajectory.infrastructure.communication.protocol.command_formatter module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.communication.html" >scarajectory.infrastructure.communication package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.infrastructure.communication.protocol.html" >scarajectory.infrastructure.communication.protocol package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.communication.protocol.command_templates module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

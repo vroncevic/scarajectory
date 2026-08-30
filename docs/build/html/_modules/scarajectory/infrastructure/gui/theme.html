@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>scarajectory.infrastructure.gui.theme &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/classic.css?v=514cf933" />
+    
+    <script src="../../../../_static/documentation_options.js?v=57319df4"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.theme</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for scarajectory.infrastructure.gui.theme</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Module</span>
+<span class="sd">    theme.py</span>
+<span class="sd">Copyright</span>
+<span class="sd">    Copyright (C) 2026 Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;</span>
+<span class="sd">    scarajectory is free software: you can redistribute it and/or modify it</span>
+<span class="sd">    under the terms of the GNU General Public License as published by the</span>
+<span class="sd">    Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">    (at your option) any later version.</span>
+<span class="sd">    scarajectory is distributed in the hope that it will be useful, but</span>
+<span class="sd">    WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
+<span class="sd">    See the GNU General Public License for more details.</span>
+<span class="sd">    You should have received a copy of the GNU General Public License along</span>
+<span class="sd">    with this program. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">Info</span>
+<span class="sd">    Configures modern dark TTK styles and widget palettes for SCARAjectory.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="nn">tk</span>
+<span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">ttk</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">ClassVar</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
+<span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.0&#39;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
+
+
+<div class="viewcode-block" id="ThemeManager">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.gui.theme.html#scarajectory.infrastructure.gui.theme.ThemeManager">[docs]</a>
+<span class="k">class</span> <span class="nc">ThemeManager</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Configures dark theme styles and design tokens for the Tkinter desktop user interface.</span>
+
+<span class="sd">        It defines:</span>
+
+<span class="sd">            :attributes:</span>
+<span class="sd">                | PALETTE - Dictionary of hex color design tokens.</span>
+<span class="sd">            :methods:</span>
+<span class="sd">                | get_palette - Returns immutable copy of theme color palette tokens.</span>
+<span class="sd">                | get_color - Returns color hex value for given design token key.</span>
+<span class="sd">                | apply_theme - Applies dark theme stylesheet and color palette to root window.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">PALETTE</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;bg_dark&#39;</span><span class="p">:</span> <span class="s1">&#39;#1e2227&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;bg_card&#39;</span><span class="p">:</span> <span class="s1">&#39;#282c34&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;bg_canvas&#39;</span><span class="p">:</span> <span class="s1">&#39;#181a1f&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;fg_text&#39;</span><span class="p">:</span> <span class="s1">&#39;#abb2bf&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;accent_blue&#39;</span><span class="p">:</span> <span class="s1">&#39;#61afef&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;accent_green&#39;</span><span class="p">:</span> <span class="s1">&#39;#98c379&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;accent_red&#39;</span><span class="p">:</span> <span class="s1">&#39;#e06c75&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;accent_yellow&#39;</span><span class="p">:</span> <span class="s1">&#39;#e5c07b&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;border&#39;</span><span class="p">:</span> <span class="s1">&#39;#333842&#39;</span>
+    <span class="p">}</span>
+
+<div class="viewcode-block" id="ThemeManager.get_palette">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.gui.theme.html#scarajectory.infrastructure.gui.theme.ThemeManager.get_palette">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_palette</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Returns immutable copy of theme color palette tokens.</span>
+
+<span class="sd">            :return: Dictionary mapping color token names to hex color strings.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">PALETTE</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ThemeManager.get_color">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.gui.theme.html#scarajectory.infrastructure.gui.theme.ThemeManager.get_color">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_color</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Returns color hex value for given design token key.</span>
+
+<span class="sd">            :param key: Design token name (e.g. &#39;accent_blue&#39;, &#39;bg_dark&#39;).</span>
+<span class="sd">            :return: Hex color string.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">PALETTE</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;#ffffff&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ThemeManager._configure_button_styles">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.gui.theme.html#scarajectory.infrastructure.gui.theme.ThemeManager._configure_button_styles">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_configure_button_styles</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Style</span><span class="p">,</span> <span class="n">palette</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Configures button and accent button pseudo-state styles.</span>
+
+<span class="sd">            :param style: Active ttk.Style instance.</span>
+<span class="sd">            :param palette: Color palette dictionary.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">fg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">palette</span><span class="p">[</span><span class="s1">&#39;fg_text&#39;</span><span class="p">]</span>
+        <span class="n">blue</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">palette</span><span class="p">[</span><span class="s1">&#39;accent_blue&#39;</span><span class="p">]</span>
+
+        <span class="n">style</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s1">&#39;TButton&#39;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;DejaVu Sans&#39;</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;bold&#39;</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="s1">&#39;#2c313a&#39;</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="n">fg</span><span class="p">)</span>
+        <span class="n">style</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+            <span class="s1">&#39;TButton&#39;</span><span class="p">,</span>
+            <span class="n">background</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;pressed&#39;</span><span class="p">,</span> <span class="s1">&#39;#21252b&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="s1">&#39;#3e4451&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;disabled&#39;</span><span class="p">,</span> <span class="s1">&#39;#1e2227&#39;</span><span class="p">)],</span>
+            <span class="n">foreground</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;pressed&#39;</span><span class="p">,</span> <span class="n">fg</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="s1">&#39;#ffffff&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;disabled&#39;</span><span class="p">,</span> <span class="s1">&#39;#5c6370&#39;</span><span class="p">)]</span>
+        <span class="p">)</span>
+
+        <span class="n">style</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s1">&#39;Accent.TButton&#39;</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="s1">&#39;#3e4451&#39;</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="n">blue</span><span class="p">)</span>
+        <span class="n">style</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+            <span class="s1">&#39;Accent.TButton&#39;</span><span class="p">,</span>
+            <span class="n">background</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;pressed&#39;</span><span class="p">,</span> <span class="s1">&#39;#282c34&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="s1">&#39;#4b5263&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;disabled&#39;</span><span class="p">,</span> <span class="s1">&#39;#21252b&#39;</span><span class="p">)],</span>
+            <span class="n">foreground</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;pressed&#39;</span><span class="p">,</span> <span class="n">blue</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="s1">&#39;#ffffff&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;disabled&#39;</span><span class="p">,</span> <span class="s1">&#39;#5c6370&#39;</span><span class="p">)]</span>
+        <span class="p">)</span>
+
+        <span class="n">style</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s1">&#39;Success.TButton&#39;</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="s1">&#39;#2e7d32&#39;</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="s1">&#39;#ffffff&#39;</span><span class="p">)</span>
+        <span class="n">style</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+            <span class="s1">&#39;Success.TButton&#39;</span><span class="p">,</span>
+            <span class="n">background</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;pressed&#39;</span><span class="p">,</span> <span class="s1">&#39;#1b5e20&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="s1">&#39;#388e3c&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;disabled&#39;</span><span class="p">,</span> <span class="s1">&#39;#21252b&#39;</span><span class="p">)],</span>
+            <span class="n">foreground</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;pressed&#39;</span><span class="p">,</span> <span class="s1">&#39;#ffffff&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="s1">&#39;#ffffff&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;disabled&#39;</span><span class="p">,</span> <span class="s1">&#39;#5c6370&#39;</span><span class="p">)]</span>
+        <span class="p">)</span>
+
+        <span class="n">style</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s1">&#39;Danger.TButton&#39;</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="s1">&#39;#c62828&#39;</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="s1">&#39;#ffffff&#39;</span><span class="p">)</span>
+        <span class="n">style</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+            <span class="s1">&#39;Danger.TButton&#39;</span><span class="p">,</span>
+            <span class="n">background</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;pressed&#39;</span><span class="p">,</span> <span class="s1">&#39;#b71c1c&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="s1">&#39;#e53935&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;disabled&#39;</span><span class="p">,</span> <span class="s1">&#39;#21252b&#39;</span><span class="p">)],</span>
+            <span class="n">foreground</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;pressed&#39;</span><span class="p">,</span> <span class="s1">&#39;#ffffff&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="s1">&#39;#ffffff&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;disabled&#39;</span><span class="p">,</span> <span class="s1">&#39;#5c6370&#39;</span><span class="p">)]</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ThemeManager._configure_notebook_styles">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.gui.theme.html#scarajectory.infrastructure.gui.theme.ThemeManager._configure_notebook_styles">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_configure_notebook_styles</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Style</span><span class="p">,</span> <span class="n">palette</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Configures tabbed notebook container styles.</span>
+
+<span class="sd">            :param style: Active ttk.Style instance.</span>
+<span class="sd">            :param palette: Color palette dictionary.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">style</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s1">&#39;TNotebook&#39;</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="n">palette</span><span class="p">[</span><span class="s1">&#39;bg_dark&#39;</span><span class="p">],</span> <span class="n">borderwidth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">style</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span>
+            <span class="s1">&#39;TNotebook.Tab&#39;</span><span class="p">,</span>
+            <span class="n">background</span><span class="o">=</span><span class="s1">&#39;#181a1f&#39;</span><span class="p">,</span>
+            <span class="n">foreground</span><span class="o">=</span><span class="s1">&#39;#abb2bf&#39;</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;DejaVu Sans&#39;</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;bold&#39;</span><span class="p">),</span>
+            <span class="n">padding</span><span class="o">=</span><span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">style</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+            <span class="s1">&#39;TNotebook.Tab&#39;</span><span class="p">,</span>
+            <span class="n">background</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;selected&#39;</span><span class="p">,</span> <span class="s1">&#39;#2c313a&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="s1">&#39;#21252b&#39;</span><span class="p">)],</span>
+            <span class="n">foreground</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;selected&#39;</span><span class="p">,</span> <span class="n">palette</span><span class="p">[</span><span class="s1">&#39;accent_blue&#39;</span><span class="p">]),</span> <span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="s1">&#39;#ffffff&#39;</span><span class="p">)]</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ThemeManager.apply_theme">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.gui.theme.html#scarajectory.infrastructure.gui.theme.ThemeManager.apply_theme">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">apply_theme</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Applies dark theme stylesheet and color palette to root window.</span>
+
+<span class="sd">            :param root: Root Tk application window.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">style</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Style</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+        <span class="n">style</span><span class="o">.</span><span class="n">theme_use</span><span class="p">(</span><span class="s1">&#39;clam&#39;</span><span class="p">)</span>
+
+        <span class="n">palette</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_palette</span><span class="p">()</span>
+        <span class="n">bg_dark</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">palette</span><span class="p">[</span><span class="s1">&#39;bg_dark&#39;</span><span class="p">]</span>
+        <span class="n">bg_card</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">palette</span><span class="p">[</span><span class="s1">&#39;bg_card&#39;</span><span class="p">]</span>
+        <span class="n">fg_text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">palette</span><span class="p">[</span><span class="s1">&#39;fg_text&#39;</span><span class="p">]</span>
+        <span class="n">accent_blue</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">palette</span><span class="p">[</span><span class="s1">&#39;accent_blue&#39;</span><span class="p">]</span>
+
+        <span class="n">root</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">bg</span><span class="o">=</span><span class="n">bg_dark</span><span class="p">)</span>
+        <span class="n">style</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="n">bg_dark</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="n">fg_text</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;DejaVu Sans&#39;</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+        <span class="n">style</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s1">&#39;TFrame&#39;</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="n">bg_dark</span><span class="p">)</span>
+        <span class="n">style</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s1">&#39;Card.TFrame&#39;</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="n">bg_card</span><span class="p">)</span>
+        <span class="n">style</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s1">&#39;TLabel&#39;</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="n">bg_dark</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="n">fg_text</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;DejaVu Sans&#39;</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+        <span class="n">style</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s1">&#39;Header.TLabel&#39;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;DejaVu Sans&#39;</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;bold&#39;</span><span class="p">),</span> <span class="n">foreground</span><span class="o">=</span><span class="n">accent_blue</span><span class="p">)</span>
+        <span class="n">style</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s1">&#39;TLabelframe&#39;</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="n">bg_dark</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="n">accent_blue</span><span class="p">)</span>
+        <span class="n">style</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s1">&#39;TLabelframe.Label&#39;</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="n">bg_dark</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="n">accent_blue</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;DejaVu Sans&#39;</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;bold&#39;</span><span class="p">))</span>
+
+        <span class="bp">cls</span><span class="o">.</span><span class="n">_configure_button_styles</span><span class="p">(</span><span class="n">style</span><span class="p">,</span> <span class="n">palette</span><span class="p">)</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">_configure_notebook_styles</span><span class="p">(</span><span class="n">style</span><span class="p">,</span> <span class="n">palette</span><span class="p">)</span>
+
+        <span class="n">style</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span>
+            <span class="s1">&#39;Treeview&#39;</span><span class="p">,</span>
+            <span class="n">background</span><span class="o">=</span><span class="s1">&#39;#181a1f&#39;</span><span class="p">,</span>
+            <span class="n">foreground</span><span class="o">=</span><span class="n">fg_text</span><span class="p">,</span>
+            <span class="n">fieldbackground</span><span class="o">=</span><span class="s1">&#39;#181a1f&#39;</span><span class="p">,</span>
+            <span class="n">rowheight</span><span class="o">=</span><span class="mi">22</span>
+        <span class="p">)</span>
+        <span class="n">style</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="s1">&#39;Treeview&#39;</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;selected&#39;</span><span class="p">,</span> <span class="s1">&#39;#3e4451&#39;</span><span class="p">)])</span></div>
+</div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.theme</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

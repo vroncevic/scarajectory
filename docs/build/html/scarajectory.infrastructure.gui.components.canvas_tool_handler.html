@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>scarajectory.infrastructure.gui.components.canvas_tool_handler module &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
+    
+    <script src="_static/documentation_options.js?v=57319df4"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="scarajectory.infrastructure.gui.components.jog_tab module" href="scarajectory.infrastructure.gui.components.jog_tab.html" />
+    <link rel="prev" title="scarajectory.infrastructure.gui.components.canvas_renderer module" href="scarajectory.infrastructure.gui.components.canvas_renderer.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.components.jog_tab.html" title="scarajectory.infrastructure.gui.components.jog_tab module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.components.canvas_renderer.html" title="scarajectory.infrastructure.gui.components.canvas_renderer module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.gui.html" >scarajectory.infrastructure.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.infrastructure.gui.components.html" accesskey="U">scarajectory.infrastructure.gui.components package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.components.canvas_tool_handler module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-scarajectory.infrastructure.gui.components.canvas_tool_handler">
+<span id="scarajectory-infrastructure-gui-components-canvas-tool-handler-module"></span><h1>scarajectory.infrastructure.gui.components.canvas_tool_handler module<a class="headerlink" href="#module-scarajectory.infrastructure.gui.components.canvas_tool_handler" title="Link to this heading">¶</a></h1>
+<dl class="simple">
+<dt>Module</dt><dd><p>canvas_tool_handler.py</p>
+</dd>
+<dt>Copyright</dt><dd><p>Copyright (C) 2026 Vladimir Roncevic &lt;<a class="reference external" href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+scarajectory is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+scarajectory is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along
+with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+</dd>
+<dt>Info</dt><dd><p>CAD tool shape discretization, point sampling and hit-testing operations.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.components.canvas_tool_handler.CanvasToolHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.gui.components.canvas_tool_handler.</span></span><span class="sig-name descname"><span class="pre">CanvasToolHandler</span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/components/canvas_tool_handler.html#CanvasToolHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.components.canvas_tool_handler.CanvasToolHandler" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Geometric discretization and spatial calculation engine for interactive CAD tools.</p>
+<p>It defines:</p>
+<blockquote>
+<div><dl class="field-list">
+<dt class="field-odd">methods<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="line-block">
+<div class="line">discretize_line - Generates linear segment start and end waypoints.</div>
+<div class="line">discretize_circle - Generates circle perimeter waypoints.</div>
+<div class="line">discretize_rectangle - Generates 4 corner waypoints of rectangle boundary.</div>
+<div class="line">find_hit_index - Finds nearest waypoint index matching cursor hit-radius.</div>
+<div class="line">is_freehand_distance_met - Checks if cursor has moved beyond minimum freehand threshold.</div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.components.canvas_tool_handler.CanvasToolHandler.discretize_circle">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">discretize_circle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">center</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.canvas_settings_dto.html#scarajectory.core.model.canvas_settings_dto.CanvasSettingsDTO" title="scarajectory.core.model.canvas_settings_dto.CanvasSettingsDTO"><span class="pre">CanvasSettingsDTO</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.waypoint.html#scarajectory.core.model.waypoint.Waypoint" title="scarajectory.core.model.waypoint.Waypoint"><span class="pre">Waypoint</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/components/canvas_tool_handler.html#CanvasToolHandler.discretize_circle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.components.canvas_tool_handler.CanvasToolHandler.discretize_circle" title="Link to this definition">¶</a></dt>
+<dd><p>Generates circle perimeter waypoints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>center</strong> – Center (x, y) coordinate tuple in mm.</p></li>
+<li><p><strong>radius</strong> – Circle radius in mm.</p></li>
+<li><p><strong>steps</strong> – Discretization step count.</p></li>
+<li><p><strong>settings</strong> – Active CanvasSettingsDTO.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of Waypoint instances.</p>
+</dd>
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.components.canvas_tool_handler.CanvasToolHandler.discretize_line">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">discretize_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.canvas_settings_dto.html#scarajectory.core.model.canvas_settings_dto.CanvasSettingsDTO" title="scarajectory.core.model.canvas_settings_dto.CanvasSettingsDTO"><span class="pre">CanvasSettingsDTO</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.waypoint.html#scarajectory.core.model.waypoint.Waypoint" title="scarajectory.core.model.waypoint.Waypoint"><span class="pre">Waypoint</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/components/canvas_tool_handler.html#CanvasToolHandler.discretize_line"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.components.canvas_tool_handler.CanvasToolHandler.discretize_line" title="Link to this definition">¶</a></dt>
+<dd><p>Generates start and end waypoints of straight linear segment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p1</strong> – Start point (x, y) coordinate tuple in mm.</p></li>
+<li><p><strong>p2</strong> – End point (x, y) coordinate tuple in mm.</p></li>
+<li><p><strong>settings</strong> – Active CanvasSettingsDTO.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of Waypoint instances.</p>
+</dd>
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.components.canvas_tool_handler.CanvasToolHandler.discretize_rectangle">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">discretize_rectangle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.canvas_settings_dto.html#scarajectory.core.model.canvas_settings_dto.CanvasSettingsDTO" title="scarajectory.core.model.canvas_settings_dto.CanvasSettingsDTO"><span class="pre">CanvasSettingsDTO</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.waypoint.html#scarajectory.core.model.waypoint.Waypoint" title="scarajectory.core.model.waypoint.Waypoint"><span class="pre">Waypoint</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/components/canvas_tool_handler.html#CanvasToolHandler.discretize_rectangle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.components.canvas_tool_handler.CanvasToolHandler.discretize_rectangle" title="Link to this definition">¶</a></dt>
+<dd><p>Generates 4 corner waypoints of rectangle boundary with closing start waypoint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p1</strong> – Initial corner (x, y) tuple in mm.</p></li>
+<li><p><strong>p2</strong> – Opposite corner (x, y) tuple in mm.</p></li>
+<li><p><strong>settings</strong> – Active CanvasSettingsDTO.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of Waypoint instances.</p>
+</dd>
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.components.canvas_tool_handler.CanvasToolHandler.find_hit_index">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find_hit_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">waypoints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.waypoint.html#scarajectory.core.model.waypoint.Waypoint" title="scarajectory.core.model.waypoint.Waypoint"><span class="pre">Waypoint</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/components/canvas_tool_handler.html#CanvasToolHandler.find_hit_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.components.canvas_tool_handler.CanvasToolHandler.find_hit_index" title="Link to this definition">¶</a></dt>
+<dd><p>Finds nearest waypoint index matching cursor hit-radius.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>waypoints</strong> – Sequence of Waypoints.</p></li>
+<li><p><strong>wx</strong> – Cursor world X coordinate.</p></li>
+<li><p><strong>wy</strong> – Cursor world Y coordinate.</p></li>
+<li><p><strong>max_radius</strong> – Maximum hit-test radius in mm.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Waypoint index or -1 if no hit.</p>
+</dd>
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.components.canvas_tool_handler.CanvasToolHandler.is_freehand_distance_met">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_freehand_distance_met</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">last_pt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.waypoint.html#scarajectory.core.model.waypoint.Waypoint" title="scarajectory.core.model.waypoint.Waypoint"><span class="pre">Waypoint</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">wx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_dist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/components/canvas_tool_handler.html#CanvasToolHandler.is_freehand_distance_met"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.components.canvas_tool_handler.CanvasToolHandler.is_freehand_distance_met" title="Link to this definition">¶</a></dt>
+<dd><p>Checks if cursor has moved beyond minimum freehand threshold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>last_pt</strong> – Last sampled Waypoint.</p></li>
+<li><p><strong>wx</strong> – Current world X.</p></li>
+<li><p><strong>wy</strong> – Current world Y.</p></li>
+<li><p><strong>min_dist</strong> – Minimum distance threshold in mm.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if distance met, False otherwise.</p>
+</dd>
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">scarajectory.infrastructure.gui.components.canvas_tool_handler module</a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.components.canvas_tool_handler.CanvasToolHandler"><code class="docutils literal notranslate"><span class="pre">CanvasToolHandler</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.components.canvas_tool_handler.CanvasToolHandler.discretize_circle"><code class="docutils literal notranslate"><span class="pre">CanvasToolHandler.discretize_circle()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.components.canvas_tool_handler.CanvasToolHandler.discretize_line"><code class="docutils literal notranslate"><span class="pre">CanvasToolHandler.discretize_line()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.components.canvas_tool_handler.CanvasToolHandler.discretize_rectangle"><code class="docutils literal notranslate"><span class="pre">CanvasToolHandler.discretize_rectangle()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.components.canvas_tool_handler.CanvasToolHandler.find_hit_index"><code class="docutils literal notranslate"><span class="pre">CanvasToolHandler.find_hit_index()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.components.canvas_tool_handler.CanvasToolHandler.is_freehand_distance_met"><code class="docutils literal notranslate"><span class="pre">CanvasToolHandler.is_freehand_distance_met()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.components.canvas_renderer.html"
+                          title="previous chapter">scarajectory.infrastructure.gui.components.canvas_renderer module</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.components.jog_tab.html"
+                          title="next chapter">scarajectory.infrastructure.gui.components.jog_tab module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/scarajectory.infrastructure.gui.components.canvas_tool_handler.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.components.jog_tab.html" title="scarajectory.infrastructure.gui.components.jog_tab module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.components.canvas_renderer.html" title="scarajectory.infrastructure.gui.components.canvas_renderer module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.gui.html" >scarajectory.infrastructure.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.infrastructure.gui.components.html" >scarajectory.infrastructure.gui.components package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.components.canvas_tool_handler module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

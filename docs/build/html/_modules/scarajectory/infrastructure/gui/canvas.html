@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>scarajectory.infrastructure.gui.canvas &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/classic.css?v=514cf933" />
+    
+    <script src="../../../../_static/documentation_options.js?v=57319df4"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.canvas</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for scarajectory.infrastructure.gui.canvas</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Module</span>
+<span class="sd">    canvas.py</span>
+<span class="sd">Copyright</span>
+<span class="sd">    Copyright (C) 2026 Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;</span>
+<span class="sd">    scarajectory is free software: you can redistribute it and/or modify it</span>
+<span class="sd">    under the terms of the GNU General Public License as published by the</span>
+<span class="sd">    Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">    (at your option) any later version.</span>
+<span class="sd">    scarajectory is distributed in the hope that it will be useful, but</span>
+<span class="sd">    WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
+<span class="sd">    See the GNU General Public License for more details.</span>
+<span class="sd">    You should have received a copy of the GNU General Public License along</span>
+<span class="sd">    with this program. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">Info</span>
+<span class="sd">    Interactive CAD Vector Canvas with dynamic resizing, zoom/pan and deadzone enforcement.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="nn">tk</span>
+<span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">ttk</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">ClassVar</span><span class="p">,</span> <span class="n">Final</span>
+
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.waypoint</span> <span class="kn">import</span> <span class="n">Waypoint</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.itrajectory_plan</span> <span class="kn">import</span> <span class="n">ITrajectoryPlan</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.canvas_settings_dto</span> <span class="kn">import</span> <span class="n">CanvasSettingsDTO</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.canvas_tool_mode</span> <span class="kn">import</span> <span class="n">CanvasToolMode</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.canvas_interaction_state</span> <span class="kn">import</span> <span class="n">CanvasInteractionState</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.viewport_transform</span> <span class="kn">import</span> <span class="n">ViewportTransform</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.itrajectory_validator</span> <span class="kn">import</span> <span class="n">ITrajectoryValidator</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.components.canvas_renderer</span> <span class="kn">import</span> <span class="n">CanvasRenderer</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.components.canvas_tool_handler</span> <span class="kn">import</span> <span class="n">CanvasToolHandler</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
+<span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.0&#39;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
+
+
+<div class="viewcode-block" id="TrajectoryCanvas">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.gui.canvas.html#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas">[docs]</a>
+<span class="k">class</span> <span class="nc">TrajectoryCanvas</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">Canvas</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Vector CAD drawing canvas with dynamic sizing, interactive zoom/pan, and deadzone protection.</span>
+
+<span class="sd">        It defines:</span>
+
+<span class="sd">            :attributes:</span>
+<span class="sd">                | R_MIN_MM - Minimum radius deadzone boundary in mm.</span>
+<span class="sd">                | SELECT_HIT_RADIUS_PX - Hit detection pixel radius for selecting waypoints.</span>
+<span class="sd">                | FREEHAND_MIN_DISTANCE_MM - Minimum distance threshold in mm for freehand point sampling.</span>
+<span class="sd">                | CIRCLE_MIN_RADIUS_MM - Minimum radius threshold in mm for inserting circle shapes.</span>
+<span class="sd">                | CIRCLE_DEFAULT_STEPS - Number of waypoint segments used for circle discretization.</span>
+<span class="sd">                | _plan - ITrajectoryPlan instance.</span>
+<span class="sd">                | _validator - Kinematic reachability validator.</span>
+<span class="sd">                | _settings - Active canvas configuration DTO.</span>
+<span class="sd">                | _tool_mode - Active interactive drawing tool.</span>
+<span class="sd">                | _vp - Viewport transformation matrix.</span>
+<span class="sd">                | _state - Interactive mouse pan, drag and selection state.</span>
+<span class="sd">                | _hover_label - Hover status readout widget.</span>
+<span class="sd">            :methods:</span>
+<span class="sd">                | __init__ - Initializes the vector CAD canvas and binds events.</span>
+<span class="sd">                | on_trajectory_updated - Redraws canvas on plan change.</span>
+<span class="sd">                | on_point_selected - Redraws selection ring when waypoint selection changes.</span>
+<span class="sd">                | set_hover_label - Configures status bar label for cursor readouts.</span>
+<span class="sd">                | set_tool_mode - Changes active drawing/selection tool.</span>
+<span class="sd">                | update_settings - Updates default parameters and deadzone settings.</span>
+<span class="sd">                | fit_reach_view - Auto-fits the SCARA maximum reach circle into view.</span>
+<span class="sd">                | reset_view - Resets zoom to 100% and centers workspace.</span>
+<span class="sd">                | zoom_in - Scales view by factor.</span>
+<span class="sd">                | zoom_out - Scales view by factor.</span>
+<span class="sd">                | redraw - Clears and redraws entire vector scene.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">R_MIN_MM</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">30.0</span>
+    <span class="n">SELECT_HIT_RADIUS_PX</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">12.0</span>
+    <span class="n">FREEHAND_MIN_DISTANCE_MM</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">5.0</span>
+    <span class="n">CIRCLE_MIN_RADIUS_MM</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">5.0</span>
+    <span class="n">CIRCLE_DEFAULT_STEPS</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">16</span>
+
+    <span class="n">_plan</span><span class="p">:</span> <span class="n">ITrajectoryPlan</span>
+    <span class="n">_validator</span><span class="p">:</span> <span class="n">ITrajectoryValidator</span>
+    <span class="n">_settings</span><span class="p">:</span> <span class="n">CanvasSettingsDTO</span>
+    <span class="n">_tool_mode</span><span class="p">:</span> <span class="n">CanvasToolMode</span>
+    <span class="n">_vp</span><span class="p">:</span> <span class="n">ViewportTransform</span>
+    <span class="n">_state</span><span class="p">:</span> <span class="n">CanvasInteractionState</span>
+    <span class="n">_hover_label</span><span class="p">:</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Label</span> <span class="o">|</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">parent</span><span class="p">:</span> <span class="n">tk</span><span class="o">.</span><span class="n">Widget</span><span class="p">,</span>
+        <span class="n">plan</span><span class="p">:</span> <span class="n">ITrajectoryPlan</span><span class="p">,</span>
+        <span class="n">validator</span><span class="p">:</span> <span class="n">ITrajectoryValidator</span><span class="p">,</span>
+        <span class="n">settings</span><span class="p">:</span> <span class="n">CanvasSettingsDTO</span> <span class="o">=</span> <span class="n">CanvasSettingsDTO</span><span class="p">(),</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">object</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Initializes the vector CAD canvas and binds events.</span>
+
+<span class="sd">            :param parent: Parent Tk widget.</span>
+<span class="sd">            :param plan: TrajectoryPlan instance.</span>
+<span class="sd">            :param validator: ITrajectoryValidator instance.</span>
+<span class="sd">            :param settings: CanvasSettingsDTO instance.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">parent</span><span class="p">,</span>
+            <span class="n">bg</span><span class="o">=</span><span class="s1">&#39;#181a1f&#39;</span><span class="p">,</span>
+            <span class="n">highlightthickness</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">highlightbackground</span><span class="o">=</span><span class="s1">&#39;#333842&#39;</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ITrajectoryPlan</span><span class="p">]</span> <span class="o">=</span> <span class="n">plan</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validator</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ITrajectoryValidator</span><span class="p">]</span> <span class="o">=</span> <span class="n">validator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tool_mode</span> <span class="o">=</span> <span class="n">CanvasToolMode</span><span class="o">.</span><span class="n">POINT</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vp</span> <span class="o">=</span> <span class="n">ViewportTransform</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="n">CanvasInteractionState</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hover_label</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">add_observer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;Configure&gt;&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">redraw</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;ButtonPress-1&gt;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_mouse_down</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;ButtonPress-2&gt;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_mouse_down</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;ButtonPress-3&gt;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_mouse_down</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;B1-Motion&gt;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_mouse_drag</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;B2-Motion&gt;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_mouse_drag</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;B3-Motion&gt;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_mouse_drag</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;ButtonRelease-1&gt;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_mouse_up</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;ButtonRelease-2&gt;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_mouse_up</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;ButtonRelease-3&gt;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_mouse_up</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;MouseWheel&gt;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_mouse_wheel_or_move</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;Motion&gt;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_mouse_wheel_or_move</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TrajectoryCanvas.on_trajectory_updated">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.gui.canvas.html#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.on_trajectory_updated">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_trajectory_updated</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Redraws canvas on plan change.</span>
+
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryCanvas.on_point_selected">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.gui.canvas.html#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.on_point_selected">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_point_selected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Redraws selection ring when waypoint selection changes.</span>
+
+<span class="sd">            :param index: Selected index.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryCanvas.set_hover_label">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.gui.canvas.html#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.set_hover_label">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_hover_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Label</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Configures status bar label for cursor readouts.</span>
+
+<span class="sd">            :param label: ttk.Label instance.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hover_label</span> <span class="o">=</span> <span class="n">label</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryCanvas.set_tool_mode">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.gui.canvas.html#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.set_tool_mode">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_tool_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="n">CanvasToolMode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Changes active drawing/selection tool.</span>
+
+<span class="sd">            :param mode: Target CanvasToolMode.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tool_mode</span> <span class="o">=</span> <span class="n">mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">reset_drag</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryCanvas.update_settings">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.gui.canvas.html#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.update_settings">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">CanvasSettingsDTO</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Updates default parameters and deadzone settings.</span>
+
+<span class="sd">            :param settings: New CanvasSettingsDTO.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryCanvas.fit_reach_view">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.gui.canvas.html#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.fit_reach_view">[docs]</a>
+    <span class="k">def</span> <span class="nf">fit_reach_view</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Auto-fits the SCARA maximum reach circle into view.</span>
+
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">winfo_width</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">winfo_height</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vp</span><span class="o">.</span><span class="n">fit_reach</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryCanvas.reset_view">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.gui.canvas.html#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.reset_view">[docs]</a>
+    <span class="k">def</span> <span class="nf">reset_view</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Resets zoom to 100% and centers workspace.</span>
+
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vp</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryCanvas.zoom_in">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.gui.canvas.html#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.zoom_in">[docs]</a>
+    <span class="k">def</span> <span class="nf">zoom_in</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Scales view in by zoom factor.</span>
+
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vp</span><span class="o">.</span><span class="n">zoom_in</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryCanvas.zoom_out">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.gui.canvas.html#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.zoom_out">[docs]</a>
+    <span class="k">def</span> <span class="nf">zoom_out</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Scales view out by zoom factor.</span>
+
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vp</span><span class="o">.</span><span class="n">zoom_out</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryCanvas.redraw">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.gui.canvas.html#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas.redraw">[docs]</a>
+    <span class="k">def</span> <span class="nf">redraw</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Clears and redraws entire vector scene.</span>
+
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+        <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">winfo_width</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">winfo_height</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">w</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="ow">or</span> <span class="n">h</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">CanvasRenderer</span><span class="o">.</span><span class="n">draw_background</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">R_MIN_MM</span><span class="p">)</span>
+        <span class="n">CanvasRenderer</span><span class="o">.</span><span class="n">draw_trajectory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validator</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">drag_start_world</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">drag_current_world</span><span class="p">:</span>
+            <span class="n">CanvasRenderer</span><span class="o">.</span><span class="n">draw_preview</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vp</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_tool_mode</span><span class="p">,</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">drag_start_world</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">drag_current_world</span><span class="p">)</span>
+            <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryCanvas._on_mouse_down">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.gui.canvas.html#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._on_mouse_down">[docs]</a>
+    <span class="k">def</span> <span class="nf">_on_mouse_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">tk</span><span class="o">.</span><span class="n">Event</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Handles mouse button press for tool interaction or viewport pan.</span>
+
+<span class="sd">            :param event: Tk event.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">pan_x</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">x</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">pan_y</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">is_panning</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">return</span>
+
+        <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">winfo_width</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">winfo_height</span><span class="p">()</span>
+        <span class="n">wx</span><span class="p">,</span> <span class="n">wy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vp</span><span class="o">.</span><span class="n">screen_to_world</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">drag_start_world</span> <span class="o">=</span> <span class="p">(</span><span class="n">wx</span><span class="p">,</span> <span class="n">wy</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">drag_current_world</span> <span class="o">=</span> <span class="p">(</span><span class="n">wx</span><span class="p">,</span> <span class="n">wy</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">dragged_node_idx</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="n">hit_r_world</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SELECT_HIT_RADIUS_PX</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vp</span><span class="o">.</span><span class="n">scale</span>
+        <span class="n">hit_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">CanvasToolHandler</span><span class="o">.</span><span class="n">find_hit_index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">waypoints</span><span class="p">,</span> <span class="n">wx</span><span class="p">,</span> <span class="n">wy</span><span class="p">,</span> <span class="n">hit_r_world</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tool_mode</span> <span class="o">==</span> <span class="n">CanvasToolMode</span><span class="o">.</span><span class="n">SELECT</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">hit_idx</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">dragged_node_idx</span> <span class="o">=</span> <span class="n">hit_idx</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">select_point</span><span class="p">(</span><span class="n">hit_idx</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">select_point</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tool_mode</span> <span class="o">==</span> <span class="n">CanvasToolMode</span><span class="o">.</span><span class="n">FREEHAND</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="n">Waypoint</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">wx</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">wy</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_settings</span><span class="o">.</span><span class="n">default_z</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_settings</span><span class="o">.</span><span class="n">default_speed</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryCanvas._on_mouse_drag">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.gui.canvas.html#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._on_mouse_drag">[docs]</a>
+    <span class="k">def</span> <span class="nf">_on_mouse_drag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">tk</span><span class="o">.</span><span class="n">Event</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Handles mouse drag motion for active CAD tool or panning.</span>
+
+<span class="sd">            :param event: Tk event.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">is_panning</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_vp</span><span class="o">.</span><span class="n">pan_x</span> <span class="o">+=</span> <span class="n">event</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">pan_x</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_vp</span><span class="o">.</span><span class="n">pan_y</span> <span class="o">+=</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">pan_y</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">pan_x</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">x</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">pan_y</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span>
+            <span class="k">return</span>
+
+        <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">winfo_width</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">winfo_height</span><span class="p">()</span>
+        <span class="n">wx</span><span class="p">,</span> <span class="n">wy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vp</span><span class="o">.</span><span class="n">screen_to_world</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">drag_current_world</span> <span class="o">=</span> <span class="p">(</span><span class="n">wx</span><span class="p">,</span> <span class="n">wy</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tool_mode</span> <span class="o">==</span> <span class="n">CanvasToolMode</span><span class="o">.</span><span class="n">SELECT</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">dragged_node_idx</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">cur_pt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">waypoints</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">dragged_node_idx</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">update_point</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">dragged_node_idx</span><span class="p">,</span>
+                <span class="n">Waypoint</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">wx</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">wy</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">cur_pt</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="n">cur_pt</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="n">cur_pt</span><span class="o">.</span><span class="n">speed</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">cur_pt</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tool_mode</span> <span class="o">==</span> <span class="n">CanvasToolMode</span><span class="o">.</span><span class="n">FREEHAND</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">last</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">waypoints</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">CanvasToolHandler</span><span class="o">.</span><span class="n">is_freehand_distance_met</span><span class="p">(</span><span class="n">last</span><span class="p">,</span> <span class="n">wx</span><span class="p">,</span> <span class="n">wy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">FREEHAND_MIN_DISTANCE_MM</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="n">Waypoint</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">wx</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">wy</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_settings</span><span class="o">.</span><span class="n">default_z</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_settings</span><span class="o">.</span><span class="n">default_speed</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tool_mode</span> <span class="ow">in</span> <span class="p">(</span><span class="n">CanvasToolMode</span><span class="o">.</span><span class="n">CIRCLE</span><span class="p">,</span> <span class="n">CanvasToolMode</span><span class="o">.</span><span class="n">RECTANGLE</span><span class="p">,</span> <span class="n">CanvasToolMode</span><span class="o">.</span><span class="n">LINE</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryCanvas._on_mouse_up">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.gui.canvas.html#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._on_mouse_up">[docs]</a>
+    <span class="k">def</span> <span class="nf">_on_mouse_up</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">tk</span><span class="o">.</span><span class="n">Event</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Finalizes shape insertion or pan operation on mouse release.</span>
+
+<span class="sd">            :param event: Tk event.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">is_panning</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">is_panning</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">return</span>
+
+        <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">winfo_width</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">winfo_height</span><span class="p">()</span>
+        <span class="n">wx</span><span class="p">,</span> <span class="n">wy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vp</span><span class="o">.</span><span class="n">screen_to_world</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">drag_start_world</span><span class="p">:</span>
+            <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">drag_start_world</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tool_mode</span> <span class="o">==</span> <span class="n">CanvasToolMode</span><span class="o">.</span><span class="n">POINT</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="n">Waypoint</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">wx</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">wy</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_settings</span><span class="o">.</span><span class="n">default_z</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_settings</span><span class="o">.</span><span class="n">default_speed</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tool_mode</span> <span class="o">==</span> <span class="n">CanvasToolMode</span><span class="o">.</span><span class="n">LINE</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">wx</span> <span class="o">-</span> <span class="n">x0</span><span class="p">,</span> <span class="n">wy</span> <span class="o">-</span> <span class="n">y0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">:</span>
+                    <span class="n">line_pts</span> <span class="o">=</span> <span class="n">CanvasToolHandler</span><span class="o">.</span><span class="n">discretize_line</span><span class="p">((</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">),</span> <span class="p">(</span><span class="n">wx</span><span class="p">,</span> <span class="n">wy</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">set_waypoints</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">waypoints</span><span class="p">)</span> <span class="o">+</span> <span class="n">line_pts</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tool_mode</span> <span class="o">==</span> <span class="n">CanvasToolMode</span><span class="o">.</span><span class="n">CIRCLE</span><span class="p">:</span>
+                <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">wx</span> <span class="o">-</span> <span class="n">x0</span><span class="p">,</span> <span class="n">wy</span> <span class="o">-</span> <span class="n">y0</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">radius</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">CIRCLE_MIN_RADIUS_MM</span><span class="p">:</span>
+                    <span class="n">circle_pts</span> <span class="o">=</span> <span class="n">CanvasToolHandler</span><span class="o">.</span><span class="n">discretize_circle</span><span class="p">(</span>
+                        <span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">),</span> <span class="n">radius</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">CIRCLE_DEFAULT_STEPS</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span>
+                    <span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">set_waypoints</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">waypoints</span><span class="p">)</span> <span class="o">+</span> <span class="n">circle_pts</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tool_mode</span> <span class="o">==</span> <span class="n">CanvasToolMode</span><span class="o">.</span><span class="n">RECTANGLE</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">wx</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">2.0</span> <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><span class="n">wy</span> <span class="o">-</span> <span class="n">y0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">2.0</span><span class="p">:</span>
+                    <span class="n">rect_pts</span> <span class="o">=</span> <span class="n">CanvasToolHandler</span><span class="o">.</span><span class="n">discretize_rectangle</span><span class="p">(</span>
+                        <span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">),</span> <span class="p">(</span><span class="n">wx</span><span class="p">,</span> <span class="n">wy</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span>
+                    <span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">set_waypoints</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">waypoints</span><span class="p">)</span> <span class="o">+</span> <span class="n">rect_pts</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">reset_drag</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryCanvas._on_mouse_wheel_or_move">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.gui.canvas.html#scarajectory.infrastructure.gui.canvas.TrajectoryCanvas._on_mouse_wheel_or_move">[docs]</a>
+    <span class="k">def</span> <span class="nf">_on_mouse_wheel_or_move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">tk</span><span class="o">.</span><span class="n">Event</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Handles mouse wheel zooming and hover label coordinate readout.</span>
+
+<span class="sd">            :param event: Tk event.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="s1">&#39;delta&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">delta</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">delta</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">zoom_in</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">zoom_out</span><span class="p">()</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hover_label</span><span class="p">:</span>
+            <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">winfo_width</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">winfo_height</span><span class="p">()</span>
+            <span class="n">wx</span><span class="p">,</span> <span class="n">wy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vp</span><span class="o">.</span><span class="n">screen_to_world</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+            <span class="n">r</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">wx</span><span class="p">,</span> <span class="n">wy</span><span class="p">)</span>
+            <span class="n">zoom_pct</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_vp</span><span class="o">.</span><span class="n">scale</span> <span class="o">/</span> <span class="n">ViewportTransform</span><span class="o">.</span><span class="n">DEFAULT_ZOOM</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hover_label</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Cursor: X=</span><span class="si">{</span><span class="n">wx</span><span class="si">:</span><span class="s1">6.1f</span><span class="si">}</span><span class="s1"> mm | Y=</span><span class="si">{</span><span class="n">wy</span><span class="si">:</span><span class="s1">6.1f</span><span class="si">}</span><span class="s1"> mm | R=</span><span class="si">{</span><span class="n">r</span><span class="si">:</span><span class="s1">5.1f</span><span class="si">}</span><span class="s1"> mm | Zoom: </span><span class="si">{</span><span class="n">zoom_pct</span><span class="si">}</span><span class="s1">%&#39;</span>
+            <span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.canvas</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>
