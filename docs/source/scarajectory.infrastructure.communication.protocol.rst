@@ -9,6 +9,8 @@ Submodules
 
    scarajectory.infrastructure.communication.protocol.command_formatter
    scarajectory.infrastructure.communication.protocol.command_templates
+   scarajectory.infrastructure.communication.protocol.config_command_formatter
+   scarajectory.infrastructure.communication.protocol.motion_command_formatter
    scarajectory.infrastructure.communication.protocol.protocol_parser
    scarajectory.infrastructure.communication.protocol.robot_response_dto
 

@@ -58,6 +58,7 @@ class StreamProgress:
     total_waypoints: int
     sent_waypoints: int
     completed_waypoints: int
+    failed_waypoints: int = 0
     current_line: str = ''
     error_message: str = ''
     elapsed_seconds: float = 0.0
@@ -72,4 +73,4 @@ class StreamProgress:
         '''
         if self.total_waypoints == 0:
             return 0.0
-        return (self.completed_waypoints / self.total_waypoints) * 100.0
+        return ((self.completed_waypoints + self.failed_waypoints) / self.total_waypoints) * 100.0

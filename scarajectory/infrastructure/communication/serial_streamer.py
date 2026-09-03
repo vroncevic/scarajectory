@@ -263,6 +263,7 @@ class SerialStreamer:
             total_waypoints=len(self._session.waypoints),
             sent_waypoints=self._session.sent_count,
             completed_waypoints=self._session.done_count,
+            failed_waypoints=self._session.failed_count,
             error_message=error,
             elapsed_seconds=elapsed
         )
@@ -291,7 +292,7 @@ class SerialStreamer:
             else:
                 sleep(0.02)
 
-        while not self._stop_event.is_set() and session.done_count < len(session.waypoints):
+        while not self._stop_event.is_set() and (session.done_count + session.failed_count) < len(session.waypoints):
             sleep(0.05)
 
         if not self._stop_event.is_set() and self._state != StreamState.STOPPED:
@@ -300,8 +301,15 @@ class SerialStreamer:
             end_ts: str = datetime.now().strftime('%H:%M:%S.%f')[:-3]
             self._notify_progress()
             if self._observer:
-                self._observer.on_serial_log(f'[{end_ts}] [MOVE COMPLETED]: All {len(session.waypoints)} waypoints finished!')
-                self._observer.on_serial_log(f'[HOST STATS]: Total Execution Time: {elapsed:.2f} s | Target Reached 🎉')
+                if session.failed_count > 0:
+                    self._observer.on_serial_log(
+                        f'[{end_ts}] [MOVE FINISHED]: {session.done_count} succeeded, {session.failed_count} failed/rejected!'
+                    )
+                else:
+                    self._observer.on_serial_log(
+                        f'[{end_ts}] [MOVE COMPLETED]: All {len(session.waypoints)} waypoints finished!'
+                    )
+                self._observer.on_serial_log(f'[HOST STATS]: Total Execution Time: {elapsed:.2f} s')
 
     def _handle_serial_line(self, line: str) -> None:
         '''
@@ -323,3 +331,13 @@ class SerialStreamer:
             if self._session.remote_queue_depth > 0:
                 self._session.remote_queue_depth -= 1
             self._notify_progress()
+        elif ProtocolParser.is_move_failed(line):
+            self._session.failed_count = min(len(self._session.waypoints), self._session.failed_count + 1)
+            if self._session.remote_queue_depth > 0:
+                self._session.remote_queue_depth -= 1
+            self._notify_progress(error=line)
+        elif ProtocolParser.is_error(line):
+            self._session.failed_count = min(len(self._session.waypoints), self._session.failed_count + 1)
+            if self._session.remote_queue_depth > 0:
+                self._session.remote_queue_depth -= 1
+            self._notify_progress(error=line)

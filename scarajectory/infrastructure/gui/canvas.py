@@ -79,7 +79,7 @@ class TrajectoryCanvas(tk.Canvas):
                 | redraw - Clears and redraws entire vector scene.
     '''
 
-    R_MIN_MM: ClassVar[float] = 30.0
+    R_MIN_MM: ClassVar[float] = 86.1
     SELECT_HIT_RADIUS_PX: ClassVar[float] = 12.0
     FREEHAND_MIN_DISTANCE_MM: ClassVar[float] = 5.0
     CIRCLE_MIN_RADIUS_MM: ClassVar[float] = 5.0

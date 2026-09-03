@@ -59,8 +59,8 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">exists</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sqrt</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
 
 <span class="kn">from</span> <span class="nn">ats_utilities.base.setup.factory</span> <span class="kn">import</span> <span class="n">BaseBundleFactory</span>
@@ -68,7 +68,10 @@
 <span class="kn">from</span> <span class="nn">ats_utilities.base.setup.options</span> <span class="kn">import</span> <span class="n">BaseBundleOptions</span>
 <span class="kn">from</span> <span class="nn">ats_utilities.context.bundle</span> <span class="kn">import</span> <span class="n">ContextBundle</span>
 <span class="kn">from</span> <span class="nn">ats_utilities.context.factory</span> <span class="kn">import</span> <span class="n">ContextBundleFactory</span>
-<span class="kn">from</span> <span class="nn">ats_utilities.config_io.processor.json_processor</span> <span class="kn">import</span> <span class="n">JSONProcessor</span>
+<span class="kn">from</span> <span class="nn">ats_utilities.config_io.loader.engine</span> <span class="kn">import</span> <span class="n">Loader</span>
+<span class="kn">from</span> <span class="nn">ats_utilities.config_io.setup.factory</span> <span class="kn">import</span> <span class="n">ConfigIOBundleFactory</span>
+<span class="kn">from</span> <span class="nn">ats_utilities.config_io.setup.options</span> <span class="kn">import</span> <span class="n">ConfigIOBundleOptions</span>
+<span class="kn">from</span> <span class="nn">ats_utilities.config_io.setup.keys</span> <span class="kn">import</span> <span class="n">ConfigIOBundleKeys</span>
 
 <span class="kn">from</span> <span class="nn">scarajectory.core.model.scara_bounds</span> <span class="kn">import</span> <span class="n">ScaraBounds</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory_plan</span> <span class="kn">import</span> <span class="n">TrajectoryPlan</span>
@@ -138,18 +141,27 @@
 
         <span class="n">config_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">config_path</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_geometry_scheme_file</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">exists</span><span class="p">(</span><span class="n">config_path</span><span class="p">)</span> <span class="ow">and</span> <span class="n">exists</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_geometry_scheme_file</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_geometry_scheme_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">sf</span><span class="p">:</span>
-                    <span class="n">scheme</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">sf</span><span class="p">)</span>
+                <span class="n">context</span><span class="p">:</span> <span class="n">ContextBundle</span> <span class="o">=</span> <span class="n">ContextBundleFactory</span><span class="o">.</span><span class="n">create_bundle</span><span class="p">()</span>
+                <span class="n">scheme_bundle</span> <span class="o">=</span> <span class="n">ConfigIOBundleFactory</span><span class="o">.</span><span class="n">create_bundle</span><span class="p">(</span>
+                    <span class="n">ConfigIOBundleOptions</span><span class="p">({</span>
+                        <span class="n">ConfigIOBundleKeys</span><span class="o">.</span><span class="n">OPTION_FILE_PATH</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_geometry_scheme_file</span><span class="p">,</span>
+                        <span class="n">ConfigIOBundleKeys</span><span class="o">.</span><span class="n">OPTION_CONTEXT_BUNDLE</span><span class="p">:</span> <span class="n">context</span>
+                    <span class="p">})</span>
+                <span class="p">)</span>
+                <span class="n">scheme</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span><span class="n">scheme_bundle</span><span class="p">)</span><span class="o">.</span><span class="n">load_configuration</span><span class="p">()</span>
 
-                <span class="n">processor</span><span class="p">:</span> <span class="n">JSONProcessor</span> <span class="o">=</span> <span class="n">JSONProcessor</span><span class="p">(</span><span class="n">scheme</span><span class="o">=</span><span class="n">scheme</span><span class="p">)</span>
+                <span class="n">config_bundle</span> <span class="o">=</span> <span class="n">ConfigIOBundleFactory</span><span class="o">.</span><span class="n">create_bundle</span><span class="p">(</span>
+                    <span class="n">ConfigIOBundleOptions</span><span class="p">({</span>
+                        <span class="n">ConfigIOBundleKeys</span><span class="o">.</span><span class="n">OPTION_FILE_PATH</span><span class="p">:</span> <span class="n">config_path</span><span class="p">,</span>
+                        <span class="n">ConfigIOBundleKeys</span><span class="o">.</span><span class="n">OPTION_SCHEME</span><span class="p">:</span> <span class="n">scheme</span><span class="p">,</span>
+                        <span class="n">ConfigIOBundleKeys</span><span class="o">.</span><span class="n">OPTION_CONTEXT_BUNDLE</span><span class="p">:</span> <span class="n">context</span>
+                    <span class="p">})</span>
+                <span class="p">)</span>
+                <span class="n">config_data</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span><span class="n">config_bundle</span><span class="p">)</span><span class="o">.</span><span class="n">load_configuration</span><span class="p">()</span>
 
-                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cf</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">processor</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">cf</span><span class="o">.</span><span class="n">read</span><span class="p">())</span> <span class="ow">and</span> <span class="n">processor</span><span class="o">.</span><span class="n">validate_by_scheme</span><span class="p">():</span>
-                        <span class="n">config_data</span> <span class="o">=</span> <span class="n">processor</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
-
-            <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">):</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="n">config_data</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="n">l1</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="p">(</span>
@@ -183,13 +195,46 @@
             <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">config_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;max_speed&#39;</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">))</span>
         <span class="p">)</span>
 
+        <span class="n">default_speed</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">config_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;default_speed&#39;</span><span class="p">,</span> <span class="mf">50.0</span><span class="p">))</span>
+        <span class="n">default_accel</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">config_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;default_accel&#39;</span><span class="p">,</span> <span class="mf">300.0</span><span class="p">))</span>
+        <span class="n">max_accel</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">config_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;max_accel&#39;</span><span class="p">,</span> <span class="mf">2000.0</span><span class="p">))</span>
+        <span class="n">j1_min_rad</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">config_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;j1_min_rad&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.617994</span><span class="p">))</span>
+        <span class="n">j1_max_rad</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">config_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;j1_max_rad&#39;</span><span class="p">,</span> <span class="mf">2.617994</span><span class="p">))</span>
+        <span class="n">j2_min_rad</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">config_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;j2_min_rad&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.530727</span><span class="p">))</span>
+        <span class="n">j2_max_rad</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">config_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;j2_max_rad&#39;</span><span class="p">,</span> <span class="mf">2.530727</span><span class="p">))</span>
+        <span class="n">singularity_outer_margin_mm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+            <span class="n">config_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;singularity_outer_margin_mm&#39;</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">singularity_inner_margin_mm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+            <span class="n">config_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;singularity_inner_margin_mm&#39;</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">singularity_theta2_min_rad</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+            <span class="n">config_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;singularity_theta2_min_rad&#39;</span><span class="p">,</span> <span class="mf">0.087266</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">r_dead_sq</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">l1</span> <span class="o">*</span> <span class="n">l1</span> <span class="o">+</span> <span class="n">l2</span> <span class="o">*</span> <span class="n">l2</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">l1</span> <span class="o">*</span> <span class="n">l2</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">j2_max_rad</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">deadzone_r_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">r_dead_sq</span><span class="p">))</span>
+
         <span class="k">return</span> <span class="n">ScaraBounds</span><span class="p">(</span>
             <span class="n">l1</span><span class="o">=</span><span class="n">l1</span><span class="p">,</span>
             <span class="n">l2</span><span class="o">=</span><span class="n">l2</span><span class="p">,</span>
             <span class="n">z_min</span><span class="o">=</span><span class="n">z_min</span><span class="p">,</span>
             <span class="n">z_max</span><span class="o">=</span><span class="n">z_max</span><span class="p">,</span>
             <span class="n">min_speed</span><span class="o">=</span><span class="n">min_speed</span><span class="p">,</span>
-            <span class="n">max_speed</span><span class="o">=</span><span class="n">max_speed</span>
+            <span class="n">max_speed</span><span class="o">=</span><span class="n">max_speed</span><span class="p">,</span>
+            <span class="n">default_speed</span><span class="o">=</span><span class="n">default_speed</span><span class="p">,</span>
+            <span class="n">default_accel</span><span class="o">=</span><span class="n">default_accel</span><span class="p">,</span>
+            <span class="n">max_accel</span><span class="o">=</span><span class="n">max_accel</span><span class="p">,</span>
+            <span class="n">j1_min_rad</span><span class="o">=</span><span class="n">j1_min_rad</span><span class="p">,</span>
+            <span class="n">j1_max_rad</span><span class="o">=</span><span class="n">j1_max_rad</span><span class="p">,</span>
+            <span class="n">j2_min_rad</span><span class="o">=</span><span class="n">j2_min_rad</span><span class="p">,</span>
+            <span class="n">j2_max_rad</span><span class="o">=</span><span class="n">j2_max_rad</span><span class="p">,</span>
+            <span class="n">singularity_outer_margin_mm</span><span class="o">=</span><span class="n">singularity_outer_margin_mm</span><span class="p">,</span>
+            <span class="n">singularity_inner_margin_mm</span><span class="o">=</span><span class="n">singularity_inner_margin_mm</span><span class="p">,</span>
+            <span class="n">singularity_theta2_min_rad</span><span class="o">=</span><span class="n">singularity_theta2_min_rad</span><span class="p">,</span>
+            <span class="n">deadzone_r_min</span><span class="o">=</span><span class="n">deadzone_r_min</span>
         <span class="p">)</span></div>
 
 

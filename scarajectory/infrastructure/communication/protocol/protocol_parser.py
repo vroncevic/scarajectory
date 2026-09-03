@@ -47,6 +47,7 @@ class ProtocolParser:
                 | parse_queue_depth - Extracts remote queue depth from ACK packet if present.
                 | is_buffer_full - Checks if packet indicates microcontroller buffer saturation.
                 | is_move_done - Checks if packet confirms completion of a waypoint move.
+                | is_telemetry - Checks if packet contains real-time kinematic telemetry.
                 | is_error - Checks if packet signals an error condition.
     '''
 
@@ -76,12 +77,25 @@ class ProtocolParser:
         elif clean.startswith('<RESP:CONFIG') or clean.startswith('<CONFIG'):
             resp_type = 'CONFIG'
             msg = clean[1:-1] if clean.startswith('<') and clean.endswith('>') else clean
+        elif clean.startswith('<RESP:ELBOW') or clean.startswith('<ELBOW'):
+            resp_type = 'ELBOW'
+            msg = clean[1:-1] if clean.startswith('<') and clean.endswith('>') else clean
         elif clean.startswith('<RESP:NACK') or clean.startswith('<NACK'):
             resp_type = 'NACK'
             success = False
             msg = clean[1:-1] if clean.startswith('<') and clean.endswith('>') else clean
         elif 'MOVE_DONE' in clean or clean == '<DONE>':
             resp_type = 'DONE'
+        elif 'MOVE_FAILED' in clean:
+            resp_type = 'MOVE_FAILED'
+            success = False
+            msg = clean[1:-1] if clean.startswith('<') and clean.endswith('>') else clean
+        elif 'MOVE_START' in clean:
+            resp_type = 'MOVE_START'
+            msg = clean[1:-1] if clean.startswith('<') and clean.endswith('>') else clean
+        elif clean.startswith('<TELEM'):
+            resp_type = 'TELEM'
+            msg = clean[1:-1] if clean.startswith('<') and clean.endswith('>') else clean
         elif 'BUFFER_FULL' in clean or clean == '<FULL>':
             resp_type = 'FULL'
             success = False
@@ -139,6 +153,28 @@ class ProtocolParser:
         return cls.parse_response(line).response_type == 'DONE'
 
     @classmethod
+    def is_move_failed(cls, line: str) -> bool:
+        '''
+            Checks if packet confirms failure of a waypoint move.
+
+            :param line: Received line string.
+            :return: True if move failed confirmation, False otherwise.
+            :exceptions: None.
+        '''
+        return cls.parse_response(line).response_type == 'MOVE_FAILED'
+
+    @classmethod
+    def is_telemetry(cls, line: str) -> bool:
+        '''
+            Checks if packet contains real-time kinematic telemetry.
+
+            :param line: Received line string.
+            :return: True if telemetry packet, False otherwise.
+            :exceptions: None.
+        '''
+        return cls.parse_response(line).response_type == 'TELEM'
+
+    @classmethod
     def is_error(cls, line: str) -> bool:
         '''
             Checks if packet signals an error condition.
@@ -148,4 +184,4 @@ class ProtocolParser:
             :exceptions: None.
         '''
         resp: RobotResponseDTO = cls.parse_response(line)
-        return resp.response_type in ('ERR', 'NACK') or not resp.is_success
+        return resp.response_type in ('ERR', 'NACK', 'MOVE_FAILED') or not resp.is_success

@@ -31,6 +31,7 @@ from scarajectory.core.model.itrajectory_plan import ITrajectoryPlan
 from scarajectory.core.service.itrajectory_validator import ITrajectoryValidator
 from scarajectory.core.service.itrajectory_streamer import ITrajectoryStreamer
 from scarajectory.infrastructure.communication.serial_port_scanner import SerialPortScanner
+from scarajectory.infrastructure.communication.serial_device_preferences import SerialDevicePreferences
 from scarajectory.infrastructure.gui.components.serial_console import SerialConsole
 from scarajectory.infrastructure.gui.components.stream_status_bar import StreamStatusBar
 
@@ -108,6 +109,7 @@ class StreamerTab(ttk.Frame):
         ttk.Label(port_box, text='Port:').pack(side=tk.LEFT)
         self._cbo_ports = ttk.Combobox(port_box, width=16)
         self._cbo_ports.pack(side=tk.LEFT, padx=4)
+        self._cbo_ports.bind('<<ComboboxSelected>>', lambda e: self._save_active_pref())
         ttk.Button(port_box, text='Refresh', command=self.refresh_ports).pack(side=tk.LEFT, padx=2)
 
         self._btn_connect = ttk.Button(port_box, text='Connect', style='Accent.TButton', command=self._on_toggle_connect)
@@ -132,11 +134,20 @@ class StreamerTab(ttk.Frame):
             :exceptions: None.
         '''
         current_selection: str = self._cbo_ports.get()
+        saved_port, _ = SerialDevicePreferences.load_preference()
         ports = SerialPortScanner.scan_ports()
         self._cbo_ports['values'] = ports
 
         if current_selection in ports:
             self._cbo_ports.set(current_selection)
+        elif saved_port:
+            matched_port = next((p for p in ports if p.startswith(saved_port)), None)
+            if matched_port:
+                self._cbo_ports.set(matched_port)
+            elif ports:
+                self._cbo_ports.current(0)
+            else:
+                self._cbo_ports.set('')
         elif ports:
             self._cbo_ports.current(0)
         else:
@@ -165,6 +176,17 @@ class StreamerTab(ttk.Frame):
         '''
         self._status_bar.update_progress(progress)
 
+    def _save_active_pref(self) -> None:
+        '''
+            Persists selected serial device port to storage.
+
+            :exceptions: None.
+        '''
+        port_val: str = self._cbo_ports.get()
+        if port_val:
+            port: str = port_val.split(' ')[0] if ' ' in port_val else port_val
+            SerialDevicePreferences.save_preference(port, 115200)
+
     def _on_toggle_connect(self) -> None:
         '''
             Connects or disconnects from selected serial port.
@@ -184,6 +206,7 @@ class StreamerTab(ttk.Frame):
             port: str = port_val.split(' ')[0] if ' ' in port_val else port_val
             config: StreamConfigDTO = StreamConfigDTO(port=port, baudrate=115200, timeout=0.1)
             if self._streamer.connect_with_config(config):
+                self._save_active_pref()
                 self._btn_connect.configure(text='Disconnect', style='Danger.TButton')
                 self._status_bar.set_status_text(f'Streamer: Connected to {port}')
 

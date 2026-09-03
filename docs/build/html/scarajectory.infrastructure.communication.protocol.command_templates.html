@@ -15,7 +15,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="scarajectory.infrastructure.communication.protocol.protocol_parser module" href="scarajectory.infrastructure.communication.protocol.protocol_parser.html" />
+    <link rel="next" title="scarajectory.infrastructure.communication.protocol.config_command_formatter module" href="scarajectory.infrastructure.communication.protocol.config_command_formatter.html" />
     <link rel="prev" title="scarajectory.infrastructure.communication.protocol.command_formatter module" href="scarajectory.infrastructure.communication.protocol.command_formatter.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -28,7 +28,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.communication.protocol.protocol_parser.html" title="scarajectory.infrastructure.communication.protocol.protocol_parser module"
+          <a href="scarajectory.infrastructure.communication.protocol.config_command_formatter.html" title="scarajectory.infrastructure.communication.protocol.config_command_formatter module"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="scarajectory.infrastructure.communication.protocol.command_formatter.html" title="scarajectory.infrastructure.communication.protocol.command_formatter module"
@@ -121,8 +121,23 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.GETPOS">
+<span class="sig-name descname"><span class="pre">GETPOS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;CMD:GETPOS&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.GETPOS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.GET_CONFIG">
 <span class="sig-name descname"><span class="pre">GET_CONFIG</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;CMD:GET_CONFIG&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.GET_CONFIG" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.GET_ELBOW">
+<span class="sig-name descname"><span class="pre">GET_ELBOW</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;CMD:GET_ELBOW&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.GET_ELBOW" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.HOLD">
+<span class="sig-name descname"><span class="pre">HOLD</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;CMD:HOLD&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.HOLD" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -171,8 +186,38 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SETPOS_TEMPLATE">
+<span class="sig-name descname"><span class="pre">SETPOS_TEMPLATE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;CMD:SETPOS#{x:.2f}#{y:.2f}#{z:.2f}#{phi:.2f}#end&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SETPOS_TEMPLATE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SET_CONFIG_TEMPLATE">
 <span class="sig-name descname"><span class="pre">SET_CONFIG_TEMPLATE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;CMD:SET_CONFIG#L1={l1:.2f}#L2={l2:.2f}#Z_MIN={z_min:.2f}#Z_MAX={z_max:.2f}#MIN_SPEED={min_speed:.1f}#MAX_SPEED={max_speed:.1f}&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SET_CONFIG_TEMPLATE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SET_DYNAMICS_TEMPLATE">
+<span class="sig-name descname"><span class="pre">SET_DYNAMICS_TEMPLATE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;CMD:SET_DYNAMICS#ACCEL={accel:.2f}#MAX_ACCEL={max_accel:.2f}#DEF_SPD={def_speed:.2f}&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SET_DYNAMICS_TEMPLATE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SET_ELBOW_TEMPLATE">
+<span class="sig-name descname"><span class="pre">SET_ELBOW_TEMPLATE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;CMD:SET_ELBOW#{elbow}&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SET_ELBOW_TEMPLATE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SET_HOMING_TEMPLATE">
+<span class="sig-name descname"><span class="pre">SET_HOMING_TEMPLATE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;CMD:SET_HOMING#OFF_J1={off_j1:.4f}#OFF_J2={off_j2:.4f}#RATE={rate:d}&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SET_HOMING_TEMPLATE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SET_LIMITS_TEMPLATE">
+<span class="sig-name descname"><span class="pre">SET_LIMITS_TEMPLATE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;CMD:SET_LIMITS#J1_MIN={j1_min:.4f}#J1_MAX={j1_max:.4f}#J2_MIN={j2_min:.4f}#J2_MAX={j2_max:.4f}&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SET_LIMITS_TEMPLATE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SET_STEPS_TEMPLATE">
+<span class="sig-name descname"><span class="pre">SET_STEPS_TEMPLATE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;CMD:SET_STEPS#GR_J1={gr_j1:.2f}#GR_J2={gr_j2:.2f}#GR_J4={gr_j4:.2f}#LEAD_Z={lead_z:.2f}&gt;'</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SET_STEPS_TEMPLATE" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -192,7 +237,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates._LOOKUP">
-<span class="sig-name descname"><span class="pre">_LOOKUP</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'DISABLE':</span> <span class="pre">'&lt;CMD:DISABLE&gt;',</span> <span class="pre">'ENABLE':</span> <span class="pre">'&lt;CMD:ENABLE&gt;',</span> <span class="pre">'ESTOP':</span> <span class="pre">'&lt;CMD:ESTOP&gt;',</span> <span class="pre">'GET_CONFIG':</span> <span class="pre">'&lt;CMD:GET_CONFIG&gt;',</span> <span class="pre">'HOME':</span> <span class="pre">'&lt;CMD:HOME&gt;',</span> <span class="pre">'JOG':</span> <span class="pre">'&lt;CMD:JOG#{axis}#{step:.1f}&gt;',</span> <span class="pre">'MOVE':</span> <span class="pre">'&lt;pt#{x:.2f}#{y:.2f}#{z:.2f}#{phi:.2f}#{speed:.1f}#end&gt;',</span> <span class="pre">'PAUSE':</span> <span class="pre">'&lt;CMD:PAUSE&gt;',</span> <span class="pre">'PUMP_OFF':</span> <span class="pre">'&lt;CMD:PUMP#0&gt;',</span> <span class="pre">'PUMP_ON':</span> <span class="pre">'&lt;CMD:PUMP#1&gt;',</span> <span class="pre">'RESET_CONFIG':</span> <span class="pre">'&lt;CMD:RESET_CONFIG&gt;',</span> <span class="pre">'RESUME':</span> <span class="pre">'&lt;CMD:RESUME&gt;',</span> <span class="pre">'SAVE_CONFIG':</span> <span class="pre">'&lt;CMD:SAVE_CONFIG&gt;',</span> <span class="pre">'SET_CONFIG':</span> <span class="pre">'&lt;CMD:SET_CONFIG#L1={l1:.2f}#L2={l2:.2f}#Z_MIN={z_min:.2f}#Z_MAX={z_max:.2f}#MIN_SPEED={min_speed:.1f}#MAX_SPEED={max_speed:.1f}&gt;',</span> <span class="pre">'STATUS':</span> <span class="pre">'&lt;CMD:STATUS&gt;',</span> <span class="pre">'VALVE_OFF':</span> <span class="pre">'&lt;CMD:VALVE#0&gt;',</span> <span class="pre">'VALVE_ON':</span> <span class="pre">'&lt;CMD:VALVE#1&gt;'}</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates._LOOKUP" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_LOOKUP</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'DISABLE':</span> <span class="pre">'&lt;CMD:DISABLE&gt;',</span> <span class="pre">'ENABLE':</span> <span class="pre">'&lt;CMD:ENABLE&gt;',</span> <span class="pre">'ESTOP':</span> <span class="pre">'&lt;CMD:ESTOP&gt;',</span> <span class="pre">'GETPOS':</span> <span class="pre">'&lt;CMD:GETPOS&gt;',</span> <span class="pre">'GET_CONFIG':</span> <span class="pre">'&lt;CMD:GET_CONFIG&gt;',</span> <span class="pre">'HOLD':</span> <span class="pre">'&lt;CMD:HOLD&gt;',</span> <span class="pre">'HOME':</span> <span class="pre">'&lt;CMD:HOME&gt;',</span> <span class="pre">'JOG':</span> <span class="pre">'&lt;CMD:JOG#{axis}#{step:.1f}&gt;',</span> <span class="pre">'MOVE':</span> <span class="pre">'&lt;pt#{x:.2f}#{y:.2f}#{z:.2f}#{phi:.2f}#{speed:.1f}#end&gt;',</span> <span class="pre">'PAUSE':</span> <span class="pre">'&lt;CMD:PAUSE&gt;',</span> <span class="pre">'PUMP_OFF':</span> <span class="pre">'&lt;CMD:PUMP#0&gt;',</span> <span class="pre">'PUMP_ON':</span> <span class="pre">'&lt;CMD:PUMP#1&gt;',</span> <span class="pre">'RESET_CONFIG':</span> <span class="pre">'&lt;CMD:RESET_CONFIG&gt;',</span> <span class="pre">'RESUME':</span> <span class="pre">'&lt;CMD:RESUME&gt;',</span> <span class="pre">'SAVE_CONFIG':</span> <span class="pre">'&lt;CMD:SAVE_CONFIG&gt;',</span> <span class="pre">'SETPOS':</span> <span class="pre">'&lt;CMD:SETPOS#{x:.2f}#{y:.2f}#{z:.2f}#{phi:.2f}#end&gt;',</span> <span class="pre">'SET_CONFIG':</span> <span class="pre">'&lt;CMD:SET_CONFIG#L1={l1:.2f}#L2={l2:.2f}#Z_MIN={z_min:.2f}#Z_MAX={z_max:.2f}#MIN_SPEED={min_speed:.1f}#MAX_SPEED={max_speed:.1f}&gt;',</span> <span class="pre">'SET_DYNAMICS':</span> <span class="pre">'&lt;CMD:SET_DYNAMICS#ACCEL={accel:.2f}#MAX_ACCEL={max_accel:.2f}#DEF_SPD={def_speed:.2f}&gt;',</span> <span class="pre">'SET_HOMING':</span> <span class="pre">'&lt;CMD:SET_HOMING#OFF_J1={off_j1:.4f}#OFF_J2={off_j2:.4f}#RATE={rate:d}&gt;',</span> <span class="pre">'SET_LIMITS':</span> <span class="pre">'&lt;CMD:SET_LIMITS#J1_MIN={j1_min:.4f}#J1_MAX={j1_max:.4f}#J2_MIN={j2_min:.4f}#J2_MAX={j2_max:.4f}&gt;',</span> <span class="pre">'SET_STEPS':</span> <span class="pre">'&lt;CMD:SET_STEPS#GR_J1={gr_j1:.2f}#GR_J2={gr_j2:.2f}#GR_J4={gr_j4:.2f}#LEAD_Z={lead_z:.2f}&gt;',</span> <span class="pre">'STATUS':</span> <span class="pre">'&lt;CMD:STATUS&gt;',</span> <span class="pre">'VALVE_OFF':</span> <span class="pre">'&lt;CMD:VALVE#0&gt;',</span> <span class="pre">'VALVE_ON':</span> <span class="pre">'&lt;CMD:VALVE#1&gt;'}</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates._LOOKUP" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -245,7 +290,10 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.DISABLE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.DISABLE</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.ENABLE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.ENABLE</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.ESTOP"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.ESTOP</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.GETPOS"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.GETPOS</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.GET_CONFIG"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.GET_CONFIG</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.GET_ELBOW"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.GET_ELBOW</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.HOLD"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.HOLD</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.HOME"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.HOME</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.JOG_TEMPLATE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.JOG_TEMPLATE</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.MOVE_TEMPLATE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.MOVE_TEMPLATE</span></code></a></li>
@@ -255,7 +303,13 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.RESET_CONFIG"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.RESET_CONFIG</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.RESUME"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.RESUME</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SAVE_CONFIG"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.SAVE_CONFIG</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SETPOS_TEMPLATE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.SETPOS_TEMPLATE</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SET_CONFIG_TEMPLATE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.SET_CONFIG_TEMPLATE</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SET_DYNAMICS_TEMPLATE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.SET_DYNAMICS_TEMPLATE</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SET_ELBOW_TEMPLATE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.SET_ELBOW_TEMPLATE</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SET_HOMING_TEMPLATE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.SET_HOMING_TEMPLATE</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SET_LIMITS_TEMPLATE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.SET_LIMITS_TEMPLATE</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SET_STEPS_TEMPLATE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.SET_STEPS_TEMPLATE</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.STATUS"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.STATUS</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.VALVE_OFF"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.VALVE_OFF</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.VALVE_ON"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.VALVE_ON</span></code></a></li>
@@ -276,8 +330,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.communication.protocol.protocol_parser.html"
-                          title="next chapter">scarajectory.infrastructure.communication.protocol.protocol_parser module</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.communication.protocol.config_command_formatter.html"
+                          title="next chapter">scarajectory.infrastructure.communication.protocol.config_command_formatter module</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -310,7 +364,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.communication.protocol.protocol_parser.html" title="scarajectory.infrastructure.communication.protocol.protocol_parser module"
+          <a href="scarajectory.infrastructure.communication.protocol.config_command_formatter.html" title="scarajectory.infrastructure.communication.protocol.config_command_formatter module"
              >next</a> |</li>
         <li class="right" >
           <a href="scarajectory.infrastructure.communication.protocol.command_formatter.html" title="scarajectory.infrastructure.communication.protocol.command_formatter module"

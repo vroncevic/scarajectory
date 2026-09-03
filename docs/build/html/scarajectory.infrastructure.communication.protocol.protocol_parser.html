@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="scarajectory.infrastructure.communication.protocol.robot_response_dto module" href="scarajectory.infrastructure.communication.protocol.robot_response_dto.html" />
-    <link rel="prev" title="scarajectory.infrastructure.communication.protocol.command_templates module" href="scarajectory.infrastructure.communication.protocol.command_templates.html" /> 
+    <link rel="prev" title="scarajectory.infrastructure.communication.protocol.motion_command_formatter module" href="scarajectory.infrastructure.communication.protocol.motion_command_formatter.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -31,7 +31,7 @@
           <a href="scarajectory.infrastructure.communication.protocol.robot_response_dto.html" title="scarajectory.infrastructure.communication.protocol.robot_response_dto module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.communication.protocol.command_templates.html" title="scarajectory.infrastructure.communication.protocol.command_templates module"
+          <a href="scarajectory.infrastructure.communication.protocol.motion_command_formatter.html" title="scarajectory.infrastructure.communication.protocol.motion_command_formatter module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
@@ -82,6 +82,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <div class="line">parse_queue_depth - Extracts remote queue depth from ACK packet if present.</div>
 <div class="line">is_buffer_full - Checks if packet indicates microcontroller buffer saturation.</div>
 <div class="line">is_move_done - Checks if packet confirms completion of a waypoint move.</div>
+<div class="line">is_telemetry - Checks if packet contains real-time kinematic telemetry.</div>
 <div class="line">is_error - Checks if packet signals an error condition.</div>
 </div>
 </dd>
@@ -144,6 +145,40 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.is_move_failed">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_move_failed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/protocol_parser.html#ProtocolParser.is_move_failed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.is_move_failed" title="Link to this definition">¶</a></dt>
+<dd><p>Checks if packet confirms failure of a waypoint move.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>line</strong> – Received line string.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if move failed confirmation, False otherwise.</p>
+</dd>
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.is_telemetry">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_telemetry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/protocol_parser.html#ProtocolParser.is_telemetry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.is_telemetry" title="Link to this definition">¶</a></dt>
+<dd><p>Checks if packet contains real-time kinematic telemetry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>line</strong> – Received line string.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if telemetry packet, False otherwise.</p>
+</dd>
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.parse_queue_depth">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse_queue_depth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/protocol_parser.html#ProtocolParser.parse_queue_depth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.parse_queue_depth" title="Link to this definition">¶</a></dt>
 <dd><p>Extracts remote queue depth integer from ACK packet if present.</p>
@@ -197,6 +232,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.is_buffer_full"><code class="docutils literal notranslate"><span class="pre">ProtocolParser.is_buffer_full()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.is_error"><code class="docutils literal notranslate"><span class="pre">ProtocolParser.is_error()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.is_move_done"><code class="docutils literal notranslate"><span class="pre">ProtocolParser.is_move_done()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.is_move_failed"><code class="docutils literal notranslate"><span class="pre">ProtocolParser.is_move_failed()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.is_telemetry"><code class="docutils literal notranslate"><span class="pre">ProtocolParser.is_telemetry()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.parse_queue_depth"><code class="docutils literal notranslate"><span class="pre">ProtocolParser.parse_queue_depth()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.parse_response"><code class="docutils literal notranslate"><span class="pre">ProtocolParser.parse_response()</span></code></a></li>
 </ul>
@@ -208,8 +245,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.communication.protocol.command_templates.html"
-                          title="previous chapter">scarajectory.infrastructure.communication.protocol.command_templates module</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.communication.protocol.motion_command_formatter.html"
+                          title="previous chapter">scarajectory.infrastructure.communication.protocol.motion_command_formatter module</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -250,7 +287,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="scarajectory.infrastructure.communication.protocol.robot_response_dto.html" title="scarajectory.infrastructure.communication.protocol.robot_response_dto module"
              >next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.communication.protocol.command_templates.html" title="scarajectory.infrastructure.communication.protocol.command_templates module"
+          <a href="scarajectory.infrastructure.communication.protocol.motion_command_formatter.html" title="scarajectory.infrastructure.communication.protocol.motion_command_formatter module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>

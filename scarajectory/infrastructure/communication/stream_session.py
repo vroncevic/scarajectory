@@ -53,5 +53,6 @@ class StreamSession:
     waypoints: list[Waypoint] = field(default_factory=list)
     sent_count: int = 0
     done_count: int = 0
+    failed_count: int = 0
     remote_queue_depth: int = 0
     start_time: float = 0.0

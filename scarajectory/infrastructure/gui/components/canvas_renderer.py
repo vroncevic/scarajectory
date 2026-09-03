@@ -21,8 +21,8 @@ Info
 
 from __future__ import annotations
 
-import math
-import tkinter as tk
+from math import cos, sin, radians, hypot, pi, asin
+from tkinter import Canvas
 from typing import Sequence
 
 from scarajectory.core.model.waypoint import Waypoint
@@ -56,7 +56,7 @@ class CanvasRenderer:
     @classmethod
     def draw_background(
         cls,
-        canvas: tk.Canvas,
+        canvas: Canvas,
         vp: ViewportTransform,
         r_min_mm: float
     ) -> None:
@@ -77,8 +77,8 @@ class CanvasRenderer:
         for deg in (30, 60, 120, 150, 210, 240, 300, 330):
             canvas.create_line(
                 center[0], center[1],
-                center[0] + rmax_px * math.cos(math.radians(deg)),
-                center[1] - rmax_px * math.sin(math.radians(deg)),
+                center[0] + rmax_px * cos(radians(deg)),
+                center[1] - rmax_px * sin(radians(deg)),
                 fill='#232830', dash=(2, 6)
             )
 
@@ -103,8 +103,58 @@ class CanvasRenderer:
         canvas.create_oval(
             center[0] - rmin_px, center[1] - rmin_px,
             center[0] + rmin_px, center[1] + rmin_px,
+            fill='#e06c75', stipple='gray25',
             outline='#e06c75', width=1, dash=(4, 4)
         )
+        # Rear unreachable boundary crescent (Shoulder J1 angle limit +/- 150 deg)
+        j1_max: float = radians(150.0)
+        l1: float = 150.0
+        l2: float = 120.0
+        r_max: float = ViewportTransform.R_MAX_MM
+        poly_pts: list[float] = []
+
+        # 1. Outer circle arc from 150 deg to 210 deg
+        steps_arc: int = 24
+        start_ang: float = j1_max
+        end_ang: float = 2.0 * pi - j1_max
+        for i in range(steps_arc + 1):
+            ang: float = start_ang + (end_ang - start_ang) * (i / steps_arc)
+            wx: float = r_max * cos(ang)
+            wy: float = r_max * sin(ang)
+            sx, sy = vp.world_to_screen(wx, wy, w, h)
+            poly_pts.extend((sx, sy))
+
+        # 2. Lower boundary curve: theta1 = -j1_max, theta2 from 0 to theta2_cross
+        sin_target: float = min(1.0, (l1 * sin(j1_max)) / l2)
+        theta2_cross: float = pi - asin(sin_target) - j1_max
+        elbow_neg_x: float = l1 * cos(-j1_max)
+        elbow_neg_y: float = l1 * sin(-j1_max)
+        steps_curve: int = 16
+        for i in range(steps_curve + 1):
+            q2: float = theta2_cross * (i / steps_curve)
+            arm2_ang: float = -j1_max - q2
+            wx = elbow_neg_x + l2 * cos(arm2_ang)
+            wy = elbow_neg_y + l2 * sin(arm2_ang)
+            sx, sy = vp.world_to_screen(wx, wy, w, h)
+            poly_pts.extend((sx, sy))
+
+        # 3. Upper boundary curve: theta1 = +j1_max, theta2 from theta2_cross down to 0
+        elbow_pos_x: float = l1 * cos(j1_max)
+        elbow_pos_y: float = l1 * sin(j1_max)
+        for i in range(steps_curve, -1, -1):
+            q2 = theta2_cross * (i / steps_curve)
+            arm2_ang = j1_max + q2
+            wx = elbow_pos_x + l2 * cos(arm2_ang)
+            wy = elbow_pos_y + l2 * sin(arm2_ang)
+            sx, sy = vp.world_to_screen(wx, wy, w, h)
+            poly_pts.extend((sx, sy))
+
+        canvas.create_polygon(
+            *poly_pts,
+            fill='#e06c75', stipple='gray25',
+            outline='#e06c75', width=1, dash=(4, 4)
+        )
+
         canvas.create_text(
             center[0] + rmax_px - 40, center[1] + rmax_px + 12,
             text='R_MAX (270mm)', fill='#61afef', font=('DejaVu Sans', 7)
@@ -113,6 +163,11 @@ class CanvasRenderer:
             center[0] + rmin_px + 15, center[1] + 10,
             text='DEADZONE', fill='#e06c75', font=('DejaVu Sans', 7)
         )
+        lbl_x, lbl_y = vp.world_to_screen(-r_max + 18.0, 0.0, w, h)
+        canvas.create_text(
+            lbl_x, lbl_y,
+            text='J1 LIMIT\n(±150°)', fill='#e06c75', font=('DejaVu Sans', 7), justify='center'
+        )
 
         canvas.create_oval(center[0] - 5, center[1] - 5, center[0] + 5, center[1] + 5, fill='#61afef', outline='#ffffff')
         canvas.create_text(center[0] + 8, center[1] - 8, text='(0,0) BASE', fill='#61afef', font=('DejaVu Sans', 8, 'bold'), anchor='w')
@@ -120,7 +175,7 @@ class CanvasRenderer:
     @classmethod
     def _draw_nodes(
         cls,
-        canvas: tk.Canvas,
+        canvas: Canvas,
         vp: ViewportTransform,
         waypoints: Sequence[Waypoint],
         validator: ITrajectoryValidator
@@ -138,12 +193,12 @@ class CanvasRenderer:
         h: int = canvas.winfo_height()
         for index, pt in enumerate(waypoints):
             sx, sy = vp.world_to_screen(pt.x, pt.y, w, h)
-            is_valid: bool = validator.validate_point_dto(pt.to_dto()).is_valid
-            node_color: str = '#98c379' if is_valid else '#e06c75'
-            canvas.create_oval(sx - 4, sy - 4, sx + 4, sy + 4, fill=node_color, outline='#ffffff')
+            is_valid = validator.validate_point_dto(pt.to_dto()).is_valid
+            node_color = '#98c379' if is_valid else '#e06c75'
+            canvas.create_oval(sx - 4, sy - 4, sx + 4, sy + 4, fill=node_color, outline='#ffffff', width=1)
             canvas.create_text(
-                sx + 8, sy - 6,
-                text=f'P{index + 1}',
+                sx + 8, sy - 8,
+                text=f'P{index + 1} ({pt.x:.0f}, {pt.y:.0f})',
                 fill='#abb2bf',
                 font=('DejaVu Sans', 8),
                 anchor='w'
@@ -152,7 +207,7 @@ class CanvasRenderer:
     @classmethod
     def draw_trajectory(
         cls,
-        canvas: tk.Canvas,
+        canvas: Canvas,
         vp: ViewportTransform,
         plan: TrajectoryPlan,
         validator: ITrajectoryValidator
@@ -185,7 +240,7 @@ class CanvasRenderer:
     @classmethod
     def draw_preview(
         cls,
-        canvas: tk.Canvas,
+        canvas: Canvas,
         vp: ViewportTransform,
         tool_mode: CanvasToolMode,
         drag_points: tuple[tuple[float, float], tuple[float, float]]
@@ -206,7 +261,7 @@ class CanvasRenderer:
         x2, y2 = vp.world_to_screen(current_pos[0], current_pos[1], w, h)
 
         if tool_mode == CanvasToolMode.CIRCLE:
-            radius: float = math.hypot(current_pos[0] - drag_start[0], current_pos[1] - drag_start[1]) * vp.scale
+            radius: float = hypot(current_pos[0] - drag_start[0], current_pos[1] - drag_start[1]) * vp.scale
             canvas.create_oval(x1 - radius, y1 - radius, x1 + radius, y1 + radius, outline='#e5c07b', width=1, dash=(3, 3))
             canvas.create_line(x1, y1, x2, y2, fill='#e5c07b', dash=(2, 2))
         elif tool_mode == CanvasToolMode.RECTANGLE:

@@ -46,6 +46,8 @@ class SerialConsole(ttk.LabelFrame):
             :methods:
                 | __init__ - Initializes console panel and text widget.
                 | append_log - Appends timestamped log message with syntax coloring.
+                | select_all - Selects all text content in the log text area.
+                | copy_log - Copies selected or entire log content to system clipboard.
                 | clear_log - Clears console contents.
     '''
 
@@ -69,7 +71,9 @@ class SerialConsole(ttk.LabelFrame):
         '''
         top = ttk.Frame(self)
         top.pack(fill=tk.X, pady=(0, 2))
-        ttk.Button(top, text='Clear Log', command=self.clear_log).pack(side=tk.RIGHT)
+        ttk.Button(top, text='Clear Log', command=self.clear_log).pack(side=tk.RIGHT, padx=(4, 0))
+        ttk.Button(top, text='Copy', command=self.copy_log).pack(side=tk.RIGHT, padx=(4, 0))
+        ttk.Button(top, text='Select All', command=self.select_all).pack(side=tk.RIGHT, padx=(4, 0))
 
         self._txt_log = tk.Text(
             self,
@@ -80,6 +84,9 @@ class SerialConsole(ttk.LabelFrame):
             wrap='none'
         )
         self._txt_log.pack(fill=tk.BOTH, expand=True)
+
+        self._txt_log.bind('<Control-a>', lambda e: (self.select_all(), 'break')[1])
+        self._txt_log.bind('<Control-c>', lambda e: (self.copy_log(), 'break')[1])
 
         self._txt_log.tag_config('tx', foreground='#61afef')
         self._txt_log.tag_config('rx', foreground='#98c379')
@@ -98,6 +105,32 @@ class SerialConsole(ttk.LabelFrame):
         prefix: str = '>>> TX' if is_outgoing else '<<< RX'
         self._txt_log.insert(tk.END, f'[{ts}] {prefix}: {text}\n', tag)
         self._txt_log.see(tk.END)
+
+    def select_all(self) -> None:
+        '''
+            Selects all text content in the log text area.
+
+            :exceptions: None.
+        '''
+        self._txt_log.tag_add(tk.SEL, '1.0', tk.END)
+        self._txt_log.mark_set(tk.INSERT, '1.0')
+        self._txt_log.see(tk.INSERT)
+        self._txt_log.focus_set()
+
+    def copy_log(self) -> None:
+        '''
+            Copies selected or entire log content to system clipboard.
+
+            :exceptions: None.
+        '''
+        try:
+            content: str = self._txt_log.get(tk.SEL_FIRST, tk.SEL_LAST)
+        except tk.TclError:
+            content = self._txt_log.get('1.0', tk.END).strip()
+
+        if content:
+            self.clipboard_clear()
+            self.clipboard_append(content)
 
     def clear_log(self) -> None:
         '''

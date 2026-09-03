@@ -33,7 +33,7 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class StreamState(Enum):
+class StreamState(str, Enum):
     '''
         State of the serial streaming process.
 
@@ -48,9 +48,9 @@ class StreamState(Enum):
                 | ERROR - Error occurred during streaming.
     '''
 
-    IDLE = auto()
-    STREAMING = auto()
-    PAUSED = auto()
-    STOPPED = auto()
-    COMPLETED = auto()
-    ERROR = auto()
+    IDLE = 'IDLE'
+    STREAMING = 'STREAMING'
+    PAUSED = 'PAUSED'
+    STOPPED = 'STOPPED'
+    COMPLETED = 'COMPLETED'
+    ERROR = 'ERROR'

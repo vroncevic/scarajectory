@@ -176,9 +176,12 @@ pip3<span class="w"> </span>install<span class="w"> </span>scarajectory
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>protocol/
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>command_formatter.py
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>command_templates.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>config_command_formatter.py
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>__init__.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>motion_command_formatter.py
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>protocol_parser.py
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>robot_response_dto.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>serial_device_preferences.py
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>serial_port_scanner.py
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>serial_streamer.py
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>stream_session.py
@@ -231,7 +234,7 @@ pip3<span class="w"> </span>install<span class="w"> </span>scarajectory
 <span class="w">         </span>├──<span class="w"> </span>registry.py
 <span class="w">         </span>└──<span class="w"> </span>validator.py
 
-<span class="w"> </span><span class="m">15</span><span class="w"> </span>directories,<span class="w"> </span><span class="m">100</span><span class="w"> </span>files
+<span class="w"> </span><span class="m">15</span><span class="w"> </span>directories,<span class="w"> </span><span class="m">103</span><span class="w"> </span>files
 </pre></div>
 </div>
 </section>
@@ -364,7 +367,7 @@ pip3<span class="w"> </span>install<span class="w"> </span>scarajectory
 <td><p>100%</p></td>
 </tr>
 <tr class="row-odd"><td><p>scarajectory/core/model/scara_bounds.py</p></td>
-<td><p>18</p></td>
+<td><p>29</p></td>
 <td><p>0</p></td>
 <td><p>100%</p></td>
 </tr>
@@ -374,7 +377,7 @@ pip3<span class="w"> </span>install<span class="w"> </span>scarajectory
 <td><p>100%</p></td>
 </tr>
 <tr class="row-odd"><td><p>scarajectory/core/model/stream_progress.py</p></td>
-<td><p>25</p></td>
+<td><p>26</p></td>
 <td><p>3</p></td>
 <td><p>88%</p></td>
 </tr>
@@ -459,9 +462,9 @@ pip3<span class="w"> </span>install<span class="w"> </span>scarajectory
 <td><p>100%</p></td>
 </tr>
 <tr class="row-even"><td><p>scarajectory/core/service/trajectory_validator.py</p></td>
-<td><p>69</p></td>
-<td><p>9</p></td>
-<td><p>87%</p></td>
+<td><p>100</p></td>
+<td><p>19</p></td>
+<td><p>81%</p></td>
 </tr>
 <tr class="row-odd"><td><p>scarajectory/engine.py</p></td>
 <td><p>64</p></td>
@@ -579,224 +582,239 @@ pip3<span class="w"> </span>install<span class="w"> </span>scarajectory
 <td><p>100%</p></td>
 </tr>
 <tr class="row-even"><td><p>scarajectory/infrastructure/communication/protocol/command_formatter.py</p></td>
-<td><p>58</p></td>
+<td><p>12</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/communication/protocol/command_templates.py</p></td>
+<td><p>44</p></td>
+<td><p>2</p></td>
+<td><p>95%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/communication/protocol/config_command_formatter.py</p></td>
+<td><p>22</p></td>
+<td><p>4</p></td>
+<td><p>82%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/communication/protocol/motion_command_formatter.py</p></td>
+<td><p>57</p></td>
 <td><p>9</p></td>
 <td><p>84%</p></td>
 </tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/communication/protocol/command_templates.py</p></td>
-<td><p>35</p></td>
-<td><p>2</p></td>
-<td><p>94%</p></td>
-</tr>
 <tr class="row-even"><td><p>scarajectory/infrastructure/communication/protocol/protocol_parser.py</p></td>
-<td><p>64</p></td>
-<td><p>17</p></td>
-<td><p>73%</p></td>
+<td><p>83</p></td>
+<td><p>28</p></td>
+<td><p>66%</p></td>
 </tr>
 <tr class="row-odd"><td><p>scarajectory/infrastructure/communication/protocol/robot_response_dto.py</p></td>
 <td><p>17</p></td>
 <td><p>0</p></td>
 <td><p>100%</p></td>
 </tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/communication/serial_port_scanner.py</p></td>
+<tr class="row-even"><td><p>scarajectory/infrastructure/communication/serial_device_preferences.py</p></td>
+<td><p>40</p></td>
+<td><p>11</p></td>
+<td><p>72%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/communication/serial_port_scanner.py</p></td>
 <td><p>36</p></td>
-<td><p>5</p></td>
-<td><p>86%</p></td>
+<td><p>7</p></td>
+<td><p>81%</p></td>
 </tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/communication/serial_streamer.py</p></td>
-<td><p>150</p></td>
-<td><p>83</p></td>
-<td><p>45%</p></td>
+<tr class="row-even"><td><p>scarajectory/infrastructure/communication/serial_streamer.py</p></td>
+<td><p>162</p></td>
+<td><p>95</p></td>
+<td><p>41%</p></td>
 </tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/communication/stream_session.py</p></td>
-<td><p>18</p></td>
-<td><p>0</p></td>
-<td><p>100%</p></td>
-</tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/communication/transport/__init__.py</p></td>
-<td><p>8</p></td>
-<td><p>0</p></td>
-<td><p>100%</p></td>
-</tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/communication/transport/itransport.py</p></td>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/communication/stream_session.py</p></td>
 <td><p>19</p></td>
 <td><p>0</p></td>
 <td><p>100%</p></td>
 </tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/communication/transport/serial_transport.py</p></td>
+<tr class="row-even"><td><p>scarajectory/infrastructure/communication/transport/__init__.py</p></td>
+<td><p>8</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/communication/transport/itransport.py</p></td>
+<td><p>19</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/communication/transport/serial_transport.py</p></td>
 <td><p>104</p></td>
 <td><p>63</p></td>
 <td><p>39%</p></td>
 </tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/communication/transport/tcp_transport.py</p></td>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/communication/transport/tcp_transport.py</p></td>
 <td><p>120</p></td>
 <td><p>80</p></td>
 <td><p>33%</p></td>
 </tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/__init__.py</p></td>
+<tr class="row-even"><td><p>scarajectory/infrastructure/gui/__init__.py</p></td>
 <td><p>9</p></td>
 <td><p>0</p></td>
 <td><p>100%</p></td>
 </tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/gui/canvas.py</p></td>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/canvas.py</p></td>
 <td><p>170</p></td>
 <td><p>92</p></td>
 <td><p>46%</p></td>
 </tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/components/__init__.py</p></td>
+<tr class="row-even"><td><p>scarajectory/infrastructure/gui/components/__init__.py</p></td>
 <td><p>9</p></td>
 <td><p>0</p></td>
 <td><p>100%</p></td>
 </tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/gui/components/canvas_renderer.py</p></td>
-<td><p>79</p></td>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/components/canvas_renderer.py</p></td>
+<td><p>117</p></td>
 <td><p>23</p></td>
-<td><p>71%</p></td>
+<td><p>80%</p></td>
 </tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/components/canvas_tool_handler.py</p></td>
+<tr class="row-even"><td><p>scarajectory/infrastructure/gui/components/canvas_tool_handler.py</p></td>
 <td><p>42</p></td>
 <td><p>0</p></td>
 <td><p>100%</p></td>
 </tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/gui/components/jog_tab.py</p></td>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/components/jog_tab.py</p></td>
 <td><p>67</p></td>
 <td><p>8</p></td>
 <td><p>88%</p></td>
 </tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/components/menu_bar.py</p></td>
+<tr class="row-even"><td><p>scarajectory/infrastructure/gui/components/menu_bar.py</p></td>
 <td><p>75</p></td>
 <td><p>14</p></td>
 <td><p>81%</p></td>
 </tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/gui/components/preview_tab.py</p></td>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/components/preview_tab.py</p></td>
 <td><p>32</p></td>
 <td><p>4</p></td>
 <td><p>88%</p></td>
 </tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/components/serial_console.py</p></td>
-<td><p>34</p></td>
-<td><p>6</p></td>
-<td><p>82%</p></td>
+<tr class="row-even"><td><p>scarajectory/infrastructure/gui/components/serial_console.py</p></td>
+<td><p>51</p></td>
+<td><p>17</p></td>
+<td><p>67%</p></td>
 </tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/gui/components/stream_status_bar.py</p></td>
-<td><p>29</p></td>
-<td><p>4</p></td>
-<td><p>86%</p></td>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/components/stream_status_bar.py</p></td>
+<td><p>30</p></td>
+<td><p>5</p></td>
+<td><p>83%</p></td>
 </tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/components/streamer_tab.py</p></td>
-<td><p>96</p></td>
-<td><p>31</p></td>
-<td><p>68%</p></td>
+<tr class="row-even"><td><p>scarajectory/infrastructure/gui/components/streamer_tab.py</p></td>
+<td><p>112</p></td>
+<td><p>41</p></td>
+<td><p>63%</p></td>
 </tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/gui/components/toolbar.py</p></td>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/components/toolbar.py</p></td>
 <td><p>73</p></td>
 <td><p>9</p></td>
 <td><p>88%</p></td>
 </tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/components/validation_tab.py</p></td>
+<tr class="row-even"><td><p>scarajectory/infrastructure/gui/components/validation_tab.py</p></td>
 <td><p>35</p></td>
 <td><p>5</p></td>
 <td><p>86%</p></td>
 </tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/gui/components/waypoint_editor.py</p></td>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/components/waypoint_editor.py</p></td>
 <td><p>71</p></td>
 <td><p>17</p></td>
 <td><p>76%</p></td>
 </tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/controls.py</p></td>
+<tr class="row-even"><td><p>scarajectory/infrastructure/gui/controls.py</p></td>
 <td><p>44</p></td>
 <td><p>3</p></td>
 <td><p>93%</p></td>
 </tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/gui/engine.py</p></td>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/engine.py</p></td>
 <td><p>98</p></td>
 <td><p>19</p></td>
 <td><p>81%</p></td>
 </tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/icanvas.py</p></td>
+<tr class="row-even"><td><p>scarajectory/infrastructure/gui/icanvas.py</p></td>
 <td><p>20</p></td>
 <td><p>0</p></td>
 <td><p>100%</p></td>
 </tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/gui/icontrols.py</p></td>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/icontrols.py</p></td>
 <td><p>16</p></td>
 <td><p>0</p></td>
 <td><p>100%</p></td>
 </tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/igui.py</p></td>
+<tr class="row-even"><td><p>scarajectory/infrastructure/gui/igui.py</p></td>
 <td><p>17</p></td>
 <td><p>0</p></td>
 <td><p>100%</p></td>
 </tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/gui/itable.py</p></td>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/itable.py</p></td>
 <td><p>14</p></td>
 <td><p>0</p></td>
 <td><p>100%</p></td>
 </tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/table.py</p></td>
+<tr class="row-even"><td><p>scarajectory/infrastructure/gui/table.py</p></td>
 <td><p>77</p></td>
 <td><p>29</p></td>
 <td><p>62%</p></td>
 </tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/gui/theme.py</p></td>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/theme.py</p></td>
 <td><p>58</p></td>
 <td><p>0</p></td>
 <td><p>100%</p></td>
 </tr>
-<tr class="row-odd"><td><p>scarajectory/setup/__init__.py</p></td>
+<tr class="row-even"><td><p>scarajectory/setup/__init__.py</p></td>
 <td><p>9</p></td>
 <td><p>0</p></td>
 <td><p>100%</p></td>
 </tr>
-<tr class="row-even"><td><p>scarajectory/setup/bundle.py</p></td>
+<tr class="row-odd"><td><p>scarajectory/setup/bundle.py</p></td>
 <td><p>25</p></td>
 <td><p>1</p></td>
 <td><p>96%</p></td>
 </tr>
-<tr class="row-odd"><td><p>scarajectory/setup/dep_validator.py</p></td>
+<tr class="row-even"><td><p>scarajectory/setup/dep_validator.py</p></td>
 <td><p>36</p></td>
 <td><p>5</p></td>
 <td><p>86%</p></td>
 </tr>
-<tr class="row-even"><td><p>scarajectory/setup/dependencies.py</p></td>
+<tr class="row-odd"><td><p>scarajectory/setup/dependencies.py</p></td>
 <td><p>21</p></td>
 <td><p>0</p></td>
 <td><p>100%</p></td>
 </tr>
-<tr class="row-odd"><td><p>scarajectory/setup/factory.py</p></td>
-<td><p>84</p></td>
+<tr class="row-even"><td><p>scarajectory/setup/factory.py</p></td>
+<td><p>98</p></td>
 <td><p>4</p></td>
-<td><p>95%</p></td>
+<td><p>96%</p></td>
 </tr>
-<tr class="row-even"><td><p>scarajectory/setup/keys.py</p></td>
+<tr class="row-odd"><td><p>scarajectory/setup/keys.py</p></td>
 <td><p>37</p></td>
 <td><p>0</p></td>
 <td><p>100%</p></td>
 </tr>
-<tr class="row-odd"><td><p>scarajectory/setup/opt_validator.py</p></td>
+<tr class="row-even"><td><p>scarajectory/setup/opt_validator.py</p></td>
 <td><p>36</p></td>
 <td><p>5</p></td>
 <td><p>86%</p></td>
 </tr>
-<tr class="row-even"><td><p>scarajectory/setup/options.py</p></td>
+<tr class="row-odd"><td><p>scarajectory/setup/options.py</p></td>
 <td><p>20</p></td>
 <td><p>0</p></td>
 <td><p>100%</p></td>
 </tr>
-<tr class="row-odd"><td><p>scarajectory/setup/registry.py</p></td>
+<tr class="row-even"><td><p>scarajectory/setup/registry.py</p></td>
 <td><p>34</p></td>
 <td><p>1</p></td>
 <td><p>97%</p></td>
 </tr>
-<tr class="row-even"><td><p>scarajectory/setup/validator.py</p></td>
+<tr class="row-odd"><td><p>scarajectory/setup/validator.py</p></td>
 <td><p>53</p></td>
 <td><p>5</p></td>
 <td><p>91%</p></td>
 </tr>
-<tr class="row-odd"><td><p>Total</p></td>
-<td><p>3455</p></td>
-<td><p>656</p></td>
-<td><p>81%</p></td>
+<tr class="row-even"><td><p>Total</p></td>
+<td><p>3698</p></td>
+<td><p>728</p></td>
+<td><p>80%</p></td>
 </tr>
 </tbody>
 </table>

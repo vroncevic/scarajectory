@@ -116,11 +116,28 @@
     <span class="n">PUMP_OFF</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&lt;CMD:PUMP#0&gt;&#39;</span>
     <span class="n">VALVE_ON</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&lt;CMD:VALVE#1&gt;&#39;</span>
     <span class="n">VALVE_OFF</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&lt;CMD:VALVE#0&gt;&#39;</span>
+    <span class="n">GETPOS</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&lt;CMD:GETPOS&gt;&#39;</span>
+    <span class="n">HOLD</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&lt;CMD:HOLD&gt;&#39;</span>
+    <span class="n">SETPOS_TEMPLATE</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&lt;CMD:SETPOS#</span><span class="si">{x:.2f}</span><span class="s1">#</span><span class="si">{y:.2f}</span><span class="s1">#</span><span class="si">{z:.2f}</span><span class="s1">#</span><span class="si">{phi:.2f}</span><span class="s1">#end&gt;&#39;</span>
     <span class="n">MOVE_TEMPLATE</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&lt;pt#</span><span class="si">{x:.2f}</span><span class="s1">#</span><span class="si">{y:.2f}</span><span class="s1">#</span><span class="si">{z:.2f}</span><span class="s1">#</span><span class="si">{phi:.2f}</span><span class="s1">#</span><span class="si">{speed:.1f}</span><span class="s1">#end&gt;&#39;</span>
     <span class="n">JOG_TEMPLATE</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&lt;CMD:JOG#</span><span class="si">{axis}</span><span class="s1">#</span><span class="si">{step:.1f}</span><span class="s1">&gt;&#39;</span>
     <span class="n">SET_CONFIG_TEMPLATE</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s1">&#39;&lt;CMD:SET_CONFIG#L1=</span><span class="si">{l1:.2f}</span><span class="s1">#L2=</span><span class="si">{l2:.2f}</span><span class="s1">#Z_MIN=</span><span class="si">{z_min:.2f}</span><span class="s1">#Z_MAX=</span><span class="si">{z_max:.2f}</span><span class="s1">#MIN_SPEED=</span><span class="si">{min_speed:.1f}</span><span class="s1">#MAX_SPEED=</span><span class="si">{max_speed:.1f}</span><span class="s1">&gt;&#39;</span>
     <span class="p">)</span>
+    <span class="n">SET_DYNAMICS_TEMPLATE</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;&lt;CMD:SET_DYNAMICS#ACCEL=</span><span class="si">{accel:.2f}</span><span class="s1">#MAX_ACCEL=</span><span class="si">{max_accel:.2f}</span><span class="s1">#DEF_SPD=</span><span class="si">{def_speed:.2f}</span><span class="s1">&gt;&#39;</span>
+    <span class="p">)</span>
+    <span class="n">SET_HOMING_TEMPLATE</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;&lt;CMD:SET_HOMING#OFF_J1=</span><span class="si">{off_j1:.4f}</span><span class="s1">#OFF_J2=</span><span class="si">{off_j2:.4f}</span><span class="s1">#RATE=</span><span class="si">{rate:d}</span><span class="s1">&gt;&#39;</span>
+    <span class="p">)</span>
+    <span class="n">SET_LIMITS_TEMPLATE</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;&lt;CMD:SET_LIMITS#J1_MIN=</span><span class="si">{j1_min:.4f}</span><span class="s1">#J1_MAX=</span><span class="si">{j1_max:.4f}</span><span class="s1">#J2_MIN=</span><span class="si">{j2_min:.4f}</span><span class="s1">#J2_MAX=</span><span class="si">{j2_max:.4f}</span><span class="s1">&gt;&#39;</span>
+    <span class="p">)</span>
+    <span class="n">SET_STEPS_TEMPLATE</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;&lt;CMD:SET_STEPS#GR_J1=</span><span class="si">{gr_j1:.2f}</span><span class="s1">#GR_J2=</span><span class="si">{gr_j2:.2f}</span><span class="s1">#GR_J4=</span><span class="si">{gr_j4:.2f}</span><span class="s1">#LEAD_Z=</span><span class="si">{lead_z:.2f}</span><span class="s1">&gt;&#39;</span>
+    <span class="p">)</span>
+    <span class="n">SET_ELBOW_TEMPLATE</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&lt;CMD:SET_ELBOW#</span><span class="si">{elbow}</span><span class="s1">&gt;&#39;</span>
+    <span class="n">GET_ELBOW</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&lt;CMD:GET_ELBOW&gt;&#39;</span>
 
     <span class="n">_LOOKUP</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;ENABLE&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;CMD:ENABLE&gt;&#39;</span><span class="p">,</span>
@@ -128,8 +145,10 @@
         <span class="s1">&#39;ESTOP&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;CMD:ESTOP&gt;&#39;</span><span class="p">,</span>
         <span class="s1">&#39;STATUS&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;CMD:STATUS&gt;&#39;</span><span class="p">,</span>
         <span class="s1">&#39;PAUSE&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;CMD:PAUSE&gt;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;HOLD&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;CMD:HOLD&gt;&#39;</span><span class="p">,</span>
         <span class="s1">&#39;RESUME&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;CMD:RESUME&gt;&#39;</span><span class="p">,</span>
         <span class="s1">&#39;HOME&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;CMD:HOME&gt;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;GETPOS&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;CMD:GETPOS&gt;&#39;</span><span class="p">,</span>
         <span class="s1">&#39;GET_CONFIG&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;CMD:GET_CONFIG&gt;&#39;</span><span class="p">,</span>
         <span class="s1">&#39;SAVE_CONFIG&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;CMD:SAVE_CONFIG&gt;&#39;</span><span class="p">,</span>
         <span class="s1">&#39;RESET_CONFIG&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;CMD:RESET_CONFIG&gt;&#39;</span><span class="p">,</span>
@@ -137,10 +156,23 @@
         <span class="s1">&#39;PUMP_OFF&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;CMD:PUMP#0&gt;&#39;</span><span class="p">,</span>
         <span class="s1">&#39;VALVE_ON&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;CMD:VALVE#1&gt;&#39;</span><span class="p">,</span>
         <span class="s1">&#39;VALVE_OFF&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;CMD:VALVE#0&gt;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;SETPOS&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;CMD:SETPOS#</span><span class="si">{x:.2f}</span><span class="s1">#</span><span class="si">{y:.2f}</span><span class="s1">#</span><span class="si">{z:.2f}</span><span class="s1">#</span><span class="si">{phi:.2f}</span><span class="s1">#end&gt;&#39;</span><span class="p">,</span>
         <span class="s1">&#39;MOVE&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;pt#</span><span class="si">{x:.2f}</span><span class="s1">#</span><span class="si">{y:.2f}</span><span class="s1">#</span><span class="si">{z:.2f}</span><span class="s1">#</span><span class="si">{phi:.2f}</span><span class="s1">#</span><span class="si">{speed:.1f}</span><span class="s1">#end&gt;&#39;</span><span class="p">,</span>
         <span class="s1">&#39;JOG&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;CMD:JOG#</span><span class="si">{axis}</span><span class="s1">#</span><span class="si">{step:.1f}</span><span class="s1">&gt;&#39;</span><span class="p">,</span>
         <span class="s1">&#39;SET_CONFIG&#39;</span><span class="p">:</span> <span class="p">(</span>
             <span class="s1">&#39;&lt;CMD:SET_CONFIG#L1=</span><span class="si">{l1:.2f}</span><span class="s1">#L2=</span><span class="si">{l2:.2f}</span><span class="s1">#Z_MIN=</span><span class="si">{z_min:.2f}</span><span class="s1">#Z_MAX=</span><span class="si">{z_max:.2f}</span><span class="s1">#MIN_SPEED=</span><span class="si">{min_speed:.1f}</span><span class="s1">#MAX_SPEED=</span><span class="si">{max_speed:.1f}</span><span class="s1">&gt;&#39;</span>
+        <span class="p">),</span>
+        <span class="s1">&#39;SET_DYNAMICS&#39;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="s1">&#39;&lt;CMD:SET_DYNAMICS#ACCEL=</span><span class="si">{accel:.2f}</span><span class="s1">#MAX_ACCEL=</span><span class="si">{max_accel:.2f}</span><span class="s1">#DEF_SPD=</span><span class="si">{def_speed:.2f}</span><span class="s1">&gt;&#39;</span>
+        <span class="p">),</span>
+        <span class="s1">&#39;SET_HOMING&#39;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="s1">&#39;&lt;CMD:SET_HOMING#OFF_J1=</span><span class="si">{off_j1:.4f}</span><span class="s1">#OFF_J2=</span><span class="si">{off_j2:.4f}</span><span class="s1">#RATE=</span><span class="si">{rate:d}</span><span class="s1">&gt;&#39;</span>
+        <span class="p">),</span>
+        <span class="s1">&#39;SET_LIMITS&#39;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="s1">&#39;&lt;CMD:SET_LIMITS#J1_MIN=</span><span class="si">{j1_min:.4f}</span><span class="s1">#J1_MAX=</span><span class="si">{j1_max:.4f}</span><span class="s1">#J2_MIN=</span><span class="si">{j2_min:.4f}</span><span class="s1">#J2_MAX=</span><span class="si">{j2_max:.4f}</span><span class="s1">&gt;&#39;</span>
+        <span class="p">),</span>
+        <span class="s1">&#39;SET_STEPS&#39;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="s1">&#39;&lt;CMD:SET_STEPS#GR_J1=</span><span class="si">{gr_j1:.2f}</span><span class="s1">#GR_J2=</span><span class="si">{gr_j2:.2f}</span><span class="s1">#GR_J4=</span><span class="si">{gr_j4:.2f}</span><span class="s1">#LEAD_Z=</span><span class="si">{lead_z:.2f}</span><span class="s1">&gt;&#39;</span>
         <span class="p">)</span>
     <span class="p">}</span>
 
