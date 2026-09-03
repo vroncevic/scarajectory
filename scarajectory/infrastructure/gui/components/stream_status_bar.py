@@ -30,7 +30,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.1'
+__version__ = '1.0.2'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -92,11 +92,12 @@ class StreamStatusBar(ttk.Frame):
             :param progress: StreamProgress data model.
             :exceptions: None.
         '''
-        pct: float = (progress.completed_waypoints / progress.total_waypoints * 100.0) if progress.total_waypoints > 0 else 0.0
+        pct: float = progress.percentage
         self._progress_bar['value'] = pct
+        failed_info: str = f' ({progress.failed_waypoints} failed)' if progress.failed_waypoints > 0 else ''
         self._lbl_status.configure(
             text=(
-                f'Status: {progress.state.value} | Pts: {progress.completed_waypoints}/{progress.total_waypoints} '
+                f'Status: {progress.state.value} | Pts: {progress.completed_waypoints}/{progress.total_waypoints}{failed_info} '
                 f'({pct:.0f}%) | Time: {progress.elapsed_seconds:.1f}s'
             )
         )

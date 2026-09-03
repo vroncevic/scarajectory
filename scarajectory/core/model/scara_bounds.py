@@ -27,7 +27,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.1'
+__version__ = '1.0.2'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -47,6 +47,17 @@ class ScaraBounds:
                 | z_max - Maximum vertical height limit in mm.
                 | min_speed - Minimum feedrate speed limit in mm/s.
                 | max_speed - Maximum feedrate speed limit in mm/s.
+                | default_speed - Default Cartesian linear speed in mm/s.
+                | default_accel - Default acceleration in mm/s^2.
+                | max_accel - Maximum acceleration in mm/s^2.
+                | j1_min_rad - Joint 1 (Shoulder) minimum angle in radians.
+                | j1_max_rad - Joint 1 (Shoulder) maximum angle in radians.
+                | j2_min_rad - Joint 2 (Elbow) minimum angle in radians.
+                | j2_max_rad - Joint 2 (Elbow) maximum angle in radians.
+                | singularity_outer_margin_mm - Outer reach safety margin in mm.
+                | singularity_inner_margin_mm - Inner reach safety margin in mm.
+                | singularity_theta2_min_rad - Elbow singularity deadband in radians.
+                | deadzone_r_min - Inner deadzone radius due to folded elbow in mm.
     '''
 
     l1: float = 150.0
@@ -54,4 +65,15 @@ class ScaraBounds:
     z_min: float = 0.0
     z_max: float = 100.0
     min_speed: float = 1.0
-    max_speed: float = 100.0
+    max_speed: float = 250.0
+    default_speed: float = 50.0
+    default_accel: float = 300.0
+    max_accel: float = 2000.0
+    j1_min_rad: float = -2.617994
+    j1_max_rad: float = 2.617994
+    j2_min_rad: float = -2.530727
+    j2_max_rad: float = 2.530727
+    singularity_outer_margin_mm: float = 3.0
+    singularity_inner_margin_mm: float = 3.0
+    singularity_theta2_min_rad: float = 0.087266
+    deadzone_r_min: float = 86.08

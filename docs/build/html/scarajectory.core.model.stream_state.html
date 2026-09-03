@@ -70,7 +70,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dl class="py class">
 <dt class="sig sig-object py" id="scarajectory.core.model.stream_state.StreamState">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.core.model.stream_state.</span></span><span class="sig-name descname"><span class="pre">StreamState</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names=&lt;not</span> <span class="pre">given&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary=None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/core/model/stream_state.html#StreamState"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.stream_state.StreamState" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
 <p>State of the serial streaming process.</p>
 <p>It defines:</p>
 <blockquote>
@@ -89,33 +89,86 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </div></blockquote>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="scarajectory.core.model.stream_state.StreamState.COMPLETED">
-<span class="sig-name descname"><span class="pre">COMPLETED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#scarajectory.core.model.stream_state.StreamState.COMPLETED" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">COMPLETED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'COMPLETED'</span></em><a class="headerlink" href="#scarajectory.core.model.stream_state.StreamState.COMPLETED" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="scarajectory.core.model.stream_state.StreamState.ERROR">
-<span class="sig-name descname"><span class="pre">ERROR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6</span></em><a class="headerlink" href="#scarajectory.core.model.stream_state.StreamState.ERROR" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ERROR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ERROR'</span></em><a class="headerlink" href="#scarajectory.core.model.stream_state.StreamState.ERROR" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="scarajectory.core.model.stream_state.StreamState.IDLE">
-<span class="sig-name descname"><span class="pre">IDLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#scarajectory.core.model.stream_state.StreamState.IDLE" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">IDLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'IDLE'</span></em><a class="headerlink" href="#scarajectory.core.model.stream_state.StreamState.IDLE" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="scarajectory.core.model.stream_state.StreamState.PAUSED">
-<span class="sig-name descname"><span class="pre">PAUSED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#scarajectory.core.model.stream_state.StreamState.PAUSED" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">PAUSED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PAUSED'</span></em><a class="headerlink" href="#scarajectory.core.model.stream_state.StreamState.PAUSED" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="scarajectory.core.model.stream_state.StreamState.STOPPED">
-<span class="sig-name descname"><span class="pre">STOPPED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#scarajectory.core.model.stream_state.StreamState.STOPPED" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">STOPPED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'STOPPED'</span></em><a class="headerlink" href="#scarajectory.core.model.stream_state.StreamState.STOPPED" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="scarajectory.core.model.stream_state.StreamState.STREAMING">
-<span class="sig-name descname"><span class="pre">STREAMING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#scarajectory.core.model.stream_state.StreamState.STREAMING" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">STREAMING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'STREAMING'</span></em><a class="headerlink" href="#scarajectory.core.model.stream_state.StreamState.STREAMING" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.core.model.stream_state.StreamState._generate_next_value_">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_generate_next_value_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scarajectory.core.model.stream_state.StreamState._generate_next_value_" title="Link to this definition">¶</a></dt>
+<dd><p>Generate the next value when not given.</p>
+<p>name: the name of the member
+start: the initial start value or None
+count: the number of existing members
+last_values: the list of values assigned</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.core.model.stream_state.StreamState._member_map_">
+<span class="sig-name descname"><span class="pre">_member_map_</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'COMPLETED':</span> <span class="pre">StreamState.COMPLETED,</span> <span class="pre">'ERROR':</span> <span class="pre">StreamState.ERROR,</span> <span class="pre">'IDLE':</span> <span class="pre">StreamState.IDLE,</span> <span class="pre">'PAUSED':</span> <span class="pre">StreamState.PAUSED,</span> <span class="pre">'STOPPED':</span> <span class="pre">StreamState.STOPPED,</span> <span class="pre">'STREAMING':</span> <span class="pre">StreamState.STREAMING}</span></em><a class="headerlink" href="#scarajectory.core.model.stream_state.StreamState._member_map_" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.core.model.stream_state.StreamState._member_names_">
+<span class="sig-name descname"><span class="pre">_member_names_</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['IDLE',</span> <span class="pre">'STREAMING',</span> <span class="pre">'PAUSED',</span> <span class="pre">'STOPPED',</span> <span class="pre">'COMPLETED',</span> <span class="pre">'ERROR']</span></em><a class="headerlink" href="#scarajectory.core.model.stream_state.StreamState._member_names_" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.core.model.stream_state.StreamState._member_type_">
+<span class="sig-name descname"><span class="pre">_member_type_</span></span><a class="headerlink" href="#scarajectory.core.model.stream_state.StreamState._member_type_" title="Link to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.core.model.stream_state.StreamState._new_member_">
+<span class="sig-name descname"><span class="pre">_new_member_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#scarajectory.core.model.stream_state.StreamState._new_member_" title="Link to this definition">¶</a></dt>
+<dd><p>Create and return a new object.  See help(type) for accurate signature.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.core.model.stream_state.StreamState._unhashable_values_">
+<span class="sig-name descname"><span class="pre">_unhashable_values_</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#scarajectory.core.model.stream_state.StreamState._unhashable_values_" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.core.model.stream_state.StreamState._use_args_">
+<span class="sig-name descname"><span class="pre">_use_args_</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#scarajectory.core.model.stream_state.StreamState._use_args_" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.core.model.stream_state.StreamState._value2member_map_">
+<span class="sig-name descname"><span class="pre">_value2member_map_</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'COMPLETED':</span> <span class="pre">StreamState.COMPLETED,</span> <span class="pre">'ERROR':</span> <span class="pre">StreamState.ERROR,</span> <span class="pre">'IDLE':</span> <span class="pre">StreamState.IDLE,</span> <span class="pre">'PAUSED':</span> <span class="pre">StreamState.PAUSED,</span> <span class="pre">'STOPPED':</span> <span class="pre">StreamState.STOPPED,</span> <span class="pre">'STREAMING':</span> <span class="pre">StreamState.STREAMING}</span></em><a class="headerlink" href="#scarajectory.core.model.stream_state.StreamState._value2member_map_" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.core.model.stream_state.StreamState._value_repr_">
+<span class="sig-name descname"><span class="pre">_value_repr_</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#scarajectory.core.model.stream_state.StreamState._value_repr_" title="Link to this definition">¶</a></dt>
+<dd><p>Return repr(self).</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -139,6 +192,15 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <li><a class="reference internal" href="#scarajectory.core.model.stream_state.StreamState.PAUSED"><code class="docutils literal notranslate"><span class="pre">StreamState.PAUSED</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.core.model.stream_state.StreamState.STOPPED"><code class="docutils literal notranslate"><span class="pre">StreamState.STOPPED</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.core.model.stream_state.StreamState.STREAMING"><code class="docutils literal notranslate"><span class="pre">StreamState.STREAMING</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.model.stream_state.StreamState._generate_next_value_"><code class="docutils literal notranslate"><span class="pre">StreamState._generate_next_value_()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.model.stream_state.StreamState._member_map_"><code class="docutils literal notranslate"><span class="pre">StreamState._member_map_</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.model.stream_state.StreamState._member_names_"><code class="docutils literal notranslate"><span class="pre">StreamState._member_names_</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.model.stream_state.StreamState._member_type_"><code class="docutils literal notranslate"><span class="pre">StreamState._member_type_</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.model.stream_state.StreamState._new_member_"><code class="docutils literal notranslate"><span class="pre">StreamState._new_member_()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.model.stream_state.StreamState._unhashable_values_"><code class="docutils literal notranslate"><span class="pre">StreamState._unhashable_values_</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.model.stream_state.StreamState._use_args_"><code class="docutils literal notranslate"><span class="pre">StreamState._use_args_</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.model.stream_state.StreamState._value2member_map_"><code class="docutils literal notranslate"><span class="pre">StreamState._value2member_map_</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.model.stream_state.StreamState._value_repr_"><code class="docutils literal notranslate"><span class="pre">StreamState._value_repr_()</span></code></a></li>
 </ul>
 </li>
 </ul>

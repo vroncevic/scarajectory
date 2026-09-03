@@ -21,7 +21,7 @@ Info
 
 from __future__ import annotations
 
-import math
+from math import hypot, sqrt, atan2, pi, degrees
 from typing import Final
 
 from scarajectory.core.model.point_dto import PointDTO
@@ -34,7 +34,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.1'
+__version__ = '1.0.2'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -113,7 +113,7 @@ class TrajectoryValidator:
             :return: ValidationResultDTO with pass/fail and descriptive reason.
             :exceptions: None.
         '''
-        r: float = math.hypot(point.x, point.y)
+        r: float = hypot(point.x, point.y)
         if r > self._r_max + 1e-4:
             return ValidationResultDTO(
                 is_valid=False,
@@ -129,6 +129,48 @@ class TrajectoryValidator:
                 is_valid=False,
                 message=f'Elevation Z={point.z:.1f} mm is out of range [{self._bounds.z_min:.1f}, {self._bounds.z_max:.1f}] mm'
             )
+
+        l1: float = self._bounds.l1
+        l2: float = self._bounds.l2
+        r_sq: float = point.x * point.x + point.y * point.y
+        cos_q2: float = (r_sq - l1 * l1 - l2 * l2) / (2.0 * l1 * l2)
+        if abs(cos_q2) > 1.0:
+            return ValidationResultDTO(
+                is_valid=False,
+                message=f'Point ({point.x:.1f}, {point.y:.1f}) is kinematically unreachable'
+            )
+
+        reachable_any: bool = False
+        reasons: list[str] = []
+        for elbow_left in (False, True):
+            sin_q2: float = sqrt(max(0.0, 1.0 - cos_q2 * cos_q2))
+            if elbow_left:
+                sin_q2 = -sin_q2
+            theta2: float = atan2(sin_q2, cos_q2)
+            k1: float = l1 + l2 * cos_q2
+            k2: float = l2 * sin_q2
+            theta1: float = atan2(point.y, point.x) - atan2(k2, k1)
+            theta1 = (theta1 + pi) % (2.0 * pi) - pi
+
+            if theta1 < self._bounds.j1_min_rad or theta1 > self._bounds.j1_max_rad:
+                reasons.append(f'J1 angle {degrees(theta1):.1f}° exceeds limit')
+                continue
+            if theta2 < self._bounds.j2_min_rad or theta2 > self._bounds.j2_max_rad:
+                reasons.append(f'J2 angle {degrees(theta2):.1f}° exceeds limit')
+                continue
+            if abs(theta2) < self._bounds.singularity_theta2_min_rad:
+                reasons.append('J2 in singularity deadband')
+                continue
+            reachable_any = True
+            break
+
+        if not reachable_any:
+            reason_str: str = ', '.join(reasons) if reasons else 'Joint limits exceeded'
+            return ValidationResultDTO(
+                is_valid=False,
+                message=f'Point ({point.x:.1f}, {point.y:.1f}) violates joint limits: {reason_str}'
+            )
+
         return ValidationResultDTO(is_valid=True, message='Point is reachable')
 
     def validate_feedrate(self, speed: float) -> ValidationResultDTO:

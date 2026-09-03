@@ -176,9 +176,12 @@ Tool structure
          │   │   ├── protocol/
          │   │   │   ├── command_formatter.py
          │   │   │   ├── command_templates.py
+         │   │   │   ├── config_command_formatter.py
          │   │   │   ├── __init__.py
+         │   │   │   ├── motion_command_formatter.py
          │   │   │   ├── protocol_parser.py
          │   │   │   └── robot_response_dto.py
+         │   │   ├── serial_device_preferences.py
          │   │   ├── serial_port_scanner.py
          │   │   ├── serial_streamer.py
          │   │   ├── stream_session.py
@@ -231,7 +234,7 @@ Tool structure
              ├── registry.py
              └── validator.py
 
-     15 directories, 100 files
+     15 directories, 103 files
 
 ✨ Features
 -----------

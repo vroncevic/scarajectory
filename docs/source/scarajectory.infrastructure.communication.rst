@@ -16,6 +16,7 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
+   scarajectory.infrastructure.communication.serial_device_preferences
    scarajectory.infrastructure.communication.serial_port_scanner
    scarajectory.infrastructure.communication.serial_streamer
    scarajectory.infrastructure.communication.stream_session

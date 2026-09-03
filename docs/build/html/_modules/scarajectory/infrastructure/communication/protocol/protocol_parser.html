@@ -68,7 +68,7 @@
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.1&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.2&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -87,6 +87,7 @@
 <span class="sd">                | parse_queue_depth - Extracts remote queue depth from ACK packet if present.</span>
 <span class="sd">                | is_buffer_full - Checks if packet indicates microcontroller buffer saturation.</span>
 <span class="sd">                | is_move_done - Checks if packet confirms completion of a waypoint move.</span>
+<span class="sd">                | is_telemetry - Checks if packet contains real-time kinematic telemetry.</span>
 <span class="sd">                | is_error - Checks if packet signals an error condition.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
@@ -118,12 +119,25 @@
         <span class="k">elif</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;RESP:CONFIG&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;CONFIG&#39;</span><span class="p">):</span>
             <span class="n">resp_type</span> <span class="o">=</span> <span class="s1">&#39;CONFIG&#39;</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="n">clean</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">clean</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">clean</span>
+        <span class="k">elif</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;RESP:ELBOW&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;ELBOW&#39;</span><span class="p">):</span>
+            <span class="n">resp_type</span> <span class="o">=</span> <span class="s1">&#39;ELBOW&#39;</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">clean</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">clean</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">clean</span>
         <span class="k">elif</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;RESP:NACK&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;NACK&#39;</span><span class="p">):</span>
             <span class="n">resp_type</span> <span class="o">=</span> <span class="s1">&#39;NACK&#39;</span>
             <span class="n">success</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="n">clean</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">clean</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">clean</span>
         <span class="k">elif</span> <span class="s1">&#39;MOVE_DONE&#39;</span> <span class="ow">in</span> <span class="n">clean</span> <span class="ow">or</span> <span class="n">clean</span> <span class="o">==</span> <span class="s1">&#39;&lt;DONE&gt;&#39;</span><span class="p">:</span>
             <span class="n">resp_type</span> <span class="o">=</span> <span class="s1">&#39;DONE&#39;</span>
+        <span class="k">elif</span> <span class="s1">&#39;MOVE_FAILED&#39;</span> <span class="ow">in</span> <span class="n">clean</span><span class="p">:</span>
+            <span class="n">resp_type</span> <span class="o">=</span> <span class="s1">&#39;MOVE_FAILED&#39;</span>
+            <span class="n">success</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">clean</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">clean</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">clean</span>
+        <span class="k">elif</span> <span class="s1">&#39;MOVE_START&#39;</span> <span class="ow">in</span> <span class="n">clean</span><span class="p">:</span>
+            <span class="n">resp_type</span> <span class="o">=</span> <span class="s1">&#39;MOVE_START&#39;</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">clean</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">clean</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">clean</span>
+        <span class="k">elif</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;TELEM&#39;</span><span class="p">):</span>
+            <span class="n">resp_type</span> <span class="o">=</span> <span class="s1">&#39;TELEM&#39;</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">clean</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">clean</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&lt;&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">clean</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">clean</span>
         <span class="k">elif</span> <span class="s1">&#39;BUFFER_FULL&#39;</span> <span class="ow">in</span> <span class="n">clean</span> <span class="ow">or</span> <span class="n">clean</span> <span class="o">==</span> <span class="s1">&#39;&lt;FULL&gt;&#39;</span><span class="p">:</span>
             <span class="n">resp_type</span> <span class="o">=</span> <span class="s1">&#39;FULL&#39;</span>
             <span class="n">success</span> <span class="o">=</span> <span class="kc">False</span>
@@ -190,6 +204,34 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">parse_response</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="o">.</span><span class="n">response_type</span> <span class="o">==</span> <span class="s1">&#39;DONE&#39;</span></div>
 
 
+<div class="viewcode-block" id="ProtocolParser.is_move_failed">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.protocol.protocol_parser.html#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.is_move_failed">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">is_move_failed</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Checks if packet confirms failure of a waypoint move.</span>
+
+<span class="sd">            :param line: Received line string.</span>
+<span class="sd">            :return: True if move failed confirmation, False otherwise.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">parse_response</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="o">.</span><span class="n">response_type</span> <span class="o">==</span> <span class="s1">&#39;MOVE_FAILED&#39;</span></div>
+
+
+<div class="viewcode-block" id="ProtocolParser.is_telemetry">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.protocol.protocol_parser.html#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.is_telemetry">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">is_telemetry</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Checks if packet contains real-time kinematic telemetry.</span>
+
+<span class="sd">            :param line: Received line string.</span>
+<span class="sd">            :return: True if telemetry packet, False otherwise.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">parse_response</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="o">.</span><span class="n">response_type</span> <span class="o">==</span> <span class="s1">&#39;TELEM&#39;</span></div>
+
+
 <div class="viewcode-block" id="ProtocolParser.is_error">
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.protocol.protocol_parser.html#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.is_error">[docs]</a>
     <span class="nd">@classmethod</span>
@@ -202,7 +244,7 @@
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">resp</span><span class="p">:</span> <span class="n">RobotResponseDTO</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">parse_response</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">response_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;ERR&#39;</span><span class="p">,</span> <span class="s1">&#39;NACK&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">resp</span><span class="o">.</span><span class="n">is_success</span></div>
+        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">response_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;ERR&#39;</span><span class="p">,</span> <span class="s1">&#39;NACK&#39;</span><span class="p">,</span> <span class="s1">&#39;MOVE_FAILED&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">resp</span><span class="o">.</span><span class="n">is_success</span></div>
 </div>
 
 </pre></div>

@@ -67,7 +67,7 @@
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.1&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.2&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -86,6 +86,8 @@
 <span class="sd">            :methods:</span>
 <span class="sd">                | __init__ - Initializes console panel and text widget.</span>
 <span class="sd">                | append_log - Appends timestamped log message with syntax coloring.</span>
+<span class="sd">                | select_all - Selects all text content in the log text area.</span>
+<span class="sd">                | copy_log - Copies selected or entire log content to system clipboard.</span>
 <span class="sd">                | clear_log - Clears console contents.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
@@ -111,7 +113,9 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">top</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">top</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-        <span class="n">ttk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Clear Log&#39;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">clear_log</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">RIGHT</span><span class="p">)</span>
+        <span class="n">ttk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Clear Log&#39;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">clear_log</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">RIGHT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">ttk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Copy&#39;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">copy_log</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">RIGHT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">ttk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Select All&#39;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">select_all</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">RIGHT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_txt_log</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
@@ -122,6 +126,9 @@
             <span class="n">wrap</span><span class="o">=</span><span class="s1">&#39;none&#39;</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_txt_log</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_log</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;Control-a&gt;&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">select_all</span><span class="p">(),</span> <span class="s1">&#39;break&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_log</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;Control-c&gt;&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">copy_log</span><span class="p">(),</span> <span class="s1">&#39;break&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_txt_log</span><span class="o">.</span><span class="n">tag_config</span><span class="p">(</span><span class="s1">&#39;tx&#39;</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="s1">&#39;#61afef&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_txt_log</span><span class="o">.</span><span class="n">tag_config</span><span class="p">(</span><span class="s1">&#39;rx&#39;</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="s1">&#39;#98c379&#39;</span><span class="p">)</span>
@@ -143,6 +150,38 @@
         <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&gt;&gt;&gt; TX&#39;</span> <span class="k">if</span> <span class="n">is_outgoing</span> <span class="k">else</span> <span class="s1">&#39;&lt;&lt;&lt; RX&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_txt_log</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">END</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;[</span><span class="si">{</span><span class="n">ts</span><span class="si">}</span><span class="s1">] </span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_txt_log</span><span class="o">.</span><span class="n">see</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">END</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SerialConsole.select_all">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.components.serial_console.html#scarajectory.infrastructure.gui.components.serial_console.SerialConsole.select_all">[docs]</a>
+    <span class="k">def</span> <span class="nf">select_all</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Selects all text content in the log text area.</span>
+
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_log</span><span class="o">.</span><span class="n">tag_add</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">SEL</span><span class="p">,</span> <span class="s1">&#39;1.0&#39;</span><span class="p">,</span> <span class="n">tk</span><span class="o">.</span><span class="n">END</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_log</span><span class="o">.</span><span class="n">mark_set</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">INSERT</span><span class="p">,</span> <span class="s1">&#39;1.0&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_log</span><span class="o">.</span><span class="n">see</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">INSERT</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_log</span><span class="o">.</span><span class="n">focus_set</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="SerialConsole.copy_log">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.components.serial_console.html#scarajectory.infrastructure.gui.components.serial_console.SerialConsole.copy_log">[docs]</a>
+    <span class="k">def</span> <span class="nf">copy_log</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Copies selected or entire log content to system clipboard.</span>
+
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">content</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_txt_log</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">tk</span><span class="o">.</span><span class="n">SEL_FIRST</span><span class="p">,</span> <span class="n">tk</span><span class="o">.</span><span class="n">SEL_LAST</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">tk</span><span class="o">.</span><span class="n">TclError</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_txt_log</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;1.0&#39;</span><span class="p">,</span> <span class="n">tk</span><span class="o">.</span><span class="n">END</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">content</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clipboard_clear</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clipboard_append</span><span class="p">(</span><span class="n">content</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SerialConsole.clear_log">

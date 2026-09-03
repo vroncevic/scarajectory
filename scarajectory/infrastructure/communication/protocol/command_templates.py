@@ -27,7 +27,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.1'
+__version__ = '1.0.2'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -76,11 +76,28 @@ class CommandTemplates:
     PUMP_OFF: ClassVar[str] = '<CMD:PUMP#0>'
     VALVE_ON: ClassVar[str] = '<CMD:VALVE#1>'
     VALVE_OFF: ClassVar[str] = '<CMD:VALVE#0>'
+    GETPOS: ClassVar[str] = '<CMD:GETPOS>'
+    HOLD: ClassVar[str] = '<CMD:HOLD>'
+    SETPOS_TEMPLATE: ClassVar[str] = '<CMD:SETPOS#{x:.2f}#{y:.2f}#{z:.2f}#{phi:.2f}#end>'
     MOVE_TEMPLATE: ClassVar[str] = '<pt#{x:.2f}#{y:.2f}#{z:.2f}#{phi:.2f}#{speed:.1f}#end>'
     JOG_TEMPLATE: ClassVar[str] = '<CMD:JOG#{axis}#{step:.1f}>'
     SET_CONFIG_TEMPLATE: ClassVar[str] = (
         '<CMD:SET_CONFIG#L1={l1:.2f}#L2={l2:.2f}#Z_MIN={z_min:.2f}#Z_MAX={z_max:.2f}#MIN_SPEED={min_speed:.1f}#MAX_SPEED={max_speed:.1f}>'
     )
+    SET_DYNAMICS_TEMPLATE: ClassVar[str] = (
+        '<CMD:SET_DYNAMICS#ACCEL={accel:.2f}#MAX_ACCEL={max_accel:.2f}#DEF_SPD={def_speed:.2f}>'
+    )
+    SET_HOMING_TEMPLATE: ClassVar[str] = (
+        '<CMD:SET_HOMING#OFF_J1={off_j1:.4f}#OFF_J2={off_j2:.4f}#RATE={rate:d}>'
+    )
+    SET_LIMITS_TEMPLATE: ClassVar[str] = (
+        '<CMD:SET_LIMITS#J1_MIN={j1_min:.4f}#J1_MAX={j1_max:.4f}#J2_MIN={j2_min:.4f}#J2_MAX={j2_max:.4f}>'
+    )
+    SET_STEPS_TEMPLATE: ClassVar[str] = (
+        '<CMD:SET_STEPS#GR_J1={gr_j1:.2f}#GR_J2={gr_j2:.2f}#GR_J4={gr_j4:.2f}#LEAD_Z={lead_z:.2f}>'
+    )
+    SET_ELBOW_TEMPLATE: ClassVar[str] = '<CMD:SET_ELBOW#{elbow}>'
+    GET_ELBOW: ClassVar[str] = '<CMD:GET_ELBOW>'
 
     _LOOKUP: ClassVar[dict[str, str]] = {
         'ENABLE': '<CMD:ENABLE>',
@@ -88,8 +105,10 @@ class CommandTemplates:
         'ESTOP': '<CMD:ESTOP>',
         'STATUS': '<CMD:STATUS>',
         'PAUSE': '<CMD:PAUSE>',
+        'HOLD': '<CMD:HOLD>',
         'RESUME': '<CMD:RESUME>',
         'HOME': '<CMD:HOME>',
+        'GETPOS': '<CMD:GETPOS>',
         'GET_CONFIG': '<CMD:GET_CONFIG>',
         'SAVE_CONFIG': '<CMD:SAVE_CONFIG>',
         'RESET_CONFIG': '<CMD:RESET_CONFIG>',
@@ -97,10 +116,23 @@ class CommandTemplates:
         'PUMP_OFF': '<CMD:PUMP#0>',
         'VALVE_ON': '<CMD:VALVE#1>',
         'VALVE_OFF': '<CMD:VALVE#0>',
+        'SETPOS': '<CMD:SETPOS#{x:.2f}#{y:.2f}#{z:.2f}#{phi:.2f}#end>',
         'MOVE': '<pt#{x:.2f}#{y:.2f}#{z:.2f}#{phi:.2f}#{speed:.1f}#end>',
         'JOG': '<CMD:JOG#{axis}#{step:.1f}>',
         'SET_CONFIG': (
             '<CMD:SET_CONFIG#L1={l1:.2f}#L2={l2:.2f}#Z_MIN={z_min:.2f}#Z_MAX={z_max:.2f}#MIN_SPEED={min_speed:.1f}#MAX_SPEED={max_speed:.1f}>'
+        ),
+        'SET_DYNAMICS': (
+            '<CMD:SET_DYNAMICS#ACCEL={accel:.2f}#MAX_ACCEL={max_accel:.2f}#DEF_SPD={def_speed:.2f}>'
+        ),
+        'SET_HOMING': (
+            '<CMD:SET_HOMING#OFF_J1={off_j1:.4f}#OFF_J2={off_j2:.4f}#RATE={rate:d}>'
+        ),
+        'SET_LIMITS': (
+            '<CMD:SET_LIMITS#J1_MIN={j1_min:.4f}#J1_MAX={j1_max:.4f}#J2_MIN={j2_min:.4f}#J2_MAX={j2_max:.4f}>'
+        ),
+        'SET_STEPS': (
+            '<CMD:SET_STEPS#GR_J1={gr_j1:.2f}#GR_J2={gr_j2:.2f}#GR_J4={gr_j4:.2f}#LEAD_Z={lead_z:.2f}>'
         )
     }
 

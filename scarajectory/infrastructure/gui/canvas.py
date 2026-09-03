@@ -40,7 +40,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.1'
+__version__ = '1.0.2'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -79,7 +79,7 @@ class TrajectoryCanvas(tk.Canvas):
                 | redraw - Clears and redraws entire vector scene.
     '''
 
-    R_MIN_MM: ClassVar[float] = 30.0
+    R_MIN_MM: ClassVar[float] = 86.1
     SELECT_HIT_RADIUS_PX: ClassVar[float] = 12.0
     FREEHAND_MIN_DISTANCE_MM: ClassVar[float] = 5.0
     CIRCLE_MIN_RADIUS_MM: ClassVar[float] = 5.0
