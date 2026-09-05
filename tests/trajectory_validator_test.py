@@ -29,7 +29,7 @@ pkg_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if pkg_dir not in sys.path:
     sys.path.insert(0, pkg_dir)
 
-from scarajectory.core.model.point_dto import PointDTO
+from scarajectory.core.model.point import Point
 from scarajectory.core.model.waypoint import Waypoint
 from scarajectory.core.model.scara_bounds import ScaraBounds
 from scarajectory.core.model.trajectory_plan import TrajectoryPlan
@@ -75,7 +75,7 @@ class TestTrajectoryValidator(unittest.TestCase):
 
             :exceptions: None.
         '''
-        pt = PointDTO(x=100.0, y=100.0, z=20.0, phi=0.0, speed=40.0)
+        pt = Point(x=100.0, y=100.0, z=20.0, phi=0.0, speed=40.0)
         res = self.validator.validate_point_dto(pt)
         self.assertTrue(res.is_valid)
 
@@ -85,7 +85,7 @@ class TestTrajectoryValidator(unittest.TestCase):
 
             :exceptions: None.
         '''
-        pt = PointDTO(x=250.0, y=250.0, z=20.0, phi=0.0, speed=40.0)
+        pt = Point(x=250.0, y=250.0, z=20.0, phi=0.0, speed=40.0)
         res = self.validator.validate_point_dto(pt)
         self.assertFalse(res.is_valid)
 
@@ -95,7 +95,7 @@ class TestTrajectoryValidator(unittest.TestCase):
 
             :exceptions: None.
         '''
-        pt = PointDTO(x=10.0, y=10.0, z=20.0, phi=0.0, speed=40.0)
+        pt = Point(x=10.0, y=10.0, z=20.0, phi=0.0, speed=40.0)
         res = self.validator.validate_point_dto(pt)
         self.assertFalse(res.is_valid)
 
@@ -105,8 +105,8 @@ class TestTrajectoryValidator(unittest.TestCase):
 
             :exceptions: None.
         '''
-        pt_low = PointDTO(x=100.0, y=100.0, z=-10.0, phi=0.0, speed=40.0)
-        pt_high = PointDTO(x=100.0, y=100.0, z=150.0, phi=0.0, speed=40.0)
+        pt_low = Point(x=100.0, y=100.0, z=-10.0, phi=0.0, speed=40.0)
+        pt_high = Point(x=100.0, y=100.0, z=150.0, phi=0.0, speed=40.0)
         self.assertFalse(self.validator.validate_point_dto(pt_low).is_valid)
         self.assertFalse(self.validator.validate_point_dto(pt_high).is_valid)
 

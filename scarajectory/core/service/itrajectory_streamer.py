@@ -25,7 +25,7 @@ from typing import Protocol, runtime_checkable
 from collections.abc import Sequence
 
 from scarajectory.core.model.waypoint import Waypoint
-from scarajectory.core.model.stream_config_dto import StreamConfigDTO
+from scarajectory.core.model.stream_config import StreamConfig
 from scarajectory.core.service.istream_observer import IStreamObserver
 
 __author__ = 'Vladimir Roncevic'
@@ -62,7 +62,6 @@ class ITrajectoryStreamer(Protocol):
             Sets or updates the streaming progress observer.
 
             :param observer: IStreamObserver instance.
-            :exceptions: None.
         '''
 
     def is_connected(self) -> bool:
@@ -70,23 +69,19 @@ class ITrajectoryStreamer(Protocol):
             Checks if communication connection is open.
 
             :return: True if connected, False otherwise.
-            :exceptions: None.
         '''
 
-    def connect_with_config(self, config: StreamConfigDTO) -> bool:
+    def connect_with_config(self, config: StreamConfig) -> bool:
         '''
             Opens connection to robot with config DTO.
 
-            :param config: StreamConfigDTO parameters.
+            :param config: StreamConfig parameters.
             :return: True if connected successfully.
-            :exceptions: None.
         '''
 
     def disconnect(self) -> None:
         '''
             Closes active connection.
-
-            :exceptions: None.
         '''
 
     def start_streaming(self, waypoints: Sequence[Waypoint]) -> bool:
@@ -95,28 +90,21 @@ class ITrajectoryStreamer(Protocol):
 
             :param waypoints: Sequence of Waypoint instances.
             :return: True if streaming started.
-            :exceptions: None.
         '''
 
     def pause_streaming(self) -> None:
         '''
             Pauses transmission.
-
-            :exceptions: None.
         '''
 
     def resume_streaming(self) -> None:
         '''
             Resumes transmission.
-
-            :exceptions: None.
         '''
 
     def stop_streaming(self) -> None:
         '''
             Aborts streaming and sends E-STOP.
-
-            :exceptions: None.
         '''
 
     def send_raw_command(self, cmd: str) -> None:
@@ -124,5 +112,4 @@ class ITrajectoryStreamer(Protocol):
             Sends single immediate command string.
 
             :param cmd: Raw command string.
-            :exceptions: None.
         '''

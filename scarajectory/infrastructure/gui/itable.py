@@ -48,13 +48,9 @@ class ITable(Protocol):
     def refresh_table(self) -> None:
         '''
             Refreshes table rows from active plan.
-
-            :exceptions: None.
         '''
 
     def delete_selected(self) -> None:
         '''
             Deletes the currently selected waypoint.
-
-            :exceptions: None.
         '''

@@ -53,21 +53,16 @@ class IGUI(Protocol):
             Checks if the GUI adapter is initialized.
 
             :return: True if initialized, False otherwise.
-            :exceptions: None.
         '''
 
     def start(self) -> None:
         '''
             Starts the GUI main event loop.
-
-            :exceptions: None.
         '''
 
     def stop(self) -> None:
         '''
             Closes and destroys the GUI window.
-
-            :exceptions: None.
         '''
 
     def load_file(self, filepath: str) -> None:
@@ -75,7 +70,6 @@ class IGUI(Protocol):
             Loads a trajectory plan file into the GUI.
 
             :param filepath: Path to the trajectory JSON file.
-            :exceptions: None.
         '''
 
     def set_deadzone(self, enabled: bool) -> None:
@@ -83,5 +77,4 @@ class IGUI(Protocol):
             Sets deadzone enforcement state.
 
             :param enabled: True to enforce deadzone, False to disable.
-            :exceptions: None.
         '''

@@ -63,7 +63,6 @@ class IService(Protocol):
             Checks if the service is properly initialized.
 
             :return: True if initialized, False otherwise.
-            :exceptions: None.
         '''
 
     def get_plan(self) -> ITrajectoryPlan:
@@ -71,7 +70,6 @@ class IService(Protocol):
             Returns the active ITrajectoryPlan.
 
             :return: ITrajectoryPlan instance.
-            :exceptions: None.
         '''
 
     def get_storage(self) -> IPlanStorageService:
@@ -79,7 +77,6 @@ class IService(Protocol):
             Returns the active IPlanStorageService.
 
             :return: IPlanStorageService instance.
-            :exceptions: None.
         '''
 
     def get_validator(self) -> ITrajectoryValidator:
@@ -87,7 +84,6 @@ class IService(Protocol):
             Returns the active ITrajectoryValidator.
 
             :return: ITrajectoryValidator instance.
-            :exceptions: None.
         '''
 
     def get_streamer(self) -> ITrajectoryStreamer:
@@ -95,7 +91,6 @@ class IService(Protocol):
             Returns the active ITrajectoryStreamer.
 
             :return: ITrajectoryStreamer instance.
-            :exceptions: None.
         '''
 
     def validate_plan(self) -> tuple[bool, list[str]]:
@@ -103,7 +98,6 @@ class IService(Protocol):
             Validates the current trajectory plan against robot kinematic bounds.
 
             :return: Tuple of (is_valid, messages_list).
-            :exceptions: None.
         '''
 
     def save_plan(self, filepath: str) -> None:
@@ -111,7 +105,6 @@ class IService(Protocol):
             Saves current plan to file path.
 
             :param filepath: Target file path.
-            :exceptions: OSError.
         '''
 
     def load_plan(self, filepath: str) -> None:
@@ -119,7 +112,6 @@ class IService(Protocol):
             Loads plan from file path.
 
             :param filepath: Source file path.
-            :exceptions: OSError.
         '''
 
     def start_streaming(self) -> bool:
@@ -127,12 +119,9 @@ class IService(Protocol):
             Initiates streaming of current plan.
 
             :return: True if stream started, False otherwise.
-            :exceptions: None.
         '''
 
     def stop_streaming(self) -> None:
         '''
             Aborts active streaming.
-
-            :exceptions: None.
         '''

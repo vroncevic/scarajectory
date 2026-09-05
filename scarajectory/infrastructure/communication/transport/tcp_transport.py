@@ -32,7 +32,7 @@ from threading import Lock, Event, Thread
 from time import sleep
 from typing import Callable, Final
 
-from scarajectory.core.model.stream_config_dto import StreamConfigDTO
+from scarajectory.core.model.stream_config import StreamConfig
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -61,7 +61,7 @@ class TcpTransport:
                 | __init__ - Initializes transport handle and sync primitives.
                 | is_connected - Checks if TCP socket is connected.
                 | set_callbacks - Registers packet reception and connection logging hooks.
-                | connect_with_config - Connects to host:port target using StreamConfigDTO.
+                | connect_with_config - Connects to host:port target using StreamConfig.
                 | disconnect - Closes TCP connection and stops RX thread.
                 | send_raw - Transmits formatted command string over socket.
     '''
@@ -116,11 +116,11 @@ class TcpTransport:
         '''
         return self._sock is not None
 
-    def connect_with_config(self, config: StreamConfigDTO) -> bool:
+    def connect_with_config(self, config: StreamConfig) -> bool:
         '''
-            Connects to host:port target using StreamConfigDTO.
+            Connects to host:port target using StreamConfig.
 
-            :param config: StreamConfigDTO containing host:port target and timeout.
+            :param config: StreamConfig containing host:port target and timeout.
             :return: True if connected successfully, False otherwise.
             :exceptions: None.
         '''

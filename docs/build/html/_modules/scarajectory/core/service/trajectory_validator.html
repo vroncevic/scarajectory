@@ -1,41 +1,48 @@
 <!DOCTYPE html>
 
 <html lang="en" data-content_root="../../../../">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>scarajectory.core.service.trajectory_validator &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/classic.css?v=514cf933" />
-    
-    <script src="../../../../_static/documentation_options.js?v=57319df4"></script>
-    <script src="../../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    
-    <link rel="index" title="Index" href="../../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../../search.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">scarajectory.core.service.trajectory_validator</a></li> 
-      </ul>
-    </div>  
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <h1>Source code for scarajectory.core.service.trajectory_validator</h1><div class="highlight"><pre>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>scarajectory.core.service.trajectory_validator &#8212; scarajectory
+    https://github.com/vroncevic/scarajectory/releases documentation</title>
+  <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+  <link rel="stylesheet" type="text/css" href="../../../../_static/classic.css?v=514cf933" />
+
+  <script src="../../../../_static/documentation_options.js?v=57319df4"></script>
+  <script src="../../../../_static/doctools.js?v=888ff710"></script>
+  <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+
+  <link rel="index" title="Index" href="../../../../genindex.html" />
+  <link rel="search" title="Search" href="../../../../search.html" />
+</head>
+
+<body>
+  <div class="related" role="navigation" aria-label="related navigation">
+    <h3>Navigation</h3>
+    <ul>
+      <li class="right" style="margin-right: 10px">
+        <a href="../../../../genindex.html" title="General Index" accesskey="I">index</a>
+      </li>
+      <li class="right">
+        <a href="../../../../py-modindex.html" title="Python Module Index">modules</a> |
+      </li>
+      <li class="nav-item nav-item-0"><a href="../../../../index.html">scarajectory
+          https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+      <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &#187;</li>
+      <li class="nav-item nav-item-this"><a href="">scarajectory.core.service.trajectory_validator</a></li>
+    </ul>
+  </div>
+
+  <div class="document">
+    <div class="documentwrapper">
+      <div class="bodywrapper">
+        <div class="body" role="main">
+
+          <h1>Source code for scarajectory.core.service.trajectory_validator</h1>
+          <div class="highlight">
+            <pre>
 <span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
 
 <span class="sd">&#39;&#39;&#39;</span>
@@ -62,8 +69,8 @@
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">hypot</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">atan2</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">degrees</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.point_dto</span> <span class="kn">import</span> <span class="n">PointDTO</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.validation_result_dto</span> <span class="kn">import</span> <span class="n">ValidationResultDTO</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.point</span> <span class="kn">import</span> <span class="n">Point</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.validation_result</span> <span class="kn">import</span> <span class="n">ValidationResult</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.model.scara_bounds</span> <span class="kn">import</span> <span class="n">ScaraBounds</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.model.itrajectory_plan</span> <span class="kn">import</span> <span class="n">ITrajectoryPlan</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory_metrics</span> <span class="kn">import</span> <span class="n">TrajectoryMetrics</span>
@@ -95,7 +102,7 @@
 <span class="sd">                | bounds - Returns active bounds model.</span>
 <span class="sd">                | r_min - Returns inner workspace radius.</span>
 <span class="sd">                | r_max - Returns outer workspace radius.</span>
-<span class="sd">                | validate_point_dto - Validates PointDTO coordinates against annular reach.</span>
+<span class="sd">                | validate_point_dto - Validates Point coordinates against annular reach.</span>
 <span class="sd">                | validate_feedrate - Validates that speed is within safe mechanical range.</span>
 <span class="sd">                | validate_plan - Validates entire trajectory plan against kinematic bounds.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
@@ -147,27 +154,27 @@
 
 <div class="viewcode-block" id="TrajectoryValidator.validate_point_dto">
 <a class="viewcode-back" href="../../../../scarajectory.core.service.trajectory_validator.html#scarajectory.core.service.trajectory_validator.TrajectoryValidator.validate_point_dto">[docs]</a>
-    <span class="k">def</span> <span class="nf">validate_point_dto</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">:</span> <span class="n">PointDTO</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValidationResultDTO</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">validate_point_dto</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">:</span> <span class="n">Point</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValidationResult</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Validates PointDTO coordinates against annular horizontal reach and vertical bounds.</span>
+<span class="sd">            Validates Point coordinates against annular horizontal reach and vertical bounds.</span>
 
-<span class="sd">            :param point: Target PointDTO.</span>
-<span class="sd">            :return: ValidationResultDTO with pass/fail and descriptive reason.</span>
+<span class="sd">            :param point: Target Point.</span>
+<span class="sd">            :return: ValidationResult with pass/fail and descriptive reason.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">r</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">hypot</span><span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">point</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">r</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_r_max</span> <span class="o">+</span> <span class="mf">1e-4</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">ValidationResultDTO</span><span class="p">(</span>
+            <span class="k">return</span> <span class="n">ValidationResult</span><span class="p">(</span>
                 <span class="n">is_valid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Point (</span><span class="si">{</span><span class="n">point</span><span class="o">.</span><span class="n">x</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">point</span><span class="o">.</span><span class="n">y</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">) exceeds maximum reach R_max=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_r_max</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1"> mm (r=</span><span class="si">{</span><span class="n">r</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1"> mm)&#39;</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_r_min</span> <span class="o">-</span> <span class="mf">1e-4</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">ValidationResultDTO</span><span class="p">(</span>
+            <span class="k">return</span> <span class="n">ValidationResult</span><span class="p">(</span>
                 <span class="n">is_valid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Point (</span><span class="si">{</span><span class="n">point</span><span class="o">.</span><span class="n">x</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">point</span><span class="o">.</span><span class="n">y</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">) is inside deadzone R_min=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_r_min</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1"> mm (r=</span><span class="si">{</span><span class="n">r</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1"> mm)&#39;</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">point</span><span class="o">.</span><span class="n">z</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">z_min</span> <span class="o">-</span> <span class="mf">1e-4</span> <span class="ow">or</span> <span class="n">point</span><span class="o">.</span><span class="n">z</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">z_max</span> <span class="o">+</span> <span class="mf">1e-4</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">ValidationResultDTO</span><span class="p">(</span>
+            <span class="k">return</span> <span class="n">ValidationResult</span><span class="p">(</span>
                 <span class="n">is_valid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Elevation Z=</span><span class="si">{</span><span class="n">point</span><span class="o">.</span><span class="n">z</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1"> mm is out of range [</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">z_min</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">z_max</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">] mm&#39;</span>
             <span class="p">)</span>
@@ -177,7 +184,7 @@
         <span class="n">r_sq</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">point</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">point</span><span class="o">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">point</span><span class="o">.</span><span class="n">y</span>
         <span class="n">cos_q2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="p">(</span><span class="n">r_sq</span> <span class="o">-</span> <span class="n">l1</span> <span class="o">*</span> <span class="n">l1</span> <span class="o">-</span> <span class="n">l2</span> <span class="o">*</span> <span class="n">l2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">l1</span> <span class="o">*</span> <span class="n">l2</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">cos_q2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">ValidationResultDTO</span><span class="p">(</span>
+            <span class="k">return</span> <span class="n">ValidationResult</span><span class="p">(</span>
                 <span class="n">is_valid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Point (</span><span class="si">{</span><span class="n">point</span><span class="o">.</span><span class="n">x</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">point</span><span class="o">.</span><span class="n">y</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">) is kinematically unreachable&#39;</span>
             <span class="p">)</span>
@@ -208,35 +215,35 @@
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">reachable_any</span><span class="p">:</span>
             <span class="n">reason_str</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">reasons</span><span class="p">)</span> <span class="k">if</span> <span class="n">reasons</span> <span class="k">else</span> <span class="s1">&#39;Joint limits exceeded&#39;</span>
-            <span class="k">return</span> <span class="n">ValidationResultDTO</span><span class="p">(</span>
+            <span class="k">return</span> <span class="n">ValidationResult</span><span class="p">(</span>
                 <span class="n">is_valid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Point (</span><span class="si">{</span><span class="n">point</span><span class="o">.</span><span class="n">x</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">point</span><span class="o">.</span><span class="n">y</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">) violates joint limits: </span><span class="si">{</span><span class="n">reason_str</span><span class="si">}</span><span class="s1">&#39;</span>
             <span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">ValidationResultDTO</span><span class="p">(</span><span class="n">is_valid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Point is reachable&#39;</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">ValidationResult</span><span class="p">(</span><span class="n">is_valid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Point is reachable&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="TrajectoryValidator.validate_feedrate">
 <a class="viewcode-back" href="../../../../scarajectory.core.service.trajectory_validator.html#scarajectory.core.service.trajectory_validator.TrajectoryValidator.validate_feedrate">[docs]</a>
-    <span class="k">def</span> <span class="nf">validate_feedrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speed</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValidationResultDTO</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">validate_feedrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">speed</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValidationResult</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Validates that speed is within safe mechanical operation range.</span>
 
 <span class="sd">            :param speed: Feedrate in mm/s.</span>
-<span class="sd">            :return: ValidationResultDTO.</span>
+<span class="sd">            :return: ValidationResult.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="n">speed</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">min_speed</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">ValidationResultDTO</span><span class="p">(</span>
+            <span class="k">return</span> <span class="n">ValidationResult</span><span class="p">(</span>
                 <span class="n">is_valid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Speed </span><span class="si">{</span><span class="n">speed</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1"> mm/s is too slow (minimum </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">min_speed</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1"> mm/s)&#39;</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">speed</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">max_speed</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">ValidationResultDTO</span><span class="p">(</span>
+            <span class="k">return</span> <span class="n">ValidationResult</span><span class="p">(</span>
                 <span class="n">is_valid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Speed </span><span class="si">{</span><span class="n">speed</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1"> mm/s exceeds max safe feedrate </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_bounds</span><span class="o">.</span><span class="n">max_speed</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1"> mm/s&#39;</span>
             <span class="p">)</span>
-        <span class="k">return</span> <span class="n">ValidationResultDTO</span><span class="p">(</span><span class="n">is_valid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Speed is valid&#39;</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">ValidationResult</span><span class="p">(</span><span class="n">is_valid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Speed is valid&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="TrajectoryValidator.validate_plan">
@@ -258,12 +265,12 @@
 
         <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">pt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">waypoints</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
             <span class="n">pt_dto</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">to_dto</span><span class="p">()</span>
-            <span class="n">res_pt</span><span class="p">:</span> <span class="n">ValidationResultDTO</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate_point_dto</span><span class="p">(</span><span class="n">pt_dto</span><span class="p">)</span>
+            <span class="n">res_pt</span><span class="p">:</span> <span class="n">ValidationResult</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate_point_dto</span><span class="p">(</span><span class="n">pt_dto</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">res_pt</span><span class="o">.</span><span class="n">is_valid</span><span class="p">:</span>
                 <span class="n">all_valid</span> <span class="o">=</span> <span class="kc">False</span>
                 <span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Point P</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s1"> (</span><span class="si">{</span><span class="n">pt</span><span class="o">.</span><span class="n">x</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">pt</span><span class="o">.</span><span class="n">y</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">pt</span><span class="o">.</span><span class="n">z</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">): </span><span class="si">{</span><span class="n">res_pt</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
-            <span class="n">res_spd</span><span class="p">:</span> <span class="n">ValidationResultDTO</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate_feedrate</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">speed</span><span class="p">)</span>
+            <span class="n">res_spd</span><span class="p">:</span> <span class="n">ValidationResult</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate_feedrate</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">speed</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">res_spd</span><span class="o">.</span><span class="n">is_valid</span><span class="p">:</span>
                 <span class="n">all_valid</span> <span class="o">=</span> <span class="kc">False</span>
                 <span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Point P</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s1"> Speed (</span><span class="si">{</span><span class="n">pt</span><span class="o">.</span><span class="n">speed</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1"> mm/s): </span><span class="si">{</span><span class="n">res_spd</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -279,45 +286,49 @@
         <span class="k">return</span> <span class="n">all_valid</span><span class="p">,</span> <span class="n">messages</span></div>
 </div>
 
-</pre></div>
+</pre>
+          </div>
 
-            <div class="clearer"></div>
+          <div class="clearer"></div>
+        </div>
+      </div>
+    </div>
+    <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebarwrapper">
+        <div id="searchbox" style="display: none" role="search">
+          <h3 id="searchlabel">Quick search</h3>
+          <div class="searchformwrapper">
+            <form class="search" action="../../../../search.html" method="get">
+              <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off"
+                autocapitalize="off" spellcheck="false" />
+              <input type="submit" value="Go" />
+            </form>
           </div>
         </div>
+        <script>document.getElementById('searchbox').style.display = "block"</script>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
     </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../../../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../../../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">scarajectory.core.service.trajectory_validator</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
+    <div class="clearer"></div>
+  </div>
+  <div class="related" role="navigation" aria-label="related navigation">
+    <h3>Navigation</h3>
+    <ul>
+      <li class="right" style="margin-right: 10px">
+        <a href="../../../../genindex.html" title="General Index">index</a>
+      </li>
+      <li class="right">
+        <a href="../../../../py-modindex.html" title="Python Module Index">modules</a> |
+      </li>
+      <li class="nav-item nav-item-0"><a href="../../../../index.html">scarajectory
+          https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+      <li class="nav-item nav-item-1"><a href="../../../index.html">Module code</a> &#187;</li>
+      <li class="nav-item nav-item-this"><a href="">scarajectory.core.service.trajectory_validator</a></li>
+    </ul>
+  </div>
+  <div class="footer" role="contentinfo">
     &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
-    </div>
-  </body>
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+  </div>
+</body>
+
 </html>

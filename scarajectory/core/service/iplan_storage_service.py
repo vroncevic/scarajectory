@@ -54,7 +54,6 @@ class IPlanStorageService(Protocol):
 
             :param plan: ITrajectoryPlan instance to save.
             :param filepath: Target JSON file path.
-            :exceptions: OSError.
         '''
 
     def load_plan(self, filepath: str) -> list[Waypoint]:
@@ -63,5 +62,4 @@ class IPlanStorageService(Protocol):
 
             :param filepath: Source JSON file path.
             :return: List of loaded Waypoint entities.
-            :exceptions: OSError.
         '''

@@ -51,8 +51,6 @@ class IControls(Protocol):
     def refresh_ports(self) -> None:
         '''
             Updates available serial ports list.
-
-            :exceptions: None.
         '''
 
     def append_log(self, text: str, is_outgoing: bool = False) -> None:
@@ -61,7 +59,6 @@ class IControls(Protocol):
 
             :param text: Message string.
             :param is_outgoing: Flag indicating outgoing transmission.
-            :exceptions: None.
         '''
 
     def update_progress(self, progress: StreamProgress) -> None:
@@ -69,5 +66,4 @@ class IControls(Protocol):
             Updates streamer progress bar and metrics.
 
             :param progress: StreamProgress metric container.
-            :exceptions: None.
         '''

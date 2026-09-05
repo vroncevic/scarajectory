@@ -24,7 +24,7 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass
 
-from scarajectory.core.model.point_dto import PointDTO
+from scarajectory.core.model.point import Point
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -52,8 +52,8 @@ class Waypoint:
                 | name - Optional waypoint identifier.
                 | command - Optional raw protocol command string associated with point.
             :methods:
-                | to_dto - Converts waypoint entity to lightweight PointDTO.
-                | from_dto - Creates waypoint from PointDTO.
+                | to_dto - Converts waypoint entity to lightweight Point.
+                | from_dto - Creates waypoint from Point.
                 | radial_distance - Calculates planar radial distance from base.
                 | distance_to - Calculates 3D Euclidean distance to another waypoint.
                 | to_ascii_packet - Formats point as standard firmware protocol packet string.
@@ -69,14 +69,14 @@ class Waypoint:
     name: str = ''
     command: str = ''
 
-    def to_dto(self) -> PointDTO:
+    def to_dto(self) -> Point:
         '''
-            Converts waypoint entity to lightweight PointDTO.
+            Converts waypoint entity to lightweight Point.
 
-            :return: PointDTO representation.
+            :return: Point representation.
             :exceptions: None.
         '''
-        return PointDTO(
+        return Point(
             x=self.x,
             y=self.y,
             z=self.z,
@@ -86,11 +86,11 @@ class Waypoint:
         )
 
     @classmethod
-    def from_dto(cls, dto: PointDTO) -> Waypoint:
+    def from_dto(cls, dto: Point) -> Waypoint:
         '''
-            Creates waypoint from PointDTO.
+            Creates waypoint from Point.
 
-            :param dto: PointDTO data transfer object.
+            :param dto: Point data transfer object.
             :return: Waypoint instance.
             :exceptions: None.
         '''

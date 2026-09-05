@@ -59,7 +59,6 @@ class IScaraProgram(Protocol):
 
             :return: Sequence of IScaraInstruction instances.
         '''
-        ...
 
     @property
     def instruction_count(self) -> int:
@@ -68,7 +67,6 @@ class IScaraProgram(Protocol):
 
             :return: Instruction count integer.
         '''
-        ...
 
     def to_text(self) -> str:
         '''
@@ -76,7 +74,6 @@ class IScaraProgram(Protocol):
 
             :return: Formatted text string.
         '''
-        ...
 
     def to_dict(self) -> dict[str, Any]:
         '''
@@ -84,4 +81,3 @@ class IScaraProgram(Protocol):
 
             :return: Dictionary representation of program.
         '''
-        ...

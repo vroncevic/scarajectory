@@ -1,204 +1,305 @@
 <!DOCTYPE html>
 
 <html lang="en" data-content_root="./">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>scarajectory.core.model.trajectory_serializer module &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
-    
-    <script src="_static/documentation_options.js?v=57319df4"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="scarajectory.core.model.validation_result_dto module" href="scarajectory.core.model.validation_result_dto.html" />
-    <link rel="prev" title="scarajectory.core.model.trajectory_plan module" href="scarajectory.core.model.trajectory_plan.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="scarajectory.core.model.validation_result_dto.html" title="scarajectory.core.model.validation_result_dto module"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="scarajectory.core.model.trajectory_plan.html" title="scarajectory.core.model.trajectory_plan module"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
-          <li class="nav-item nav-item-3"><a href="scarajectory.core.html" >scarajectory.core package</a> &#187;</li>
-          <li class="nav-item nav-item-4"><a href="scarajectory.core.model.html" accesskey="U">scarajectory.core.model package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">scarajectory.core.model.trajectory_serializer module</a></li> 
-      </ul>
-    </div>  
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <section id="module-scarajectory.core.model.trajectory_serializer">
-<span id="scarajectory-core-model-trajectory-serializer-module"></span><h1>scarajectory.core.model.trajectory_serializer module<a class="headerlink" href="#module-scarajectory.core.model.trajectory_serializer" title="Link to this heading">¶</a></h1>
-<dl class="simple">
-<dt>Module</dt><dd><p>trajectory_serializer.py</p>
-</dd>
-<dt>Copyright</dt><dd><p>Copyright (C) 2026 Vladimir Roncevic &lt;<a class="reference external" href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
-scarajectory is free software: you can redistribute it and/or modify it
-under the terms of the GNU General Public License as published by the
-Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-scarajectory is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU General Public License for more details.
-You should have received a copy of the GNU General Public License along
-with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
-</dd>
-<dt>Info</dt><dd><p>Serializes and deserializes trajectory plans to and from JSON format.</p>
-</dd>
-</dl>
-<dl class="py class">
-<dt class="sig sig-object py" id="scarajectory.core.model.trajectory_serializer.TrajectorySerializer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.core.model.trajectory_serializer.</span></span><span class="sig-name descname"><span class="pre">TrajectorySerializer</span></span><a class="reference internal" href="_modules/scarajectory/core/model/trajectory_serializer.html#TrajectorySerializer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.trajectory_serializer.TrajectorySerializer" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Serializes and deserializes trajectory plans to and from JSON format.</p>
-<p>It defines:</p>
-<blockquote>
-<div><dl class="field-list">
-<dt class="field-odd">methods<span class="colon">:</span></dt>
-<dd class="field-odd"><div class="line-block">
-<div class="line">save_json - Saves waypoints sequence to JSON file.</div>
-<div class="line">load_json - Loads waypoints sequence from JSON file.</div>
-</div>
-</dd>
-</dl>
-</div></blockquote>
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.core.model.trajectory_serializer.TrajectorySerializer.load_json">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.waypoint.html#scarajectory.core.model.waypoint.Waypoint" title="scarajectory.core.model.waypoint.Waypoint"><span class="pre">Waypoint</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/scarajectory/core/model/trajectory_serializer.html#TrajectorySerializer.load_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.trajectory_serializer.TrajectorySerializer.load_json" title="Link to this definition">¶</a></dt>
-<dd><p>Loads waypoints sequence from JSON file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filepath</strong> – Source file path.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of loaded Waypoint instances.</p>
-</dd>
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>OSError, json.JSONDecodeError.</p>
-</dd>
-</dl>
-</dd></dl>
+  <title>scarajectory.core.model.trajectory_serializer module &#8212; scarajectory
+    https://github.com/vroncevic/scarajectory/releases documentation</title>
+  <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+  <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
 
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.core.model.trajectory_serializer.TrajectorySerializer.save_json">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">save_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">waypoints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.waypoint.html#scarajectory.core.model.waypoint.Waypoint" title="scarajectory.core.model.waypoint.Waypoint"><span class="pre">Waypoint</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/core/model/trajectory_serializer.html#TrajectorySerializer.save_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.trajectory_serializer.TrajectorySerializer.save_json" title="Link to this definition">¶</a></dt>
-<dd><p>Saves waypoints sequence to JSON file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>waypoints</strong> – Sequence of waypoints.</p></li>
-<li><p><strong>filepath</strong> – Target destination file path.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Exceptions<span class="colon">:</span></dt>
-<dd class="field-even"><p>OSError, json.JSONDecodeError.</p>
-</dd>
-</dl>
-</dd></dl>
+  <script src="_static/documentation_options.js?v=57319df4"></script>
+  <script src="_static/doctools.js?v=888ff710"></script>
+  <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
 
-</dd></dl>
+  <link rel="index" title="Index" href="genindex.html" />
+  <link rel="search" title="Search" href="search.html" />
+  <link rel="next" title="scarajectory.core.model.validation_result module"
+    href="scarajectory.core.model.validation_result.html" />
+  <link rel="prev" title="scarajectory.core.model.trajectory_plan module"
+    href="scarajectory.core.model.trajectory_plan.html" />
+</head>
 
-</section>
+<body>
+  <div class="related" role="navigation" aria-label="related navigation">
+    <h3>Navigation</h3>
+    <ul>
+      <li class="right" style="margin-right: 10px">
+        <a href="genindex.html" title="General Index" accesskey="I">index</a>
+      </li>
+      <li class="right">
+        <a href="py-modindex.html" title="Python Module Index">modules</a> |
+      </li>
+      <li class="right">
+        <a href="scarajectory.core.model.validation_result.html"
+          title="scarajectory.core.model.validation_result module" accesskey="N">next</a> |
+      </li>
+      <li class="right">
+        <a href="scarajectory.core.model.trajectory_plan.html" title="scarajectory.core.model.trajectory_plan module"
+          accesskey="P">previous</a> |
+      </li>
+      <li class="nav-item nav-item-0"><a href="index.html">scarajectory
+          https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+      <li class="nav-item nav-item-1"><a href="modules.html">scarajectory</a> &#187;</li>
+      <li class="nav-item nav-item-2"><a href="scarajectory.html">scarajectory package</a> &#187;</li>
+      <li class="nav-item nav-item-3"><a href="scarajectory.core.html">scarajectory.core package</a> &#187;</li>
+      <li class="nav-item nav-item-4"><a href="scarajectory.core.model.html" accesskey="U">scarajectory.core.model
+          package</a> &#187;</li>
+      <li class="nav-item nav-item-this"><a href="">scarajectory.core.model.trajectory_serializer module</a></li>
+    </ul>
+  </div>
+
+  <div class="document">
+    <div class="documentwrapper">
+      <div class="bodywrapper">
+        <div class="body" role="main">
+
+          <section id="module-scarajectory.core.model.trajectory_serializer">
+            <span id="scarajectory-core-model-trajectory-serializer-module"></span>
+            <h1>scarajectory.core.model.trajectory_serializer module<a class="headerlink"
+                href="#module-scarajectory.core.model.trajectory_serializer" title="Link to this heading">¶</a></h1>
+            <dl class="simple">
+              <dt>Module</dt>
+              <dd>
+                <p>trajectory_serializer.py</p>
+              </dd>
+              <dt>Copyright</dt>
+              <dd>
+                <p>Copyright (C) 2026 Vladimir Roncevic &lt;<a class="reference external"
+                    href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+                  scarajectory is free software: you can redistribute it and/or modify it
+                  under the terms of the GNU General Public License as published by the
+                  Free Software Foundation, either version 3 of the License, or
+                  (at your option) any later version.
+                  scarajectory is distributed in the hope that it will be useful, but
+                  WITHOUT ANY WARRANTY; without even the implied warranty of
+                  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+                  See the GNU General Public License for more details.
+                  You should have received a copy of the GNU General Public License along
+                  with this program. If not, see &lt;<a class="reference external"
+                    href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+              </dd>
+              <dt>Info</dt>
+              <dd>
+                <p>Serializes and deserializes trajectory plans to and from JSON format.</p>
+              </dd>
+            </dl>
+            <dl class="py class">
+              <dt class="sig sig-object py" id="scarajectory.core.model.trajectory_serializer.TrajectorySerializer">
+                <em class="property"><span class="pre">class</span><span class="w"> </span></em><span
+                  class="sig-prename descclassname"><span
+                    class="pre">scarajectory.core.model.trajectory_serializer.</span></span><span
+                  class="sig-name descname"><span class="pre">TrajectorySerializer</span></span><a
+                  class="reference internal"
+                  href="_modules/scarajectory/core/model/trajectory_serializer.html#TrajectorySerializer"><span
+                    class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink"
+                  href="#scarajectory.core.model.trajectory_serializer.TrajectorySerializer"
+                  title="Link to this definition">¶</a>
+              </dt>
+              <dd>
+                <p>Bases: <code
+                    class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+                <p>Serializes and deserializes trajectory plans to and from JSON format.</p>
+                <p>It defines:</p>
+                <blockquote>
+                  <div>
+                    <dl class="field-list">
+                      <dt class="field-odd">methods<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <div class="line-block">
+                          <div class="line">save_json - Saves waypoints sequence to JSON file.</div>
+                          <div class="line">load_json - Loads waypoints sequence from JSON file.</div>
+                        </div>
+                      </dd>
+                    </dl>
+                  </div>
+                </blockquote>
+                <dl class="py method">
+                  <dt class="sig sig-object py"
+                    id="scarajectory.core.model.trajectory_serializer.TrajectorySerializer.load_json">
+                    <em class="property"><span class="pre">static</span><span class="w"> </span></em><span
+                      class="sig-name descname"><span class="pre">load_json</span></span><span
+                      class="sig-paren">(</span><em class="sig-param"><span class="n"><span
+                          class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span
+                        class="w"> </span><span class="n"><span class="pre">str</span></span></em><span
+                      class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span>
+                      <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span
+                            class="pre">[</span></span><a class="reference internal"
+                          href="scarajectory.core.model.waypoint.html#scarajectory.core.model.waypoint.Waypoint"
+                          title="scarajectory.core.model.waypoint.Waypoint"><span class="pre">Waypoint</span></a><span
+                          class="p"><span class="pre">]</span></span></span></span><a class="reference internal"
+                      href="_modules/scarajectory/core/model/trajectory_serializer.html#TrajectorySerializer.load_json"><span
+                        class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink"
+                      href="#scarajectory.core.model.trajectory_serializer.TrajectorySerializer.load_json"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd>
+                    <p>Loads waypoints sequence from JSON file.</p>
+                    <dl class="field-list simple">
+                      <dt class="field-odd">Parameters<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <p><strong>filepath</strong> – Source file path.</p>
+                      </dd>
+                      <dt class="field-even">Returns<span class="colon">:</span></dt>
+                      <dd class="field-even">
+                        <p>List of loaded Waypoint instances.</p>
+                      </dd>
+                      <dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <p>OSError, json.JSONDecodeError.</p>
+                      </dd>
+                    </dl>
+                  </dd>
+                </dl>
+
+                <dl class="py method">
+                  <dt class="sig sig-object py"
+                    id="scarajectory.core.model.trajectory_serializer.TrajectorySerializer.save_json">
+                    <em class="property"><span class="pre">static</span><span class="w"> </span></em><span
+                      class="sig-name descname"><span class="pre">save_json</span></span><span
+                      class="sig-paren">(</span><em class="sig-param"><span class="n"><span
+                          class="pre">waypoints</span></span><span class="p"><span class="pre">:</span></span><span
+                        class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span
+                            class="pre">[</span></span><a class="reference internal"
+                          href="scarajectory.core.model.waypoint.html#scarajectory.core.model.waypoint.Waypoint"
+                          title="scarajectory.core.model.waypoint.Waypoint"><span class="pre">Waypoint</span></a><span
+                          class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span
+                        class="n"><span class="pre">filepath</span></span><span class="p"><span
+                          class="pre">:</span></span><span class="w"> </span><span class="n"><span
+                          class="pre">str</span></span></em><span class="sig-paren">)</span> <span
+                      class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span
+                        class="sig-return-typehint"><span class="pre">None</span></span></span><a
+                      class="reference internal"
+                      href="_modules/scarajectory/core/model/trajectory_serializer.html#TrajectorySerializer.save_json"><span
+                        class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink"
+                      href="#scarajectory.core.model.trajectory_serializer.TrajectorySerializer.save_json"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd>
+                    <p>Saves waypoints sequence to JSON file.</p>
+                    <dl class="field-list simple">
+                      <dt class="field-odd">Parameters<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <ul class="simple">
+                          <li>
+                            <p><strong>waypoints</strong> – Sequence of waypoints.</p>
+                          </li>
+                          <li>
+                            <p><strong>filepath</strong> – Target destination file path.</p>
+                          </li>
+                        </ul>
+                      </dd>
+                      <dt class="field-even">Exceptions<span class="colon">:</span></dt>
+                      <dd class="field-even">
+                        <p>OSError, json.JSONDecodeError.</p>
+                      </dd>
+                    </dl>
+                  </dd>
+                </dl>
+
+              </dd>
+            </dl>
+
+          </section>
 
 
-            <div class="clearer"></div>
+          <div class="clearer"></div>
+        </div>
+      </div>
+    </div>
+    <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebarwrapper">
+        <div>
+          <h3><a href="index.html">Table of Contents</a></h3>
+          <ul>
+            <li><a class="reference internal" href="#">scarajectory.core.model.trajectory_serializer module</a>
+              <ul>
+                <li><a class="reference internal"
+                    href="#scarajectory.core.model.trajectory_serializer.TrajectorySerializer"><code
+                      class="docutils literal notranslate"><span class="pre">TrajectorySerializer</span></code></a>
+                  <ul>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.model.trajectory_serializer.TrajectorySerializer.load_json"><code
+                          class="docutils literal notranslate"><span class="pre">TrajectorySerializer.load_json()</span></code></a>
+                    </li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.model.trajectory_serializer.TrajectorySerializer.save_json"><code
+                          class="docutils literal notranslate"><span class="pre">TrajectorySerializer.save_json()</span></code></a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+
+        </div>
+        <div>
+          <h4>Previous topic</h4>
+          <p class="topless"><a href="scarajectory.core.model.trajectory_plan.html"
+              title="previous chapter">scarajectory.core.model.trajectory_plan module</a></p>
+        </div>
+        <div>
+          <h4>Next topic</h4>
+          <p class="topless"><a href="scarajectory.core.model.validation_result.html"
+              title="next chapter">scarajectory.core.model.validation_result module</a></p>
+        </div>
+        <div role="note" aria-label="source link">
+          <h3>This Page</h3>
+          <ul class="this-page-menu">
+            <li><a href="_sources/scarajectory.core.model.trajectory_serializer.rst.txt" rel="nofollow">Show Source</a>
+            </li>
+          </ul>
+        </div>
+        <div id="searchbox" style="display: none" role="search">
+          <h3 id="searchlabel">Quick search</h3>
+          <div class="searchformwrapper">
+            <form class="search" action="search.html" method="get">
+              <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off"
+                autocapitalize="off" spellcheck="false" />
+              <input type="submit" value="Go" />
+            </form>
           </div>
         </div>
+        <script>document.getElementById('searchbox').style.display = "block"</script>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <div>
-    <h3><a href="index.html">Table of Contents</a></h3>
+    </div>
+    <div class="clearer"></div>
+  </div>
+  <div class="related" role="navigation" aria-label="related navigation">
+    <h3>Navigation</h3>
     <ul>
-<li><a class="reference internal" href="#">scarajectory.core.model.trajectory_serializer module</a><ul>
-<li><a class="reference internal" href="#scarajectory.core.model.trajectory_serializer.TrajectorySerializer"><code class="docutils literal notranslate"><span class="pre">TrajectorySerializer</span></code></a><ul>
-<li><a class="reference internal" href="#scarajectory.core.model.trajectory_serializer.TrajectorySerializer.load_json"><code class="docutils literal notranslate"><span class="pre">TrajectorySerializer.load_json()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.trajectory_serializer.TrajectorySerializer.save_json"><code class="docutils literal notranslate"><span class="pre">TrajectorySerializer.save_json()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-  </div>
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.core.model.trajectory_plan.html"
-                          title="previous chapter">scarajectory.core.model.trajectory_plan module</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="scarajectory.core.model.validation_result_dto.html"
-                          title="next chapter">scarajectory.core.model.validation_result_dto module</a></p>
-  </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/scarajectory.core.model.trajectory_serializer.rst.txt"
-            rel="nofollow">Show Source</a></li>
+      <li class="right" style="margin-right: 10px">
+        <a href="genindex.html" title="General Index">index</a>
+      </li>
+      <li class="right">
+        <a href="py-modindex.html" title="Python Module Index">modules</a> |
+      </li>
+      <li class="right">
+        <a href="scarajectory.core.model.validation_result.html"
+          title="scarajectory.core.model.validation_result module">next</a> |
+      </li>
+      <li class="right">
+        <a href="scarajectory.core.model.trajectory_plan.html"
+          title="scarajectory.core.model.trajectory_plan module">previous</a> |
+      </li>
+      <li class="nav-item nav-item-0"><a href="index.html">scarajectory
+          https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+      <li class="nav-item nav-item-1"><a href="modules.html">scarajectory</a> &#187;</li>
+      <li class="nav-item nav-item-2"><a href="scarajectory.html">scarajectory package</a> &#187;</li>
+      <li class="nav-item nav-item-3"><a href="scarajectory.core.html">scarajectory.core package</a> &#187;</li>
+      <li class="nav-item nav-item-4"><a href="scarajectory.core.model.html">scarajectory.core.model package</a> &#187;
+      </li>
+      <li class="nav-item nav-item-this"><a href="">scarajectory.core.model.trajectory_serializer module</a></li>
     </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="scarajectory.core.model.validation_result_dto.html" title="scarajectory.core.model.validation_result_dto module"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="scarajectory.core.model.trajectory_plan.html" title="scarajectory.core.model.trajectory_plan module"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
-          <li class="nav-item nav-item-3"><a href="scarajectory.core.html" >scarajectory.core package</a> &#187;</li>
-          <li class="nav-item nav-item-4"><a href="scarajectory.core.model.html" >scarajectory.core.model package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">scarajectory.core.model.trajectory_serializer module</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
+  </div>
+  <div class="footer" role="contentinfo">
     &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
-    </div>
-  </body>
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+  </div>
+</body>
+
 </html>

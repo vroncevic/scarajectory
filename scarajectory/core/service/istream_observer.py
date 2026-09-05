@@ -52,7 +52,6 @@ class IStreamObserver(Protocol):
             Called whenever a packet is sent, acked or completed.
 
             :param progress: StreamProgress metric container.
-            :exceptions: None.
         '''
 
     def on_serial_log(self, text: str, is_outgoing: bool = False) -> None:
@@ -61,5 +60,4 @@ class IStreamObserver(Protocol):
 
             :param text: Message string content.
             :param is_outgoing: True if transmitted by host, False if received from robot.
-            :exceptions: None.
         '''

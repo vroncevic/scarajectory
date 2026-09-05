@@ -1,340 +1,580 @@
 <!DOCTYPE html>
 
 <html lang="en" data-content_root="./">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>scarajectory.core.model.waypoint module &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
-    
-    <script src="_static/documentation_options.js?v=57319df4"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="scarajectory.core.service package" href="scarajectory.core.service.html" />
-    <link rel="prev" title="scarajectory.core.model.viewport_transform module" href="scarajectory.core.model.viewport_transform.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="scarajectory.core.service.html" title="scarajectory.core.service package"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="scarajectory.core.model.viewport_transform.html" title="scarajectory.core.model.viewport_transform module"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
-          <li class="nav-item nav-item-3"><a href="scarajectory.core.html" >scarajectory.core package</a> &#187;</li>
-          <li class="nav-item nav-item-4"><a href="scarajectory.core.model.html" accesskey="U">scarajectory.core.model package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">scarajectory.core.model.waypoint module</a></li> 
-      </ul>
-    </div>  
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <section id="module-scarajectory.core.model.waypoint">
-<span id="scarajectory-core-model-waypoint-module"></span><h1>scarajectory.core.model.waypoint module<a class="headerlink" href="#module-scarajectory.core.model.waypoint" title="Link to this heading">¶</a></h1>
-<dl class="simple">
-<dt>Module</dt><dd><p>waypoint.py</p>
-</dd>
-<dt>Copyright</dt><dd><p>Copyright (C) 2026 Vladimir Roncevic &lt;<a class="reference external" href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
-scarajectory is free software: you can redistribute it and/or modify it
-under the terms of the GNU General Public License as published by the
-Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-scarajectory is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU General Public License for more details.
-You should have received a copy of the GNU General Public License along
-with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
-</dd>
-<dt>Info</dt><dd><p>Defines Waypoint data model representing a single 4-DOF motion target point.</p>
-</dd>
-</dl>
-<dl class="py class">
-<dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.core.model.waypoint.</span></span><span class="sig-name descname"><span class="pre">Waypoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">40.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/core/model/waypoint.html#Waypoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.waypoint.Waypoint" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Immutable waypoint entity representing target coordinates, tool orientation and speed.</p>
-<p>It defines:</p>
-<blockquote>
-<div><dl class="field-list">
-<dt class="field-odd">attributes<span class="colon">:</span></dt>
-<dd class="field-odd"><div class="line-block">
-<div class="line">x - X Cartesian coordinate in mm.</div>
-<div class="line">y - Y Cartesian coordinate in mm.</div>
-<div class="line">z - Z height coordinate in mm.</div>
-<div class="line">phi - Tool orientation rotation angle in degrees.</div>
-<div class="line">speed - Motion feedrate speed in mm/s.</div>
-<div class="line">name - Optional waypoint identifier.</div>
-<div class="line">command - Optional raw protocol command string associated with point.</div>
-</div>
-</dd>
-<dt class="field-even">methods<span class="colon">:</span></dt>
-<dd class="field-even"><div class="line-block">
-<div class="line">to_dto - Converts waypoint entity to lightweight PointDTO.</div>
-<div class="line">from_dto - Creates waypoint from PointDTO.</div>
-<div class="line">radial_distance - Calculates planar radial distance from base.</div>
-<div class="line">distance_to - Calculates 3D Euclidean distance to another waypoint.</div>
-<div class="line">to_ascii_packet - Formats point as standard firmware protocol packet string.</div>
-<div class="line">to_dict - Serializes point to dictionary for JSON persistence.</div>
-<div class="line">from_dict - Deserializes waypoint from dictionary.</div>
-</div>
-</dd>
-</dl>
-</div></blockquote>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.command">
-<span class="sig-name descname"><span class="pre">command</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#scarajectory.core.model.waypoint.Waypoint.command" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+  <title>scarajectory.core.model.waypoint module &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases
+    documentation</title>
+  <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+  <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
 
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.distance_to">
-<span class="sig-name descname"><span class="pre">distance_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint" title="scarajectory.core.model.waypoint.Waypoint"><span class="pre">Waypoint</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/scarajectory/core/model/waypoint.html#Waypoint.distance_to"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.waypoint.Waypoint.distance_to" title="Link to this definition">¶</a></dt>
-<dd><p>Calculates 3D Euclidean distance to another waypoint.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>other</strong> – Target waypoint.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>3D distance in mm.</p>
-</dd>
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
+  <script src="_static/documentation_options.js?v=57319df4"></script>
+  <script src="_static/doctools.js?v=888ff710"></script>
+  <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.from_dict">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint" title="scarajectory.core.model.waypoint.Waypoint"><span class="pre">Waypoint</span></a></span></span><a class="reference internal" href="_modules/scarajectory/core/model/waypoint.html#Waypoint.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.waypoint.Waypoint.from_dict" title="Link to this definition">¶</a></dt>
-<dd><p>Deserializes waypoint from dictionary.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>data</strong> – Input dictionary.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Waypoint instance.</p>
-</dd>
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
+  <link rel="index" title="Index" href="genindex.html" />
+  <link rel="search" title="Search" href="search.html" />
+  <link rel="next" title="scarajectory.core.service package" href="scarajectory.core.service.html" />
+  <link rel="prev" title="scarajectory.core.model.viewport_transform module"
+    href="scarajectory.core.model.viewport_transform.html" />
+</head>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.from_dto">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dto</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.point_dto.html#scarajectory.core.model.point_dto.PointDTO" title="scarajectory.core.model.point_dto.PointDTO"><span class="pre">PointDTO</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint" title="scarajectory.core.model.waypoint.Waypoint"><span class="pre">Waypoint</span></a></span></span><a class="reference internal" href="_modules/scarajectory/core/model/waypoint.html#Waypoint.from_dto"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.waypoint.Waypoint.from_dto" title="Link to this definition">¶</a></dt>
-<dd><p>Creates waypoint from PointDTO.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>dto</strong> – PointDTO data transfer object.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Waypoint instance.</p>
-</dd>
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
+<body>
+  <div class="related" role="navigation" aria-label="related navigation">
+    <h3>Navigation</h3>
+    <ul>
+      <li class="right" style="margin-right: 10px">
+        <a href="genindex.html" title="General Index" accesskey="I">index</a>
+      </li>
+      <li class="right">
+        <a href="py-modindex.html" title="Python Module Index">modules</a> |
+      </li>
+      <li class="right">
+        <a href="scarajectory.core.service.html" title="scarajectory.core.service package" accesskey="N">next</a> |
+      </li>
+      <li class="right">
+        <a href="scarajectory.core.model.viewport_transform.html"
+          title="scarajectory.core.model.viewport_transform module" accesskey="P">previous</a> |
+      </li>
+      <li class="nav-item nav-item-0"><a href="index.html">scarajectory
+          https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+      <li class="nav-item nav-item-1"><a href="modules.html">scarajectory</a> &#187;</li>
+      <li class="nav-item nav-item-2"><a href="scarajectory.html">scarajectory package</a> &#187;</li>
+      <li class="nav-item nav-item-3"><a href="scarajectory.core.html">scarajectory.core package</a> &#187;</li>
+      <li class="nav-item nav-item-4"><a href="scarajectory.core.model.html" accesskey="U">scarajectory.core.model
+          package</a> &#187;</li>
+      <li class="nav-item nav-item-this"><a href="">scarajectory.core.model.waypoint module</a></li>
+    </ul>
+  </div>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.name">
-<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#scarajectory.core.model.waypoint.Waypoint.name" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+  <div class="document">
+    <div class="documentwrapper">
+      <div class="bodywrapper">
+        <div class="body" role="main">
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.phi">
-<span class="sig-name descname"><span class="pre">phi</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#scarajectory.core.model.waypoint.Waypoint.phi" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+          <section id="module-scarajectory.core.model.waypoint">
+            <span id="scarajectory-core-model-waypoint-module"></span>
+            <h1>scarajectory.core.model.waypoint module<a class="headerlink"
+                href="#module-scarajectory.core.model.waypoint" title="Link to this heading">¶</a></h1>
+            <dl class="simple">
+              <dt>Module</dt>
+              <dd>
+                <p>waypoint.py</p>
+              </dd>
+              <dt>Copyright</dt>
+              <dd>
+                <p>Copyright (C) 2026 Vladimir Roncevic &lt;<a class="reference external"
+                    href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+                  scarajectory is free software: you can redistribute it and/or modify it
+                  under the terms of the GNU General Public License as published by the
+                  Free Software Foundation, either version 3 of the License, or
+                  (at your option) any later version.
+                  scarajectory is distributed in the hope that it will be useful, but
+                  WITHOUT ANY WARRANTY; without even the implied warranty of
+                  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+                  See the GNU General Public License for more details.
+                  You should have received a copy of the GNU General Public License along
+                  with this program. If not, see &lt;<a class="reference external"
+                    href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+              </dd>
+              <dt>Info</dt>
+              <dd>
+                <p>Defines Waypoint data model representing a single 4-DOF motion target point.</p>
+              </dd>
+            </dl>
+            <dl class="py class">
+              <dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint">
+                <em class="property"><span class="pre">class</span><span class="w"> </span></em><span
+                  class="sig-prename descclassname"><span
+                    class="pre">scarajectory.core.model.waypoint.</span></span><span class="sig-name descname"><span
+                    class="pre">Waypoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span
+                    class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span
+                      class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w">
+                  </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span
+                    class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span
+                    class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em
+                  class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span
+                      class="pre">:</span></span><span class="w"> </span><span class="n"><span
+                      class="pre">float</span></span><span class="w"> </span><span class="o"><span
+                      class="pre">=</span></span><span class="w"> </span><span class="default_value"><span
+                      class="pre">20.0</span></span></em>, <em class="sig-param"><span class="n"><span
+                      class="pre">phi</span></span><span class="p"><span class="pre">:</span></span><span class="w">
+                  </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span
+                    class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span
+                      class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span
+                      class="pre">speed</span></span><span class="p"><span class="pre">:</span></span><span class="w">
+                  </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span
+                    class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span
+                      class="pre">40.0</span></span></em>, <em class="sig-param"><span class="n"><span
+                      class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w">
+                  </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span
+                    class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span
+                      class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span
+                      class="pre">command</span></span><span class="p"><span class="pre">:</span></span><span class="w">
+                  </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span
+                    class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span
+                      class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal"
+                  href="_modules/scarajectory/core/model/waypoint.html#Waypoint"><span class="viewcode-link"><span
+                      class="pre">[source]</span></span></a><a class="headerlink"
+                  href="#scarajectory.core.model.waypoint.Waypoint" title="Link to this definition">¶</a>
+              </dt>
+              <dd>
+                <p>Bases: <code
+                    class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+                <p>Immutable waypoint entity representing target coordinates, tool orientation and speed.</p>
+                <p>It defines:</p>
+                <blockquote>
+                  <div>
+                    <dl class="field-list">
+                      <dt class="field-odd">attributes<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <div class="line-block">
+                          <div class="line">x - X Cartesian coordinate in mm.</div>
+                          <div class="line">y - Y Cartesian coordinate in mm.</div>
+                          <div class="line">z - Z height coordinate in mm.</div>
+                          <div class="line">phi - Tool orientation rotation angle in degrees.</div>
+                          <div class="line">speed - Motion feedrate speed in mm/s.</div>
+                          <div class="line">name - Optional waypoint identifier.</div>
+                          <div class="line">command - Optional raw protocol command string associated with point.</div>
+                        </div>
+                      </dd>
+                      <dt class="field-even">methods<span class="colon">:</span></dt>
+                      <dd class="field-even">
+                        <div class="line-block">
+                          <div class="line">to_dto - Converts waypoint entity to lightweight Point.</div>
+                          <div class="line">from_dto - Creates waypoint from Point.</div>
+                          <div class="line">radial_distance - Calculates planar radial distance from base.</div>
+                          <div class="line">distance_to - Calculates 3D Euclidean distance to another waypoint.</div>
+                          <div class="line">to_ascii_packet - Formats point as standard firmware protocol packet string.
+                          </div>
+                          <div class="line">to_dict - Serializes point to dictionary for JSON persistence.</div>
+                          <div class="line">from_dict - Deserializes waypoint from dictionary.</div>
+                        </div>
+                      </dd>
+                    </dl>
+                  </div>
+                </blockquote>
+                <dl class="py attribute">
+                  <dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.command">
+                    <span class="sig-name descname"><span class="pre">command</span></span><em class="property"><span
+                        class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                        class="pre">str</span></em><a class="headerlink"
+                      href="#scarajectory.core.model.waypoint.Waypoint.command" title="Link to this definition">¶</a>
+                  </dt>
+                  <dd></dd>
+                </dl>
 
-<dl class="py property">
-<dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.radial_distance">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">radial_distance</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#scarajectory.core.model.waypoint.Waypoint.radial_distance" title="Link to this definition">¶</a></dt>
-<dd><p>Calculates planar radial distance from base r = sqrt(x^2 + y^2).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Radial distance in mm.</p>
-</dd>
-<dt class="field-even">Exceptions<span class="colon">:</span></dt>
-<dd class="field-even"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
+                <dl class="py method">
+                  <dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.distance_to">
+                    <span class="sig-name descname"><span class="pre">distance_to</span></span><span
+                      class="sig-paren">(</span><em class="sig-param"><span class="n"><span
+                          class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span
+                        class="w"> </span><span class="n"><a class="reference internal"
+                          href="#scarajectory.core.model.waypoint.Waypoint"
+                          title="scarajectory.core.model.waypoint.Waypoint"><span
+                            class="pre">Waypoint</span></a></span></em><span class="sig-paren">)</span> <span
+                      class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span
+                        class="sig-return-typehint"><span class="pre">float</span></span></span><a
+                      class="reference internal"
+                      href="_modules/scarajectory/core/model/waypoint.html#Waypoint.distance_to"><span
+                        class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink"
+                      href="#scarajectory.core.model.waypoint.Waypoint.distance_to"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd>
+                    <p>Calculates 3D Euclidean distance to another waypoint.</p>
+                    <dl class="field-list simple">
+                      <dt class="field-odd">Parameters<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <p><strong>other</strong> – Target waypoint.</p>
+                      </dd>
+                      <dt class="field-even">Returns<span class="colon">:</span></dt>
+                      <dd class="field-even">
+                        <p>3D distance in mm.</p>
+                      </dd>
+                      <dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <p>None.</p>
+                      </dd>
+                    </dl>
+                  </dd>
+                </dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.speed">
-<span class="sig-name descname"><span class="pre">speed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#scarajectory.core.model.waypoint.Waypoint.speed" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+                <dl class="py method">
+                  <dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.from_dict">
+                    <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span
+                      class="sig-name descname"><span class="pre">from_dict</span></span><span
+                      class="sig-paren">(</span><em class="sig-param"><span class="n"><span
+                          class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span
+                        class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span
+                            class="pre">[</span></span><span class="pre">str</span><span class="p"><span
+                            class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span
+                          class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w">
+                        </span><span class="pre">str</span><span class="p"><span
+                            class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span
+                      class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span
+                        class="sig-return-typehint"><a class="reference internal"
+                          href="#scarajectory.core.model.waypoint.Waypoint"
+                          title="scarajectory.core.model.waypoint.Waypoint"><span
+                            class="pre">Waypoint</span></a></span></span><a class="reference internal"
+                      href="_modules/scarajectory/core/model/waypoint.html#Waypoint.from_dict"><span
+                        class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink"
+                      href="#scarajectory.core.model.waypoint.Waypoint.from_dict" title="Link to this definition">¶</a>
+                  </dt>
+                  <dd>
+                    <p>Deserializes waypoint from dictionary.</p>
+                    <dl class="field-list simple">
+                      <dt class="field-odd">Parameters<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <p><strong>data</strong> – Input dictionary.</p>
+                      </dd>
+                      <dt class="field-even">Returns<span class="colon">:</span></dt>
+                      <dd class="field-even">
+                        <p>Waypoint instance.</p>
+                      </dd>
+                      <dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <p>None.</p>
+                      </dd>
+                    </dl>
+                  </dd>
+                </dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.to_ascii_packet">
-<span class="sig-name descname"><span class="pre">to_ascii_packet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/core/model/waypoint.html#Waypoint.to_ascii_packet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.waypoint.Waypoint.to_ascii_packet" title="Link to this definition">¶</a></dt>
-<dd><p>Formats point as standard firmware protocol packet string.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ASCII command string.</p>
-</dd>
-<dt class="field-even">Exceptions<span class="colon">:</span></dt>
-<dd class="field-even"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
+                <dl class="py method">
+                  <dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.from_dto">
+                    <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span
+                      class="sig-name descname"><span class="pre">from_dto</span></span><span
+                      class="sig-paren">(</span><em class="sig-param"><span class="n"><span
+                          class="pre">dto</span></span><span class="p"><span class="pre">:</span></span><span class="w">
+                      </span><span class="n"><a class="reference internal"
+                          href="scarajectory.core.model.point.html#scarajectory.core.model.point.Point"
+                          title="scarajectory.core.model.point.Point"><span
+                            class="pre">Point</span></a></span></em><span class="sig-paren">)</span> <span
+                      class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span
+                        class="sig-return-typehint"><a class="reference internal"
+                          href="#scarajectory.core.model.waypoint.Waypoint"
+                          title="scarajectory.core.model.waypoint.Waypoint"><span
+                            class="pre">Waypoint</span></a></span></span><a class="reference internal"
+                      href="_modules/scarajectory/core/model/waypoint.html#Waypoint.from_dto"><span
+                        class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink"
+                      href="#scarajectory.core.model.waypoint.Waypoint.from_dto" title="Link to this definition">¶</a>
+                  </dt>
+                  <dd>
+                    <p>Creates waypoint from Point.</p>
+                    <dl class="field-list simple">
+                      <dt class="field-odd">Parameters<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <p><strong>dto</strong> – Point data transfer object.</p>
+                      </dd>
+                      <dt class="field-even">Returns<span class="colon">:</span></dt>
+                      <dd class="field-even">
+                        <p>Waypoint instance.</p>
+                      </dd>
+                      <dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <p>None.</p>
+                      </dd>
+                    </dl>
+                  </dd>
+                </dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.to_dict">
-<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/scarajectory/core/model/waypoint.html#Waypoint.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.waypoint.Waypoint.to_dict" title="Link to this definition">¶</a></dt>
-<dd><p>Serializes point to dictionary for JSON persistence.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Dictionary representation.</p>
-</dd>
-<dt class="field-even">Exceptions<span class="colon">:</span></dt>
-<dd class="field-even"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
+                <dl class="py attribute">
+                  <dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.name">
+                    <span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span
+                        class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                        class="pre">str</span></em><a class="headerlink"
+                      href="#scarajectory.core.model.waypoint.Waypoint.name" title="Link to this definition">¶</a>
+                  </dt>
+                  <dd></dd>
+                </dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.to_dto">
-<span class="sig-name descname"><span class="pre">to_dto</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.core.model.point_dto.html#scarajectory.core.model.point_dto.PointDTO" title="scarajectory.core.model.point_dto.PointDTO"><span class="pre">PointDTO</span></a></span></span><a class="reference internal" href="_modules/scarajectory/core/model/waypoint.html#Waypoint.to_dto"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.waypoint.Waypoint.to_dto" title="Link to this definition">¶</a></dt>
-<dd><p>Converts waypoint entity to lightweight PointDTO.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>PointDTO representation.</p>
-</dd>
-<dt class="field-even">Exceptions<span class="colon">:</span></dt>
-<dd class="field-even"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
+                <dl class="py attribute">
+                  <dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.phi">
+                    <span class="sig-name descname"><span class="pre">phi</span></span><em class="property"><span
+                        class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                        class="pre">float</span></em><a class="headerlink"
+                      href="#scarajectory.core.model.waypoint.Waypoint.phi" title="Link to this definition">¶</a>
+                  </dt>
+                  <dd></dd>
+                </dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.x">
-<span class="sig-name descname"><span class="pre">x</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#scarajectory.core.model.waypoint.Waypoint.x" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+                <dl class="py property">
+                  <dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.radial_distance">
+                    <em class="property"><span class="pre">property</span><span class="w"> </span></em><span
+                      class="sig-name descname"><span class="pre">radial_distance</span></span><em
+                      class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                        class="pre">float</span></em><a class="headerlink"
+                      href="#scarajectory.core.model.waypoint.Waypoint.radial_distance"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd>
+                    <p>Calculates planar radial distance from base r = sqrt(x^2 + y^2).</p>
+                    <dl class="field-list simple">
+                      <dt class="field-odd">Returns<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <p>Radial distance in mm.</p>
+                      </dd>
+                      <dt class="field-even">Exceptions<span class="colon">:</span></dt>
+                      <dd class="field-even">
+                        <p>None.</p>
+                      </dd>
+                    </dl>
+                  </dd>
+                </dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.y">
-<span class="sig-name descname"><span class="pre">y</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#scarajectory.core.model.waypoint.Waypoint.y" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+                <dl class="py attribute">
+                  <dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.speed">
+                    <span class="sig-name descname"><span class="pre">speed</span></span><em class="property"><span
+                        class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                        class="pre">float</span></em><a class="headerlink"
+                      href="#scarajectory.core.model.waypoint.Waypoint.speed" title="Link to this definition">¶</a>
+                  </dt>
+                  <dd></dd>
+                </dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.z">
-<span class="sig-name descname"><span class="pre">z</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#scarajectory.core.model.waypoint.Waypoint.z" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+                <dl class="py method">
+                  <dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.to_ascii_packet">
+                    <span class="sig-name descname"><span class="pre">to_ascii_packet</span></span><span
+                      class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span
+                        class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span
+                          class="pre">str</span></span></span><a class="reference internal"
+                      href="_modules/scarajectory/core/model/waypoint.html#Waypoint.to_ascii_packet"><span
+                        class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink"
+                      href="#scarajectory.core.model.waypoint.Waypoint.to_ascii_packet"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd>
+                    <p>Formats point as standard firmware protocol packet string.</p>
+                    <dl class="field-list simple">
+                      <dt class="field-odd">Returns<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <p>ASCII command string.</p>
+                      </dd>
+                      <dt class="field-even">Exceptions<span class="colon">:</span></dt>
+                      <dd class="field-even">
+                        <p>None.</p>
+                      </dd>
+                    </dl>
+                  </dd>
+                </dl>
 
-</dd></dl>
+                <dl class="py method">
+                  <dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.to_dict">
+                    <span class="sig-name descname"><span class="pre">to_dict</span></span><span
+                      class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span
+                        class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span
+                          class="pre">dict</span><span class="p"><span class="pre">[</span></span><span
+                          class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w">
+                        </span><span class="pre">float</span><span class="w"> </span><span class="p"><span
+                            class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span
+                          class="p"><span class="pre">]</span></span></span></span><a class="reference internal"
+                      href="_modules/scarajectory/core/model/waypoint.html#Waypoint.to_dict"><span
+                        class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink"
+                      href="#scarajectory.core.model.waypoint.Waypoint.to_dict" title="Link to this definition">¶</a>
+                  </dt>
+                  <dd>
+                    <p>Serializes point to dictionary for JSON persistence.</p>
+                    <dl class="field-list simple">
+                      <dt class="field-odd">Returns<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <p>Dictionary representation.</p>
+                      </dd>
+                      <dt class="field-even">Exceptions<span class="colon">:</span></dt>
+                      <dd class="field-even">
+                        <p>None.</p>
+                      </dd>
+                    </dl>
+                  </dd>
+                </dl>
 
-</section>
+                <dl class="py method">
+                  <dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.to_dto">
+                    <span class="sig-name descname"><span class="pre">to_dto</span></span><span
+                      class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span
+                        class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a
+                          class="reference internal"
+                          href="scarajectory.core.model.point.html#scarajectory.core.model.point.Point"
+                          title="scarajectory.core.model.point.Point"><span class="pre">Point</span></a></span></span><a
+                      class="reference internal"
+                      href="_modules/scarajectory/core/model/waypoint.html#Waypoint.to_dto"><span
+                        class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink"
+                      href="#scarajectory.core.model.waypoint.Waypoint.to_dto" title="Link to this definition">¶</a>
+                  </dt>
+                  <dd>
+                    <p>Converts waypoint entity to lightweight Point.</p>
+                    <dl class="field-list simple">
+                      <dt class="field-odd">Returns<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <p>Point representation.</p>
+                      </dd>
+                      <dt class="field-even">Exceptions<span class="colon">:</span></dt>
+                      <dd class="field-even">
+                        <p>None.</p>
+                      </dd>
+                    </dl>
+                  </dd>
+                </dl>
+
+                <dl class="py attribute">
+                  <dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.x">
+                    <span class="sig-name descname"><span class="pre">x</span></span><em class="property"><span
+                        class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                        class="pre">float</span></em><a class="headerlink"
+                      href="#scarajectory.core.model.waypoint.Waypoint.x" title="Link to this definition">¶</a>
+                  </dt>
+                  <dd></dd>
+                </dl>
+
+                <dl class="py attribute">
+                  <dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.y">
+                    <span class="sig-name descname"><span class="pre">y</span></span><em class="property"><span
+                        class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                        class="pre">float</span></em><a class="headerlink"
+                      href="#scarajectory.core.model.waypoint.Waypoint.y" title="Link to this definition">¶</a>
+                  </dt>
+                  <dd></dd>
+                </dl>
+
+                <dl class="py attribute">
+                  <dt class="sig sig-object py" id="scarajectory.core.model.waypoint.Waypoint.z">
+                    <span class="sig-name descname"><span class="pre">z</span></span><em class="property"><span
+                        class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                        class="pre">float</span></em><a class="headerlink"
+                      href="#scarajectory.core.model.waypoint.Waypoint.z" title="Link to this definition">¶</a>
+                  </dt>
+                  <dd></dd>
+                </dl>
+
+              </dd>
+            </dl>
+
+          </section>
 
 
-            <div class="clearer"></div>
+          <div class="clearer"></div>
+        </div>
+      </div>
+    </div>
+    <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebarwrapper">
+        <div>
+          <h3><a href="index.html">Table of Contents</a></h3>
+          <ul>
+            <li><a class="reference internal" href="#">scarajectory.core.model.waypoint module</a>
+              <ul>
+                <li><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint"><code
+                      class="docutils literal notranslate"><span class="pre">Waypoint</span></code></a>
+                  <ul>
+                    <li><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint.command"><code
+                          class="docutils literal notranslate"><span class="pre">Waypoint.command</span></code></a></li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.model.waypoint.Waypoint.distance_to"><code
+                          class="docutils literal notranslate"><span class="pre">Waypoint.distance_to()</span></code></a>
+                    </li>
+                    <li><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint.from_dict"><code
+                          class="docutils literal notranslate"><span class="pre">Waypoint.from_dict()</span></code></a>
+                    </li>
+                    <li><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint.from_dto"><code
+                          class="docutils literal notranslate"><span class="pre">Waypoint.from_dto()</span></code></a>
+                    </li>
+                    <li><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint.name"><code
+                          class="docutils literal notranslate"><span class="pre">Waypoint.name</span></code></a></li>
+                    <li><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint.phi"><code
+                          class="docutils literal notranslate"><span class="pre">Waypoint.phi</span></code></a></li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.model.waypoint.Waypoint.radial_distance"><code
+                          class="docutils literal notranslate"><span class="pre">Waypoint.radial_distance</span></code></a>
+                    </li>
+                    <li><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint.speed"><code
+                          class="docutils literal notranslate"><span class="pre">Waypoint.speed</span></code></a></li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.model.waypoint.Waypoint.to_ascii_packet"><code
+                          class="docutils literal notranslate"><span class="pre">Waypoint.to_ascii_packet()</span></code></a>
+                    </li>
+                    <li><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint.to_dict"><code
+                          class="docutils literal notranslate"><span class="pre">Waypoint.to_dict()</span></code></a>
+                    </li>
+                    <li><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint.to_dto"><code
+                          class="docutils literal notranslate"><span class="pre">Waypoint.to_dto()</span></code></a>
+                    </li>
+                    <li><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint.x"><code
+                          class="docutils literal notranslate"><span class="pre">Waypoint.x</span></code></a></li>
+                    <li><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint.y"><code
+                          class="docutils literal notranslate"><span class="pre">Waypoint.y</span></code></a></li>
+                    <li><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint.z"><code
+                          class="docutils literal notranslate"><span class="pre">Waypoint.z</span></code></a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+
+        </div>
+        <div>
+          <h4>Previous topic</h4>
+          <p class="topless"><a href="scarajectory.core.model.viewport_transform.html"
+              title="previous chapter">scarajectory.core.model.viewport_transform module</a></p>
+        </div>
+        <div>
+          <h4>Next topic</h4>
+          <p class="topless"><a href="scarajectory.core.service.html" title="next chapter">scarajectory.core.service
+              package</a></p>
+        </div>
+        <div role="note" aria-label="source link">
+          <h3>This Page</h3>
+          <ul class="this-page-menu">
+            <li><a href="_sources/scarajectory.core.model.waypoint.rst.txt" rel="nofollow">Show Source</a></li>
+          </ul>
+        </div>
+        <div id="searchbox" style="display: none" role="search">
+          <h3 id="searchlabel">Quick search</h3>
+          <div class="searchformwrapper">
+            <form class="search" action="search.html" method="get">
+              <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off"
+                autocapitalize="off" spellcheck="false" />
+              <input type="submit" value="Go" />
+            </form>
           </div>
         </div>
+        <script>document.getElementById('searchbox').style.display = "block"</script>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <div>
-    <h3><a href="index.html">Table of Contents</a></h3>
+    </div>
+    <div class="clearer"></div>
+  </div>
+  <div class="related" role="navigation" aria-label="related navigation">
+    <h3>Navigation</h3>
     <ul>
-<li><a class="reference internal" href="#">scarajectory.core.model.waypoint module</a><ul>
-<li><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint"><code class="docutils literal notranslate"><span class="pre">Waypoint</span></code></a><ul>
-<li><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint.command"><code class="docutils literal notranslate"><span class="pre">Waypoint.command</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint.distance_to"><code class="docutils literal notranslate"><span class="pre">Waypoint.distance_to()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint.from_dict"><code class="docutils literal notranslate"><span class="pre">Waypoint.from_dict()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint.from_dto"><code class="docutils literal notranslate"><span class="pre">Waypoint.from_dto()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint.name"><code class="docutils literal notranslate"><span class="pre">Waypoint.name</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint.phi"><code class="docutils literal notranslate"><span class="pre">Waypoint.phi</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint.radial_distance"><code class="docutils literal notranslate"><span class="pre">Waypoint.radial_distance</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint.speed"><code class="docutils literal notranslate"><span class="pre">Waypoint.speed</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint.to_ascii_packet"><code class="docutils literal notranslate"><span class="pre">Waypoint.to_ascii_packet()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint.to_dict"><code class="docutils literal notranslate"><span class="pre">Waypoint.to_dict()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint.to_dto"><code class="docutils literal notranslate"><span class="pre">Waypoint.to_dto()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint.x"><code class="docutils literal notranslate"><span class="pre">Waypoint.x</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint.y"><code class="docutils literal notranslate"><span class="pre">Waypoint.y</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.waypoint.Waypoint.z"><code class="docutils literal notranslate"><span class="pre">Waypoint.z</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-  </div>
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.core.model.viewport_transform.html"
-                          title="previous chapter">scarajectory.core.model.viewport_transform module</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="scarajectory.core.service.html"
-                          title="next chapter">scarajectory.core.service package</a></p>
-  </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/scarajectory.core.model.waypoint.rst.txt"
-            rel="nofollow">Show Source</a></li>
+      <li class="right" style="margin-right: 10px">
+        <a href="genindex.html" title="General Index">index</a>
+      </li>
+      <li class="right">
+        <a href="py-modindex.html" title="Python Module Index">modules</a> |
+      </li>
+      <li class="right">
+        <a href="scarajectory.core.service.html" title="scarajectory.core.service package">next</a> |
+      </li>
+      <li class="right">
+        <a href="scarajectory.core.model.viewport_transform.html"
+          title="scarajectory.core.model.viewport_transform module">previous</a> |
+      </li>
+      <li class="nav-item nav-item-0"><a href="index.html">scarajectory
+          https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+      <li class="nav-item nav-item-1"><a href="modules.html">scarajectory</a> &#187;</li>
+      <li class="nav-item nav-item-2"><a href="scarajectory.html">scarajectory package</a> &#187;</li>
+      <li class="nav-item nav-item-3"><a href="scarajectory.core.html">scarajectory.core package</a> &#187;</li>
+      <li class="nav-item nav-item-4"><a href="scarajectory.core.model.html">scarajectory.core.model package</a> &#187;
+      </li>
+      <li class="nav-item nav-item-this"><a href="">scarajectory.core.model.waypoint module</a></li>
     </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="scarajectory.core.service.html" title="scarajectory.core.service package"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="scarajectory.core.model.viewport_transform.html" title="scarajectory.core.model.viewport_transform module"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
-          <li class="nav-item nav-item-3"><a href="scarajectory.core.html" >scarajectory.core package</a> &#187;</li>
-          <li class="nav-item nav-item-4"><a href="scarajectory.core.model.html" >scarajectory.core.model package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">scarajectory.core.model.waypoint module</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
+  </div>
+  <div class="footer" role="contentinfo">
     &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
-    </div>
-  </body>
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+  </div>
+</body>
+
 </html>

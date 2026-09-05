@@ -2,7 +2,7 @@
 
 '''
 Module
-    validation_result_dto.py
+    validation_result.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     scarajectory is free software: you can redistribute it and/or modify it
@@ -16,7 +16,7 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Defines ValidationResultDTO data transfer object.
+    Defines ValidationResult data transfer object.
 '''
 
 from __future__ import annotations
@@ -34,7 +34,7 @@ __status__ = 'Updated'
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
-class ValidationResultDTO:
+class ValidationResult:
     '''
         DTO encapsulating validation check outcomes.
 

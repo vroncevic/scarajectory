@@ -16,7 +16,7 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Unit tests for Waypoint entity and PointDTO conversions.
+    Unit tests for Waypoint entity and Point conversions.
 '''
 
 from __future__ import annotations
@@ -30,7 +30,7 @@ if pkg_dir not in sys.path:
     sys.path.insert(0, pkg_dir)
 
 from scarajectory.core.model.waypoint import Waypoint
-from scarajectory.core.model.point_dto import PointDTO
+from scarajectory.core.model.point import Point
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -50,7 +50,7 @@ class TestWaypoint(unittest.TestCase):
 
             :methods:
                 | test_waypoint_creation - Tests instantiation and property access of Waypoint.
-                | test_point_dto_conversion - Tests roundtrip between Waypoint and PointDTO.
+                | test_point_dto_conversion - Tests roundtrip between Waypoint and Point.
                 | test_waypoint_equality - Tests equality and string representation.
     '''
 
@@ -70,11 +70,11 @@ class TestWaypoint(unittest.TestCase):
 
     def test_point_dto_conversion(self) -> None:
         '''
-            Tests conversion between Waypoint entity and PointDTO.
+            Tests conversion between Waypoint entity and Point.
 
             :exceptions: None.
         '''
-        dto = PointDTO(x=80.0, y=120.0, z=20.0, phi=0.0, speed=40.0, name='DTO_PT')
+        dto = Point(x=80.0, y=120.0, z=20.0, phi=0.0, speed=40.0, name='DTO_PT')
         pt = Waypoint.from_dto(dto)
         self.assertEqual(pt.x, 80.0)
         self.assertEqual(pt.y, 120.0)

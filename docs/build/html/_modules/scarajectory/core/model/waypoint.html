@@ -1,41 +1,48 @@
 <!DOCTYPE html>
 
 <html lang="en" data-content_root="../../../../">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>scarajectory.core.model.waypoint &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/classic.css?v=514cf933" />
-    
-    <script src="../../../../_static/documentation_options.js?v=57319df4"></script>
-    <script src="../../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    
-    <link rel="index" title="Index" href="../../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../../search.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">scarajectory.core.model.waypoint</a></li> 
-      </ul>
-    </div>  
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <h1>Source code for scarajectory.core.model.waypoint</h1><div class="highlight"><pre>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>scarajectory.core.model.waypoint &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases
+    documentation</title>
+  <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+  <link rel="stylesheet" type="text/css" href="../../../../_static/classic.css?v=514cf933" />
+
+  <script src="../../../../_static/documentation_options.js?v=57319df4"></script>
+  <script src="../../../../_static/doctools.js?v=888ff710"></script>
+  <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+
+  <link rel="index" title="Index" href="../../../../genindex.html" />
+  <link rel="search" title="Search" href="../../../../search.html" />
+</head>
+
+<body>
+  <div class="related" role="navigation" aria-label="related navigation">
+    <h3>Navigation</h3>
+    <ul>
+      <li class="right" style="margin-right: 10px">
+        <a href="../../../../genindex.html" title="General Index" accesskey="I">index</a>
+      </li>
+      <li class="right">
+        <a href="../../../../py-modindex.html" title="Python Module Index">modules</a> |
+      </li>
+      <li class="nav-item nav-item-0"><a href="../../../../index.html">scarajectory
+          https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+      <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &#187;</li>
+      <li class="nav-item nav-item-this"><a href="">scarajectory.core.model.waypoint</a></li>
+    </ul>
+  </div>
+
+  <div class="document">
+    <div class="documentwrapper">
+      <div class="bodywrapper">
+        <div class="body" role="main">
+
+          <h1>Source code for scarajectory.core.model.waypoint</h1>
+          <div class="highlight">
+            <pre>
 <span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
 
 <span class="sd">&#39;&#39;&#39;</span>
@@ -62,7 +69,7 @@
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.point_dto</span> <span class="kn">import</span> <span class="n">PointDTO</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.point</span> <span class="kn">import</span> <span class="n">Point</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
@@ -92,8 +99,8 @@
 <span class="sd">                | name - Optional waypoint identifier.</span>
 <span class="sd">                | command - Optional raw protocol command string associated with point.</span>
 <span class="sd">            :methods:</span>
-<span class="sd">                | to_dto - Converts waypoint entity to lightweight PointDTO.</span>
-<span class="sd">                | from_dto - Creates waypoint from PointDTO.</span>
+<span class="sd">                | to_dto - Converts waypoint entity to lightweight Point.</span>
+<span class="sd">                | from_dto - Creates waypoint from Point.</span>
 <span class="sd">                | radial_distance - Calculates planar radial distance from base.</span>
 <span class="sd">                | distance_to - Calculates 3D Euclidean distance to another waypoint.</span>
 <span class="sd">                | to_ascii_packet - Formats point as standard firmware protocol packet string.</span>
@@ -111,14 +118,14 @@
 
 <div class="viewcode-block" id="Waypoint.to_dto">
 <a class="viewcode-back" href="../../../../scarajectory.core.model.waypoint.html#scarajectory.core.model.waypoint.Waypoint.to_dto">[docs]</a>
-    <span class="k">def</span> <span class="nf">to_dto</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PointDTO</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">to_dto</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Point</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Converts waypoint entity to lightweight PointDTO.</span>
+<span class="sd">            Converts waypoint entity to lightweight Point.</span>
 
-<span class="sd">            :return: PointDTO representation.</span>
+<span class="sd">            :return: Point representation.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">PointDTO</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">Point</span><span class="p">(</span>
             <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
             <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
             <span class="n">z</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">,</span>
@@ -131,11 +138,11 @@
 <div class="viewcode-block" id="Waypoint.from_dto">
 <a class="viewcode-back" href="../../../../scarajectory.core.model.waypoint.html#scarajectory.core.model.waypoint.Waypoint.from_dto">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_dto</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">dto</span><span class="p">:</span> <span class="n">PointDTO</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Waypoint</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">from_dto</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">dto</span><span class="p">:</span> <span class="n">Point</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Waypoint</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Creates waypoint from PointDTO.</span>
+<span class="sd">            Creates waypoint from Point.</span>
 
-<span class="sd">            :param dto: PointDTO data transfer object.</span>
+<span class="sd">            :param dto: Point data transfer object.</span>
 <span class="sd">            :return: Waypoint instance.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -233,45 +240,49 @@
         <span class="p">)</span></div>
 </div>
 
-</pre></div>
+</pre>
+          </div>
 
-            <div class="clearer"></div>
+          <div class="clearer"></div>
+        </div>
+      </div>
+    </div>
+    <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebarwrapper">
+        <div id="searchbox" style="display: none" role="search">
+          <h3 id="searchlabel">Quick search</h3>
+          <div class="searchformwrapper">
+            <form class="search" action="../../../../search.html" method="get">
+              <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off"
+                autocapitalize="off" spellcheck="false" />
+              <input type="submit" value="Go" />
+            </form>
           </div>
         </div>
+        <script>document.getElementById('searchbox').style.display = "block"</script>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
     </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../../../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../../../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">scarajectory.core.model.waypoint</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
+    <div class="clearer"></div>
+  </div>
+  <div class="related" role="navigation" aria-label="related navigation">
+    <h3>Navigation</h3>
+    <ul>
+      <li class="right" style="margin-right: 10px">
+        <a href="../../../../genindex.html" title="General Index">index</a>
+      </li>
+      <li class="right">
+        <a href="../../../../py-modindex.html" title="Python Module Index">modules</a> |
+      </li>
+      <li class="nav-item nav-item-0"><a href="../../../../index.html">scarajectory
+          https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+      <li class="nav-item nav-item-1"><a href="../../../index.html">Module code</a> &#187;</li>
+      <li class="nav-item nav-item-this"><a href="">scarajectory.core.model.waypoint</a></li>
+    </ul>
+  </div>
+  <div class="footer" role="contentinfo">
     &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
-    </div>
-  </body>
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+  </div>
+</body>
+
 </html>

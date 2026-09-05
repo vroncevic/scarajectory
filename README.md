@@ -137,7 +137,7 @@ Tool structure
          │   ├── __init__.py
          │   ├── model/
          │   │   ├── canvas_interaction_state.py
-         │   │   ├── canvas_settings_dto.py
+         │   │   ├── canvas_settings.py
          │   │   ├── canvas_tool_mode.py
          │   │   ├── dsl/
          │   │   │   ├── __init__.py
@@ -153,15 +153,15 @@ Tool structure
          │   │   ├── __init__.py
          │   │   ├── itrajectory_plan.py
          │   │   ├── plan_history.py
-         │   │   ├── point_dto.py
+         │   │   ├── point.py
          │   │   ├── scara_bounds.py
-         │   │   ├── stream_config_dto.py
+         │   │   ├── stream_config.py
          │   │   ├── stream_progress.py
          │   │   ├── stream_state.py
          │   │   ├── trajectory_metrics.py
          │   │   ├── trajectory_plan.py
          │   │   ├── trajectory_serializer.py
-         │   │   ├── validation_result_dto.py
+         │   │   ├── validation_result.py
          │   │   ├── viewport_transform.py
          │   │   └── waypoint.py
          │   └── service/
@@ -545,7 +545,7 @@ All communication between **scarajectory**, the physical **`scara_base`** firmwa
 | `scarajectory/core/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/core/model/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/core/model/canvas_interaction_state.py` | 26 | 0 | 100%|
-| `scarajectory/core/model/canvas_settings_dto.py` | 15 | 0 | 100%|
+| `scarajectory/core/model/canvas_settings.py` | 15 | 0 | 100%|
 | `scarajectory/core/model/canvas_tool_mode.py` | 17 | 0 | 100%|
 | `scarajectory/core/model/dsl/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/core/model/dsl/iscara_instruction.py` | 28 | 5 | 82%|
@@ -559,15 +559,15 @@ All communication between **scarajectory**, the physical **`scara_base`** firmwa
 | `scarajectory/core/model/dsl/scara_token_type.py` | 23 | 0 | 100%|
 | `scarajectory/core/model/itrajectory_plan.py` | 31 | 0 | 100%|
 | `scarajectory/core/model/plan_history.py` | 34 | 1 | 97%|
-| `scarajectory/core/model/point_dto.py` | 18 | 0 | 100%|
+| `scarajectory/core/model/point.py` | 18 | 0 | 100%|
 | `scarajectory/core/model/scara_bounds.py` | 29 | 0 | 100%|
-| `scarajectory/core/model/stream_config_dto.py` | 15 | 0 | 100%|
+| `scarajectory/core/model/stream_config.py` | 15 | 0 | 100%|
 | `scarajectory/core/model/stream_progress.py` | 26 | 3 | 88%|
 | `scarajectory/core/model/stream_state.py` | 17 | 0 | 100%|
 | `scarajectory/core/model/trajectory_metrics.py` | 37 | 5 | 86%|
 | `scarajectory/core/model/trajectory_plan.py` | 100 | 14 | 86%|
 | `scarajectory/core/model/trajectory_serializer.py` | 29 | 0 | 100%|
-| `scarajectory/core/model/validation_result_dto.py` | 15 | 0 | 100%|
+| `scarajectory/core/model/validation_result.py` | 15 | 0 | 100%|
 | `scarajectory/core/model/viewport_transform.py` | 48 | 0 | 100%|
 | `scarajectory/core/model/waypoint.py` | 45 | 2 | 96%|
 | `scarajectory/core/service/__init__.py` | 9 | 0 | 100%|

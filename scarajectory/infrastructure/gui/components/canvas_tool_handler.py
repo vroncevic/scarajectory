@@ -25,7 +25,7 @@ import math
 from typing import Sequence
 
 from scarajectory.core.model.waypoint import Waypoint
-from scarajectory.core.model.canvas_settings_dto import CanvasSettingsDTO
+from scarajectory.core.model.canvas_settings import CanvasSettings
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -56,14 +56,14 @@ class CanvasToolHandler:
         cls,
         p1: tuple[float, float],
         p2: tuple[float, float],
-        settings: CanvasSettingsDTO
+        settings: CanvasSettings
     ) -> list[Waypoint]:
         '''
             Generates start and end waypoints of straight linear segment.
 
             :param p1: Start point (x, y) coordinate tuple in mm.
             :param p2: End point (x, y) coordinate tuple in mm.
-            :param settings: Active CanvasSettingsDTO.
+            :param settings: Active CanvasSettings.
             :return: List of Waypoint instances.
             :exceptions: None.
         '''
@@ -78,7 +78,7 @@ class CanvasToolHandler:
         center: tuple[float, float],
         radius: float,
         steps: int,
-        settings: CanvasSettingsDTO
+        settings: CanvasSettings
     ) -> list[Waypoint]:
         '''
             Generates circle perimeter waypoints.
@@ -86,7 +86,7 @@ class CanvasToolHandler:
             :param center: Center (x, y) coordinate tuple in mm.
             :param radius: Circle radius in mm.
             :param steps: Discretization step count.
-            :param settings: Active CanvasSettingsDTO.
+            :param settings: Active CanvasSettings.
             :return: List of Waypoint instances.
             :exceptions: None.
         '''
@@ -105,14 +105,14 @@ class CanvasToolHandler:
         cls,
         p1: tuple[float, float],
         p2: tuple[float, float],
-        settings: CanvasSettingsDTO
+        settings: CanvasSettings
     ) -> list[Waypoint]:
         '''
             Generates 4 corner waypoints of rectangle boundary with closing start waypoint.
 
             :param p1: Initial corner (x, y) tuple in mm.
             :param p2: Opposite corner (x, y) tuple in mm.
-            :param settings: Active CanvasSettingsDTO.
+            :param settings: Active CanvasSettings.
             :return: List of Waypoint instances.
             :exceptions: None.
         '''

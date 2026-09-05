@@ -28,7 +28,7 @@ from typing import ClassVar, Final
 from collections.abc import Sequence
 
 from scarajectory.core.model.waypoint import Waypoint
-from scarajectory.core.model.stream_config_dto import StreamConfigDTO
+from scarajectory.core.model.stream_config import StreamConfig
 from scarajectory.core.model.stream_state import StreamState
 from scarajectory.core.model.stream_progress import StreamProgress
 from scarajectory.core.service.istream_observer import IStreamObserver
@@ -67,7 +67,7 @@ class SerialStreamer:
                 | __init__ - Initializes streamer instance with injected transport.
                 | set_observer - Sets or updates progress observer.
                 | is_connected - Checks whether serial port is open.
-                | connect_with_config - Opens serial port using StreamConfigDTO.
+                | connect_with_config - Opens serial port using StreamConfig.
                 | disconnect - Stops threads and closes serial connection.
                 | send_raw_command - Sends single command packet directly.
                 | start_streaming - Launches background streaming of waypoints.
@@ -123,11 +123,11 @@ class SerialStreamer:
         '''
         return self._transport.is_connected()
 
-    def connect_with_config(self, config: StreamConfigDTO) -> bool:
+    def connect_with_config(self, config: StreamConfig) -> bool:
         '''
-            Opens communication transport using StreamConfigDTO.
+            Opens communication transport using StreamConfig.
 
-            :param config: StreamConfigDTO containing port, baudrate, and timeout.
+            :param config: StreamConfig containing port, baudrate, and timeout.
             :return: True if connected successfully.
             :exceptions: None.
         '''

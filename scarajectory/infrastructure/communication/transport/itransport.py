@@ -24,7 +24,7 @@ from __future__ import annotations
 from typing import Protocol, runtime_checkable
 from collections.abc import Callable
 
-from scarajectory.core.model.stream_config_dto import StreamConfigDTO
+from scarajectory.core.model.stream_config import StreamConfig
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -56,7 +56,6 @@ class ITransport(Protocol):
             Checks if communication link is active.
 
             :return: True if connected, False otherwise.
-            :exceptions: None.
         '''
 
     def set_callbacks(
@@ -69,23 +68,19 @@ class ITransport(Protocol):
 
             :param on_line: Optional line received callback.
             :param on_log: Optional logging callback.
-            :exceptions: None.
         '''
 
-    def connect_with_config(self, config: StreamConfigDTO) -> bool:
+    def connect_with_config(self, config: StreamConfig) -> bool:
         '''
             Establishes communication session using configuration DTO.
 
-            :param config: StreamConfigDTO parameter bundle.
+            :param config: StreamConfig parameter bundle.
             :return: True if connected successfully, False otherwise.
-            :exceptions: None.
         '''
 
     def disconnect(self) -> None:
         '''
             Terminates communication link and frees resources.
-
-            :exceptions: None.
         '''
 
     def send_raw(self, cmd: str) -> bool:
@@ -94,5 +89,4 @@ class ITransport(Protocol):
 
             :param cmd: Formatted command payload.
             :return: True if transmission succeeded, False otherwise.
-            :exceptions: None.
         '''

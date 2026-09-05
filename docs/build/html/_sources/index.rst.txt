@@ -120,7 +120,7 @@ Tool structure
          │   ├── __init__.py
          │   ├── model/
          │   │   ├── canvas_interaction_state.py
-         │   │   ├── canvas_settings_dto.py
+         │   │   ├── canvas_settings.py
          │   │   ├── canvas_tool_mode.py
          │   │   ├── dsl/
          │   │   │   ├── __init__.py
@@ -136,15 +136,15 @@ Tool structure
          │   │   ├── __init__.py
          │   │   ├── itrajectory_plan.py
          │   │   ├── plan_history.py
-         │   │   ├── point_dto.py
+         │   │   ├── point.py
          │   │   ├── scara_bounds.py
-         │   │   ├── stream_config_dto.py
+         │   │   ├── stream_config.py
          │   │   ├── stream_progress.py
          │   │   ├── stream_state.py
          │   │   ├── trajectory_metrics.py
          │   │   ├── trajectory_plan.py
          │   │   ├── trajectory_serializer.py
-         │   │   ├── validation_result_dto.py
+         │   │   ├── validation_result.py
          │   │   ├── viewport_transform.py
          │   │   └── waypoint.py
          │   └── service/

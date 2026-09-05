@@ -25,7 +25,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from typing import Final
 
-from scarajectory.core.model.stream_config_dto import StreamConfigDTO
+from scarajectory.core.model.stream_config import StreamConfig
 from scarajectory.core.model.stream_progress import StreamProgress
 from scarajectory.core.model.itrajectory_plan import ITrajectoryPlan
 from scarajectory.core.service.itrajectory_validator import ITrajectoryValidator
@@ -244,7 +244,7 @@ class StreamerTab(ttk.Frame):
                 return
 
             port: str = port_val.split(' ')[0] if ' ' in port_val else port_val
-            config: StreamConfigDTO = StreamConfigDTO(port=port, baudrate=115200, timeout=0.1)
+            config: StreamConfig = StreamConfig(port=port, baudrate=115200, timeout=0.1)
             if self._streamer.connect_with_config(config):
                 self._save_active_pref()
                 self._btn_connect.configure(text='Disconnect', style='Danger.TButton')

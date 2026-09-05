@@ -28,7 +28,7 @@ from typing import ClassVar, Final
 
 from scarajectory.core.model.waypoint import Waypoint
 from scarajectory.core.model.itrajectory_plan import ITrajectoryPlan
-from scarajectory.core.model.canvas_settings_dto import CanvasSettingsDTO
+from scarajectory.core.model.canvas_settings import CanvasSettings
 from scarajectory.core.model.canvas_tool_mode import CanvasToolMode
 from scarajectory.core.model.canvas_interaction_state import CanvasInteractionState
 from scarajectory.core.model.viewport_transform import ViewportTransform
@@ -87,7 +87,7 @@ class TrajectoryCanvas(tk.Canvas):
 
     _plan: ITrajectoryPlan
     _validator: ITrajectoryValidator
-    _settings: CanvasSettingsDTO
+    _settings: CanvasSettings
     _tool_mode: CanvasToolMode
     _vp: ViewportTransform
     _state: CanvasInteractionState
@@ -98,7 +98,7 @@ class TrajectoryCanvas(tk.Canvas):
         parent: tk.Widget,
         plan: ITrajectoryPlan,
         validator: ITrajectoryValidator,
-        settings: CanvasSettingsDTO = CanvasSettingsDTO(),
+        settings: CanvasSettings = CanvasSettings(),
         **kwargs: object
     ) -> None:
         '''
@@ -107,7 +107,7 @@ class TrajectoryCanvas(tk.Canvas):
             :param parent: Parent Tk widget.
             :param plan: TrajectoryPlan instance.
             :param validator: ITrajectoryValidator instance.
-            :param settings: CanvasSettingsDTO instance.
+            :param settings: CanvasSettings instance.
             :exceptions: None.
         '''
         super().__init__(
@@ -178,11 +178,11 @@ class TrajectoryCanvas(tk.Canvas):
         self._state.reset_drag()
         self.redraw()
 
-    def update_settings(self, settings: CanvasSettingsDTO) -> None:
+    def update_settings(self, settings: CanvasSettings) -> None:
         '''
             Updates default parameters and deadzone settings.
 
-            :param settings: New CanvasSettingsDTO.
+            :param settings: New CanvasSettings.
             :exceptions: None.
         '''
         self._settings = settings

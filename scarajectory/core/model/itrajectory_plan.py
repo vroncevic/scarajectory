@@ -66,7 +66,6 @@ class ITrajectoryPlan(Protocol):
             Returns immutable sequence of waypoints in plan.
 
             :return: Sequence of Waypoint entities.
-            :exceptions: None.
         '''
 
     @property
@@ -75,7 +74,6 @@ class ITrajectoryPlan(Protocol):
             Returns count of waypoints in plan.
 
             :return: Integer count.
-            :exceptions: None.
         '''
 
     @property
@@ -84,7 +82,6 @@ class ITrajectoryPlan(Protocol):
             Returns index of currently selected waypoint.
 
             :return: Selected waypoint index or -1.
-            :exceptions: None.
         '''
 
     def set_selected_index(self, index: int) -> None:
@@ -92,7 +89,6 @@ class ITrajectoryPlan(Protocol):
             Selects a waypoint by index.
 
             :param index: Target index (-1 for deselect).
-            :exceptions: None.
         '''
 
     def add_observer(self, observer: ITrajectoryObserver) -> None:
@@ -100,7 +96,6 @@ class ITrajectoryPlan(Protocol):
             Registers an observer widget.
 
             :param observer: ITrajectoryObserver instance.
-            :exceptions: None.
         '''
 
     def add_point(self, point: Waypoint) -> None:
@@ -108,7 +103,6 @@ class ITrajectoryPlan(Protocol):
             Appends waypoint to plan.
 
             :param point: Waypoint entity.
-            :exceptions: None.
         '''
 
     def insert_point(self, index: int, point: Waypoint) -> None:
@@ -117,7 +111,6 @@ class ITrajectoryPlan(Protocol):
 
             :param index: Insertion index.
             :param point: Waypoint entity.
-            :exceptions: None.
         '''
 
     def remove_point(self, index: int) -> bool:
@@ -126,14 +119,11 @@ class ITrajectoryPlan(Protocol):
 
             :param index: Target waypoint index.
             :return: True if removed, False otherwise.
-            :exceptions: None.
         '''
 
     def clear(self) -> None:
         '''
             Clears all waypoints.
-
-            :exceptions: None.
         '''
 
     def set_waypoints(self, waypoints: Sequence[Waypoint]) -> None:
@@ -141,7 +131,6 @@ class ITrajectoryPlan(Protocol):
             Replaces all waypoints with a new sequence.
 
             :param waypoints: Sequence of Waypoint instances.
-            :exceptions: None.
         '''
 
     def update_point(self, index: int, new_point: Waypoint) -> bool:
@@ -151,7 +140,6 @@ class ITrajectoryPlan(Protocol):
             :param index: Target waypoint index.
             :param new_point: Replacement Waypoint entity.
             :return: True if updated, False otherwise.
-            :exceptions: None.
         '''
 
     def undo(self) -> bool:
@@ -159,7 +147,6 @@ class ITrajectoryPlan(Protocol):
             Reverts last state change.
 
             :return: True if undone, False otherwise.
-            :exceptions: None.
         '''
 
     def redo(self) -> bool:
@@ -167,5 +154,4 @@ class ITrajectoryPlan(Protocol):
             Restores reverted state change.
 
             :return: True if redone, False otherwise.
-            :exceptions: None.
         '''

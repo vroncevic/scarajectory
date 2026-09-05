@@ -1,41 +1,48 @@
 <!DOCTYPE html>
 
 <html lang="en" data-content_root="../../../../">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>scarajectory.infrastructure.gui.engine &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/classic.css?v=514cf933" />
-    
-    <script src="../../../../_static/documentation_options.js?v=57319df4"></script>
-    <script src="../../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    
-    <link rel="index" title="Index" href="../../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../../search.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.engine</a></li> 
-      </ul>
-    </div>  
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <h1>Source code for scarajectory.infrastructure.gui.engine</h1><div class="highlight"><pre>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>scarajectory.infrastructure.gui.engine &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases
+    documentation</title>
+  <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+  <link rel="stylesheet" type="text/css" href="../../../../_static/classic.css?v=514cf933" />
+
+  <script src="../../../../_static/documentation_options.js?v=57319df4"></script>
+  <script src="../../../../_static/doctools.js?v=888ff710"></script>
+  <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+
+  <link rel="index" title="Index" href="../../../../genindex.html" />
+  <link rel="search" title="Search" href="../../../../search.html" />
+</head>
+
+<body>
+  <div class="related" role="navigation" aria-label="related navigation">
+    <h3>Navigation</h3>
+    <ul>
+      <li class="right" style="margin-right: 10px">
+        <a href="../../../../genindex.html" title="General Index" accesskey="I">index</a>
+      </li>
+      <li class="right">
+        <a href="../../../../py-modindex.html" title="Python Module Index">modules</a> |
+      </li>
+      <li class="nav-item nav-item-0"><a href="../../../../index.html">scarajectory
+          https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+      <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &#187;</li>
+      <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.engine</a></li>
+    </ul>
+  </div>
+
+  <div class="document">
+    <div class="documentwrapper">
+      <div class="bodywrapper">
+        <div class="body" role="main">
+
+          <h1>Source code for scarajectory.infrastructure.gui.engine</h1>
+          <div class="highlight">
+            <pre>
 <span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
 
 <span class="sd">&#39;&#39;&#39;</span>
@@ -63,7 +70,7 @@
 <span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">ttk</span><span class="p">,</span> <span class="n">messagebox</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.canvas_settings_dto</span> <span class="kn">import</span> <span class="n">CanvasSettingsDTO</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.canvas_settings</span> <span class="kn">import</span> <span class="n">CanvasSettings</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.model.stream_progress</span> <span class="kn">import</span> <span class="n">StreamProgress</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.iservice</span> <span class="kn">import</span> <span class="n">IService</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.icanvas</span> <span class="kn">import</span> <span class="n">ICanvas</span>
@@ -286,7 +293,7 @@
 
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">settings</span> <span class="o">=</span> <span class="n">CanvasSettingsDTO</span><span class="p">(</span><span class="n">default_z</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">default_speed</span><span class="o">=</span><span class="mf">40.0</span><span class="p">,</span> <span class="n">enforce_deadzone</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">settings</span> <span class="o">=</span> <span class="n">CanvasSettings</span><span class="p">(</span><span class="n">default_z</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">default_speed</span><span class="o">=</span><span class="mf">40.0</span><span class="p">,</span> <span class="n">enforce_deadzone</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="n">main_paned</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">PanedWindow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">HORIZONTAL</span><span class="p">)</span>
 
@@ -329,45 +336,49 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_controls</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 </div>
 
-</pre></div>
+</pre>
+          </div>
 
-            <div class="clearer"></div>
+          <div class="clearer"></div>
+        </div>
+      </div>
+    </div>
+    <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebarwrapper">
+        <div id="searchbox" style="display: none" role="search">
+          <h3 id="searchlabel">Quick search</h3>
+          <div class="searchformwrapper">
+            <form class="search" action="../../../../search.html" method="get">
+              <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off"
+                autocapitalize="off" spellcheck="false" />
+              <input type="submit" value="Go" />
+            </form>
           </div>
         </div>
+        <script>document.getElementById('searchbox').style.display = "block"</script>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
     </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../../../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../../../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.engine</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
+    <div class="clearer"></div>
+  </div>
+  <div class="related" role="navigation" aria-label="related navigation">
+    <h3>Navigation</h3>
+    <ul>
+      <li class="right" style="margin-right: 10px">
+        <a href="../../../../genindex.html" title="General Index">index</a>
+      </li>
+      <li class="right">
+        <a href="../../../../py-modindex.html" title="Python Module Index">modules</a> |
+      </li>
+      <li class="nav-item nav-item-0"><a href="../../../../index.html">scarajectory
+          https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+      <li class="nav-item nav-item-1"><a href="../../../index.html">Module code</a> &#187;</li>
+      <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.engine</a></li>
+    </ul>
+  </div>
+  <div class="footer" role="contentinfo">
     &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
-    </div>
-  </body>
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+  </div>
+</body>
+
 </html>

@@ -48,8 +48,6 @@ class ITrajectoryObserver(Protocol):
     def on_trajectory_updated(self) -> None:
         '''
             Called whenever points are added, modified, reordered, or cleared.
-
-            :exceptions: None.
         '''
 
     def on_point_selected(self, index: int) -> None:
@@ -57,5 +55,4 @@ class ITrajectoryObserver(Protocol):
             Called when a specific waypoint is selected in canvas or table.
 
             :param index: Selected point index (-1 for none).
-            :exceptions: None.
         '''

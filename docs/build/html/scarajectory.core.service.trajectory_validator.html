@@ -1,297 +1,511 @@
 <!DOCTYPE html>
 
 <html lang="en" data-content_root="./">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>scarajectory.core.service.trajectory_validator module &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
-    
-    <script src="_static/documentation_options.js?v=57319df4"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="scarajectory.infrastructure package" href="scarajectory.infrastructure.html" />
-    <link rel="prev" title="scarajectory.core.service.plan_storage_service module" href="scarajectory.core.service.plan_storage_service.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="scarajectory.infrastructure.html" title="scarajectory.infrastructure package"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="scarajectory.core.service.plan_storage_service.html" title="scarajectory.core.service.plan_storage_service module"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
-          <li class="nav-item nav-item-3"><a href="scarajectory.core.html" >scarajectory.core package</a> &#187;</li>
-          <li class="nav-item nav-item-4"><a href="scarajectory.core.service.html" accesskey="U">scarajectory.core.service package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">scarajectory.core.service.trajectory_validator module</a></li> 
-      </ul>
-    </div>  
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <section id="module-scarajectory.core.service.trajectory_validator">
-<span id="scarajectory-core-service-trajectory-validator-module"></span><h1>scarajectory.core.service.trajectory_validator module<a class="headerlink" href="#module-scarajectory.core.service.trajectory_validator" title="Link to this heading">¶</a></h1>
-<dl class="simple">
-<dt>Module</dt><dd><p>trajectory_validator.py</p>
-</dd>
-<dt>Copyright</dt><dd><p>Copyright (C) 2026 Vladimir Roncevic &lt;<a class="reference external" href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
-scarajectory is free software: you can redistribute it and/or modify it
-under the terms of the GNU General Public License as published by the
-Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-scarajectory is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU General Public License for more details.
-You should have received a copy of the GNU General Public License along
-with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
-</dd>
-<dt>Info</dt><dd><p>Implementation of kinematic reachability validator enforcing SCARA physical geometry bounds.</p>
-</dd>
-</dl>
-<dl class="py class">
-<dt class="sig sig-object py" id="scarajectory.core.service.trajectory_validator.TrajectoryValidator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.core.service.trajectory_validator.</span></span><span class="sig-name descname"><span class="pre">TrajectoryValidator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.scara_bounds.html#scarajectory.core.model.scara_bounds.ScaraBounds" title="scarajectory.core.model.scara_bounds.ScaraBounds"><span class="pre">ScaraBounds</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">ScaraBounds(l1=150.0,</span> <span class="pre">l2=120.0,</span> <span class="pre">z_min=0.0,</span> <span class="pre">z_max=100.0,</span> <span class="pre">min_speed=1.0,</span> <span class="pre">max_speed=250.0,</span> <span class="pre">default_speed=50.0,</span> <span class="pre">default_accel=300.0,</span> <span class="pre">max_accel=2000.0,</span> <span class="pre">j1_min_rad=-2.617994,</span> <span class="pre">j1_max_rad=2.617994,</span> <span class="pre">j2_min_rad=-2.530727,</span> <span class="pre">j2_max_rad=2.530727,</span> <span class="pre">singularity_outer_margin_mm=3.0,</span> <span class="pre">singularity_inner_margin_mm=3.0,</span> <span class="pre">singularity_theta2_min_rad=0.087266,</span> <span class="pre">deadzone_r_min=86.08)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/core/service/trajectory_validator.html#TrajectoryValidator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Enforces SCARA mechanical reachability and kinematic envelope validation.</p>
-<p>It defines:</p>
-<blockquote>
-<div><dl class="field-list">
-<dt class="field-odd">attributes<span class="colon">:</span></dt>
-<dd class="field-odd"><div class="line-block">
-<div class="line">_bounds - Kinematic parameters of the SCARA arm.</div>
-<div class="line">_r_min - Minimum reach distance from origin in mm.</div>
-<div class="line">_r_max - Maximum reach distance from origin in mm.</div>
-</div>
-</dd>
-<dt class="field-even">methods<span class="colon">:</span></dt>
-<dd class="field-even"><div class="line-block">
-<div class="line">__init__ - Initializes validator geometry boundaries.</div>
-<div class="line">bounds - Returns active bounds model.</div>
-<div class="line">r_min - Returns inner workspace radius.</div>
-<div class="line">r_max - Returns outer workspace radius.</div>
-<div class="line">validate_point_dto - Validates PointDTO coordinates against annular reach.</div>
-<div class="line">validate_feedrate - Validates that speed is within safe mechanical range.</div>
-<div class="line">validate_plan - Validates entire trajectory plan against kinematic bounds.</div>
-</div>
-</dd>
-</dl>
-</div></blockquote>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.core.service.trajectory_validator.TrajectoryValidator._bounds">
-<span class="sig-name descname"><span class="pre">_bounds</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.model.scara_bounds.html#scarajectory.core.model.scara_bounds.ScaraBounds" title="scarajectory.core.model.scara_bounds.ScaraBounds"><span class="pre">ScaraBounds</span></a></em><a class="headerlink" href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator._bounds" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+  <title>scarajectory.core.service.trajectory_validator module &#8212; scarajectory
+    https://github.com/vroncevic/scarajectory/releases documentation</title>
+  <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+  <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.core.service.trajectory_validator.TrajectoryValidator._r_max">
-<span class="sig-name descname"><span class="pre">_r_max</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator._r_max" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+  <script src="_static/documentation_options.js?v=57319df4"></script>
+  <script src="_static/doctools.js?v=888ff710"></script>
+  <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.core.service.trajectory_validator.TrajectoryValidator._r_min">
-<span class="sig-name descname"><span class="pre">_r_min</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator._r_min" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+  <link rel="index" title="Index" href="genindex.html" />
+  <link rel="search" title="Search" href="search.html" />
+  <link rel="next" title="scarajectory.infrastructure package" href="scarajectory.infrastructure.html" />
+  <link rel="prev" title="scarajectory.core.service.plan_storage_service module"
+    href="scarajectory.core.service.plan_storage_service.html" />
+</head>
 
-<dl class="py property">
-<dt class="sig sig-object py" id="scarajectory.core.service.trajectory_validator.TrajectoryValidator.bounds">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bounds</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.model.scara_bounds.html#scarajectory.core.model.scara_bounds.ScaraBounds" title="scarajectory.core.model.scara_bounds.ScaraBounds"><span class="pre">ScaraBounds</span></a></em><a class="headerlink" href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator.bounds" title="Link to this definition">¶</a></dt>
-<dd><p>Returns active bounds model.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ScaraBounds instance.</p>
-</dd>
-<dt class="field-even">Exceptions<span class="colon">:</span></dt>
-<dd class="field-even"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
+<body>
+  <div class="related" role="navigation" aria-label="related navigation">
+    <h3>Navigation</h3>
+    <ul>
+      <li class="right" style="margin-right: 10px">
+        <a href="genindex.html" title="General Index" accesskey="I">index</a>
+      </li>
+      <li class="right">
+        <a href="py-modindex.html" title="Python Module Index">modules</a> |
+      </li>
+      <li class="right">
+        <a href="scarajectory.infrastructure.html" title="scarajectory.infrastructure package" accesskey="N">next</a> |
+      </li>
+      <li class="right">
+        <a href="scarajectory.core.service.plan_storage_service.html"
+          title="scarajectory.core.service.plan_storage_service module" accesskey="P">previous</a> |
+      </li>
+      <li class="nav-item nav-item-0"><a href="index.html">scarajectory
+          https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+      <li class="nav-item nav-item-1"><a href="modules.html">scarajectory</a> &#187;</li>
+      <li class="nav-item nav-item-2"><a href="scarajectory.html">scarajectory package</a> &#187;</li>
+      <li class="nav-item nav-item-3"><a href="scarajectory.core.html">scarajectory.core package</a> &#187;</li>
+      <li class="nav-item nav-item-4"><a href="scarajectory.core.service.html" accesskey="U">scarajectory.core.service
+          package</a> &#187;</li>
+      <li class="nav-item nav-item-this"><a href="">scarajectory.core.service.trajectory_validator module</a></li>
+    </ul>
+  </div>
 
-<dl class="py property">
-<dt class="sig sig-object py" id="scarajectory.core.service.trajectory_validator.TrajectoryValidator.r_max">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">r_max</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator.r_max" title="Link to this definition">¶</a></dt>
-<dd><p>Returns outer workspace radius (mm).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Maximum reach radius.</p>
-</dd>
-<dt class="field-even">Exceptions<span class="colon">:</span></dt>
-<dd class="field-even"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
+  <div class="document">
+    <div class="documentwrapper">
+      <div class="bodywrapper">
+        <div class="body" role="main">
 
-<dl class="py property">
-<dt class="sig sig-object py" id="scarajectory.core.service.trajectory_validator.TrajectoryValidator.r_min">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">r_min</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator.r_min" title="Link to this definition">¶</a></dt>
-<dd><p>Returns inner workspace radius (mm).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Minimum reach radius.</p>
-</dd>
-<dt class="field-even">Exceptions<span class="colon">:</span></dt>
-<dd class="field-even"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
+          <section id="module-scarajectory.core.service.trajectory_validator">
+            <span id="scarajectory-core-service-trajectory-validator-module"></span>
+            <h1>scarajectory.core.service.trajectory_validator module<a class="headerlink"
+                href="#module-scarajectory.core.service.trajectory_validator" title="Link to this heading">¶</a></h1>
+            <dl class="simple">
+              <dt>Module</dt>
+              <dd>
+                <p>trajectory_validator.py</p>
+              </dd>
+              <dt>Copyright</dt>
+              <dd>
+                <p>Copyright (C) 2026 Vladimir Roncevic &lt;<a class="reference external"
+                    href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+                  scarajectory is free software: you can redistribute it and/or modify it
+                  under the terms of the GNU General Public License as published by the
+                  Free Software Foundation, either version 3 of the License, or
+                  (at your option) any later version.
+                  scarajectory is distributed in the hope that it will be useful, but
+                  WITHOUT ANY WARRANTY; without even the implied warranty of
+                  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+                  See the GNU General Public License for more details.
+                  You should have received a copy of the GNU General Public License along
+                  with this program. If not, see &lt;<a class="reference external"
+                    href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+              </dd>
+              <dt>Info</dt>
+              <dd>
+                <p>Implementation of kinematic reachability validator enforcing SCARA physical geometry bounds.</p>
+              </dd>
+            </dl>
+            <dl class="py class">
+              <dt class="sig sig-object py" id="scarajectory.core.service.trajectory_validator.TrajectoryValidator">
+                <em class="property"><span class="pre">class</span><span class="w"> </span></em><span
+                  class="sig-prename descclassname"><span
+                    class="pre">scarajectory.core.service.trajectory_validator.</span></span><span
+                  class="sig-name descname"><span class="pre">TrajectoryValidator</span></span><span
+                  class="sig-paren">(</span><em class="sig-param"><span class="n"><span
+                      class="pre">bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w">
+                  </span><span class="n"><a class="reference internal"
+                      href="scarajectory.core.model.scara_bounds.html#scarajectory.core.model.scara_bounds.ScaraBounds"
+                      title="scarajectory.core.model.scara_bounds.ScaraBounds"><span
+                        class="pre">ScaraBounds</span></a></span><span class="w"> </span><span class="o"><span
+                      class="pre">=</span></span><span class="w"> </span><span class="default_value"><span
+                      class="pre">ScaraBounds(l1=150.0,</span> <span class="pre">l2=120.0,</span> <span
+                      class="pre">z_min=0.0,</span> <span class="pre">z_max=100.0,</span> <span
+                      class="pre">min_speed=1.0,</span> <span class="pre">max_speed=250.0,</span> <span
+                      class="pre">default_speed=50.0,</span> <span class="pre">default_accel=300.0,</span> <span
+                      class="pre">max_accel=2000.0,</span> <span class="pre">j1_min_rad=-2.617994,</span> <span
+                      class="pre">j1_max_rad=2.617994,</span> <span class="pre">j2_min_rad=-2.530727,</span> <span
+                      class="pre">j2_max_rad=2.530727,</span> <span class="pre">singularity_outer_margin_mm=3.0,</span>
+                    <span class="pre">singularity_inner_margin_mm=3.0,</span> <span
+                      class="pre">singularity_theta2_min_rad=0.087266,</span> <span
+                      class="pre">deadzone_r_min=86.08)</span></span></em><span class="sig-paren">)</span><a
+                  class="reference internal"
+                  href="_modules/scarajectory/core/service/trajectory_validator.html#TrajectoryValidator"><span
+                    class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink"
+                  href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator"
+                  title="Link to this definition">¶</a>
+              </dt>
+              <dd>
+                <p>Bases: <code
+                    class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+                <p>Enforces SCARA mechanical reachability and kinematic envelope validation.</p>
+                <p>It defines:</p>
+                <blockquote>
+                  <div>
+                    <dl class="field-list">
+                      <dt class="field-odd">attributes<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <div class="line-block">
+                          <div class="line">_bounds - Kinematic parameters of the SCARA arm.</div>
+                          <div class="line">_r_min - Minimum reach distance from origin in mm.</div>
+                          <div class="line">_r_max - Maximum reach distance from origin in mm.</div>
+                        </div>
+                      </dd>
+                      <dt class="field-even">methods<span class="colon">:</span></dt>
+                      <dd class="field-even">
+                        <div class="line-block">
+                          <div class="line">__init__ - Initializes validator geometry boundaries.</div>
+                          <div class="line">bounds - Returns active bounds model.</div>
+                          <div class="line">r_min - Returns inner workspace radius.</div>
+                          <div class="line">r_max - Returns outer workspace radius.</div>
+                          <div class="line">validate_point_dto - Validates Point coordinates against annular reach.
+                          </div>
+                          <div class="line">validate_feedrate - Validates that speed is within safe mechanical range.
+                          </div>
+                          <div class="line">validate_plan - Validates entire trajectory plan against kinematic bounds.
+                          </div>
+                        </div>
+                      </dd>
+                    </dl>
+                  </div>
+                </blockquote>
+                <dl class="py attribute">
+                  <dt class="sig sig-object py"
+                    id="scarajectory.core.service.trajectory_validator.TrajectoryValidator._bounds">
+                    <span class="sig-name descname"><span class="pre">_bounds</span></span><em class="property"><span
+                        class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal"
+                        href="scarajectory.core.model.scara_bounds.html#scarajectory.core.model.scara_bounds.ScaraBounds"
+                        title="scarajectory.core.model.scara_bounds.ScaraBounds"><span
+                          class="pre">ScaraBounds</span></a></em><a class="headerlink"
+                      href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator._bounds"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd></dd>
+                </dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.core.service.trajectory_validator.TrajectoryValidator.validate_feedrate">
-<span class="sig-name descname"><span class="pre">validate_feedrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">speed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.core.model.validation_result_dto.html#scarajectory.core.model.validation_result_dto.ValidationResultDTO" title="scarajectory.core.model.validation_result_dto.ValidationResultDTO"><span class="pre">ValidationResultDTO</span></a></span></span><a class="reference internal" href="_modules/scarajectory/core/service/trajectory_validator.html#TrajectoryValidator.validate_feedrate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator.validate_feedrate" title="Link to this definition">¶</a></dt>
-<dd><p>Validates that speed is within safe mechanical operation range.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>speed</strong> – Feedrate in mm/s.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>ValidationResultDTO.</p>
-</dd>
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
+                <dl class="py attribute">
+                  <dt class="sig sig-object py"
+                    id="scarajectory.core.service.trajectory_validator.TrajectoryValidator._r_max">
+                    <span class="sig-name descname"><span class="pre">_r_max</span></span><em class="property"><span
+                        class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                        class="pre">float</span></em><a class="headerlink"
+                      href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator._r_max"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd></dd>
+                </dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.core.service.trajectory_validator.TrajectoryValidator.validate_plan">
-<span class="sig-name descname"><span class="pre">validate_plan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.itrajectory_plan.html#scarajectory.core.model.itrajectory_plan.ITrajectoryPlan" title="scarajectory.core.model.itrajectory_plan.ITrajectoryPlan"><span class="pre">ITrajectoryPlan</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/trajectory_validator.html#TrajectoryValidator.validate_plan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator.validate_plan" title="Link to this definition">¶</a></dt>
-<dd><p>Validates the current trajectory plan against robot kinematic bounds.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>plan</strong> – ITrajectoryPlan instance to validate.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Tuple of (is_valid, messages_list).</p>
-</dd>
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
+                <dl class="py attribute">
+                  <dt class="sig sig-object py"
+                    id="scarajectory.core.service.trajectory_validator.TrajectoryValidator._r_min">
+                    <span class="sig-name descname"><span class="pre">_r_min</span></span><em class="property"><span
+                        class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                        class="pre">float</span></em><a class="headerlink"
+                      href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator._r_min"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd></dd>
+                </dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.core.service.trajectory_validator.TrajectoryValidator.validate_point_dto">
-<span class="sig-name descname"><span class="pre">validate_point_dto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.point_dto.html#scarajectory.core.model.point_dto.PointDTO" title="scarajectory.core.model.point_dto.PointDTO"><span class="pre">PointDTO</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.core.model.validation_result_dto.html#scarajectory.core.model.validation_result_dto.ValidationResultDTO" title="scarajectory.core.model.validation_result_dto.ValidationResultDTO"><span class="pre">ValidationResultDTO</span></a></span></span><a class="reference internal" href="_modules/scarajectory/core/service/trajectory_validator.html#TrajectoryValidator.validate_point_dto"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator.validate_point_dto" title="Link to this definition">¶</a></dt>
-<dd><p>Validates PointDTO coordinates against annular horizontal reach and vertical bounds.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>point</strong> – Target PointDTO.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>ValidationResultDTO with pass/fail and descriptive reason.</p>
-</dd>
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
+                <dl class="py property">
+                  <dt class="sig sig-object py"
+                    id="scarajectory.core.service.trajectory_validator.TrajectoryValidator.bounds">
+                    <em class="property"><span class="pre">property</span><span class="w"> </span></em><span
+                      class="sig-name descname"><span class="pre">bounds</span></span><em class="property"><span
+                        class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal"
+                        href="scarajectory.core.model.scara_bounds.html#scarajectory.core.model.scara_bounds.ScaraBounds"
+                        title="scarajectory.core.model.scara_bounds.ScaraBounds"><span
+                          class="pre">ScaraBounds</span></a></em><a class="headerlink"
+                      href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator.bounds"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd>
+                    <p>Returns active bounds model.</p>
+                    <dl class="field-list simple">
+                      <dt class="field-odd">Returns<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <p>ScaraBounds instance.</p>
+                      </dd>
+                      <dt class="field-even">Exceptions<span class="colon">:</span></dt>
+                      <dd class="field-even">
+                        <p>None.</p>
+                      </dd>
+                    </dl>
+                  </dd>
+                </dl>
 
-</dd></dl>
+                <dl class="py property">
+                  <dt class="sig sig-object py"
+                    id="scarajectory.core.service.trajectory_validator.TrajectoryValidator.r_max">
+                    <em class="property"><span class="pre">property</span><span class="w"> </span></em><span
+                      class="sig-name descname"><span class="pre">r_max</span></span><em class="property"><span
+                        class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                        class="pre">float</span></em><a class="headerlink"
+                      href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator.r_max"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd>
+                    <p>Returns outer workspace radius (mm).</p>
+                    <dl class="field-list simple">
+                      <dt class="field-odd">Returns<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <p>Maximum reach radius.</p>
+                      </dd>
+                      <dt class="field-even">Exceptions<span class="colon">:</span></dt>
+                      <dd class="field-even">
+                        <p>None.</p>
+                      </dd>
+                    </dl>
+                  </dd>
+                </dl>
 
-</section>
+                <dl class="py property">
+                  <dt class="sig sig-object py"
+                    id="scarajectory.core.service.trajectory_validator.TrajectoryValidator.r_min">
+                    <em class="property"><span class="pre">property</span><span class="w"> </span></em><span
+                      class="sig-name descname"><span class="pre">r_min</span></span><em class="property"><span
+                        class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                        class="pre">float</span></em><a class="headerlink"
+                      href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator.r_min"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd>
+                    <p>Returns inner workspace radius (mm).</p>
+                    <dl class="field-list simple">
+                      <dt class="field-odd">Returns<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <p>Minimum reach radius.</p>
+                      </dd>
+                      <dt class="field-even">Exceptions<span class="colon">:</span></dt>
+                      <dd class="field-even">
+                        <p>None.</p>
+                      </dd>
+                    </dl>
+                  </dd>
+                </dl>
+
+                <dl class="py method">
+                  <dt class="sig sig-object py"
+                    id="scarajectory.core.service.trajectory_validator.TrajectoryValidator.validate_feedrate">
+                    <span class="sig-name descname"><span class="pre">validate_feedrate</span></span><span
+                      class="sig-paren">(</span><em class="sig-param"><span class="n"><span
+                          class="pre">speed</span></span><span class="p"><span class="pre">:</span></span><span
+                        class="w"> </span><span class="n"><span class="pre">float</span></span></em><span
+                      class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span>
+                      <span class="sig-return-typehint"><a class="reference internal"
+                          href="scarajectory.core.model.validation_result.html#scarajectory.core.model.validation_result.ValidationResult"
+                          title="scarajectory.core.model.validation_result.ValidationResult"><span
+                            class="pre">ValidationResult</span></a></span></span><a class="reference internal"
+                      href="_modules/scarajectory/core/service/trajectory_validator.html#TrajectoryValidator.validate_feedrate"><span
+                        class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink"
+                      href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator.validate_feedrate"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd>
+                    <p>Validates that speed is within safe mechanical operation range.</p>
+                    <dl class="field-list simple">
+                      <dt class="field-odd">Parameters<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <p><strong>speed</strong> – Feedrate in mm/s.</p>
+                      </dd>
+                      <dt class="field-even">Returns<span class="colon">:</span></dt>
+                      <dd class="field-even">
+                        <p>ValidationResult.</p>
+                      </dd>
+                      <dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <p>None.</p>
+                      </dd>
+                    </dl>
+                  </dd>
+                </dl>
+
+                <dl class="py method">
+                  <dt class="sig sig-object py"
+                    id="scarajectory.core.service.trajectory_validator.TrajectoryValidator.validate_plan">
+                    <span class="sig-name descname"><span class="pre">validate_plan</span></span><span
+                      class="sig-paren">(</span><em class="sig-param"><span class="n"><span
+                          class="pre">plan</span></span><span class="p"><span class="pre">:</span></span><span
+                        class="w"> </span><span class="n"><a class="reference internal"
+                          href="scarajectory.core.model.itrajectory_plan.html#scarajectory.core.model.itrajectory_plan.ITrajectoryPlan"
+                          title="scarajectory.core.model.itrajectory_plan.ITrajectoryPlan"><span
+                            class="pre">ITrajectoryPlan</span></a></span></em><span class="sig-paren">)</span> <span
+                      class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span
+                        class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span
+                            class="pre">[</span></span><span class="pre">bool</span><span class="p"><span
+                            class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span
+                          class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span
+                            class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a
+                      class="reference internal"
+                      href="_modules/scarajectory/core/service/trajectory_validator.html#TrajectoryValidator.validate_plan"><span
+                        class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink"
+                      href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator.validate_plan"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd>
+                    <p>Validates the current trajectory plan against robot kinematic bounds.</p>
+                    <dl class="field-list simple">
+                      <dt class="field-odd">Parameters<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <p><strong>plan</strong> – ITrajectoryPlan instance to validate.</p>
+                      </dd>
+                      <dt class="field-even">Returns<span class="colon">:</span></dt>
+                      <dd class="field-even">
+                        <p>Tuple of (is_valid, messages_list).</p>
+                      </dd>
+                      <dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <p>None.</p>
+                      </dd>
+                    </dl>
+                  </dd>
+                </dl>
+
+                <dl class="py method">
+                  <dt class="sig sig-object py"
+                    id="scarajectory.core.service.trajectory_validator.TrajectoryValidator.validate_point_dto">
+                    <span class="sig-name descname"><span class="pre">validate_point_dto</span></span><span
+                      class="sig-paren">(</span><em class="sig-param"><span class="n"><span
+                          class="pre">point</span></span><span class="p"><span class="pre">:</span></span><span
+                        class="w"> </span><span class="n"><a class="reference internal"
+                          href="scarajectory.core.model.point.html#scarajectory.core.model.point.Point"
+                          title="scarajectory.core.model.point.Point"><span
+                            class="pre">Point</span></a></span></em><span class="sig-paren">)</span> <span
+                      class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span
+                        class="sig-return-typehint"><a class="reference internal"
+                          href="scarajectory.core.model.validation_result.html#scarajectory.core.model.validation_result.ValidationResult"
+                          title="scarajectory.core.model.validation_result.ValidationResult"><span
+                            class="pre">ValidationResult</span></a></span></span><a class="reference internal"
+                      href="_modules/scarajectory/core/service/trajectory_validator.html#TrajectoryValidator.validate_point_dto"><span
+                        class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink"
+                      href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator.validate_point_dto"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd>
+                    <p>Validates Point coordinates against annular horizontal reach and vertical bounds.</p>
+                    <dl class="field-list simple">
+                      <dt class="field-odd">Parameters<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <p><strong>point</strong> – Target Point.</p>
+                      </dd>
+                      <dt class="field-even">Returns<span class="colon">:</span></dt>
+                      <dd class="field-even">
+                        <p>ValidationResult with pass/fail and descriptive reason.</p>
+                      </dd>
+                      <dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <p>None.</p>
+                      </dd>
+                    </dl>
+                  </dd>
+                </dl>
+
+              </dd>
+            </dl>
+
+          </section>
 
 
-            <div class="clearer"></div>
+          <div class="clearer"></div>
+        </div>
+      </div>
+    </div>
+    <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebarwrapper">
+        <div>
+          <h3><a href="index.html">Table of Contents</a></h3>
+          <ul>
+            <li><a class="reference internal" href="#">scarajectory.core.service.trajectory_validator module</a>
+              <ul>
+                <li><a class="reference internal"
+                    href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator"><code
+                      class="docutils literal notranslate"><span class="pre">TrajectoryValidator</span></code></a>
+                  <ul>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator._bounds"><code
+                          class="docutils literal notranslate"><span class="pre">TrajectoryValidator._bounds</span></code></a>
+                    </li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator._r_max"><code
+                          class="docutils literal notranslate"><span class="pre">TrajectoryValidator._r_max</span></code></a>
+                    </li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator._r_min"><code
+                          class="docutils literal notranslate"><span class="pre">TrajectoryValidator._r_min</span></code></a>
+                    </li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator.bounds"><code
+                          class="docutils literal notranslate"><span class="pre">TrajectoryValidator.bounds</span></code></a>
+                    </li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator.r_max"><code
+                          class="docutils literal notranslate"><span class="pre">TrajectoryValidator.r_max</span></code></a>
+                    </li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator.r_min"><code
+                          class="docutils literal notranslate"><span class="pre">TrajectoryValidator.r_min</span></code></a>
+                    </li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator.validate_feedrate"><code
+                          class="docutils literal notranslate"><span class="pre">TrajectoryValidator.validate_feedrate()</span></code></a>
+                    </li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator.validate_plan"><code
+                          class="docutils literal notranslate"><span class="pre">TrajectoryValidator.validate_plan()</span></code></a>
+                    </li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator.validate_point_dto"><code
+                          class="docutils literal notranslate"><span class="pre">TrajectoryValidator.validate_point_dto()</span></code></a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+
+        </div>
+        <div>
+          <h4>Previous topic</h4>
+          <p class="topless"><a href="scarajectory.core.service.plan_storage_service.html"
+              title="previous chapter">scarajectory.core.service.plan_storage_service module</a></p>
+        </div>
+        <div>
+          <h4>Next topic</h4>
+          <p class="topless"><a href="scarajectory.infrastructure.html" title="next chapter">scarajectory.infrastructure
+              package</a></p>
+        </div>
+        <div role="note" aria-label="source link">
+          <h3>This Page</h3>
+          <ul class="this-page-menu">
+            <li><a href="_sources/scarajectory.core.service.trajectory_validator.rst.txt" rel="nofollow">Show Source</a>
+            </li>
+          </ul>
+        </div>
+        <div id="searchbox" style="display: none" role="search">
+          <h3 id="searchlabel">Quick search</h3>
+          <div class="searchformwrapper">
+            <form class="search" action="search.html" method="get">
+              <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off"
+                autocapitalize="off" spellcheck="false" />
+              <input type="submit" value="Go" />
+            </form>
           </div>
         </div>
+        <script>document.getElementById('searchbox').style.display = "block"</script>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <div>
-    <h3><a href="index.html">Table of Contents</a></h3>
+    </div>
+    <div class="clearer"></div>
+  </div>
+  <div class="related" role="navigation" aria-label="related navigation">
+    <h3>Navigation</h3>
     <ul>
-<li><a class="reference internal" href="#">scarajectory.core.service.trajectory_validator module</a><ul>
-<li><a class="reference internal" href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator"><code class="docutils literal notranslate"><span class="pre">TrajectoryValidator</span></code></a><ul>
-<li><a class="reference internal" href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator._bounds"><code class="docutils literal notranslate"><span class="pre">TrajectoryValidator._bounds</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator._r_max"><code class="docutils literal notranslate"><span class="pre">TrajectoryValidator._r_max</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator._r_min"><code class="docutils literal notranslate"><span class="pre">TrajectoryValidator._r_min</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator.bounds"><code class="docutils literal notranslate"><span class="pre">TrajectoryValidator.bounds</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator.r_max"><code class="docutils literal notranslate"><span class="pre">TrajectoryValidator.r_max</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator.r_min"><code class="docutils literal notranslate"><span class="pre">TrajectoryValidator.r_min</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator.validate_feedrate"><code class="docutils literal notranslate"><span class="pre">TrajectoryValidator.validate_feedrate()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator.validate_plan"><code class="docutils literal notranslate"><span class="pre">TrajectoryValidator.validate_plan()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.service.trajectory_validator.TrajectoryValidator.validate_point_dto"><code class="docutils literal notranslate"><span class="pre">TrajectoryValidator.validate_point_dto()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-  </div>
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.core.service.plan_storage_service.html"
-                          title="previous chapter">scarajectory.core.service.plan_storage_service module</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.html"
-                          title="next chapter">scarajectory.infrastructure package</a></p>
-  </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/scarajectory.core.service.trajectory_validator.rst.txt"
-            rel="nofollow">Show Source</a></li>
+      <li class="right" style="margin-right: 10px">
+        <a href="genindex.html" title="General Index">index</a>
+      </li>
+      <li class="right">
+        <a href="py-modindex.html" title="Python Module Index">modules</a> |
+      </li>
+      <li class="right">
+        <a href="scarajectory.infrastructure.html" title="scarajectory.infrastructure package">next</a> |
+      </li>
+      <li class="right">
+        <a href="scarajectory.core.service.plan_storage_service.html"
+          title="scarajectory.core.service.plan_storage_service module">previous</a> |
+      </li>
+      <li class="nav-item nav-item-0"><a href="index.html">scarajectory
+          https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+      <li class="nav-item nav-item-1"><a href="modules.html">scarajectory</a> &#187;</li>
+      <li class="nav-item nav-item-2"><a href="scarajectory.html">scarajectory package</a> &#187;</li>
+      <li class="nav-item nav-item-3"><a href="scarajectory.core.html">scarajectory.core package</a> &#187;</li>
+      <li class="nav-item nav-item-4"><a href="scarajectory.core.service.html">scarajectory.core.service package</a>
+        &#187;</li>
+      <li class="nav-item nav-item-this"><a href="">scarajectory.core.service.trajectory_validator module</a></li>
     </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="scarajectory.infrastructure.html" title="scarajectory.infrastructure package"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="scarajectory.core.service.plan_storage_service.html" title="scarajectory.core.service.plan_storage_service module"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
-          <li class="nav-item nav-item-3"><a href="scarajectory.core.html" >scarajectory.core package</a> &#187;</li>
-          <li class="nav-item nav-item-4"><a href="scarajectory.core.service.html" >scarajectory.core.service package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">scarajectory.core.service.trajectory_validator module</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
+  </div>
+  <div class="footer" role="contentinfo">
     &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
-    </div>
-  </body>
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+  </div>
+</body>
+
 </html>

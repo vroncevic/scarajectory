@@ -25,7 +25,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from typing import Final
 
-from scarajectory.core.model.canvas_settings_dto import CanvasSettingsDTO
+from scarajectory.core.model.canvas_settings import CanvasSettings
 from scarajectory.core.model.stream_progress import StreamProgress
 from scarajectory.core.service.iservice import IService
 from scarajectory.infrastructure.gui.icanvas import ICanvas
@@ -217,7 +217,7 @@ class ScarajectoryGUI:
 
             :exceptions: None.
         '''
-        settings = CanvasSettingsDTO(default_z=20.0, default_speed=40.0, enforce_deadzone=True)
+        settings = CanvasSettings(default_z=20.0, default_speed=40.0, enforce_deadzone=True)
 
         main_paned = ttk.PanedWindow(self._root, orient=tk.HORIZONTAL)
 

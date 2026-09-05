@@ -24,8 +24,8 @@ from __future__ import annotations
 from math import hypot, sqrt, atan2, pi, degrees
 from typing import Final
 
-from scarajectory.core.model.point_dto import PointDTO
-from scarajectory.core.model.validation_result_dto import ValidationResultDTO
+from scarajectory.core.model.point import Point
+from scarajectory.core.model.validation_result import ValidationResult
 from scarajectory.core.model.scara_bounds import ScaraBounds
 from scarajectory.core.model.itrajectory_plan import ITrajectoryPlan
 from scarajectory.core.model.trajectory_metrics import TrajectoryMetrics
@@ -55,7 +55,7 @@ class TrajectoryValidator:
                 | bounds - Returns active bounds model.
                 | r_min - Returns inner workspace radius.
                 | r_max - Returns outer workspace radius.
-                | validate_point_dto - Validates PointDTO coordinates against annular reach.
+                | validate_point_dto - Validates Point coordinates against annular reach.
                 | validate_feedrate - Validates that speed is within safe mechanical range.
                 | validate_plan - Validates entire trajectory plan against kinematic bounds.
     '''
@@ -105,27 +105,27 @@ class TrajectoryValidator:
         '''
         return self._r_max
 
-    def validate_point_dto(self, point: PointDTO) -> ValidationResultDTO:
+    def validate_point_dto(self, point: Point) -> ValidationResult:
         '''
-            Validates PointDTO coordinates against annular horizontal reach and vertical bounds.
+            Validates Point coordinates against annular horizontal reach and vertical bounds.
 
-            :param point: Target PointDTO.
-            :return: ValidationResultDTO with pass/fail and descriptive reason.
+            :param point: Target Point.
+            :return: ValidationResult with pass/fail and descriptive reason.
             :exceptions: None.
         '''
         r: float = hypot(point.x, point.y)
         if r > self._r_max + 1e-4:
-            return ValidationResultDTO(
+            return ValidationResult(
                 is_valid=False,
                 message=f'Point ({point.x:.1f}, {point.y:.1f}) exceeds maximum reach R_max={self._r_max:.1f} mm (r={r:.1f} mm)'
             )
         if r < self._r_min - 1e-4:
-            return ValidationResultDTO(
+            return ValidationResult(
                 is_valid=False,
                 message=f'Point ({point.x:.1f}, {point.y:.1f}) is inside deadzone R_min={self._r_min:.1f} mm (r={r:.1f} mm)'
             )
         if point.z < self._bounds.z_min - 1e-4 or point.z > self._bounds.z_max + 1e-4:
-            return ValidationResultDTO(
+            return ValidationResult(
                 is_valid=False,
                 message=f'Elevation Z={point.z:.1f} mm is out of range [{self._bounds.z_min:.1f}, {self._bounds.z_max:.1f}] mm'
             )
@@ -135,7 +135,7 @@ class TrajectoryValidator:
         r_sq: float = point.x * point.x + point.y * point.y
         cos_q2: float = (r_sq - l1 * l1 - l2 * l2) / (2.0 * l1 * l2)
         if abs(cos_q2) > 1.0:
-            return ValidationResultDTO(
+            return ValidationResult(
                 is_valid=False,
                 message=f'Point ({point.x:.1f}, {point.y:.1f}) is kinematically unreachable'
             )
@@ -166,32 +166,32 @@ class TrajectoryValidator:
 
         if not reachable_any:
             reason_str: str = ', '.join(reasons) if reasons else 'Joint limits exceeded'
-            return ValidationResultDTO(
+            return ValidationResult(
                 is_valid=False,
                 message=f'Point ({point.x:.1f}, {point.y:.1f}) violates joint limits: {reason_str}'
             )
 
-        return ValidationResultDTO(is_valid=True, message='Point is reachable')
+        return ValidationResult(is_valid=True, message='Point is reachable')
 
-    def validate_feedrate(self, speed: float) -> ValidationResultDTO:
+    def validate_feedrate(self, speed: float) -> ValidationResult:
         '''
             Validates that speed is within safe mechanical operation range.
 
             :param speed: Feedrate in mm/s.
-            :return: ValidationResultDTO.
+            :return: ValidationResult.
             :exceptions: None.
         '''
         if speed < self._bounds.min_speed:
-            return ValidationResultDTO(
+            return ValidationResult(
                 is_valid=False,
                 message=f'Speed {speed:.1f} mm/s is too slow (minimum {self._bounds.min_speed:.1f} mm/s)'
             )
         if speed > self._bounds.max_speed:
-            return ValidationResultDTO(
+            return ValidationResult(
                 is_valid=False,
                 message=f'Speed {speed:.1f} mm/s exceeds max safe feedrate {self._bounds.max_speed:.1f} mm/s'
             )
-        return ValidationResultDTO(is_valid=True, message='Speed is valid')
+        return ValidationResult(is_valid=True, message='Speed is valid')
 
     def validate_plan(self, plan: ITrajectoryPlan) -> tuple[bool, list[str]]:
         '''
@@ -210,12 +210,12 @@ class TrajectoryValidator:
 
         for index, pt in enumerate(waypoints, start=1):
             pt_dto = pt.to_dto()
-            res_pt: ValidationResultDTO = self.validate_point_dto(pt_dto)
+            res_pt: ValidationResult = self.validate_point_dto(pt_dto)
             if not res_pt.is_valid:
                 all_valid = False
                 messages.append(f'Point P{index} ({pt.x:.1f}, {pt.y:.1f}, {pt.z:.1f}): {res_pt.message}')
 
-            res_spd: ValidationResultDTO = self.validate_feedrate(pt.speed)
+            res_spd: ValidationResult = self.validate_feedrate(pt.speed)
             if not res_spd.is_valid:
                 all_valid = False
                 messages.append(f'Point P{index} Speed ({pt.speed:.1f} mm/s): {res_spd.message}')

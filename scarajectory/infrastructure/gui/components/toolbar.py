@@ -26,7 +26,7 @@ from tkinter import ttk
 from typing import Final
 
 from scarajectory.core.model.canvas_tool_mode import CanvasToolMode
-from scarajectory.core.model.canvas_settings_dto import CanvasSettingsDTO
+from scarajectory.core.model.canvas_settings import CanvasSettings
 from scarajectory.core.model.itrajectory_plan import ITrajectoryPlan
 from scarajectory.infrastructure.gui.icanvas import ICanvas
 
@@ -165,7 +165,7 @@ class Toolbar(ttk.Frame):
             dz: float = float(self._spin_z.get())
             dsp: float = float(self._spin_speed.get())
             enforce: bool = self._deadzone_var.get()
-            self._canvas.update_settings(CanvasSettingsDTO(default_z=dz, default_speed=dsp, enforce_deadzone=enforce))
+            self._canvas.update_settings(CanvasSettings(default_z=dz, default_speed=dsp, enforce_deadzone=enforce))
         except ValueError:
             pass
 

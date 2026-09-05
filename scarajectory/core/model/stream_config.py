@@ -2,7 +2,7 @@
 
 '''
 Module
-    stream_config_dto.py
+    stream_config.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     scarajectory is free software: you can redistribute it and/or modify it
@@ -16,7 +16,7 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Defines StreamConfigDTO data transfer object for serial communication.
+    Defines StreamConfig data transfer object for serial communication.
 '''
 
 from __future__ import annotations
@@ -34,7 +34,7 @@ __status__ = 'Updated'
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
-class StreamConfigDTO:
+class StreamConfig:
     '''
         DTO encapsulating serial connection and streamer parameters.
 

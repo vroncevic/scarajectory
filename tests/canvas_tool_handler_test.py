@@ -30,7 +30,7 @@ if pkg_dir not in sys.path:
     sys.path.insert(0, pkg_dir)
 
 from scarajectory.core.model.waypoint import Waypoint
-from scarajectory.core.model.canvas_settings_dto import CanvasSettingsDTO
+from scarajectory.core.model.canvas_settings import CanvasSettings
 from scarajectory.infrastructure.gui.components.canvas_tool_handler import CanvasToolHandler
 
 __author__ = 'Vladimir Roncevic'
@@ -64,7 +64,7 @@ class TestCanvasToolHandler(unittest.TestCase):
 
             :exceptions: None.
         '''
-        self.settings = CanvasSettingsDTO(default_z=20.0, default_speed=40.0)
+        self.settings = CanvasSettings(default_z=20.0, default_speed=40.0)
 
     def test_hit_detection(self) -> None:
         '''

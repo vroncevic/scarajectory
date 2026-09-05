@@ -24,7 +24,7 @@ from __future__ import annotations
 from typing import Protocol, runtime_checkable
 
 from scarajectory.core.model.canvas_tool_mode import CanvasToolMode
-from scarajectory.core.model.canvas_settings_dto import CanvasSettingsDTO
+from scarajectory.core.model.canvas_settings import CanvasSettings
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -57,41 +57,31 @@ class ICanvas(Protocol):
             Sets the active drawing/selection tool mode.
 
             :param mode: CanvasToolMode enum.
-            :exceptions: None.
         '''
 
-    def update_settings(self, settings: CanvasSettingsDTO) -> None:
+    def update_settings(self, settings: CanvasSettings) -> None:
         '''
             Updates default point properties.
 
-            :param settings: CanvasSettingsDTO instance.
-            :exceptions: None.
+            :param settings: CanvasSettings instance.
         '''
 
     def zoom_in(self) -> None:
         '''
             Scales canvas view in by 1.25x.
-
-            :exceptions: None.
         '''
 
     def zoom_out(self) -> None:
         '''
             Scales canvas view out by 0.8x.
-
-            :exceptions: None.
         '''
 
     def reset_view(self) -> None:
         '''
             Resets viewport zoom to 100%.
-
-            :exceptions: None.
         '''
 
     def fit_reach_view(self) -> None:
         '''
             Fits maximum reach circle to canvas view.
-
-            :exceptions: None.
         '''

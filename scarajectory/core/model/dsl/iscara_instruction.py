@@ -60,7 +60,6 @@ class IScaraInstruction(Protocol):
 
             :return: ScaraCommandType enum member.
         '''
-        ...
 
     @property
     def line_number(self) -> int:
@@ -69,7 +68,6 @@ class IScaraInstruction(Protocol):
 
             :return: Line number integer.
         '''
-        ...
 
     @property
     def raw_text(self) -> str:
@@ -78,7 +76,6 @@ class IScaraInstruction(Protocol):
 
             :return: Original text string.
         '''
-        ...
 
     @property
     def parameters(self) -> Mapping[str, Any]:
@@ -87,7 +84,6 @@ class IScaraInstruction(Protocol):
 
             :return: Read-only mapping of parameter names to values.
         '''
-        ...
 
     def to_dict(self) -> dict[str, Any]:
         '''
@@ -95,4 +91,3 @@ class IScaraInstruction(Protocol):
 
             :return: Dictionary representation of the instruction.
         '''
-        ...

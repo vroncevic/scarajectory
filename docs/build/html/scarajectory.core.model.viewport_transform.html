@@ -1,354 +1,680 @@
 <!DOCTYPE html>
 
 <html lang="en" data-content_root="./">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>scarajectory.core.model.viewport_transform module &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
-    
-    <script src="_static/documentation_options.js?v=57319df4"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="scarajectory.core.model.waypoint module" href="scarajectory.core.model.waypoint.html" />
-    <link rel="prev" title="scarajectory.core.model.validation_result_dto module" href="scarajectory.core.model.validation_result_dto.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="scarajectory.core.model.waypoint.html" title="scarajectory.core.model.waypoint module"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="scarajectory.core.model.validation_result_dto.html" title="scarajectory.core.model.validation_result_dto module"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
-          <li class="nav-item nav-item-3"><a href="scarajectory.core.html" >scarajectory.core package</a> &#187;</li>
-          <li class="nav-item nav-item-4"><a href="scarajectory.core.model.html" accesskey="U">scarajectory.core.model package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">scarajectory.core.model.viewport_transform module</a></li> 
-      </ul>
-    </div>  
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
-  <section id="module-scarajectory.core.model.viewport_transform">
-<span id="scarajectory-core-model-viewport-transform-module"></span><h1>scarajectory.core.model.viewport_transform module<a class="headerlink" href="#module-scarajectory.core.model.viewport_transform" title="Link to this heading">¶</a></h1>
-<dl class="simple">
-<dt>Module</dt><dd><p>viewport_transform.py</p>
-</dd>
-<dt>Copyright</dt><dd><p>Copyright (C) 2026 Vladimir Roncevic &lt;<a class="reference external" href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
-scarajectory is free software: you can redistribute it and/or modify it
-under the terms of the GNU General Public License as published by the
-Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-scarajectory is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU General Public License for more details.
-You should have received a copy of the GNU General Public License along
-with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
-</dd>
-<dt>Info</dt><dd><p>Manages 2D viewport coordinates, zoom scale and pan offset transformations.</p>
-</dd>
-</dl>
-<dl class="py class">
-<dt class="sig sig-object py" id="scarajectory.core.model.viewport_transform.ViewportTransform">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.core.model.viewport_transform.</span></span><span class="sig-name descname"><span class="pre">ViewportTransform</span></span><a class="reference internal" href="_modules/scarajectory/core/model/viewport_transform.html#ViewportTransform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.viewport_transform.ViewportTransform" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Manages 2D viewport coordinate transformations between millimeters and screen pixels.</p>
-<p>It defines:</p>
-<blockquote>
-<div><dl class="field-list">
-<dt class="field-odd">attributes<span class="colon">:</span></dt>
-<dd class="field-odd"><div class="line-block">
-<div class="line">DEFAULT_ZOOM - Default initial zoom factor.</div>
-<div class="line">R_MAX_MM - Maximum robot reach in millimeters.</div>
-<div class="line">ZOOM_IN_FACTOR - Scale multiplier for zoom in operation.</div>
-<div class="line">ZOOM_OUT_FACTOR - Scale multiplier for zoom out operation.</div>
-<div class="line">ZOOM_MIN - Minimum allowable zoom scale.</div>
-<div class="line">ZOOM_MAX - Maximum allowable zoom scale.</div>
-<div class="line">REACH_COVERAGE_RATIO - Fraction of viewport dimension used for fit reach view.</div>
-<div class="line">MIN_CANVAS_DIMENSION - Minimum canvas dimension threshold for fit reach.</div>
-<div class="line">scale - Active zoom scale.</div>
-<div class="line">pan_x - Horizontal pan offset in pixels.</div>
-<div class="line">pan_y - Vertical pan offset in pixels.</div>
-</div>
-</dd>
-<dt class="field-even">methods<span class="colon">:</span></dt>
-<dd class="field-even"><div class="line-block">
-<div class="line">__init__ - Initializes default zoom scale and zero pan offset.</div>
-<div class="line">world_to_screen - Converts world mm coordinates to canvas screen pixels.</div>
-<div class="line">screen_to_world - Converts screen pixels to world mm coordinates.</div>
-<div class="line">zoom_in - Increases zoom scale by factor.</div>
-<div class="line">zoom_out - Decreases zoom scale by factor.</div>
-<div class="line">reset - Resets scale and pan offset to defaults.</div>
-<div class="line">fit_reach - Adjusts scale and pan to fit robot reach boundary into window.</div>
-</div>
-</dd>
-</dl>
-</div></blockquote>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.core.model.viewport_transform.ViewportTransform.DEFAULT_ZOOM">
-<span class="sig-name descname"><span class="pre">DEFAULT_ZOOM</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.35</span></em><a class="headerlink" href="#scarajectory.core.model.viewport_transform.ViewportTransform.DEFAULT_ZOOM" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+  <title>scarajectory.core.model.viewport_transform module &#8212; scarajectory
+    https://github.com/vroncevic/scarajectory/releases documentation</title>
+  <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+  <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.core.model.viewport_transform.ViewportTransform.MIN_CANVAS_DIMENSION">
-<span class="sig-name descname"><span class="pre">MIN_CANVAS_DIMENSION</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">20</span></em><a class="headerlink" href="#scarajectory.core.model.viewport_transform.ViewportTransform.MIN_CANVAS_DIMENSION" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+  <script src="_static/documentation_options.js?v=57319df4"></script>
+  <script src="_static/doctools.js?v=888ff710"></script>
+  <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.core.model.viewport_transform.ViewportTransform.REACH_COVERAGE_RATIO">
-<span class="sig-name descname"><span class="pre">REACH_COVERAGE_RATIO</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.45</span></em><a class="headerlink" href="#scarajectory.core.model.viewport_transform.ViewportTransform.REACH_COVERAGE_RATIO" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+  <link rel="index" title="Index" href="genindex.html" />
+  <link rel="search" title="Search" href="search.html" />
+  <link rel="next" title="scarajectory.core.model.waypoint module" href="scarajectory.core.model.waypoint.html" />
+  <link rel="prev" title="scarajectory.core.model.validation_result module"
+    href="scarajectory.core.model.validation_result.html" />
+</head>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.core.model.viewport_transform.ViewportTransform.R_MAX_MM">
-<span class="sig-name descname"><span class="pre">R_MAX_MM</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">270.0</span></em><a class="headerlink" href="#scarajectory.core.model.viewport_transform.ViewportTransform.R_MAX_MM" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<body>
+  <div class="related" role="navigation" aria-label="related navigation">
+    <h3>Navigation</h3>
+    <ul>
+      <li class="right" style="margin-right: 10px">
+        <a href="genindex.html" title="General Index" accesskey="I">index</a>
+      </li>
+      <li class="right">
+        <a href="py-modindex.html" title="Python Module Index">modules</a> |
+      </li>
+      <li class="right">
+        <a href="scarajectory.core.model.waypoint.html" title="scarajectory.core.model.waypoint module"
+          accesskey="N">next</a> |
+      </li>
+      <li class="right">
+        <a href="scarajectory.core.model.validation_result.html"
+          title="scarajectory.core.model.validation_result module" accesskey="P">previous</a> |
+      </li>
+      <li class="nav-item nav-item-0"><a href="index.html">scarajectory
+          https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+      <li class="nav-item nav-item-1"><a href="modules.html">scarajectory</a> &#187;</li>
+      <li class="nav-item nav-item-2"><a href="scarajectory.html">scarajectory package</a> &#187;</li>
+      <li class="nav-item nav-item-3"><a href="scarajectory.core.html">scarajectory.core package</a> &#187;</li>
+      <li class="nav-item nav-item-4"><a href="scarajectory.core.model.html" accesskey="U">scarajectory.core.model
+          package</a> &#187;</li>
+      <li class="nav-item nav-item-this"><a href="">scarajectory.core.model.viewport_transform module</a></li>
+    </ul>
+  </div>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.core.model.viewport_transform.ViewportTransform.ZOOM_IN_FACTOR">
-<span class="sig-name descname"><span class="pre">ZOOM_IN_FACTOR</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.25</span></em><a class="headerlink" href="#scarajectory.core.model.viewport_transform.ViewportTransform.ZOOM_IN_FACTOR" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+  <div class="document">
+    <div class="documentwrapper">
+      <div class="bodywrapper">
+        <div class="body" role="main">
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.core.model.viewport_transform.ViewportTransform.ZOOM_MAX">
-<span class="sig-name descname"><span class="pre">ZOOM_MAX</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5.0</span></em><a class="headerlink" href="#scarajectory.core.model.viewport_transform.ViewportTransform.ZOOM_MAX" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+          <section id="module-scarajectory.core.model.viewport_transform">
+            <span id="scarajectory-core-model-viewport-transform-module"></span>
+            <h1>scarajectory.core.model.viewport_transform module<a class="headerlink"
+                href="#module-scarajectory.core.model.viewport_transform" title="Link to this heading">¶</a></h1>
+            <dl class="simple">
+              <dt>Module</dt>
+              <dd>
+                <p>viewport_transform.py</p>
+              </dd>
+              <dt>Copyright</dt>
+              <dd>
+                <p>Copyright (C) 2026 Vladimir Roncevic &lt;<a class="reference external"
+                    href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+                  scarajectory is free software: you can redistribute it and/or modify it
+                  under the terms of the GNU General Public License as published by the
+                  Free Software Foundation, either version 3 of the License, or
+                  (at your option) any later version.
+                  scarajectory is distributed in the hope that it will be useful, but
+                  WITHOUT ANY WARRANTY; without even the implied warranty of
+                  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+                  See the GNU General Public License for more details.
+                  You should have received a copy of the GNU General Public License along
+                  with this program. If not, see &lt;<a class="reference external"
+                    href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+              </dd>
+              <dt>Info</dt>
+              <dd>
+                <p>Manages 2D viewport coordinates, zoom scale and pan offset transformations.</p>
+              </dd>
+            </dl>
+            <dl class="py class">
+              <dt class="sig sig-object py" id="scarajectory.core.model.viewport_transform.ViewportTransform">
+                <em class="property"><span class="pre">class</span><span class="w"> </span></em><span
+                  class="sig-prename descclassname"><span
+                    class="pre">scarajectory.core.model.viewport_transform.</span></span><span
+                  class="sig-name descname"><span class="pre">ViewportTransform</span></span><a
+                  class="reference internal"
+                  href="_modules/scarajectory/core/model/viewport_transform.html#ViewportTransform"><span
+                    class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink"
+                  href="#scarajectory.core.model.viewport_transform.ViewportTransform"
+                  title="Link to this definition">¶</a>
+              </dt>
+              <dd>
+                <p>Bases: <code
+                    class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+                <p>Manages 2D viewport coordinate transformations between millimeters and screen pixels.</p>
+                <p>It defines:</p>
+                <blockquote>
+                  <div>
+                    <dl class="field-list">
+                      <dt class="field-odd">attributes<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <div class="line-block">
+                          <div class="line">DEFAULT_ZOOM - Default initial zoom factor.</div>
+                          <div class="line">R_MAX_MM - Maximum robot reach in millimeters.</div>
+                          <div class="line">ZOOM_IN_FACTOR - Scale multiplier for zoom in operation.</div>
+                          <div class="line">ZOOM_OUT_FACTOR - Scale multiplier for zoom out operation.</div>
+                          <div class="line">ZOOM_MIN - Minimum allowable zoom scale.</div>
+                          <div class="line">ZOOM_MAX - Maximum allowable zoom scale.</div>
+                          <div class="line">REACH_COVERAGE_RATIO - Fraction of viewport dimension used for fit reach
+                            view.</div>
+                          <div class="line">MIN_CANVAS_DIMENSION - Minimum canvas dimension threshold for fit reach.
+                          </div>
+                          <div class="line">scale - Active zoom scale.</div>
+                          <div class="line">pan_x - Horizontal pan offset in pixels.</div>
+                          <div class="line">pan_y - Vertical pan offset in pixels.</div>
+                        </div>
+                      </dd>
+                      <dt class="field-even">methods<span class="colon">:</span></dt>
+                      <dd class="field-even">
+                        <div class="line-block">
+                          <div class="line">__init__ - Initializes default zoom scale and zero pan offset.</div>
+                          <div class="line">world_to_screen - Converts world mm coordinates to canvas screen pixels.
+                          </div>
+                          <div class="line">screen_to_world - Converts screen pixels to world mm coordinates.</div>
+                          <div class="line">zoom_in - Increases zoom scale by factor.</div>
+                          <div class="line">zoom_out - Decreases zoom scale by factor.</div>
+                          <div class="line">reset - Resets scale and pan offset to defaults.</div>
+                          <div class="line">fit_reach - Adjusts scale and pan to fit robot reach boundary into window.
+                          </div>
+                        </div>
+                      </dd>
+                    </dl>
+                  </div>
+                </blockquote>
+                <dl class="py attribute">
+                  <dt class="sig sig-object py"
+                    id="scarajectory.core.model.viewport_transform.ViewportTransform.DEFAULT_ZOOM">
+                    <span class="sig-name descname"><span class="pre">DEFAULT_ZOOM</span></span><em
+                      class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                        class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span
+                        class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em
+                      class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span
+                        class="w"> </span><span class="pre">1.35</span></em><a class="headerlink"
+                      href="#scarajectory.core.model.viewport_transform.ViewportTransform.DEFAULT_ZOOM"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd></dd>
+                </dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.core.model.viewport_transform.ViewportTransform.ZOOM_MIN">
-<span class="sig-name descname"><span class="pre">ZOOM_MIN</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.3</span></em><a class="headerlink" href="#scarajectory.core.model.viewport_transform.ViewportTransform.ZOOM_MIN" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+                <dl class="py attribute">
+                  <dt class="sig sig-object py"
+                    id="scarajectory.core.model.viewport_transform.ViewportTransform.MIN_CANVAS_DIMENSION">
+                    <span class="sig-name descname"><span class="pre">MIN_CANVAS_DIMENSION</span></span><em
+                      class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                        class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span
+                        class="pre">int</span><span class="p"><span class="pre">]</span></span></em><em
+                      class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span
+                        class="w"> </span><span class="pre">20</span></em><a class="headerlink"
+                      href="#scarajectory.core.model.viewport_transform.ViewportTransform.MIN_CANVAS_DIMENSION"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd></dd>
+                </dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.core.model.viewport_transform.ViewportTransform.ZOOM_OUT_FACTOR">
-<span class="sig-name descname"><span class="pre">ZOOM_OUT_FACTOR</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.8</span></em><a class="headerlink" href="#scarajectory.core.model.viewport_transform.ViewportTransform.ZOOM_OUT_FACTOR" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+                <dl class="py attribute">
+                  <dt class="sig sig-object py"
+                    id="scarajectory.core.model.viewport_transform.ViewportTransform.REACH_COVERAGE_RATIO">
+                    <span class="sig-name descname"><span class="pre">REACH_COVERAGE_RATIO</span></span><em
+                      class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                        class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span
+                        class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em
+                      class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span
+                        class="w"> </span><span class="pre">0.45</span></em><a class="headerlink"
+                      href="#scarajectory.core.model.viewport_transform.ViewportTransform.REACH_COVERAGE_RATIO"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd></dd>
+                </dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.core.model.viewport_transform.ViewportTransform.fit_reach">
-<span class="sig-name descname"><span class="pre">fit_reach</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/core/model/viewport_transform.html#ViewportTransform.fit_reach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.viewport_transform.ViewportTransform.fit_reach" title="Link to this definition">¶</a></dt>
-<dd><p>Adjusts scale and pan to fit robot reach boundary into window.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>width</strong> – Canvas width in pixels.</p></li>
-<li><p><strong>height</strong> – Canvas height in pixels.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Exceptions<span class="colon">:</span></dt>
-<dd class="field-even"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
+                <dl class="py attribute">
+                  <dt class="sig sig-object py"
+                    id="scarajectory.core.model.viewport_transform.ViewportTransform.R_MAX_MM">
+                    <span class="sig-name descname"><span class="pre">R_MAX_MM</span></span><em class="property"><span
+                        class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                        class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span
+                        class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em
+                      class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span
+                        class="w"> </span><span class="pre">270.0</span></em><a class="headerlink"
+                      href="#scarajectory.core.model.viewport_transform.ViewportTransform.R_MAX_MM"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd></dd>
+                </dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.core.model.viewport_transform.ViewportTransform.pan_x">
-<span class="sig-name descname"><span class="pre">pan_x</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#scarajectory.core.model.viewport_transform.ViewportTransform.pan_x" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+                <dl class="py attribute">
+                  <dt class="sig sig-object py"
+                    id="scarajectory.core.model.viewport_transform.ViewportTransform.ZOOM_IN_FACTOR">
+                    <span class="sig-name descname"><span class="pre">ZOOM_IN_FACTOR</span></span><em
+                      class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                        class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span
+                        class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em
+                      class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span
+                        class="w"> </span><span class="pre">1.25</span></em><a class="headerlink"
+                      href="#scarajectory.core.model.viewport_transform.ViewportTransform.ZOOM_IN_FACTOR"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd></dd>
+                </dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.core.model.viewport_transform.ViewportTransform.pan_y">
-<span class="sig-name descname"><span class="pre">pan_y</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#scarajectory.core.model.viewport_transform.ViewportTransform.pan_y" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+                <dl class="py attribute">
+                  <dt class="sig sig-object py"
+                    id="scarajectory.core.model.viewport_transform.ViewportTransform.ZOOM_MAX">
+                    <span class="sig-name descname"><span class="pre">ZOOM_MAX</span></span><em class="property"><span
+                        class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                        class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span
+                        class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em
+                      class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span
+                        class="w"> </span><span class="pre">5.0</span></em><a class="headerlink"
+                      href="#scarajectory.core.model.viewport_transform.ViewportTransform.ZOOM_MAX"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd></dd>
+                </dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.core.model.viewport_transform.ViewportTransform.reset">
-<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/core/model/viewport_transform.html#ViewportTransform.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.viewport_transform.ViewportTransform.reset" title="Link to this definition">¶</a></dt>
-<dd><p>Resets scale and pan offset to defaults.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
+                <dl class="py attribute">
+                  <dt class="sig sig-object py"
+                    id="scarajectory.core.model.viewport_transform.ViewportTransform.ZOOM_MIN">
+                    <span class="sig-name descname"><span class="pre">ZOOM_MIN</span></span><em class="property"><span
+                        class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                        class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span
+                        class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em
+                      class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span
+                        class="w"> </span><span class="pre">0.3</span></em><a class="headerlink"
+                      href="#scarajectory.core.model.viewport_transform.ViewportTransform.ZOOM_MIN"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd></dd>
+                </dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.core.model.viewport_transform.ViewportTransform.scale">
-<span class="sig-name descname"><span class="pre">scale</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#scarajectory.core.model.viewport_transform.ViewportTransform.scale" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+                <dl class="py attribute">
+                  <dt class="sig sig-object py"
+                    id="scarajectory.core.model.viewport_transform.ViewportTransform.ZOOM_OUT_FACTOR">
+                    <span class="sig-name descname"><span class="pre">ZOOM_OUT_FACTOR</span></span><em
+                      class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                        class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span
+                        class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em
+                      class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span
+                        class="w"> </span><span class="pre">0.8</span></em><a class="headerlink"
+                      href="#scarajectory.core.model.viewport_transform.ViewportTransform.ZOOM_OUT_FACTOR"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd></dd>
+                </dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.core.model.viewport_transform.ViewportTransform.screen_to_world">
-<span class="sig-name descname"><span class="pre">screen_to_world</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/scarajectory/core/model/viewport_transform.html#ViewportTransform.screen_to_world"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.viewport_transform.ViewportTransform.screen_to_world" title="Link to this definition">¶</a></dt>
-<dd><p>Converts screen pixels to world mm coordinates.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>sx</strong> – Screen X pixel coordinate.</p></li>
-<li><p><strong>sy</strong> – Screen Y pixel coordinate.</p></li>
-<li><p><strong>width</strong> – Canvas pixel width.</p></li>
-<li><p><strong>height</strong> – Canvas pixel height.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Tuple of world (wx, wy) coordinates in mm.</p>
-</dd>
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
+                <dl class="py method">
+                  <dt class="sig sig-object py"
+                    id="scarajectory.core.model.viewport_transform.ViewportTransform.fit_reach">
+                    <span class="sig-name descname"><span class="pre">fit_reach</span></span><span
+                      class="sig-paren">(</span><em class="sig-param"><span class="n"><span
+                          class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span
+                        class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em
+                      class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span
+                          class="pre">:</span></span><span class="w"> </span><span class="n"><span
+                          class="pre">int</span></span></em><span class="sig-paren">)</span> <span
+                      class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span
+                        class="sig-return-typehint"><span class="pre">None</span></span></span><a
+                      class="reference internal"
+                      href="_modules/scarajectory/core/model/viewport_transform.html#ViewportTransform.fit_reach"><span
+                        class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink"
+                      href="#scarajectory.core.model.viewport_transform.ViewportTransform.fit_reach"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd>
+                    <p>Adjusts scale and pan to fit robot reach boundary into window.</p>
+                    <dl class="field-list simple">
+                      <dt class="field-odd">Parameters<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <ul class="simple">
+                          <li>
+                            <p><strong>width</strong> – Canvas width in pixels.</p>
+                          </li>
+                          <li>
+                            <p><strong>height</strong> – Canvas height in pixels.</p>
+                          </li>
+                        </ul>
+                      </dd>
+                      <dt class="field-even">Exceptions<span class="colon">:</span></dt>
+                      <dd class="field-even">
+                        <p>None.</p>
+                      </dd>
+                    </dl>
+                  </dd>
+                </dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.core.model.viewport_transform.ViewportTransform.world_to_screen">
-<span class="sig-name descname"><span class="pre">world_to_screen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/scarajectory/core/model/viewport_transform.html#ViewportTransform.world_to_screen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.viewport_transform.ViewportTransform.world_to_screen" title="Link to this definition">¶</a></dt>
-<dd><p>Converts world mm coordinates to canvas screen pixels.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> – World X coordinate in mm.</p></li>
-<li><p><strong>y</strong> – World Y coordinate in mm.</p></li>
-<li><p><strong>width</strong> – Canvas pixel width.</p></li>
-<li><p><strong>height</strong> – Canvas pixel height.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Tuple of screen (sx, sy) pixel coordinates.</p>
-</dd>
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
+                <dl class="py attribute">
+                  <dt class="sig sig-object py" id="scarajectory.core.model.viewport_transform.ViewportTransform.pan_x">
+                    <span class="sig-name descname"><span class="pre">pan_x</span></span><em class="property"><span
+                        class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                        class="pre">float</span></em><a class="headerlink"
+                      href="#scarajectory.core.model.viewport_transform.ViewportTransform.pan_x"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd></dd>
+                </dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.core.model.viewport_transform.ViewportTransform.zoom_in">
-<span class="sig-name descname"><span class="pre">zoom_in</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/core/model/viewport_transform.html#ViewportTransform.zoom_in"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.viewport_transform.ViewportTransform.zoom_in" title="Link to this definition">¶</a></dt>
-<dd><p>Increases zoom scale by factor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
+                <dl class="py attribute">
+                  <dt class="sig sig-object py" id="scarajectory.core.model.viewport_transform.ViewportTransform.pan_y">
+                    <span class="sig-name descname"><span class="pre">pan_y</span></span><em class="property"><span
+                        class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                        class="pre">float</span></em><a class="headerlink"
+                      href="#scarajectory.core.model.viewport_transform.ViewportTransform.pan_y"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd></dd>
+                </dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.core.model.viewport_transform.ViewportTransform.zoom_out">
-<span class="sig-name descname"><span class="pre">zoom_out</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/core/model/viewport_transform.html#ViewportTransform.zoom_out"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.viewport_transform.ViewportTransform.zoom_out" title="Link to this definition">¶</a></dt>
-<dd><p>Decreases zoom scale by factor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
+                <dl class="py method">
+                  <dt class="sig sig-object py" id="scarajectory.core.model.viewport_transform.ViewportTransform.reset">
+                    <span class="sig-name descname"><span class="pre">reset</span></span><span
+                      class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span
+                        class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span
+                          class="pre">None</span></span></span><a class="reference internal"
+                      href="_modules/scarajectory/core/model/viewport_transform.html#ViewportTransform.reset"><span
+                        class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink"
+                      href="#scarajectory.core.model.viewport_transform.ViewportTransform.reset"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd>
+                    <p>Resets scale and pan offset to defaults.</p>
+                    <dl class="field-list simple">
+                      <dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <p>None.</p>
+                      </dd>
+                    </dl>
+                  </dd>
+                </dl>
 
-</dd></dl>
+                <dl class="py attribute">
+                  <dt class="sig sig-object py" id="scarajectory.core.model.viewport_transform.ViewportTransform.scale">
+                    <span class="sig-name descname"><span class="pre">scale</span></span><em class="property"><span
+                        class="p"><span class="pre">:</span></span><span class="w"> </span><span
+                        class="pre">float</span></em><a class="headerlink"
+                      href="#scarajectory.core.model.viewport_transform.ViewportTransform.scale"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd></dd>
+                </dl>
 
-</section>
+                <dl class="py method">
+                  <dt class="sig sig-object py"
+                    id="scarajectory.core.model.viewport_transform.ViewportTransform.screen_to_world">
+                    <span class="sig-name descname"><span class="pre">screen_to_world</span></span><span
+                      class="sig-paren">(</span><em class="sig-param"><span class="n"><span
+                          class="pre">sx</span></span><span class="p"><span class="pre">:</span></span><span class="w">
+                      </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span
+                        class="n"><span class="pre">sy</span></span><span class="p"><span
+                          class="pre">:</span></span><span class="w"> </span><span class="n"><span
+                          class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span
+                          class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span
+                        class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em
+                      class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span
+                          class="pre">:</span></span><span class="w"> </span><span class="n"><span
+                          class="pre">int</span></span></em><span class="sig-paren">)</span> <span
+                      class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span
+                        class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span
+                            class="pre">[</span></span><span class="pre">float</span><span class="p"><span
+                            class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span
+                          class="p"><span class="pre">]</span></span></span></span><a class="reference internal"
+                      href="_modules/scarajectory/core/model/viewport_transform.html#ViewportTransform.screen_to_world"><span
+                        class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink"
+                      href="#scarajectory.core.model.viewport_transform.ViewportTransform.screen_to_world"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd>
+                    <p>Converts screen pixels to world mm coordinates.</p>
+                    <dl class="field-list simple">
+                      <dt class="field-odd">Parameters<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <ul class="simple">
+                          <li>
+                            <p><strong>sx</strong> – Screen X pixel coordinate.</p>
+                          </li>
+                          <li>
+                            <p><strong>sy</strong> – Screen Y pixel coordinate.</p>
+                          </li>
+                          <li>
+                            <p><strong>width</strong> – Canvas pixel width.</p>
+                          </li>
+                          <li>
+                            <p><strong>height</strong> – Canvas pixel height.</p>
+                          </li>
+                        </ul>
+                      </dd>
+                      <dt class="field-even">Returns<span class="colon">:</span></dt>
+                      <dd class="field-even">
+                        <p>Tuple of world (wx, wy) coordinates in mm.</p>
+                      </dd>
+                      <dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <p>None.</p>
+                      </dd>
+                    </dl>
+                  </dd>
+                </dl>
+
+                <dl class="py method">
+                  <dt class="sig sig-object py"
+                    id="scarajectory.core.model.viewport_transform.ViewportTransform.world_to_screen">
+                    <span class="sig-name descname"><span class="pre">world_to_screen</span></span><span
+                      class="sig-paren">(</span><em class="sig-param"><span class="n"><span
+                          class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w">
+                      </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span
+                        class="n"><span class="pre">y</span></span><span class="p"><span
+                          class="pre">:</span></span><span class="w"> </span><span class="n"><span
+                          class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span
+                          class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span
+                        class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em
+                      class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span
+                          class="pre">:</span></span><span class="w"> </span><span class="n"><span
+                          class="pre">int</span></span></em><span class="sig-paren">)</span> <span
+                      class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span
+                        class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span
+                            class="pre">[</span></span><span class="pre">float</span><span class="p"><span
+                            class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span
+                          class="p"><span class="pre">]</span></span></span></span><a class="reference internal"
+                      href="_modules/scarajectory/core/model/viewport_transform.html#ViewportTransform.world_to_screen"><span
+                        class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink"
+                      href="#scarajectory.core.model.viewport_transform.ViewportTransform.world_to_screen"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd>
+                    <p>Converts world mm coordinates to canvas screen pixels.</p>
+                    <dl class="field-list simple">
+                      <dt class="field-odd">Parameters<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <ul class="simple">
+                          <li>
+                            <p><strong>x</strong> – World X coordinate in mm.</p>
+                          </li>
+                          <li>
+                            <p><strong>y</strong> – World Y coordinate in mm.</p>
+                          </li>
+                          <li>
+                            <p><strong>width</strong> – Canvas pixel width.</p>
+                          </li>
+                          <li>
+                            <p><strong>height</strong> – Canvas pixel height.</p>
+                          </li>
+                        </ul>
+                      </dd>
+                      <dt class="field-even">Returns<span class="colon">:</span></dt>
+                      <dd class="field-even">
+                        <p>Tuple of screen (sx, sy) pixel coordinates.</p>
+                      </dd>
+                      <dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <p>None.</p>
+                      </dd>
+                    </dl>
+                  </dd>
+                </dl>
+
+                <dl class="py method">
+                  <dt class="sig sig-object py"
+                    id="scarajectory.core.model.viewport_transform.ViewportTransform.zoom_in">
+                    <span class="sig-name descname"><span class="pre">zoom_in</span></span><span
+                      class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span
+                        class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span
+                          class="pre">None</span></span></span><a class="reference internal"
+                      href="_modules/scarajectory/core/model/viewport_transform.html#ViewportTransform.zoom_in"><span
+                        class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink"
+                      href="#scarajectory.core.model.viewport_transform.ViewportTransform.zoom_in"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd>
+                    <p>Increases zoom scale by factor.</p>
+                    <dl class="field-list simple">
+                      <dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <p>None.</p>
+                      </dd>
+                    </dl>
+                  </dd>
+                </dl>
+
+                <dl class="py method">
+                  <dt class="sig sig-object py"
+                    id="scarajectory.core.model.viewport_transform.ViewportTransform.zoom_out">
+                    <span class="sig-name descname"><span class="pre">zoom_out</span></span><span
+                      class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span
+                        class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span
+                          class="pre">None</span></span></span><a class="reference internal"
+                      href="_modules/scarajectory/core/model/viewport_transform.html#ViewportTransform.zoom_out"><span
+                        class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink"
+                      href="#scarajectory.core.model.viewport_transform.ViewportTransform.zoom_out"
+                      title="Link to this definition">¶</a>
+                  </dt>
+                  <dd>
+                    <p>Decreases zoom scale by factor.</p>
+                    <dl class="field-list simple">
+                      <dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+                      <dd class="field-odd">
+                        <p>None.</p>
+                      </dd>
+                    </dl>
+                  </dd>
+                </dl>
+
+              </dd>
+            </dl>
+
+          </section>
 
 
-            <div class="clearer"></div>
+          <div class="clearer"></div>
+        </div>
+      </div>
+    </div>
+    <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebarwrapper">
+        <div>
+          <h3><a href="index.html">Table of Contents</a></h3>
+          <ul>
+            <li><a class="reference internal" href="#">scarajectory.core.model.viewport_transform module</a>
+              <ul>
+                <li><a class="reference internal"
+                    href="#scarajectory.core.model.viewport_transform.ViewportTransform"><code
+                      class="docutils literal notranslate"><span class="pre">ViewportTransform</span></code></a>
+                  <ul>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.model.viewport_transform.ViewportTransform.DEFAULT_ZOOM"><code
+                          class="docutils literal notranslate"><span class="pre">ViewportTransform.DEFAULT_ZOOM</span></code></a>
+                    </li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.model.viewport_transform.ViewportTransform.MIN_CANVAS_DIMENSION"><code
+                          class="docutils literal notranslate"><span class="pre">ViewportTransform.MIN_CANVAS_DIMENSION</span></code></a>
+                    </li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.model.viewport_transform.ViewportTransform.REACH_COVERAGE_RATIO"><code
+                          class="docutils literal notranslate"><span class="pre">ViewportTransform.REACH_COVERAGE_RATIO</span></code></a>
+                    </li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.model.viewport_transform.ViewportTransform.R_MAX_MM"><code
+                          class="docutils literal notranslate"><span class="pre">ViewportTransform.R_MAX_MM</span></code></a>
+                    </li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.model.viewport_transform.ViewportTransform.ZOOM_IN_FACTOR"><code
+                          class="docutils literal notranslate"><span class="pre">ViewportTransform.ZOOM_IN_FACTOR</span></code></a>
+                    </li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.model.viewport_transform.ViewportTransform.ZOOM_MAX"><code
+                          class="docutils literal notranslate"><span class="pre">ViewportTransform.ZOOM_MAX</span></code></a>
+                    </li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.model.viewport_transform.ViewportTransform.ZOOM_MIN"><code
+                          class="docutils literal notranslate"><span class="pre">ViewportTransform.ZOOM_MIN</span></code></a>
+                    </li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.model.viewport_transform.ViewportTransform.ZOOM_OUT_FACTOR"><code
+                          class="docutils literal notranslate"><span class="pre">ViewportTransform.ZOOM_OUT_FACTOR</span></code></a>
+                    </li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.model.viewport_transform.ViewportTransform.fit_reach"><code
+                          class="docutils literal notranslate"><span class="pre">ViewportTransform.fit_reach()</span></code></a>
+                    </li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.model.viewport_transform.ViewportTransform.pan_x"><code
+                          class="docutils literal notranslate"><span class="pre">ViewportTransform.pan_x</span></code></a>
+                    </li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.model.viewport_transform.ViewportTransform.pan_y"><code
+                          class="docutils literal notranslate"><span class="pre">ViewportTransform.pan_y</span></code></a>
+                    </li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.model.viewport_transform.ViewportTransform.reset"><code
+                          class="docutils literal notranslate"><span class="pre">ViewportTransform.reset()</span></code></a>
+                    </li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.model.viewport_transform.ViewportTransform.scale"><code
+                          class="docutils literal notranslate"><span class="pre">ViewportTransform.scale</span></code></a>
+                    </li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.model.viewport_transform.ViewportTransform.screen_to_world"><code
+                          class="docutils literal notranslate"><span class="pre">ViewportTransform.screen_to_world()</span></code></a>
+                    </li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.model.viewport_transform.ViewportTransform.world_to_screen"><code
+                          class="docutils literal notranslate"><span class="pre">ViewportTransform.world_to_screen()</span></code></a>
+                    </li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.model.viewport_transform.ViewportTransform.zoom_in"><code
+                          class="docutils literal notranslate"><span class="pre">ViewportTransform.zoom_in()</span></code></a>
+                    </li>
+                    <li><a class="reference internal"
+                        href="#scarajectory.core.model.viewport_transform.ViewportTransform.zoom_out"><code
+                          class="docutils literal notranslate"><span class="pre">ViewportTransform.zoom_out()</span></code></a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+
+        </div>
+        <div>
+          <h4>Previous topic</h4>
+          <p class="topless"><a href="scarajectory.core.model.validation_result.html"
+              title="previous chapter">scarajectory.core.model.validation_result module</a></p>
+        </div>
+        <div>
+          <h4>Next topic</h4>
+          <p class="topless"><a href="scarajectory.core.model.waypoint.html"
+              title="next chapter">scarajectory.core.model.waypoint module</a></p>
+        </div>
+        <div role="note" aria-label="source link">
+          <h3>This Page</h3>
+          <ul class="this-page-menu">
+            <li><a href="_sources/scarajectory.core.model.viewport_transform.rst.txt" rel="nofollow">Show Source</a>
+            </li>
+          </ul>
+        </div>
+        <div id="searchbox" style="display: none" role="search">
+          <h3 id="searchlabel">Quick search</h3>
+          <div class="searchformwrapper">
+            <form class="search" action="search.html" method="get">
+              <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off"
+                autocapitalize="off" spellcheck="false" />
+              <input type="submit" value="Go" />
+            </form>
           </div>
         </div>
+        <script>document.getElementById('searchbox').style.display = "block"</script>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <div>
-    <h3><a href="index.html">Table of Contents</a></h3>
+    </div>
+    <div class="clearer"></div>
+  </div>
+  <div class="related" role="navigation" aria-label="related navigation">
+    <h3>Navigation</h3>
     <ul>
-<li><a class="reference internal" href="#">scarajectory.core.model.viewport_transform module</a><ul>
-<li><a class="reference internal" href="#scarajectory.core.model.viewport_transform.ViewportTransform"><code class="docutils literal notranslate"><span class="pre">ViewportTransform</span></code></a><ul>
-<li><a class="reference internal" href="#scarajectory.core.model.viewport_transform.ViewportTransform.DEFAULT_ZOOM"><code class="docutils literal notranslate"><span class="pre">ViewportTransform.DEFAULT_ZOOM</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.viewport_transform.ViewportTransform.MIN_CANVAS_DIMENSION"><code class="docutils literal notranslate"><span class="pre">ViewportTransform.MIN_CANVAS_DIMENSION</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.viewport_transform.ViewportTransform.REACH_COVERAGE_RATIO"><code class="docutils literal notranslate"><span class="pre">ViewportTransform.REACH_COVERAGE_RATIO</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.viewport_transform.ViewportTransform.R_MAX_MM"><code class="docutils literal notranslate"><span class="pre">ViewportTransform.R_MAX_MM</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.viewport_transform.ViewportTransform.ZOOM_IN_FACTOR"><code class="docutils literal notranslate"><span class="pre">ViewportTransform.ZOOM_IN_FACTOR</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.viewport_transform.ViewportTransform.ZOOM_MAX"><code class="docutils literal notranslate"><span class="pre">ViewportTransform.ZOOM_MAX</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.viewport_transform.ViewportTransform.ZOOM_MIN"><code class="docutils literal notranslate"><span class="pre">ViewportTransform.ZOOM_MIN</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.viewport_transform.ViewportTransform.ZOOM_OUT_FACTOR"><code class="docutils literal notranslate"><span class="pre">ViewportTransform.ZOOM_OUT_FACTOR</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.viewport_transform.ViewportTransform.fit_reach"><code class="docutils literal notranslate"><span class="pre">ViewportTransform.fit_reach()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.viewport_transform.ViewportTransform.pan_x"><code class="docutils literal notranslate"><span class="pre">ViewportTransform.pan_x</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.viewport_transform.ViewportTransform.pan_y"><code class="docutils literal notranslate"><span class="pre">ViewportTransform.pan_y</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.viewport_transform.ViewportTransform.reset"><code class="docutils literal notranslate"><span class="pre">ViewportTransform.reset()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.viewport_transform.ViewportTransform.scale"><code class="docutils literal notranslate"><span class="pre">ViewportTransform.scale</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.viewport_transform.ViewportTransform.screen_to_world"><code class="docutils literal notranslate"><span class="pre">ViewportTransform.screen_to_world()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.viewport_transform.ViewportTransform.world_to_screen"><code class="docutils literal notranslate"><span class="pre">ViewportTransform.world_to_screen()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.viewport_transform.ViewportTransform.zoom_in"><code class="docutils literal notranslate"><span class="pre">ViewportTransform.zoom_in()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.viewport_transform.ViewportTransform.zoom_out"><code class="docutils literal notranslate"><span class="pre">ViewportTransform.zoom_out()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-  </div>
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.core.model.validation_result_dto.html"
-                          title="previous chapter">scarajectory.core.model.validation_result_dto module</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="scarajectory.core.model.waypoint.html"
-                          title="next chapter">scarajectory.core.model.waypoint module</a></p>
-  </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/scarajectory.core.model.viewport_transform.rst.txt"
-            rel="nofollow">Show Source</a></li>
+      <li class="right" style="margin-right: 10px">
+        <a href="genindex.html" title="General Index">index</a>
+      </li>
+      <li class="right">
+        <a href="py-modindex.html" title="Python Module Index">modules</a> |
+      </li>
+      <li class="right">
+        <a href="scarajectory.core.model.waypoint.html" title="scarajectory.core.model.waypoint module">next</a> |
+      </li>
+      <li class="right">
+        <a href="scarajectory.core.model.validation_result.html"
+          title="scarajectory.core.model.validation_result module">previous</a> |
+      </li>
+      <li class="nav-item nav-item-0"><a href="index.html">scarajectory
+          https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+      <li class="nav-item nav-item-1"><a href="modules.html">scarajectory</a> &#187;</li>
+      <li class="nav-item nav-item-2"><a href="scarajectory.html">scarajectory package</a> &#187;</li>
+      <li class="nav-item nav-item-3"><a href="scarajectory.core.html">scarajectory.core package</a> &#187;</li>
+      <li class="nav-item nav-item-4"><a href="scarajectory.core.model.html">scarajectory.core.model package</a> &#187;
+      </li>
+      <li class="nav-item nav-item-this"><a href="">scarajectory.core.model.viewport_transform module</a></li>
     </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="scarajectory.core.model.waypoint.html" title="scarajectory.core.model.waypoint module"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="scarajectory.core.model.validation_result_dto.html" title="scarajectory.core.model.validation_result_dto module"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
-          <li class="nav-item nav-item-3"><a href="scarajectory.core.html" >scarajectory.core package</a> &#187;</li>
-          <li class="nav-item nav-item-4"><a href="scarajectory.core.model.html" >scarajectory.core.model package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">scarajectory.core.model.viewport_transform module</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
+  </div>
+  <div class="footer" role="contentinfo">
     &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
-    </div>
-  </body>
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+  </div>
+</body>
+
 </html>

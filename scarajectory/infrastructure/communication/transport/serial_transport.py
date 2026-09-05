@@ -27,7 +27,7 @@ from typing import Callable, Final
 
 from serial import Serial, SerialException
 
-from scarajectory.core.model.stream_config_dto import StreamConfigDTO
+from scarajectory.core.model.stream_config import StreamConfig
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -111,11 +111,11 @@ class SerialTransport:
         '''
         return bool(self._serial and self._serial.is_open)
 
-    def connect_with_config(self, config: StreamConfigDTO) -> bool:
+    def connect_with_config(self, config: StreamConfig) -> bool:
         '''
             Opens serial port using configuration DTO.
 
-            :param config: StreamConfigDTO containing port, baudrate, and timeout.
+            :param config: StreamConfig containing port, baudrate, and timeout.
             :return: True if connected successfully, False otherwise.
             :exceptions: None.
         '''
