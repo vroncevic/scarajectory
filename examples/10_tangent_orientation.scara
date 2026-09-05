@@ -1,0 +1,22 @@
+# ==============================================================================
+# 10_tangent_orientation.scara - Automatic Tangential Tool Orientation
+# ==============================================================================
+# TOOL_ORIENT TANGENTIAL automatically rotates the 4th axis (PHI) to align
+# tangential to the direction of path movement (knife cutting, dispensing).
+# ==============================================================================
+
+ENABLE
+HOME
+
+# Enable auto-tangent tracking
+TOOL_ORIENT TANGENTIAL
+
+# Draw contour - tool automatically rotates to follow heading
+MOVE_L X=130.0 Y=20.0 Z=20.0 SPEED=40.0
+MOVE_L X=170.0 Y=20.0 Z=20.0 SPEED=40.0
+MOVE_L X=170.0 Y=60.0 Z=20.0 SPEED=40.0
+MOVE_L X=130.0 Y=60.0 Z=20.0 SPEED=40.0
+MOVE_L X=130.0 Y=20.0 Z=20.0 SPEED=40.0
+
+# Return to fixed angle orientation mode
+TOOL_ORIENT FIXED

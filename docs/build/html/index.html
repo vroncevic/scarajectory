@@ -122,6 +122,17 @@ pip3<span class="w"> </span>install<span class="w"> </span>scarajectory
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>canvas_interaction_state.py
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>canvas_settings_dto.py
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>canvas_tool_mode.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>dsl/
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>__init__.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>iscara_instruction.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>iscara_program.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>scara_command_type.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>scara_diagnostic.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>scara_diagnostic_severity.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>scara_instruction.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>scara_program.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>scara_token.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>scara_token_type.py
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>__init__.py
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>itrajectory_plan.py
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>plan_history.py
@@ -137,6 +148,49 @@ pip3<span class="w"> </span>install<span class="w"> </span>scarajectory
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>viewport_transform.py
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>waypoint.py
 <span class="w">     </span>│<span class="w">   </span>└──<span class="w"> </span>service/
+<span class="w">     </span>│<span class="w">       </span>├──<span class="w"> </span>dsl/
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>compiler/
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>arc_interpolator.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>iarc_interpolator.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>__init__.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>frame_macro_expander.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>imacro_expander.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>__init__.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>iscara_compiler.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>iscara_dsl_service.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>iscara_lexer.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>iscara_parser.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>iscara_plan_exporter.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>jump_macro_expander.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>linter/
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>__init__.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>iscara_linter.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>scara_linter.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>pallet_macro_expander.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>parser/
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>approach_retract_parser.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>arc_command_parser.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>config_command_parser.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>flow_command_parser.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>frame_command_parser.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>icommand_parser.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>__init__.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>jog_command_parser.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>jump_command_parser.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>motion_command_parser.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>pallet_command_parser.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>parameter_extractor.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>probe_command_parser.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>tool_command_parser.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>tool_orient_command_parser.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>zone_command_parser.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>scara_compiler.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>scara_compiler_context.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>scara_dsl_service.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>scara_lexer.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>scara_parser.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>├──<span class="w"> </span>scara_plan_exporter.py
+<span class="w">     </span>│<span class="w">       </span>│<span class="w">   </span>└──<span class="w"> </span>tangent_macro_expander.py
 <span class="w">     </span>│<span class="w">       </span>├──<span class="w"> </span>engine.py
 <span class="w">     </span>│<span class="w">       </span>├──<span class="w"> </span>__init__.py
 <span class="w">     </span>│<span class="w">       </span>├──<span class="w"> </span>iplan_storage_service.py
@@ -180,7 +234,8 @@ pip3<span class="w"> </span>install<span class="w"> </span>scarajectory
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>__init__.py
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>motion_command_formatter.py
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>protocol_parser.py
-<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>robot_response_dto.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>robot_response_dto.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>tool_command_formatter.py
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>serial_device_preferences.py
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>serial_port_scanner.py
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>serial_streamer.py
@@ -200,6 +255,8 @@ pip3<span class="w"> </span>install<span class="w"> </span>scarajectory
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>components/
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>canvas_renderer.py
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>canvas_tool_handler.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>dsl_editor_tab.py
+<span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>dsl_syntax_highlighter.py
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>__init__.py
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>jog_tab.py
 <span class="w">     </span>│<span class="w">   </span>│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>menu_bar.py
@@ -234,7 +291,7 @@ pip3<span class="w"> </span>install<span class="w"> </span>scarajectory
 <span class="w">         </span>├──<span class="w"> </span>registry.py
 <span class="w">         </span>└──<span class="w"> </span>validator.py
 
-<span class="w"> </span><span class="m">15</span><span class="w"> </span>directories,<span class="w"> </span><span class="m">103</span><span class="w"> </span>files
+<span class="w"> </span><span class="m">20</span><span class="w"> </span>directories,<span class="w"> </span><span class="m">155</span><span class="w"> </span>files
 </pre></div>
 </div>
 </section>
@@ -351,6 +408,56 @@ pip3<span class="w"> </span>install<span class="w"> </span>scarajectory
 <td><p>0</p></td>
 <td><p>100%</p></td>
 </tr>
+<tr class="row-even"><td><p>scarajectory/core/model/dsl/__init__.py</p></td>
+<td><p>9</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/model/dsl/iscara_instruction.py</p></td>
+<td><p>28</p></td>
+<td><p>5</p></td>
+<td><p>82%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/model/dsl/iscara_program.py</p></td>
+<td><p>24</p></td>
+<td><p>4</p></td>
+<td><p>83%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/model/dsl/scara_command_type.py</p></td>
+<td><p>44</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/model/dsl/scara_diagnostic.py</p></td>
+<td><p>22</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/model/dsl/scara_diagnostic_severity.py</p></td>
+<td><p>15</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/model/dsl/scara_instruction.py</p></td>
+<td><p>25</p></td>
+<td><p>1</p></td>
+<td><p>96%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/model/dsl/scara_program.py</p></td>
+<td><p>32</p></td>
+<td><p>9</p></td>
+<td><p>72%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/model/dsl/scara_token.py</p></td>
+<td><p>17</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/model/dsl/scara_token_type.py</p></td>
+<td><p>23</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
 <tr class="row-even"><td><p>scarajectory/core/model/itrajectory_plan.py</p></td>
 <td><p>31</p></td>
 <td><p>0</p></td>
@@ -388,8 +495,8 @@ pip3<span class="w"> </span>install<span class="w"> </span>scarajectory
 </tr>
 <tr class="row-odd"><td><p>scarajectory/core/model/trajectory_metrics.py</p></td>
 <td><p>37</p></td>
-<td><p>7</p></td>
-<td><p>81%</p></td>
+<td><p>5</p></td>
+<td><p>86%</p></td>
 </tr>
 <tr class="row-even"><td><p>scarajectory/core/model/trajectory_plan.py</p></td>
 <td><p>100</p></td>
@@ -412,202 +519,402 @@ pip3<span class="w"> </span>install<span class="w"> </span>scarajectory
 <td><p>100%</p></td>
 </tr>
 <tr class="row-even"><td><p>scarajectory/core/model/waypoint.py</p></td>
-<td><p>42</p></td>
-<td><p>4</p></td>
-<td><p>90%</p></td>
+<td><p>45</p></td>
+<td><p>2</p></td>
+<td><p>96%</p></td>
 </tr>
 <tr class="row-odd"><td><p>scarajectory/core/service/__init__.py</p></td>
 <td><p>9</p></td>
 <td><p>0</p></td>
 <td><p>100%</p></td>
 </tr>
-<tr class="row-even"><td><p>scarajectory/core/service/engine.py</p></td>
-<td><p>45</p></td>
-<td><p>3</p></td>
+<tr class="row-even"><td><p>scarajectory/core/service/dsl/__init__.py</p></td>
+<td><p>9</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/service/dsl/compiler/__init__.py</p></td>
+<td><p>9</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/service/dsl/compiler/arc_interpolator.py</p></td>
+<td><p>37</p></td>
+<td><p>25</p></td>
+<td><p>32%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/service/dsl/compiler/iarc_interpolator.py</p></td>
+<td><p>13</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/service/dsl/frame_macro_expander.py</p></td>
+<td><p>27</p></td>
+<td><p>10</p></td>
+<td><p>63%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/service/dsl/imacro_expander.py</p></td>
+<td><p>18</p></td>
+<td><p>2</p></td>
+<td><p>89%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/service/dsl/iscara_compiler.py</p></td>
+<td><p>19</p></td>
+<td><p>1</p></td>
+<td><p>95%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/service/dsl/iscara_dsl_service.py</p></td>
+<td><p>20</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/service/dsl/iscara_lexer.py</p></td>
+<td><p>15</p></td>
+<td><p>1</p></td>
 <td><p>93%</p></td>
 </tr>
-<tr class="row-odd"><td><p>scarajectory/core/service/iplan_storage_service.py</p></td>
-<td><p>16</p></td>
-<td><p>0</p></td>
-<td><p>100%</p></td>
-</tr>
-<tr class="row-even"><td><p>scarajectory/core/service/iservice.py</p></td>
-<td><p>26</p></td>
-<td><p>0</p></td>
-<td><p>100%</p></td>
-</tr>
-<tr class="row-odd"><td><p>scarajectory/core/service/istream_observer.py</p></td>
-<td><p>15</p></td>
-<td><p>0</p></td>
-<td><p>100%</p></td>
-</tr>
-<tr class="row-even"><td><p>scarajectory/core/service/itrajectory_observer.py</p></td>
-<td><p>14</p></td>
-<td><p>0</p></td>
-<td><p>100%</p></td>
-</tr>
-<tr class="row-odd"><td><p>scarajectory/core/service/itrajectory_streamer.py</p></td>
-<td><p>25</p></td>
-<td><p>0</p></td>
-<td><p>100%</p></td>
-</tr>
-<tr class="row-even"><td><p>scarajectory/core/service/itrajectory_validator.py</p></td>
-<td><p>18</p></td>
-<td><p>0</p></td>
-<td><p>100%</p></td>
-</tr>
-<tr class="row-odd"><td><p>scarajectory/core/service/plan_storage_service.py</p></td>
-<td><p>17</p></td>
-<td><p>0</p></td>
-<td><p>100%</p></td>
-</tr>
-<tr class="row-even"><td><p>scarajectory/core/service/trajectory_validator.py</p></td>
-<td><p>100</p></td>
+<tr class="row-odd"><td><p>scarajectory/core/service/dsl/iscara_parser.py</p></td>
 <td><p>19</p></td>
-<td><p>81%</p></td>
-</tr>
-<tr class="row-odd"><td><p>scarajectory/engine.py</p></td>
-<td><p>64</p></td>
-<td><p>30</p></td>
-<td><p>53%</p></td>
-</tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/__init__.py</p></td>
-<td><p>9</p></td>
-<td><p>0</p></td>
-<td><p>100%</p></td>
-</tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/cli/__init__.py</p></td>
-<td><p>9</p></td>
-<td><p>0</p></td>
-<td><p>100%</p></td>
-</tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/cli/engine.py</p></td>
-<td><p>39</p></td>
-<td><p>7</p></td>
-<td><p>82%</p></td>
-</tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/cli/icli.py</p></td>
-<td><p>15</p></td>
-<td><p>0</p></td>
-<td><p>100%</p></td>
-</tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/cli/setup/__init__.py</p></td>
-<td><p>9</p></td>
-<td><p>0</p></td>
-<td><p>100%</p></td>
-</tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/cli/setup/bundle.py</p></td>
-<td><p>22</p></td>
-<td><p>1</p></td>
-<td><p>95%</p></td>
-</tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/cli/setup/dep_validator.py</p></td>
-<td><p>36</p></td>
-<td><p>5</p></td>
-<td><p>86%</p></td>
-</tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/cli/setup/dependencies.py</p></td>
-<td><p>18</p></td>
-<td><p>0</p></td>
-<td><p>100%</p></td>
-</tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/cli/setup/factory.py</p></td>
-<td><p>37</p></td>
-<td><p>1</p></td>
-<td><p>97%</p></td>
-</tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/cli/setup/keys.py</p></td>
-<td><p>28</p></td>
-<td><p>0</p></td>
-<td><p>100%</p></td>
-</tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/cli/setup/opt_validator.py</p></td>
-<td><p>36</p></td>
-<td><p>5</p></td>
-<td><p>86%</p></td>
-</tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/cli/setup/options.py</p></td>
-<td><p>17</p></td>
-<td><p>0</p></td>
-<td><p>100%</p></td>
-</tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/cli/setup/registry.py</p></td>
-<td><p>24</p></td>
-<td><p>1</p></td>
-<td><p>96%</p></td>
-</tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/cli/setup/validator.py</p></td>
-<td><p>43</p></td>
-<td><p>5</p></td>
-<td><p>88%</p></td>
-</tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/command/__init__.py</p></td>
-<td><p>9</p></td>
-<td><p>0</p></td>
-<td><p>100%</p></td>
-</tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/command/command.py</p></td>
-<td><p>16</p></td>
-<td><p>0</p></td>
-<td><p>100%</p></td>
-</tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/command/icommand_definition.py</p></td>
-<td><p>14</p></td>
-<td><p>0</p></td>
-<td><p>100%</p></td>
-</tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/command/icommand_executor.py</p></td>
-<td><p>14</p></td>
-<td><p>0</p></td>
-<td><p>100%</p></td>
-</tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/command/studio_command_definition.py</p></td>
-<td><p>24</p></td>
-<td><p>1</p></td>
-<td><p>96%</p></td>
-</tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/command/studio_command_executor.py</p></td>
-<td><p>38</p></td>
-<td><p>15</p></td>
-<td><p>61%</p></td>
-</tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/communication/__init__.py</p></td>
-<td><p>9</p></td>
-<td><p>0</p></td>
-<td><p>100%</p></td>
-</tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/communication/protocol/__init__.py</p></td>
-<td><p>8</p></td>
-<td><p>0</p></td>
-<td><p>100%</p></td>
-</tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/communication/protocol/command_formatter.py</p></td>
-<td><p>12</p></td>
-<td><p>0</p></td>
-<td><p>100%</p></td>
-</tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/communication/protocol/command_templates.py</p></td>
-<td><p>44</p></td>
 <td><p>2</p></td>
-<td><p>95%</p></td>
+<td><p>89%</p></td>
 </tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/communication/protocol/config_command_formatter.py</p></td>
+<tr class="row-even"><td><p>scarajectory/core/service/dsl/iscara_plan_exporter.py</p></td>
+<td><p>14</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/service/dsl/jump_macro_expander.py</p></td>
+<td><p>34</p></td>
+<td><p>17</p></td>
+<td><p>50%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/service/dsl/linter/__init__.py</p></td>
+<td><p>9</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/service/dsl/linter/iscara_linter.py</p></td>
+<td><p>15</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/service/dsl/linter/scara_linter.py</p></td>
+<td><p>93</p></td>
+<td><p>6</p></td>
+<td><p>94%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/service/dsl/pallet_macro_expander.py</p></td>
+<td><p>42</p></td>
+<td><p>24</p></td>
+<td><p>43%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/service/dsl/parser/__init__.py</p></td>
+<td><p>9</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/service/dsl/parser/approach_retract_parser.py</p></td>
 <td><p>22</p></td>
 <td><p>4</p></td>
 <td><p>82%</p></td>
 </tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/communication/protocol/motion_command_formatter.py</p></td>
-<td><p>57</p></td>
+<tr class="row-even"><td><p>scarajectory/core/service/dsl/parser/arc_command_parser.py</p></td>
+<td><p>22</p></td>
+<td><p>4</p></td>
+<td><p>82%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/service/dsl/parser/config_command_parser.py</p></td>
+<td><p>43</p></td>
+<td><p>12</p></td>
+<td><p>72%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/service/dsl/parser/flow_command_parser.py</p></td>
+<td><p>36</p></td>
+<td><p>6</p></td>
+<td><p>83%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/service/dsl/parser/frame_command_parser.py</p></td>
+<td><p>23</p></td>
+<td><p>5</p></td>
+<td><p>78%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/service/dsl/parser/icommand_parser.py</p></td>
+<td><p>18</p></td>
+<td><p>2</p></td>
+<td><p>89%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/service/dsl/parser/jog_command_parser.py</p></td>
+<td><p>27</p></td>
+<td><p>10</p></td>
+<td><p>63%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/service/dsl/parser/jump_command_parser.py</p></td>
+<td><p>20</p></td>
+<td><p>2</p></td>
+<td><p>90%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/service/dsl/parser/motion_command_parser.py</p></td>
+<td><p>24</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/service/dsl/parser/pallet_command_parser.py</p></td>
+<td><p>26</p></td>
+<td><p>8</p></td>
+<td><p>69%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/service/dsl/parser/parameter_extractor.py</p></td>
+<td><p>40</p></td>
+<td><p>8</p></td>
+<td><p>80%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/service/dsl/parser/probe_command_parser.py</p></td>
+<td><p>20</p></td>
+<td><p>2</p></td>
+<td><p>90%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/service/dsl/parser/tool_command_parser.py</p></td>
+<td><p>32</p></td>
+<td><p>3</p></td>
+<td><p>91%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/service/dsl/parser/tool_orient_command_parser.py</p></td>
+<td><p>27</p></td>
 <td><p>9</p></td>
-<td><p>84%</p></td>
+<td><p>67%</p></td>
 </tr>
-<tr class="row-even"><td><p>scarajectory/infrastructure/communication/protocol/protocol_parser.py</p></td>
-<td><p>83</p></td>
-<td><p>28</p></td>
-<td><p>66%</p></td>
+<tr class="row-odd"><td><p>scarajectory/core/service/dsl/parser/zone_command_parser.py</p></td>
+<td><p>27</p></td>
+<td><p>1</p></td>
+<td><p>96%</p></td>
 </tr>
-<tr class="row-odd"><td><p>scarajectory/infrastructure/communication/protocol/robot_response_dto.py</p></td>
+<tr class="row-even"><td><p>scarajectory/core/service/dsl/scara_compiler.py</p></td>
+<td><p>159</p></td>
+<td><p>49</p></td>
+<td><p>69%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/service/dsl/scara_compiler_context.py</p></td>
+<td><p>40</p></td>
+<td><p>7</p></td>
+<td><p>82%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/service/dsl/scara_dsl_service.py</p></td>
+<td><p>61</p></td>
+<td><p>3</p></td>
+<td><p>95%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/service/dsl/scara_lexer.py</p></td>
+<td><p>51</p></td>
+<td><p>5</p></td>
+<td><p>90%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/service/dsl/scara_parser.py</p></td>
+<td><p>63</p></td>
+<td><p>5</p></td>
+<td><p>92%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/service/dsl/scara_plan_exporter.py</p></td>
+<td><p>25</p></td>
+<td><p>1</p></td>
+<td><p>96%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/service/dsl/tangent_macro_expander.py</p></td>
+<td><p>30</p></td>
+<td><p>12</p></td>
+<td><p>60%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/service/engine.py</p></td>
+<td><p>45</p></td>
+<td><p>3</p></td>
+<td><p>93%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/service/iplan_storage_service.py</p></td>
+<td><p>16</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/service/iservice.py</p></td>
+<td><p>26</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/service/istream_observer.py</p></td>
+<td><p>15</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/service/itrajectory_observer.py</p></td>
+<td><p>14</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/service/itrajectory_streamer.py</p></td>
+<td><p>25</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/service/itrajectory_validator.py</p></td>
+<td><p>18</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/core/service/plan_storage_service.py</p></td>
 <td><p>17</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/core/service/trajectory_validator.py</p></td>
+<td><p>100</p></td>
+<td><p>17</p></td>
+<td><p>83%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/engine.py</p></td>
+<td><p>64</p></td>
+<td><p>30</p></td>
+<td><p>53%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/__init__.py</p></td>
+<td><p>9</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/cli/__init__.py</p></td>
+<td><p>9</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/cli/engine.py</p></td>
+<td><p>39</p></td>
+<td><p>7</p></td>
+<td><p>82%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/cli/icli.py</p></td>
+<td><p>15</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/cli/setup/__init__.py</p></td>
+<td><p>9</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/cli/setup/bundle.py</p></td>
+<td><p>22</p></td>
+<td><p>1</p></td>
+<td><p>95%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/cli/setup/dep_validator.py</p></td>
+<td><p>36</p></td>
+<td><p>5</p></td>
+<td><p>86%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/cli/setup/dependencies.py</p></td>
+<td><p>18</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/cli/setup/factory.py</p></td>
+<td><p>37</p></td>
+<td><p>1</p></td>
+<td><p>97%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/cli/setup/keys.py</p></td>
+<td><p>28</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/cli/setup/opt_validator.py</p></td>
+<td><p>36</p></td>
+<td><p>5</p></td>
+<td><p>86%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/cli/setup/options.py</p></td>
+<td><p>17</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/cli/setup/registry.py</p></td>
+<td><p>24</p></td>
+<td><p>1</p></td>
+<td><p>96%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/cli/setup/validator.py</p></td>
+<td><p>43</p></td>
+<td><p>5</p></td>
+<td><p>88%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/command/__init__.py</p></td>
+<td><p>9</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/command/command.py</p></td>
+<td><p>16</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/command/icommand_definition.py</p></td>
+<td><p>14</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/command/icommand_executor.py</p></td>
+<td><p>14</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/command/studio_command_definition.py</p></td>
+<td><p>24</p></td>
+<td><p>1</p></td>
+<td><p>96%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/command/studio_command_executor.py</p></td>
+<td><p>38</p></td>
+<td><p>15</p></td>
+<td><p>61%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/communication/__init__.py</p></td>
+<td><p>9</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/communication/protocol/__init__.py</p></td>
+<td><p>8</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/communication/protocol/command_formatter.py</p></td>
+<td><p>13</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/communication/protocol/command_templates.py</p></td>
+<td><p>46</p></td>
+<td><p>2</p></td>
+<td><p>96%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/communication/protocol/config_command_formatter.py</p></td>
+<td><p>22</p></td>
+<td><p>4</p></td>
+<td><p>82%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/communication/protocol/motion_command_formatter.py</p></td>
+<td><p>51</p></td>
+<td><p>7</p></td>
+<td><p>86%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/communication/protocol/protocol_parser.py</p></td>
+<td><p>108</p></td>
+<td><p>30</p></td>
+<td><p>72%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/communication/protocol/robot_response_dto.py</p></td>
+<td><p>17</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/communication/protocol/tool_command_formatter.py</p></td>
+<td><p>25</p></td>
 <td><p>0</p></td>
 <td><p>100%</p></td>
 </tr>
@@ -618,13 +925,13 @@ pip3<span class="w"> </span>install<span class="w"> </span>scarajectory
 </tr>
 <tr class="row-odd"><td><p>scarajectory/infrastructure/communication/serial_port_scanner.py</p></td>
 <td><p>36</p></td>
-<td><p>7</p></td>
-<td><p>81%</p></td>
+<td><p>5</p></td>
+<td><p>86%</p></td>
 </tr>
 <tr class="row-even"><td><p>scarajectory/infrastructure/communication/serial_streamer.py</p></td>
-<td><p>162</p></td>
-<td><p>95</p></td>
-<td><p>41%</p></td>
+<td><p>200</p></td>
+<td><p>129</p></td>
+<td><p>36%</p></td>
 </tr>
 <tr class="row-odd"><td><p>scarajectory/infrastructure/communication/stream_session.py</p></td>
 <td><p>19</p></td>
@@ -676,15 +983,25 @@ pip3<span class="w"> </span>install<span class="w"> </span>scarajectory
 <td><p>0</p></td>
 <td><p>100%</p></td>
 </tr>
+<tr class="row-odd"><td><p>scarajectory/infrastructure/gui/components/dsl_editor_tab.py</p></td>
+<td><p>188</p></td>
+<td><p>80</p></td>
+<td><p>57%</p></td>
+</tr>
+<tr class="row-even"><td><p>scarajectory/infrastructure/gui/components/dsl_syntax_highlighter.py</p></td>
+<td><p>54</p></td>
+<td><p>0</p></td>
+<td><p>100%</p></td>
+</tr>
 <tr class="row-odd"><td><p>scarajectory/infrastructure/gui/components/jog_tab.py</p></td>
 <td><p>67</p></td>
 <td><p>8</p></td>
 <td><p>88%</p></td>
 </tr>
 <tr class="row-even"><td><p>scarajectory/infrastructure/gui/components/menu_bar.py</p></td>
-<td><p>75</p></td>
-<td><p>14</p></td>
-<td><p>81%</p></td>
+<td><p>103</p></td>
+<td><p>36</p></td>
+<td><p>65%</p></td>
 </tr>
 <tr class="row-odd"><td><p>scarajectory/infrastructure/gui/components/preview_tab.py</p></td>
 <td><p>32</p></td>
@@ -702,9 +1019,9 @@ pip3<span class="w"> </span>install<span class="w"> </span>scarajectory
 <td><p>83%</p></td>
 </tr>
 <tr class="row-even"><td><p>scarajectory/infrastructure/gui/components/streamer_tab.py</p></td>
-<td><p>112</p></td>
-<td><p>41</p></td>
-<td><p>63%</p></td>
+<td><p>152</p></td>
+<td><p>58</p></td>
+<td><p>62%</p></td>
 </tr>
 <tr class="row-odd"><td><p>scarajectory/infrastructure/gui/components/toolbar.py</p></td>
 <td><p>73</p></td>
@@ -722,9 +1039,9 @@ pip3<span class="w"> </span>install<span class="w"> </span>scarajectory
 <td><p>76%</p></td>
 </tr>
 <tr class="row-even"><td><p>scarajectory/infrastructure/gui/controls.py</p></td>
-<td><p>44</p></td>
-<td><p>3</p></td>
-<td><p>93%</p></td>
+<td><p>51</p></td>
+<td><p>4</p></td>
+<td><p>92%</p></td>
 </tr>
 <tr class="row-odd"><td><p>scarajectory/infrastructure/gui/engine.py</p></td>
 <td><p>98</p></td>
@@ -757,7 +1074,7 @@ pip3<span class="w"> </span>install<span class="w"> </span>scarajectory
 <td><p>62%</p></td>
 </tr>
 <tr class="row-odd"><td><p>scarajectory/infrastructure/gui/theme.py</p></td>
-<td><p>58</p></td>
+<td><p>57</p></td>
 <td><p>0</p></td>
 <td><p>100%</p></td>
 </tr>
@@ -812,8 +1129,8 @@ pip3<span class="w"> </span>install<span class="w"> </span>scarajectory
 <td><p>91%</p></td>
 </tr>
 <tr class="row-even"><td><p>Total</p></td>
-<td><p>3698</p></td>
-<td><p>728</p></td>
+<td><p>5579</p></td>
+<td><p>1139</p></td>
 <td><p>80%</p></td>
 </tr>
 </tbody>
@@ -891,6 +1208,56 @@ pip3<span class="w"> </span>install<span class="w"> </span>scarajectory
 * Use the <strong>Manual Jog</strong> tab for directional jog movements, vacuum pump activation, release valve triggers, and homing.</p></li>
 </ol>
 </section>
+<section id="digital-twin-integration-with-scaraemu">
+<h2>🤖 Digital Twin Integration with SCARAEmu<a class="headerlink" href="#digital-twin-integration-with-scaraemu" title="Link to this heading">¶</a></h2>
+<p><strong>scarajectory</strong> seamlessly integrates with <a class="reference external" href="https://github.com/vroncevic/scaraemu">scaraemu</a> as a software-in-the-loop (SITL) Digital Twin. This allows you to visually simulate, animate, and validate trajectories and <code class="docutils literal notranslate"><span class="pre">.scara</span></code> DSL programs in 2D/3D before deploying to physical hardware.</p>
+<section id="mode-1-one-click-simulation-from-dsl-editor">
+<h3>Mode 1: One-Click Simulation from DSL Editor<a class="headerlink" href="#mode-1-one-click-simulation-from-dsl-editor" title="Link to this heading">¶</a></h3>
+<ol class="arabic simple">
+<li><p>In <strong>scarajectory</strong>, open the <strong>SCARA DSL Editor</strong> tab.</p></li>
+<li><p>Write or load any <code class="docutils literal notranslate"><span class="pre">.scara</span></code> program (or select from bundled examples in <code class="docutils literal notranslate"><span class="pre">examples/</span></code>).</p></li>
+<li><p>Click the <strong>🚀 Preview in SCARAEmu</strong> button located at the bottom toolbar.</p></li>
+<li><p><strong>scarajectory</strong> automatically launches <strong>scaraemu</strong> in a background subprocess, passing the active trajectory file via <code class="docutils literal notranslate"><span class="pre">--file</span></code>.</p></li>
+<li><p>The 2D Planar and 3D Z-Tower canvases immediately render the robot arm executing the trajectory.</p></li>
+</ol>
+</section>
+<section id="mode-2-real-time-closed-loop-tcp-streaming">
+<h3>Mode 2: Real-Time Closed-Loop TCP Streaming<a class="headerlink" href="#mode-2-real-time-closed-loop-tcp-streaming" title="Link to this heading">¶</a></h3>
+<ol class="arabic">
+<li><p>Launch <strong>scaraemu</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>main.py<span class="w"> </span>emulator
+</pre></div>
+</div>
+</li>
+<li><p>Activate the Virtual Robot Server:
+* Click the <strong>🌐 Virtual Server: OFF</strong> toggle button on the top status bar.
+* The button turns green and displays <strong>🌐 Virtual Server: 8888</strong>, listening on <code class="docutils literal notranslate"><span class="pre">127.0.0.1:8888</span></code>.</p></li>
+<li><p>Launch <strong>scarajectory</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>main.py<span class="w"> </span>studio
+</pre></div>
+</div>
+</li>
+<li><p>Compile DSL code to trajectory:
+* In the <strong>SCARA DSL Editor</strong> tab, load or write your <code class="docutils literal notranslate"><span class="pre">.scara</span></code> script.
+* Click <strong>⚡ Compile to Plan</strong>. The AST compiler compiles Cartesian paths, macros, and action commands into the active trajectory plan.</p></li>
+<li><p>Navigate to the <strong>Hardware Streamer</strong> tab.</p></li>
+<li><p>In the <strong>Port</strong> dropdown, select <strong>127.0.0.1:8888 (Digital Twin)</strong>.</p></li>
+<li><p>Click <strong>Connect</strong>. The status bar updates to <code class="docutils literal notranslate"><span class="pre">Streamer:</span> <span class="pre">Connected</span> <span class="pre">to</span> <span class="pre">127.0.0.1:8888</span></code>.</p></li>
+<li><p>Click <strong>Stream Trajectory</strong> (or use the <strong>Manual Jog</strong> controls):
+* Trajectory waypoints (<code class="docutils literal notranslate"><span class="pre">&lt;pt#X#Y#Z#PHI#SPEED#end&gt;</span></code>) stream live over the loopback TCP socket.
+* <strong>scaraemu</strong> smoothly animates the dual-link arm and carriage along the path.
+* Closed-loop protocol acknowledgments (<code class="docutils literal notranslate"><span class="pre">&lt;RESP:ACK#QUEUE=1&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;RESP:MOVE_DONE#...&gt;</span></code>) flow back to <strong>scarajectory</strong>, dynamically driving the streaming progress bar.</p></li>
+</ol>
+</section>
+<section id="mode-3-direct-file-loading-in-scaraemu">
+<h3>Mode 3: Direct File Loading in SCARAEmu<a class="headerlink" href="#mode-3-direct-file-loading-in-scaraemu" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Open <strong>scaraemu</strong> and navigate to the <strong>Trajectories</strong> tab.</p></li>
+<li><p>In the <strong>SCARA DSL Script</strong> dropdown, select any of the 12 bundled programs (e.g. <code class="docutils literal notranslate"><span class="pre">pick_and_place.scara</span></code>, <code class="docutils literal notranslate"><span class="pre">engrave_spiral.scara</span></code>, <code class="docutils literal notranslate"><span class="pre">pallet_matrix.scara</span></code>).</p></li>
+<li><p>Or click <strong>📂 Load</strong> to load any custom <code class="docutils literal notranslate"><span class="pre">.scara</span></code> script or exported <code class="docutils literal notranslate"><span class="pre">plan.json</span></code> file.</p></li>
+</ul>
+</section>
+</section>
 </section>
 <section id="docs">
 <h1>📚 Docs<a class="headerlink" href="#docs" title="Link to this heading">¶</a></h1>
@@ -936,6 +1303,12 @@ at your option, any later version of Python 3 you may have available.</p>
 <li><a class="reference internal" href="#usage">🛠 Usage</a><ul>
 <li><a class="reference internal" href="#cli-command-options">CLI Command Options</a></li>
 <li><a class="reference internal" href="#interactive-motion-planning-workflow">Interactive Motion Planning Workflow</a></li>
+<li><a class="reference internal" href="#digital-twin-integration-with-scaraemu">🤖 Digital Twin Integration with SCARAEmu</a><ul>
+<li><a class="reference internal" href="#mode-1-one-click-simulation-from-dsl-editor">Mode 1: One-Click Simulation from DSL Editor</a></li>
+<li><a class="reference internal" href="#mode-2-real-time-closed-loop-tcp-streaming">Mode 2: Real-Time Closed-Loop TCP Streaming</a></li>
+<li><a class="reference internal" href="#mode-3-direct-file-loading-in-scaraemu">Mode 3: Direct File Loading in SCARAEmu</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#docs">📚 Docs</a></li>

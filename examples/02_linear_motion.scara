@@ -1,0 +1,18 @@
+# ==============================================================================
+# 02_linear_motion.scara - Cartesian Linear Motion (MOVE_L)
+# ==============================================================================
+# Moves end-effector linearly in Cartesian space (X, Y, Z, PHI).
+# Uses SPEED WORK and SPEED RAPID to configure trajectory velocity.
+# ==============================================================================
+
+ENABLE
+HOME
+
+# Set work and rapid feedrates
+SPEED WORK 50.0
+SPEED RAPID 120.0
+
+# Linear interpolation to target points
+MOVE_L X=150.0 Y=50.0 Z=30.0 PHI=0.0
+MOVE_L X=150.0 Y=-50.0 Z=30.0 PHI=0.0
+MOVE_L X=180.0 Y=0.0 Z=40.0 PHI=45.0

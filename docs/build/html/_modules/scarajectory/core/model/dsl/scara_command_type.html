@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>scarajectory.core.model.dsl.scara_command_type &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/classic.css?v=514cf933" />
+    
+    <script src="../../../../../_static/documentation_options.js?v=57319df4"></script>
+    <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.core.model.dsl.scara_command_type</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for scarajectory.core.model.dsl.scara_command_type</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Module</span>
+<span class="sd">    scara_command_type.py</span>
+<span class="sd">Copyright</span>
+<span class="sd">    Copyright (C) 2026 Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;</span>
+<span class="sd">    scarajectory is free software: you can redistribute it and/or modify it</span>
+<span class="sd">    under the terms of the GNU General Public License as published by the</span>
+<span class="sd">    Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">    (at your option) any later version.</span>
+<span class="sd">    scarajectory is distributed in the hope that it will be useful, but</span>
+<span class="sd">    WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
+<span class="sd">    See the GNU General Public License for more details.</span>
+<span class="sd">    You should have received a copy of the GNU General Public License along</span>
+<span class="sd">    with this program. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">Info</span>
+<span class="sd">    Defines ScaraCommandType enumeration representing all supported SCARA DSL command types.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">unique</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
+<span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
+
+
+<div class="viewcode-block" id="ScaraCommandType">
+<a class="viewcode-back" href="../../../../../scarajectory.core.model.dsl.scara_command_type.html#scarajectory.core.model.dsl.scara_command_type.ScaraCommandType">[docs]</a>
+<span class="nd">@unique</span>
+<span class="k">class</span> <span class="nc">ScaraCommandType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Enumeration of supported SCARA Domain-Specific Language (DSL) command types.</span>
+
+<span class="sd">        It defines:</span>
+
+<span class="sd">            :attributes:</span>
+<span class="sd">                | CONFIG_ELBOW - Kinematic elbow arm configuration (LEFT or RIGHT).</span>
+<span class="sd">                | SPEED - Feedrate speed setting (RAPID or WORK).</span>
+<span class="sd">                | ACCEL - Path acceleration setting.</span>
+<span class="sd">                | OVERRIDE - Real-time global speed override percentage.</span>
+<span class="sd">                | HOME - Multi-axis homing sequence.</span>
+<span class="sd">                | MOVE_J - Fast point-to-point joint move.</span>
+<span class="sd">                | MOVE_L - Linear Cartesian interpolated motion.</span>
+<span class="sd">                | JUMP - 3D parabolic arch pick-and-place motion.</span>
+<span class="sd">                | ARC_CW - Circular arc clockwise.</span>
+<span class="sd">                | ARC_CCW - Circular arc counter-clockwise.</span>
+<span class="sd">                | SPLINE - Smooth spline / Bézier curve interpolation.</span>
+<span class="sd">                | APPROACH - Relative vertical approach along Z.</span>
+<span class="sd">                | RETRACT - Relative vertical retract along Z.</span>
+<span class="sd">                | JOG_AXIS - Relative manual jog along Cartesian axis.</span>
+<span class="sd">                | JOG_JOINT - Relative manual rotation of joint.</span>
+<span class="sd">                | ZONE - Corner path blending mode (FINE or BLEND).</span>
+<span class="sd">                | TOOL_ORIENT - End-effector 4th axis orientation mode.</span>
+<span class="sd">                | FRAME_SET - Definition of local work coordinate frame.</span>
+<span class="sd">                | FRAME_RESET - Reset coordinates to base world frame.</span>
+<span class="sd">                | PALLET_DEF - Matrix pallet definition.</span>
+<span class="sd">                | MOVE_PALLET - Move to index in defined pallet.</span>
+<span class="sd">                | PROBE - Tactile contact search until trigger.</span>
+<span class="sd">                | TOOL - End-effector vertical actuation (UP or DOWN).</span>
+<span class="sd">                | PUMP - Vacuum pump actuation (ON or OFF).</span>
+<span class="sd">                | VALVE - Release valve actuation (ON or OFF).</span>
+<span class="sd">                | WAIT_MS - Time delay in milliseconds.</span>
+<span class="sd">                | SYNC - Wait for motion queue buffer to complete.</span>
+<span class="sd">                | HOLD - Feed hold / pause trajectory.</span>
+<span class="sd">                | RESUME - Resume paused trajectory.</span>
+<span class="sd">                | ESTOP - Immediate emergency stop.</span>
+<span class="sd">                | ENABLE - Energize robot stepper driver stages.</span>
+<span class="sd">                | DISABLE - De-energize robot stepper driver stages.</span>
+<span class="sd">            :methods:</span>
+<span class="sd">                | None.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">CONFIG_ELBOW</span> <span class="o">=</span> <span class="s1">&#39;CONFIG_ELBOW&#39;</span>
+    <span class="n">SPEED</span> <span class="o">=</span> <span class="s1">&#39;SPEED&#39;</span>
+    <span class="n">ACCEL</span> <span class="o">=</span> <span class="s1">&#39;ACCEL&#39;</span>
+    <span class="n">OVERRIDE</span> <span class="o">=</span> <span class="s1">&#39;OVERRIDE&#39;</span>
+    <span class="n">HOME</span> <span class="o">=</span> <span class="s1">&#39;HOME&#39;</span>
+    <span class="n">MOVE_J</span> <span class="o">=</span> <span class="s1">&#39;MOVE_J&#39;</span>
+    <span class="n">MOVE_L</span> <span class="o">=</span> <span class="s1">&#39;MOVE_L&#39;</span>
+    <span class="n">JUMP</span> <span class="o">=</span> <span class="s1">&#39;JUMP&#39;</span>
+    <span class="n">ARC_CW</span> <span class="o">=</span> <span class="s1">&#39;ARC_CW&#39;</span>
+    <span class="n">ARC_CCW</span> <span class="o">=</span> <span class="s1">&#39;ARC_CCW&#39;</span>
+    <span class="n">SPLINE</span> <span class="o">=</span> <span class="s1">&#39;SPLINE&#39;</span>
+    <span class="n">APPROACH</span> <span class="o">=</span> <span class="s1">&#39;APPROACH&#39;</span>
+    <span class="n">RETRACT</span> <span class="o">=</span> <span class="s1">&#39;RETRACT&#39;</span>
+    <span class="n">JOG_AXIS</span> <span class="o">=</span> <span class="s1">&#39;JOG_AXIS&#39;</span>
+    <span class="n">JOG_JOINT</span> <span class="o">=</span> <span class="s1">&#39;JOG_JOINT&#39;</span>
+    <span class="n">ZONE</span> <span class="o">=</span> <span class="s1">&#39;ZONE&#39;</span>
+    <span class="n">TOOL_ORIENT</span> <span class="o">=</span> <span class="s1">&#39;TOOL_ORIENT&#39;</span>
+    <span class="n">FRAME_SET</span> <span class="o">=</span> <span class="s1">&#39;FRAME_SET&#39;</span>
+    <span class="n">FRAME_RESET</span> <span class="o">=</span> <span class="s1">&#39;FRAME_RESET&#39;</span>
+    <span class="n">PALLET_DEF</span> <span class="o">=</span> <span class="s1">&#39;PALLET_DEF&#39;</span>
+    <span class="n">MOVE_PALLET</span> <span class="o">=</span> <span class="s1">&#39;MOVE_PALLET&#39;</span>
+    <span class="n">PROBE</span> <span class="o">=</span> <span class="s1">&#39;PROBE&#39;</span>
+    <span class="n">TOOL</span> <span class="o">=</span> <span class="s1">&#39;TOOL&#39;</span>
+    <span class="n">PUMP</span> <span class="o">=</span> <span class="s1">&#39;PUMP&#39;</span>
+    <span class="n">VALVE</span> <span class="o">=</span> <span class="s1">&#39;VALVE&#39;</span>
+    <span class="n">WAIT_MS</span> <span class="o">=</span> <span class="s1">&#39;WAIT_MS&#39;</span>
+    <span class="n">SYNC</span> <span class="o">=</span> <span class="s1">&#39;SYNC&#39;</span>
+    <span class="n">HOLD</span> <span class="o">=</span> <span class="s1">&#39;HOLD&#39;</span>
+    <span class="n">RESUME</span> <span class="o">=</span> <span class="s1">&#39;RESUME&#39;</span>
+    <span class="n">ESTOP</span> <span class="o">=</span> <span class="s1">&#39;ESTOP&#39;</span>
+    <span class="n">ENABLE</span> <span class="o">=</span> <span class="s1">&#39;ENABLE&#39;</span>
+    <span class="n">DISABLE</span> <span class="o">=</span> <span class="s1">&#39;DISABLE&#39;</span></div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.core.model.dsl.scara_command_type</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

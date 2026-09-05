@@ -86,8 +86,6 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <div class="line">format_pause - Formats streaming pause command.</div>
 <div class="line">format_resume - Formats streaming resume command.</div>
 <div class="line">format_home - Formats homing sequence command.</div>
-<div class="line">format_pump - Formats vacuum pump state command.</div>
-<div class="line">format_valve - Formats release valve state command.</div>
 <div class="line">format_move - Formats waypoint motion command from Waypoint model.</div>
 <div class="line">format_jog - Formats manual axis jog step command.</div>
 <div class="line">format_set_elbow - Formats set elbow configuration command.</div>
@@ -232,23 +230,6 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_pump">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_pump</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/motion_command_formatter.html#MotionCommandFormatter.format_pump"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_pump" title="Link to this definition">¶</a></dt>
-<dd><p>Formats vacuum pump control command.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>state</strong> – True for pump ON, False for OFF.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Formatted pump command string.</p>
-</dd>
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_resume">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_resume</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/motion_command_formatter.html#MotionCommandFormatter.format_resume"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_resume" title="Link to this definition">¶</a></dt>
 <dd><p>Formats streaming resume command.</p>
@@ -293,23 +274,6 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_valve">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_valve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/motion_command_formatter.html#MotionCommandFormatter.format_valve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_valve" title="Link to this definition">¶</a></dt>
-<dd><p>Formats release valve control command.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>state</strong> – True for valve ON, False for OFF.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Formatted valve command string.</p>
-</dd>
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 </section>
@@ -335,11 +299,9 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_jog"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_jog()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_move"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_move()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_pause"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_pause()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_pump"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_pump()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_resume"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_resume()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_set_elbow"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_set_elbow()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_status"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_status()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_valve"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_valve()</span></code></a></li>
 </ul>
 </li>
 </ul>

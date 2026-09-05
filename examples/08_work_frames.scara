@@ -1,0 +1,21 @@
+# ==============================================================================
+# 08_work_frames.scara - Work Coordinate Frames (WCS)
+# ==============================================================================
+# FRAME_DEF defines a named local coordinate system with X, Y origin and rotation angle.
+# FRAME_SET shifts subsequent coordinates to local frame.
+# FRAME_RESET restores the base robot origin.
+# ==============================================================================
+
+ENABLE
+HOME
+
+# Set inclined inspection station frame (origin at X=130, Y=30, angle 15 deg)
+FRAME_SET X=130.0 Y=30.0 ANGLE=15.0
+
+# Moves specified relative to STATION_A local coordinates
+MOVE_L X=0.0 Y=0.0 Z=20.0 PHI=0.0 SPEED=40.0
+MOVE_L X=20.0 Y=0.0 Z=20.0 PHI=0.0 SPEED=40.0
+MOVE_L X=20.0 Y=20.0 Z=20.0 PHI=0.0 SPEED=40.0
+
+# Restore base robot coordinate system
+FRAME_RESET

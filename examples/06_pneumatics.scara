@@ -1,0 +1,28 @@
+# ==============================================================================
+# 06_pneumatics.scara - Vacuum Suction & Blow-Off Valve Control
+# ==============================================================================
+# Actuates pneumatic vacuum pump and blow-off valve with dwell pauses.
+# Rule: Pump and valve must never be ON simultaneously (pneumatic contention).
+# ==============================================================================
+
+ENABLE
+HOME
+
+# Move down to pickup surface
+MOVE_L X=150.0 Y=50.0 Z=5.0 PHI=0.0 SPEED=40.0
+
+# Engage vacuum pump and wait 100ms for pressure buildup
+PUMP ON
+WAIT_MS 100
+
+# Retract with part
+MOVE_L X=150.0 Y=50.0 Z=40.0 PHI=0.0 SPEED=60.0
+
+# Move to dropoff location
+MOVE_L X=160.0 Y=-50.0 Z=10.0 PHI=0.0 SPEED=60.0
+
+# Disengage pump and activate release valve for 50ms
+PUMP OFF
+VALVE ON
+WAIT_MS 50
+VALVE OFF

@@ -9,6 +9,8 @@ Submodules
 
    scarajectory.infrastructure.gui.components.canvas_renderer
    scarajectory.infrastructure.gui.components.canvas_tool_handler
+   scarajectory.infrastructure.gui.components.dsl_editor_tab
+   scarajectory.infrastructure.gui.components.dsl_syntax_highlighter
    scarajectory.infrastructure.gui.components.jog_tab
    scarajectory.infrastructure.gui.components.menu_bar
    scarajectory.infrastructure.gui.components.preview_tab

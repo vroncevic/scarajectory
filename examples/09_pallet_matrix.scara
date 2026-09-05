@@ -1,0 +1,21 @@
+# ==============================================================================
+# 09_pallet_matrix.scara - Palletizing Matrix Grid (PALLET_DEF / MOVE_PALLET)
+# ==============================================================================
+# PALLET_DEF configures a 2D matrix: rows, cols, pitch spacing, origin, and angle.
+# MOVE_PALLET moves directly to zero-indexed cell (cell 0, cell 1, ...).
+# ==============================================================================
+
+ENABLE
+HOME
+
+# Define 2x3 component blister tray (pitch dx=20mm, dy=25mm)
+PALLET_DEF TRAY ROWS=2 COLS=3 DX=20.0 DY=25.0 X=120.0 Y=-40.0 ANGLE=0.0
+
+# Place part into cell 0 (Row 0, Col 0)
+MOVE_PALLET TRAY INDEX=0 Z=15.0 SPEED=50.0
+
+# Place part into cell 4 (Row 1, Col 1)
+MOVE_PALLET TRAY INDEX=4 Z=15.0 SPEED=50.0
+
+# Place part into cell 5 (Row 1, Col 2)
+MOVE_PALLET TRAY INDEX=5 Z=15.0 SPEED=50.0

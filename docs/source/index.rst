@@ -122,6 +122,17 @@ Tool structure
          │   │   ├── canvas_interaction_state.py
          │   │   ├── canvas_settings_dto.py
          │   │   ├── canvas_tool_mode.py
+         │   │   ├── dsl/
+         │   │   │   ├── __init__.py
+         │   │   │   ├── iscara_instruction.py
+         │   │   │   ├── iscara_program.py
+         │   │   │   ├── scara_command_type.py
+         │   │   │   ├── scara_diagnostic.py
+         │   │   │   ├── scara_diagnostic_severity.py
+         │   │   │   ├── scara_instruction.py
+         │   │   │   ├── scara_program.py
+         │   │   │   ├── scara_token.py
+         │   │   │   └── scara_token_type.py
          │   │   ├── __init__.py
          │   │   ├── itrajectory_plan.py
          │   │   ├── plan_history.py
@@ -137,6 +148,49 @@ Tool structure
          │   │   ├── viewport_transform.py
          │   │   └── waypoint.py
          │   └── service/
+         │       ├── dsl/
+         │       │   ├── compiler/
+         │       │   │   ├── arc_interpolator.py
+         │       │   │   ├── iarc_interpolator.py
+         │       │   │   └── __init__.py
+         │       │   ├── frame_macro_expander.py
+         │       │   ├── imacro_expander.py
+         │       │   ├── __init__.py
+         │       │   ├── iscara_compiler.py
+         │       │   ├── iscara_dsl_service.py
+         │       │   ├── iscara_lexer.py
+         │       │   ├── iscara_parser.py
+         │       │   ├── iscara_plan_exporter.py
+         │       │   ├── jump_macro_expander.py
+         │       │   ├── linter/
+         │       │   │   ├── __init__.py
+         │       │   │   ├── iscara_linter.py
+         │       │   │   └── scara_linter.py
+         │       │   ├── pallet_macro_expander.py
+         │       │   ├── parser/
+         │       │   │   ├── approach_retract_parser.py
+         │       │   │   ├── arc_command_parser.py
+         │       │   │   ├── config_command_parser.py
+         │       │   │   ├── flow_command_parser.py
+         │       │   │   ├── frame_command_parser.py
+         │       │   │   ├── icommand_parser.py
+         │       │   │   ├── __init__.py
+         │       │   │   ├── jog_command_parser.py
+         │       │   │   ├── jump_command_parser.py
+         │       │   │   ├── motion_command_parser.py
+         │       │   │   ├── pallet_command_parser.py
+         │       │   │   ├── parameter_extractor.py
+         │       │   │   ├── probe_command_parser.py
+         │       │   │   ├── tool_command_parser.py
+         │       │   │   ├── tool_orient_command_parser.py
+         │       │   │   └── zone_command_parser.py
+         │       │   ├── scara_compiler.py
+         │       │   ├── scara_compiler_context.py
+         │       │   ├── scara_dsl_service.py
+         │       │   ├── scara_lexer.py
+         │       │   ├── scara_parser.py
+         │       │   ├── scara_plan_exporter.py
+         │       │   └── tangent_macro_expander.py
          │       ├── engine.py
          │       ├── __init__.py
          │       ├── iplan_storage_service.py
@@ -180,7 +234,8 @@ Tool structure
          │   │   │   ├── __init__.py
          │   │   │   ├── motion_command_formatter.py
          │   │   │   ├── protocol_parser.py
-         │   │   │   └── robot_response_dto.py
+         │   │   │   ├── robot_response_dto.py
+         │   │   │   └── tool_command_formatter.py
          │   │   ├── serial_device_preferences.py
          │   │   ├── serial_port_scanner.py
          │   │   ├── serial_streamer.py
@@ -200,6 +255,8 @@ Tool structure
          │   │   ├── components/
          │   │   │   ├── canvas_renderer.py
          │   │   │   ├── canvas_tool_handler.py
+         │   │   │   ├── dsl_editor_tab.py
+         │   │   │   ├── dsl_syntax_highlighter.py
          │   │   │   ├── __init__.py
          │   │   │   ├── jog_tab.py
          │   │   │   ├── menu_bar.py
@@ -234,7 +291,7 @@ Tool structure
              ├── registry.py
              └── validator.py
 
-     15 directories, 103 files
+     20 directories, 155 files
 
 ✨ Features
 -----------
@@ -360,6 +417,56 @@ Interactive Motion Planning Workflow
    * Trigger streaming to execute real-time motion on the physical SCARA robot.
 5. **Manual Jogging & Diagnostics**:
    * Use the **Manual Jog** tab for directional jog movements, vacuum pump activation, release valve triggers, and homing.
+
+🤖 Digital Twin Integration with SCARAEmu
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**scarajectory** seamlessly integrates with `scaraemu <https://github.com/vroncevic/scaraemu>`_ as a software-in-the-loop (SITL) Digital Twin. This allows you to visually simulate, animate, and validate trajectories and ``.scara`` DSL programs in 2D/3D before deploying to physical hardware.
+
+Mode 1: One-Click Simulation from DSL Editor
+""""""""""""""""""""""""""""""""""""""""""""
+
+1. In **scarajectory**, open the **SCARA DSL Editor** tab.
+2. Write or load any ``.scara`` program (or select from bundled examples in ``examples/``).
+3. Click the **🚀 Preview in SCARAEmu** button located at the bottom toolbar.
+4. **scarajectory** automatically launches **scaraemu** in a background subprocess, passing the active trajectory file via ``--file``.
+5. The 2D Planar and 3D Z-Tower canvases immediately render the robot arm executing the trajectory.
+
+Mode 2: Real-Time Closed-Loop TCP Streaming
+"""""""""""""""""""""""""""""""""""""""""""
+
+1. Launch **scaraemu**:
+
+   .. code-block:: bash
+
+       python3 main.py emulator
+
+2. Activate the Virtual Robot Server:
+   * Click the **🌐 Virtual Server: OFF** toggle button on the top status bar.
+   * The button turns green and displays **🌐 Virtual Server: 8888**, listening on ``127.0.0.1:8888``.
+3. Launch **scarajectory**:
+
+   .. code-block:: bash
+
+       python3 main.py studio
+
+4. Compile DSL code to trajectory:
+   * In the **SCARA DSL Editor** tab, load or write your ``.scara`` script.
+   * Click **⚡ Compile to Plan**. The AST compiler compiles Cartesian paths, macros, and action commands into the active trajectory plan.
+5. Navigate to the **Hardware Streamer** tab.
+6. In the **Port** dropdown, select **127.0.0.1:8888 (Digital Twin)**.
+7. Click **Connect**. The status bar updates to ``Streamer: Connected to 127.0.0.1:8888``.
+8. Click **Stream Trajectory** (or use the **Manual Jog** controls):
+   * Trajectory waypoints (``<pt#X#Y#Z#PHI#SPEED#end>``) stream live over the loopback TCP socket.
+   * **scaraemu** smoothly animates the dual-link arm and carriage along the path.
+   * Closed-loop protocol acknowledgments (``<RESP:ACK#QUEUE=1>``, ``<RESP:MOVE_DONE#...>``) flow back to **scarajectory**, dynamically driving the streaming progress bar.
+
+Mode 3: Direct File Loading in SCARAEmu
+"""""""""""""""""""""""""""""""""""""""
+
+* Open **scaraemu** and navigate to the **Trajectories** tab.
+* In the **SCARA DSL Script** dropdown, select any of the 12 bundled programs (e.g. ``pick_and_place.scara``, ``engrave_spiral.scara``, ``pallet_matrix.scara``).
+* Or click **📂 Load** to load any custom ``.scara`` script or exported ``plan.json`` file.
 
 📚 Docs
 -------

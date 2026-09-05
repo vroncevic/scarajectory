@@ -30,7 +30,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.2'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -51,8 +51,6 @@ class MotionCommandFormatter:
                 | format_pause - Formats streaming pause command.
                 | format_resume - Formats streaming resume command.
                 | format_home - Formats homing sequence command.
-                | format_pump - Formats vacuum pump state command.
-                | format_valve - Formats release valve state command.
                 | format_move - Formats waypoint motion command from Waypoint model.
                 | format_jog - Formats manual axis jog step command.
                 | format_set_elbow - Formats set elbow configuration command.
@@ -138,28 +136,6 @@ class MotionCommandFormatter:
             :exceptions: None.
         '''
         return CommandTemplates.HOME
-
-    @classmethod
-    def format_pump(cls, state: bool) -> str:
-        '''
-            Formats vacuum pump control command.
-
-            :param state: True for pump ON, False for OFF.
-            :return: Formatted pump command string.
-            :exceptions: None.
-        '''
-        return CommandTemplates.PUMP_ON if state else CommandTemplates.PUMP_OFF
-
-    @classmethod
-    def format_valve(cls, state: bool) -> str:
-        '''
-            Formats release valve control command.
-
-            :param state: True for valve ON, False for OFF.
-            :return: Formatted valve command string.
-            :exceptions: None.
-        '''
-        return CommandTemplates.VALVE_ON if state else CommandTemplates.VALVE_OFF
 
     @classmethod
     def format_move(cls, waypoint: Waypoint) -> str:

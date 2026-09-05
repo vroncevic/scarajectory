@@ -21,15 +21,14 @@ Info
 
 from __future__ import annotations
 
-import tkinter as tk
-from tkinter import ttk
+from tkinter import Tk, ttk
 from typing import ClassVar
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.2'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -137,7 +136,8 @@ class ThemeManager:
             background='#181a1f',
             foreground='#abb2bf',
             font=('DejaVu Sans', 9, 'bold'),
-            padding=[14, 6]
+            padding=[14, 6],
+            focuscolor=palette['bg_dark']
         )
         style.map(
             'TNotebook.Tab',
@@ -146,7 +146,7 @@ class ThemeManager:
         )
 
     @classmethod
-    def apply_theme(cls, root: tk.Tk) -> None:
+    def apply_theme(cls, root: Tk) -> None:
         '''
             Applies dark theme stylesheet and color palette to root window.
 

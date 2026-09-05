@@ -1,0 +1,22 @@
+# ==============================================================================
+# 11_zone_blending.scara - Corner Transition & Zone Blending (ZONE)
+# ==============================================================================
+# ZONE FINE stops exactly at waypoint before continuing (precise stop).
+# ZONE BLEND radius rounds corners in motion for smooth, high-speed travel.
+# ==============================================================================
+
+ENABLE
+HOME
+
+# Continuous high-speed corner rounding with 15mm blend radius
+ZONE BLEND 15.0
+SPEED WORK 80.0
+
+MOVE_L X=130.0 Y=-30.0 Z=30.0 PHI=0.0
+MOVE_L X=170.0 Y=-30.0 Z=30.0 PHI=0.0
+MOVE_L X=170.0 Y=30.0 Z=30.0 PHI=0.0
+MOVE_L X=130.0 Y=30.0 Z=30.0 PHI=0.0
+
+# Restore precise fine positioning
+ZONE FINE
+MOVE_L X=130.0 Y=0.0 Z=30.0 PHI=0.0 SPEED=40.0

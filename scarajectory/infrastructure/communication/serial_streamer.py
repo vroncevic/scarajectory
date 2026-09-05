@@ -41,7 +41,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.2'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -62,6 +62,7 @@ class SerialStreamer:
                 | _worker_thread - Background transmission worker thread.
                 | _stop_event - Event signaling stream abort.
                 | _pause_event - Event signaling stream pause.
+                | _barrier_event - Event signaling synchronization barrier clearance.
             :methods:
                 | __init__ - Initializes streamer instance with injected transport.
                 | set_observer - Sets or updates progress observer.
@@ -84,6 +85,7 @@ class SerialStreamer:
     _worker_thread: Thread | None
     _stop_event: Event
     _pause_event: Event
+    _barrier_event: Event
 
     def __init__(self, transport: ITransport) -> None:
         '''
@@ -93,13 +95,15 @@ class SerialStreamer:
             :exceptions: None.
         '''
         self._observer = None
-        self._transport: Final[ITransport] = transport
+        self._transport: ITransport = transport
         self._transport.set_callbacks(on_line=self._handle_serial_line, on_log=self._on_connection_log)
         self._state = StreamState.IDLE
         self._session = StreamSession()
         self._worker_thread = None
         self._stop_event: Final[Event] = Event()
         self._pause_event: Final[Event] = Event()
+        self._barrier_event: Final[Event] = Event()
+        self._barrier_event.set()
 
     def set_observer(self, observer: IStreamObserver) -> None:
         '''
@@ -132,6 +136,18 @@ class SerialStreamer:
 
         self._stop_event.clear()
         self._pause_event.clear()
+        self._barrier_event.set()
+
+        if ':' in config.port:
+            from scarajectory.infrastructure.communication.transport.tcp_transport import TcpTransport
+            if not isinstance(self._transport, TcpTransport):
+                self._transport = TcpTransport()
+                self._transport.set_callbacks(on_line=self._handle_serial_line, on_log=self._on_connection_log)
+        else:
+            from scarajectory.infrastructure.communication.transport.serial_transport import SerialTransport
+            if not isinstance(self._transport, SerialTransport):
+                self._transport = SerialTransport()
+                self._transport.set_callbacks(on_line=self._handle_serial_line, on_log=self._on_connection_log)
 
         return self._transport.connect_with_config(config)
 
@@ -145,6 +161,7 @@ class SerialStreamer:
             self.stop_streaming()
         self._transport.disconnect()
         self._state = StreamState.IDLE
+        self._barrier_event.set()
 
     def send_raw_command(self, cmd: str) -> None:
         '''
@@ -181,6 +198,7 @@ class SerialStreamer:
         self._state = StreamState.STREAMING
         self._pause_event.clear()
         self._stop_event.clear()
+        self._barrier_event.set()
 
         start_ts: str = datetime.now().strftime('%H:%M:%S.%f')[:-3]
         if self._observer:
@@ -231,6 +249,7 @@ class SerialStreamer:
         self._state = StreamState.STOPPED
         self._stop_event.set()
         self._pause_event.clear()
+        self._barrier_event.set()
         if self.is_connected():
             self.send_raw_command(CommandFormatter.format_estop())
         self._notify_progress()
@@ -281,12 +300,26 @@ class SerialStreamer:
                 sleep(0.05)
                 continue
 
+            if not self._barrier_event.is_set():
+                sleep(0.02)
+                continue
+
+            pt: Waypoint = session.waypoints[session.sent_count]
+            is_cmd: bool = bool(pt.command)
+
+            if is_cmd and session.remote_queue_depth > 0:
+                sleep(0.02)
+                continue
+
             if session.remote_queue_depth < self.MAX_PICO_QUEUE_CAPACITY:
-                pt: Waypoint = session.waypoints[session.sent_count]
-                pkt: str = CommandFormatter.format_move(pt)
+                pkt: str = pt.command if pt.command else CommandFormatter.format_move(pt)
+                if is_cmd:
+                    self._barrier_event.clear()
+
                 self.send_raw_command(pkt)
                 session.sent_count += 1
-                session.remote_queue_depth += 1
+                if not is_cmd:
+                    session.remote_queue_depth += 1
                 self._notify_progress()
                 sleep(0.01)
             else:
@@ -321,22 +354,36 @@ class SerialStreamer:
         if self._observer:
             self._observer.on_serial_log(line, is_outgoing=False)
 
+        if ProtocolParser.is_homing_failed(line):
+            self._barrier_event.set()
+            self._session.failed_count = min(len(self._session.waypoints), self._session.failed_count + 1)
+            self._notify_progress(error=f'Microcontroller Homing Failed: {line}')
+            if self._observer:
+                self._observer.on_serial_log(f'[ERR]: Robot homing failed ({line}). Aborting stream.')
+            self.stop_streaming()
+            return
+
+        if ProtocolParser.is_action_done(line):
+            self._barrier_event.set()
+
         q_depth: int | None = ProtocolParser.parse_queue_depth(line)
         if q_depth is not None:
             self._session.remote_queue_depth = q_depth
         elif ProtocolParser.is_buffer_full(line):
             self._session.remote_queue_depth = self.MAX_PICO_QUEUE_CAPACITY
-        elif ProtocolParser.is_move_done(line):
+        elif ProtocolParser.is_complete(line):
             self._session.done_count = min(len(self._session.waypoints), self._session.done_count + 1)
             if self._session.remote_queue_depth > 0:
                 self._session.remote_queue_depth -= 1
             self._notify_progress()
         elif ProtocolParser.is_move_failed(line):
+            self._barrier_event.set()
             self._session.failed_count = min(len(self._session.waypoints), self._session.failed_count + 1)
             if self._session.remote_queue_depth > 0:
                 self._session.remote_queue_depth -= 1
             self._notify_progress(error=line)
         elif ProtocolParser.is_error(line):
+            self._barrier_event.set()
             self._session.failed_count = min(len(self._session.waypoints), self._session.failed_count + 1)
             if self._session.remote_queue_depth > 0:
                 self._session.remote_queue_depth -= 1

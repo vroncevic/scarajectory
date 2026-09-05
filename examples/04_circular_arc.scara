@@ -1,0 +1,18 @@
+# ==============================================================================
+# 04_circular_arc.scara - Circular Arc Interpolation (ARC_CW / ARC_CCW)
+# ==============================================================================
+# Generates continuous circular contouring around relative center offsets (I, J).
+# I = Center X relative to start, J = Center Y relative to start.
+# ==============================================================================
+
+ENABLE
+HOME
+
+# Position at circle start point
+MOVE_L X=170.0 Y=0.0 Z=25.0 PHI=0.0 SPEED=60.0
+
+# Clockwise semi-circle (radius 30mm, center at X=140, Y=0 -> I=-30, J=0)
+ARC_CW X=110.0 Y=0.0 I=-30.0 J=0.0 SPEED=35.0
+
+# Counter-clockwise semi-circle back to start
+ARC_CCW X=170.0 Y=0.0 I=30.0 J=0.0 SPEED=35.0

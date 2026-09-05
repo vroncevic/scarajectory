@@ -1,0 +1,54 @@
+# ==============================================================================
+# 12_industrial_pick_place.scara - Full Industrial Pick & Place Sequence
+# ==============================================================================
+# Complete industrial automation cycle combining:
+# - Frame transformation & coordinate alignment
+# - High-speed transit with corner zone blending
+# - Vacuum suction engagement with pneumatic dwell
+# - Blow-off valve release burst
+# - Safe home/standby parking
+# ==============================================================================
+
+# System initialization & homing
+ENABLE
+HOME
+SET_FRAME X=0.0 Y=0.0 Z=0.0 RZ=0.0
+
+# Transit to standby inspection position
+MOVE_J X=120.0 Y=50.0 Z=45.0 PHI=0.0 SPEED=80.0
+
+# Approach input feeder with zone blending for smooth transit
+ZONE BLEND R=10.0
+MOVE_L X=140.0 Y=80.0 Z=45.0 PHI=30.0 SPEED=60.0
+ZONE EXACT
+
+# Vertical plunge to part pickup level
+MOVE_L X=160.0 Y=80.0 Z=5.0 PHI=30.0 SPEED=25.0
+
+# Pneumatic grip: engage vacuum pump and allow 80ms pressure dwell
+PUMP ON
+WAIT_MS 80
+
+# Retract to safe transit clearance height
+MOVE_L X=160.0 Y=80.0 Z=50.0 PHI=30.0 SPEED=50.0
+
+# High-speed arch transit to place location with continuous corner blending
+ZONE BLEND R=15.0
+MOVE_J X=100.0 Y=-60.0 Z=50.0 PHI=-45.0 SPEED=90.0
+MOVE_L X=150.0 Y=-100.0 Z=45.0 PHI=-45.0 SPEED=70.0
+ZONE EXACT
+
+# Approach assembly fixture
+MOVE_L X=180.0 Y=-80.0 Z=10.0 PHI=0.0 SPEED=30.0
+
+# Pneumatic release: cut pump and deliver 50ms positive blow-off burst
+PUMP OFF
+VALVE ON
+WAIT_MS 50
+VALVE OFF
+
+# Retract to clearance height
+MOVE_L X=180.0 Y=-80.0 Z=45.0 PHI=0.0 SPEED=60.0
+
+# Return to home standby position
+MOVE_J X=120.0 Y=0.0 Z=45.0 PHI=0.0 SPEED=80.0

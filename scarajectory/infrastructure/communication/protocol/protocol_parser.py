@@ -30,7 +30,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.2'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -47,6 +47,11 @@ class ProtocolParser:
                 | parse_queue_depth - Extracts remote queue depth from ACK packet if present.
                 | is_buffer_full - Checks if packet indicates microcontroller buffer saturation.
                 | is_move_done - Checks if packet confirms completion of a waypoint move.
+                | is_move_failed - Checks if packet confirms failure of a waypoint move.
+                | is_action_done - Checks if packet confirms completion of a tool or wait action.
+                | is_complete - Checks if packet confirms completion of either a move or action.
+                | is_homed_success - Checks if packet confirms successful robot homing.
+                | is_homing_failed - Checks if packet confirms homing failure or timeout.
                 | is_telemetry - Checks if packet contains real-time kinematic telemetry.
                 | is_error - Checks if packet signals an error condition.
     '''
@@ -102,6 +107,13 @@ class ProtocolParser:
         elif 'ERR' in clean or clean.startswith('<ERR'):
             resp_type = 'ERR'
             success = False
+        elif 'HOMED_SUCCESS' in clean:
+            resp_type = 'HOMED'
+            msg = clean[1:-1] if clean.startswith('<') and clean.endswith('>') else clean
+        elif 'HOMED_FAIL' in clean or 'HOMING_FAILED' in clean:
+            resp_type = 'HOMED_FAIL'
+            success = False
+            msg = clean[1:-1] if clean.startswith('<') and clean.endswith('>') else clean
         elif clean.startswith('<STATUS') or clean.startswith('<RESP:STATUS'):
             resp_type = 'STATUS'
             msg = clean[1:-1] if clean.startswith('<') and clean.endswith('>') else clean
@@ -175,6 +187,58 @@ class ProtocolParser:
         return cls.parse_response(line).response_type == 'TELEM'
 
     @classmethod
+    def is_action_done(cls, line: str) -> bool:
+        '''
+            Checks if packet confirms completion of a tool, wait, or auxiliary action.
+
+            :param line: Received line string.
+            :return: True if action completion confirmation, False otherwise.
+            :exceptions: None.
+        '''
+        clean: str = line.strip().upper()
+        if 'WAIT_DONE' in clean or 'HOMED_SUCCESS' in clean:
+            return True
+        if clean.startswith('<RESP:ACK#') and any(
+            act in clean for act in ('PUMP_', 'VALVE_', 'OVERRIDE=', 'ELBOW', 'MOTORS_')
+        ):
+            return True
+        return False
+
+    @classmethod
+    def is_complete(cls, line: str) -> bool:
+        '''
+            Checks if packet confirms completion of either a waypoint move or action.
+
+            :param line: Received line string.
+            :return: True if move or action completed, False otherwise.
+            :exceptions: None.
+        '''
+        return cls.is_move_done(line) or cls.is_action_done(line)
+
+    @classmethod
+    def is_homed_success(cls, line: str) -> bool:
+        '''
+            Checks if packet confirms successful robot homing.
+
+            :param line: Received line string.
+            :return: True if homing succeeded, False otherwise.
+            :exceptions: None.
+        '''
+        return 'HOMED_SUCCESS' in line.strip().upper()
+
+    @classmethod
+    def is_homing_failed(cls, line: str) -> bool:
+        '''
+            Checks if packet confirms homing failure or timeout.
+
+            :param line: Received line string.
+            :return: True if homing failed, False otherwise.
+            :exceptions: None.
+        '''
+        clean: str = line.strip().upper()
+        return 'HOMING_FAILED' in clean or 'HOMED_FAIL' in clean
+
+    @classmethod
     def is_error(cls, line: str) -> bool:
         '''
             Checks if packet signals an error condition.
@@ -184,4 +248,4 @@ class ProtocolParser:
             :exceptions: None.
         '''
         resp: RobotResponseDTO = cls.parse_response(line)
-        return resp.response_type in ('ERR', 'NACK', 'MOVE_FAILED') or not resp.is_success
+        return resp.response_type in ('ERR', 'NACK', 'MOVE_FAILED', 'HOMED_FAIL') or not resp.is_success

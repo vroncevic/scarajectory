@@ -15,7 +15,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="scarajectory.core.service.engine module" href="scarajectory.core.service.engine.html" />
+    <link rel="next" title="scarajectory.core.service.dsl package" href="scarajectory.core.service.dsl.html" />
     <link rel="prev" title="scarajectory.core.model.waypoint module" href="scarajectory.core.model.waypoint.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -28,7 +28,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.core.service.engine.html" title="scarajectory.core.service.engine module"
+          <a href="scarajectory.core.service.dsl.html" title="scarajectory.core.service.dsl package"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="scarajectory.core.model.waypoint.html" title="scarajectory.core.model.waypoint module"
@@ -48,6 +48,102 @@
             
   <section id="scarajectory-core-service-package">
 <h1>scarajectory.core.service package<a class="headerlink" href="#scarajectory-core-service-package" title="Link to this heading">¶</a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="scarajectory.core.service.dsl.html">scarajectory.core.service.dsl package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.core.service.dsl.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.dsl.compiler.html">scarajectory.core.service.dsl.compiler package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.core.service.dsl.compiler.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.core.service.dsl.compiler.html#module-scarajectory.core.service.dsl.compiler">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.dsl.linter.html">scarajectory.core.service.dsl.linter package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.core.service.dsl.linter.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.core.service.dsl.linter.html#module-scarajectory.core.service.dsl.linter">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.dsl.parser.html">scarajectory.core.service.dsl.parser package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.core.service.dsl.parser.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.core.service.dsl.parser.html#module-scarajectory.core.service.dsl.parser">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.core.service.dsl.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.dsl.frame_macro_expander.html">scarajectory.core.service.dsl.frame_macro_expander module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.core.service.dsl.frame_macro_expander.html#scarajectory.core.service.dsl.frame_macro_expander.FrameMacroExpander"><code class="docutils literal notranslate"><span class="pre">FrameMacroExpander</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.dsl.imacro_expander.html">scarajectory.core.service.dsl.imacro_expander module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.core.service.dsl.imacro_expander.html#scarajectory.core.service.dsl.imacro_expander.IMacroExpander"><code class="docutils literal notranslate"><span class="pre">IMacroExpander</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.dsl.iscara_compiler.html">scarajectory.core.service.dsl.iscara_compiler module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.core.service.dsl.iscara_compiler.html#scarajectory.core.service.dsl.iscara_compiler.IScaraCompiler"><code class="docutils literal notranslate"><span class="pre">IScaraCompiler</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.dsl.iscara_dsl_service.html">scarajectory.core.service.dsl.iscara_dsl_service module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.core.service.dsl.iscara_dsl_service.html#scarajectory.core.service.dsl.iscara_dsl_service.IScaraDslService"><code class="docutils literal notranslate"><span class="pre">IScaraDslService</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.dsl.iscara_lexer.html">scarajectory.core.service.dsl.iscara_lexer module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.core.service.dsl.iscara_lexer.html#scarajectory.core.service.dsl.iscara_lexer.IScaraLexer"><code class="docutils literal notranslate"><span class="pre">IScaraLexer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.dsl.iscara_parser.html">scarajectory.core.service.dsl.iscara_parser module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.core.service.dsl.iscara_parser.html#scarajectory.core.service.dsl.iscara_parser.IScaraParser"><code class="docutils literal notranslate"><span class="pre">IScaraParser</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.dsl.iscara_plan_exporter.html">scarajectory.core.service.dsl.iscara_plan_exporter module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.core.service.dsl.iscara_plan_exporter.html#scarajectory.core.service.dsl.iscara_plan_exporter.IScaraPlanExporter"><code class="docutils literal notranslate"><span class="pre">IScaraPlanExporter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.dsl.jump_macro_expander.html">scarajectory.core.service.dsl.jump_macro_expander module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.core.service.dsl.jump_macro_expander.html#scarajectory.core.service.dsl.jump_macro_expander.JumpMacroExpander"><code class="docutils literal notranslate"><span class="pre">JumpMacroExpander</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.dsl.pallet_macro_expander.html">scarajectory.core.service.dsl.pallet_macro_expander module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.core.service.dsl.pallet_macro_expander.html#scarajectory.core.service.dsl.pallet_macro_expander.PalletMacroExpander"><code class="docutils literal notranslate"><span class="pre">PalletMacroExpander</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.dsl.scara_compiler.html">scarajectory.core.service.dsl.scara_compiler module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.core.service.dsl.scara_compiler.html#scarajectory.core.service.dsl.scara_compiler.ScaraCompiler"><code class="docutils literal notranslate"><span class="pre">ScaraCompiler</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.dsl.scara_compiler_context.html">scarajectory.core.service.dsl.scara_compiler_context module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.core.service.dsl.scara_compiler_context.html#scarajectory.core.service.dsl.scara_compiler_context.ScaraCompilerContext"><code class="docutils literal notranslate"><span class="pre">ScaraCompilerContext</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.dsl.scara_dsl_service.html">scarajectory.core.service.dsl.scara_dsl_service module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.core.service.dsl.scara_dsl_service.html#scarajectory.core.service.dsl.scara_dsl_service.ScaraDslService"><code class="docutils literal notranslate"><span class="pre">ScaraDslService</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.dsl.scara_lexer.html">scarajectory.core.service.dsl.scara_lexer module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.core.service.dsl.scara_lexer.html#scarajectory.core.service.dsl.scara_lexer.ScaraLexer"><code class="docutils literal notranslate"><span class="pre">ScaraLexer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.dsl.scara_parser.html">scarajectory.core.service.dsl.scara_parser module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.core.service.dsl.scara_parser.html#scarajectory.core.service.dsl.scara_parser.ScaraParser"><code class="docutils literal notranslate"><span class="pre">ScaraParser</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.dsl.scara_plan_exporter.html">scarajectory.core.service.dsl.scara_plan_exporter module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.core.service.dsl.scara_plan_exporter.html#scarajectory.core.service.dsl.scara_plan_exporter.ScaraPlanExporter"><code class="docutils literal notranslate"><span class="pre">ScaraPlanExporter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.dsl.tangent_macro_expander.html">scarajectory.core.service.dsl.tangent_macro_expander module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.core.service.dsl.tangent_macro_expander.html#scarajectory.core.service.dsl.tangent_macro_expander.TangentMacroExpander"><code class="docutils literal notranslate"><span class="pre">TangentMacroExpander</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.core.service.dsl.html#module-scarajectory.core.service.dsl">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
@@ -214,6 +310,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <h3><a href="index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">scarajectory.core.service package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-scarajectory.core.service">Module contents</a></li>
 </ul>
@@ -228,8 +325,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="scarajectory.core.service.engine.html"
-                          title="next chapter">scarajectory.core.service.engine module</a></p>
+    <p class="topless"><a href="scarajectory.core.service.dsl.html"
+                          title="next chapter">scarajectory.core.service.dsl package</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -262,7 +359,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.core.service.engine.html" title="scarajectory.core.service.engine module"
+          <a href="scarajectory.core.service.dsl.html" title="scarajectory.core.service.dsl package"
              >next</a> |</li>
         <li class="right" >
           <a href="scarajectory.core.model.waypoint.html" title="scarajectory.core.model.waypoint module"

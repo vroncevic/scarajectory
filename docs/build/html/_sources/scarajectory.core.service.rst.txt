@@ -1,6 +1,14 @@
 scarajectory.core.service package
 =================================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   scarajectory.core.service.dsl
+
 Submodules
 ----------
 

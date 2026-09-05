@@ -1,6 +1,14 @@
 scarajectory.core.model package
 ===============================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   scarajectory.core.model.dsl
+
 Submodules
 ----------
 

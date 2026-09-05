@@ -21,8 +21,8 @@ Info
 
 from __future__ import annotations
 
-import tkinter as tk
-from tkinter import ttk
+from tkinter import BOTH, Event, Widget
+from tkinter.ttk import Frame, Notebook
 from typing import Final
 
 from scarajectory.core.model.stream_progress import StreamProgress
@@ -33,18 +33,19 @@ from scarajectory.infrastructure.gui.components.streamer_tab import StreamerTab
 from scarajectory.infrastructure.gui.components.validation_tab import ValidationTab
 from scarajectory.infrastructure.gui.components.jog_tab import JogTab
 from scarajectory.infrastructure.gui.components.preview_tab import PreviewTab
+from scarajectory.infrastructure.gui.components.dsl_editor_tab import DslEditorTab
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.2'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class ControlsPanel(ttk.Frame):
+class ControlsPanel(Frame):
     '''
         Tabbed controller housing Streamer, Validation, Jog and Program preview panels.
 
@@ -52,18 +53,21 @@ class ControlsPanel(ttk.Frame):
 
             :attributes:
                 | _notebook - Multi-tab notebook container.
+                | _dsl_editor_tab - SCARA DSL script editor and compiler tab.
                 | _streamer_tab - Serial streaming and logging tab.
                 | _validation_tab - Kinematic validation tab.
                 | _jog_tab - Manual jog movement and actuator control tab.
                 | _preview_tab - ASCII microcontroller program preview tab.
             :methods:
                 | __init__ - Initializes tabbed control panels and mounts subcomponents.
+                | _on_tab_changed - Handles tab switch event and flushes pending drawing tasks.
                 | refresh_ports - Scans and updates available serial ports.
                 | append_log - Appends message to streamer terminal log console.
                 | update_progress - Updates streamer progress bar and metrics.
     '''
 
-    _notebook: ttk.Notebook
+    _notebook: Notebook
+    _dsl_editor_tab: DslEditorTab
     _streamer_tab: StreamerTab
     _validation_tab: ValidationTab
     _jog_tab: JogTab
@@ -71,7 +75,7 @@ class ControlsPanel(ttk.Frame):
 
     def __init__(
         self,
-        parent: tk.Widget,
+        parent: Widget,
         plan: TrajectoryPlan,
         validator: ITrajectoryValidator,
         streamer: ITrajectoryStreamer,
@@ -88,18 +92,30 @@ class ControlsPanel(ttk.Frame):
         '''
         super().__init__(parent, **kwargs)
 
-        self._notebook = ttk.Notebook(self)
-        self._notebook.pack(fill=tk.BOTH, expand=True)
+        self._notebook = Notebook(self)
+        self._notebook.pack(fill=BOTH, expand=True)
+        self._notebook.bind('<<NotebookTabChanged>>', self._on_tab_changed)
 
+        self._dsl_editor_tab: Final[DslEditorTab] = DslEditorTab(self._notebook, plan=plan, validator=validator)
         self._streamer_tab: Final[StreamerTab] = StreamerTab(self._notebook, plan=plan, validator=validator, streamer=streamer)
         self._validation_tab: Final[ValidationTab] = ValidationTab(self._notebook, plan=plan, validator=validator)
         self._jog_tab: Final[JogTab] = JogTab(self._notebook, streamer=streamer)
         self._preview_tab: Final[PreviewTab] = PreviewTab(self._notebook, plan=plan)
 
+        self._notebook.add(self._dsl_editor_tab, text=' SCARA DSL ')
         self._notebook.add(self._streamer_tab, text=' Hardware Streamer ')
         self._notebook.add(self._validation_tab, text=' Plan Validation ')
         self._notebook.add(self._jog_tab, text=' Manual Jog ')
         self._notebook.add(self._preview_tab, text=' Program Preview ')
+
+    def _on_tab_changed(self, event: Event) -> None:
+        '''
+            Handles tab switch event and forces geometry and drawing synchronization.
+
+            :param event: Tkinter event instance.
+            :exceptions: None.
+        '''
+        self.update_idletasks()
 
     def refresh_ports(self) -> None:
         '''

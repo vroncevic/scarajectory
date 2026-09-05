@@ -59,8 +59,8 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="nn">tk</span>
-<span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">ttk</span>
+<span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">BOTH</span><span class="p">,</span> <span class="n">Event</span><span class="p">,</span> <span class="n">Widget</span>
+<span class="kn">from</span> <span class="nn">tkinter.ttk</span> <span class="kn">import</span> <span class="n">Frame</span><span class="p">,</span> <span class="n">Notebook</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span>
 
 <span class="kn">from</span> <span class="nn">scarajectory.core.model.stream_progress</span> <span class="kn">import</span> <span class="n">StreamProgress</span>
@@ -71,12 +71,13 @@
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.components.validation_tab</span> <span class="kn">import</span> <span class="n">ValidationTab</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.components.jog_tab</span> <span class="kn">import</span> <span class="n">JogTab</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.components.preview_tab</span> <span class="kn">import</span> <span class="n">PreviewTab</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.components.dsl_editor_tab</span> <span class="kn">import</span> <span class="n">DslEditorTab</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.2&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -84,7 +85,7 @@
 
 <div class="viewcode-block" id="ControlsPanel">
 <a class="viewcode-back" href="../../../../scarajectory.infrastructure.gui.controls.html#scarajectory.infrastructure.gui.controls.ControlsPanel">[docs]</a>
-<span class="k">class</span> <span class="nc">ControlsPanel</span><span class="p">(</span><span class="n">ttk</span><span class="o">.</span><span class="n">Frame</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">ControlsPanel</span><span class="p">(</span><span class="n">Frame</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Tabbed controller housing Streamer, Validation, Jog and Program preview panels.</span>
 
@@ -92,18 +93,21 @@
 
 <span class="sd">            :attributes:</span>
 <span class="sd">                | _notebook - Multi-tab notebook container.</span>
+<span class="sd">                | _dsl_editor_tab - SCARA DSL script editor and compiler tab.</span>
 <span class="sd">                | _streamer_tab - Serial streaming and logging tab.</span>
 <span class="sd">                | _validation_tab - Kinematic validation tab.</span>
 <span class="sd">                | _jog_tab - Manual jog movement and actuator control tab.</span>
 <span class="sd">                | _preview_tab - ASCII microcontroller program preview tab.</span>
 <span class="sd">            :methods:</span>
 <span class="sd">                | __init__ - Initializes tabbed control panels and mounts subcomponents.</span>
+<span class="sd">                | _on_tab_changed - Handles tab switch event and flushes pending drawing tasks.</span>
 <span class="sd">                | refresh_ports - Scans and updates available serial ports.</span>
 <span class="sd">                | append_log - Appends message to streamer terminal log console.</span>
 <span class="sd">                | update_progress - Updates streamer progress bar and metrics.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="n">_notebook</span><span class="p">:</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Notebook</span>
+    <span class="n">_notebook</span><span class="p">:</span> <span class="n">Notebook</span>
+    <span class="n">_dsl_editor_tab</span><span class="p">:</span> <span class="n">DslEditorTab</span>
     <span class="n">_streamer_tab</span><span class="p">:</span> <span class="n">StreamerTab</span>
     <span class="n">_validation_tab</span><span class="p">:</span> <span class="n">ValidationTab</span>
     <span class="n">_jog_tab</span><span class="p">:</span> <span class="n">JogTab</span>
@@ -111,7 +115,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">parent</span><span class="p">:</span> <span class="n">tk</span><span class="o">.</span><span class="n">Widget</span><span class="p">,</span>
+        <span class="n">parent</span><span class="p">:</span> <span class="n">Widget</span><span class="p">,</span>
         <span class="n">plan</span><span class="p">:</span> <span class="n">TrajectoryPlan</span><span class="p">,</span>
         <span class="n">validator</span><span class="p">:</span> <span class="n">ITrajectoryValidator</span><span class="p">,</span>
         <span class="n">streamer</span><span class="p">:</span> <span class="n">ITrajectoryStreamer</span><span class="p">,</span>
@@ -128,18 +132,33 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_notebook</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Notebook</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_notebook</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_notebook</span> <span class="o">=</span> <span class="n">Notebook</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_notebook</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_notebook</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;&lt;NotebookTabChanged&gt;&gt;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_tab_changed</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dsl_editor_tab</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">DslEditorTab</span><span class="p">]</span> <span class="o">=</span> <span class="n">DslEditorTab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_notebook</span><span class="p">,</span> <span class="n">plan</span><span class="o">=</span><span class="n">plan</span><span class="p">,</span> <span class="n">validator</span><span class="o">=</span><span class="n">validator</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_streamer_tab</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">StreamerTab</span><span class="p">]</span> <span class="o">=</span> <span class="n">StreamerTab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_notebook</span><span class="p">,</span> <span class="n">plan</span><span class="o">=</span><span class="n">plan</span><span class="p">,</span> <span class="n">validator</span><span class="o">=</span><span class="n">validator</span><span class="p">,</span> <span class="n">streamer</span><span class="o">=</span><span class="n">streamer</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_validation_tab</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ValidationTab</span><span class="p">]</span> <span class="o">=</span> <span class="n">ValidationTab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_notebook</span><span class="p">,</span> <span class="n">plan</span><span class="o">=</span><span class="n">plan</span><span class="p">,</span> <span class="n">validator</span><span class="o">=</span><span class="n">validator</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_jog_tab</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">JogTab</span><span class="p">]</span> <span class="o">=</span> <span class="n">JogTab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_notebook</span><span class="p">,</span> <span class="n">streamer</span><span class="o">=</span><span class="n">streamer</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_preview_tab</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">PreviewTab</span><span class="p">]</span> <span class="o">=</span> <span class="n">PreviewTab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_notebook</span><span class="p">,</span> <span class="n">plan</span><span class="o">=</span><span class="n">plan</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_notebook</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dsl_editor_tab</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39; SCARA DSL &#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_notebook</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_streamer_tab</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39; Hardware Streamer &#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_notebook</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_validation_tab</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39; Plan Validation &#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_notebook</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_jog_tab</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39; Manual Jog &#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_notebook</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_preview_tab</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39; Program Preview &#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ControlsPanel._on_tab_changed">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.gui.controls.html#scarajectory.infrastructure.gui.controls.ControlsPanel._on_tab_changed">[docs]</a>
+    <span class="k">def</span> <span class="nf">_on_tab_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">Event</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Handles tab switch event and forces geometry and drawing synchronization.</span>
+
+<span class="sd">            :param event: Tkinter event instance.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_idletasks</span><span class="p">()</span></div>
+
 
 <div class="viewcode-block" id="ControlsPanel.refresh_ports">
 <a class="viewcode-back" href="../../../../scarajectory.infrastructure.gui.controls.html#scarajectory.infrastructure.gui.controls.ControlsPanel.refresh_ports">[docs]</a>

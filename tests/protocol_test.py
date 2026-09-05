@@ -37,7 +37,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.2'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -95,6 +95,42 @@ class TestProtocol(unittest.TestCase):
         self.assertFalse(ProtocolParser.is_move_done('<RESP:ACK#QUEUE=1>'))
         self.assertTrue(ProtocolParser.is_error('<RESP:ERR#COLLISION>'))
         self.assertFalse(ProtocolParser.is_error('<RESP:ACK>'))
+
+    def test_tool_command_formatting(self) -> None:
+        '''
+            Tests formatting of tool, wait, and override commands.
+        '''
+        self.assertEqual(CommandFormatter.format_pump(True), '<CMD:PUMP#1>')
+        self.assertEqual(CommandFormatter.format_pump(False), '<CMD:PUMP#0>')
+        self.assertEqual(CommandFormatter.format_valve(True), '<CMD:VALVE#1>')
+        self.assertEqual(CommandFormatter.format_valve(False), '<CMD:VALVE#0>')
+        self.assertEqual(CommandFormatter.format_wait(250), '<CMD:WAIT#250>')
+        self.assertEqual(CommandFormatter.format_override(75), '<CMD:OVERRIDE#75>')
+
+    def test_action_done_helpers(self) -> None:
+        '''
+            Tests detection of action completion responses and homing status.
+        '''
+        self.assertTrue(ProtocolParser.is_action_done('<RESP:ACK#WAIT_DONE#MS=200>'))
+        self.assertTrue(ProtocolParser.is_action_done('<RESP:ACK#PUMP_ON>'))
+        self.assertTrue(ProtocolParser.is_action_done('<RESP:ACK#VALVE_OFF>'))
+        self.assertTrue(ProtocolParser.is_action_done('<RESP:HOMED_SUCCESS#X=0#Y=0#Z=0#PHI=0>'))
+        self.assertTrue(ProtocolParser.is_complete('<RESP:ACK#WAIT_DONE#MS=200>'))
+        self.assertTrue(ProtocolParser.is_complete('<RESP:MOVE_DONE#X=100#Y=50>'))
+        self.assertFalse(ProtocolParser.is_action_done('<RESP:ACK#QUEUE=2>'))
+        self.assertFalse(ProtocolParser.is_action_done('<RESP:ACK#HOMING_STARTED>'))
+
+        self.assertTrue(ProtocolParser.is_homed_success('<RESP:HOMED_SUCCESS#X=0#Y=0#Z=0#PHI=0>'))
+        self.assertFalse(ProtocolParser.is_homed_success('<RESP:HOMING_FAILED>'))
+
+        self.assertTrue(ProtocolParser.is_homing_failed('<RESP:HOMING_FAILED>'))
+        self.assertTrue(ProtocolParser.is_homing_failed('<RESP:HOMED_FAIL>'))
+        self.assertFalse(ProtocolParser.is_homing_failed('<RESP:HOMED_SUCCESS#X=0#Y=0#Z=0#PHI=0>'))
+
+        self.assertTrue(ProtocolParser.is_error('<RESP:HOMING_FAILED>'))
+        fail_resp = ProtocolParser.parse_response('<RESP:HOMING_FAILED>')
+        self.assertFalse(fail_resp.is_success)
+        self.assertEqual(fail_resp.response_type, 'HOMED_FAIL')
 
 
 if __name__ == '__main__':

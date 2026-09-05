@@ -64,6 +64,7 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span>
 
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.iservice</span> <span class="kn">import</span> <span class="n">IService</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.scara_dsl_service</span> <span class="kn">import</span> <span class="n">ScaraDslService</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.icanvas</span> <span class="kn">import</span> <span class="n">ICanvas</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.itable</span> <span class="kn">import</span> <span class="n">ITable</span>
 
@@ -71,7 +72,7 @@
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.2&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -140,6 +141,9 @@
         <span class="n">file_m</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;New (Ctrl+N)&#39;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="n">plan</span><span class="o">.</span><span class="n">clear</span><span class="p">)</span>
         <span class="n">file_m</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Open JSON... (Ctrl+O)&#39;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">open_json_dialog</span><span class="p">)</span>
         <span class="n">file_m</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Save JSON... (Ctrl+S)&#39;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">save_json_dialog</span><span class="p">)</span>
+        <span class="n">file_m</span><span class="o">.</span><span class="n">add_separator</span><span class="p">()</span>
+        <span class="n">file_m</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Import SCARA DSL (.scara)...&#39;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">import_dsl_dialog</span><span class="p">)</span>
+        <span class="n">file_m</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Export SCARA DSL (.scara)...&#39;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">export_dsl_dialog</span><span class="p">)</span>
         <span class="n">file_m</span><span class="o">.</span><span class="n">add_separator</span><span class="p">()</span>
         <span class="n">file_m</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Exit&#39;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_root</span><span class="o">.</span><span class="n">quit</span><span class="p">)</span>
         <span class="n">menubar</span><span class="o">.</span><span class="n">add_cascade</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;File&#39;</span><span class="p">,</span> <span class="n">menu</span><span class="o">=</span><span class="n">file_m</span><span class="p">)</span>
@@ -211,7 +215,58 @@
                 <span class="n">messagebox</span><span class="o">.</span><span class="n">showinfo</span><span class="p">(</span><span class="s1">&#39;Save Plan&#39;</span><span class="p">,</span> <span class="s1">&#39;Plan saved successfully!&#39;</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
                 <span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s1">&#39;Save Error&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Failed to save plan: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AppMenuBar.import_dsl_dialog">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.components.menu_bar.html#scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar.import_dsl_dialog">[docs]</a>
+    <span class="k">def</span> <span class="nf">import_dsl_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Shows open file dialog and compiles selected SCARA DSL script into plan.</span>
+
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">filedialog</span><span class="o">.</span><span class="n">askopenfilename</span><span class="p">(</span>
+            <span class="n">filetypes</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;SCARA DSL Scripts&#39;</span><span class="p">,</span> <span class="s1">&#39;*.scara&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;All Files&#39;</span><span class="p">,</span> <span class="s1">&#39;*.*&#39;</span><span class="p">)]</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">path</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                <span class="n">dsl_service</span> <span class="o">=</span> <span class="n">ScaraDslService</span><span class="p">(</span><span class="n">validator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_service</span><span class="o">.</span><span class="n">get_validator</span><span class="p">())</span>
+                <span class="n">plan</span> <span class="o">=</span> <span class="n">dsl_service</span><span class="o">.</span><span class="n">compile_script</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">content</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_service</span><span class="o">.</span><span class="n">get_plan</span><span class="p">()</span><span class="o">.</span><span class="n">set_waypoints</span><span class="p">(</span><span class="n">plan</span><span class="o">.</span><span class="n">waypoints</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">fit_reach_view</span><span class="p">()</span>
+                <span class="n">messagebox</span><span class="o">.</span><span class="n">showinfo</span><span class="p">(</span>
+                    <span class="s1">&#39;Import SCARA DSL&#39;</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s1">&#39;Successfully imported </span><span class="si">{</span><span class="n">plan</span><span class="o">.</span><span class="n">count</span><span class="si">}</span><span class="s1"> waypoints from DSL script!&#39;</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s1">&#39;Import Error&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Failed to compile SCARA DSL script:</span><span class="se">\n</span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AppMenuBar.export_dsl_dialog">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.components.menu_bar.html#scarajectory.infrastructure.gui.components.menu_bar.AppMenuBar.export_dsl_dialog">[docs]</a>
+    <span class="k">def</span> <span class="nf">export_dsl_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Shows save file dialog and exports active trajectory plan to SCARA DSL format.</span>
+
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">filedialog</span><span class="o">.</span><span class="n">asksaveasfilename</span><span class="p">(</span>
+            <span class="n">defaultextension</span><span class="o">=</span><span class="s1">&#39;.scara&#39;</span><span class="p">,</span>
+            <span class="n">filetypes</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;SCARA DSL Scripts&#39;</span><span class="p">,</span> <span class="s1">&#39;*.scara&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;All Files&#39;</span><span class="p">,</span> <span class="s1">&#39;*.*&#39;</span><span class="p">)]</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">path</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">dsl_service</span> <span class="o">=</span> <span class="n">ScaraDslService</span><span class="p">(</span><span class="n">validator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_service</span><span class="o">.</span><span class="n">get_validator</span><span class="p">())</span>
+                <span class="n">content</span> <span class="o">=</span> <span class="n">dsl_service</span><span class="o">.</span><span class="n">export_plan</span><span class="p">(</span><span class="n">plan</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_service</span><span class="o">.</span><span class="n">get_plan</span><span class="p">())</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+                <span class="n">messagebox</span><span class="o">.</span><span class="n">showinfo</span><span class="p">(</span><span class="s1">&#39;Export SCARA DSL&#39;</span><span class="p">,</span> <span class="s1">&#39;DSL script exported successfully!&#39;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s1">&#39;Export Error&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Failed to export DSL script:</span><span class="se">\n</span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
 </div>
+
 
 </pre></div>
 

@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>scarajectory.infrastructure.gui.components.dsl_editor_tab &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/classic.css?v=514cf933" />
+    
+    <script src="../../../../../_static/documentation_options.js?v=57319df4"></script>
+    <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.components.dsl_editor_tab</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for scarajectory.infrastructure.gui.components.dsl_editor_tab</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Module</span>
+<span class="sd">    dsl_editor_tab.py</span>
+<span class="sd">Copyright</span>
+<span class="sd">    Copyright (C) 2026 Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;</span>
+<span class="sd">    scarajectory is free software: you can redistribute it and/or modify it</span>
+<span class="sd">    under the terms of the GNU General Public License as published by the</span>
+<span class="sd">    Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">    (at your option) any later version.</span>
+<span class="sd">    scarajectory is distributed in the hope that it will be useful, but</span>
+<span class="sd">    WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
+<span class="sd">    See the GNU General Public License for more details.</span>
+<span class="sd">    You should have received a copy of the GNU General Public License along</span>
+<span class="sd">    with this program. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">Info</span>
+<span class="sd">    Dedicated SCARA DSL code editor and compiler tab integrated into the controls notebook.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">environ</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">Popen</span>
+<span class="kn">from</span> <span class="nn">sys</span> <span class="kn">import</span> <span class="n">executable</span>
+<span class="kn">from</span> <span class="nn">tempfile</span> <span class="kn">import</span> <span class="n">NamedTemporaryFile</span>
+<span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BOTH</span><span class="p">,</span> <span class="n">DISABLED</span><span class="p">,</span> <span class="n">END</span><span class="p">,</span> <span class="n">Event</span><span class="p">,</span> <span class="n">LEFT</span><span class="p">,</span> <span class="n">Misc</span><span class="p">,</span>
+    <span class="n">NORMAL</span><span class="p">,</span> <span class="n">RIGHT</span><span class="p">,</span> <span class="n">VERTICAL</span><span class="p">,</span> <span class="n">Widget</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Text</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">tkinter.filedialog</span> <span class="kn">import</span> <span class="n">askopenfilename</span><span class="p">,</span> <span class="n">asksaveasfilename</span>
+<span class="kn">from</span> <span class="nn">tkinter.messagebox</span> <span class="kn">import</span> <span class="n">showerror</span>
+<span class="kn">from</span> <span class="nn">tkinter.ttk</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Button</span><span class="p">,</span> <span class="n">Combobox</span><span class="p">,</span> <span class="n">Frame</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">LabelFrame</span><span class="p">,</span> <span class="n">Scrollbar</span><span class="p">,</span> <span class="n">Separator</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span>
+
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory_plan</span> <span class="kn">import</span> <span class="n">TrajectoryPlan</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.iscara_dsl_service</span> <span class="kn">import</span> <span class="n">IScaraDslService</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.scara_dsl_service</span> <span class="kn">import</span> <span class="n">ScaraDslService</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.itrajectory_validator</span> <span class="kn">import</span> <span class="n">ITrajectoryValidator</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.components.dsl_syntax_highlighter</span> <span class="kn">import</span> <span class="n">DslSyntaxHighlighter</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
+<span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
+
+
+<div class="viewcode-block" id="DslEditorTab">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.components.dsl_editor_tab.html#scarajectory.infrastructure.gui.components.dsl_editor_tab.DslEditorTab">[docs]</a>
+<span class="k">class</span> <span class="nc">DslEditorTab</span><span class="p">(</span><span class="n">Frame</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        SCARA DSL script editor with syntax highlighting, compilation, validation and export.</span>
+
+<span class="sd">        It defines:</span>
+
+<span class="sd">            :attributes:</span>
+<span class="sd">                | _plan - Active trajectory plan instance.</span>
+<span class="sd">                | _dsl_service - High-level DSL compilation and serialization service.</span>
+<span class="sd">                | _examples_dir - Filesystem path to bundled examples directory.</span>
+<span class="sd">                | _cbo_examples - Combobox dropdown for selecting bundled example scripts.</span>
+<span class="sd">                | _txt_editor - Multi-line source code editor widget.</span>
+<span class="sd">                | _txt_console - Status and compiler error log console.</span>
+<span class="sd">                | _highlighter - Syntax highlighter instance.</span>
+<span class="sd">            :methods:</span>
+<span class="sd">                | __init__ - Initializes the editor tab layout and binds events.</span>
+<span class="sd">                | _on_example_selected - Loads selected example script into the editor.</span>
+<span class="sd">                | compile_to_plan - Compiles editor code and updates the active plan.</span>
+<span class="sd">                | validate_code - Validates editor code syntax and kinematics without mutating plan.</span>
+<span class="sd">                | export_plan_to_editor - Serializes current plan into the editor text.</span>
+<span class="sd">                | preview_in_scaraemu - Launches SCARAEmu visualizer with active script.</span>
+<span class="sd">                | open_file - Opens a .scara file into the editor.</span>
+<span class="sd">                | save_file - Saves editor contents to a .scara file.</span>
+<span class="sd">                | load_example - Inserts standard demonstration SCARA script.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">_EXAMPLE_SCRIPT</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;# ==========================================================</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;# SCARA DSL Industrial Pick &amp; Place Demonstration</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;# ==========================================================</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;CONFIG ELBOW RIGHT</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;SPEED RAPID 120.0</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;SPEED WORK 40.0</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;ACCEL 500.0</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;ZONE BLEND R=5.0</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;TOOL_ORIENT TANGENTIAL</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;# Define sorting pallet grid (3 rows x 4 cols, 20mm pitch)</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;PALLET_DEF TRAY ROWS=3 COLS=4 DX=20.0 DY=20.0</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;# 1. Homing and rapid positioning</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;HOME</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;MOVE_J X=120.0 Y=50.0 Z=20.0 PHI=0.0</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;# 2. Pick &amp; Place arc jump to pallet index 0</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;JUMP X=160.0 Y=80.0 Z=10.0 ARCH=25.0 SPEED=45.0</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;APPROACH DIST=10.0 SPEED=20.0</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;PUMP ON</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;WAIT_MS 100</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;RETRACT DIST=15.0 SPEED=80.0</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;# 3. Transfer to pallet cell 5</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;MOVE_PALLET TRAY INDEX=5 Z=15.0</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;PUMP OFF</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;VALVE ON</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;WAIT_MS 50</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;VALVE OFF</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;# 4. Circular inspection arc</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;ARC_CW X=150.0 Y=40.0 I=0.0 J=-20.0 SPEED=30.0</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="s1">&#39;HOME</span><span class="se">\n</span><span class="s1">&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">_plan</span><span class="p">:</span> <span class="n">TrajectoryPlan</span>
+    <span class="n">_dsl_service</span><span class="p">:</span> <span class="n">IScaraDslService</span>
+    <span class="n">_examples_dir</span><span class="p">:</span> <span class="n">Path</span>
+    <span class="n">_cbo_examples</span><span class="p">:</span> <span class="n">Combobox</span>
+    <span class="n">_txt_editor</span><span class="p">:</span> <span class="n">Text</span>
+    <span class="n">_txt_console</span><span class="p">:</span> <span class="n">Text</span>
+    <span class="n">_highlighter</span><span class="p">:</span> <span class="n">DslSyntaxHighlighter</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">parent</span><span class="p">:</span> <span class="n">Widget</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">plan</span><span class="p">:</span> <span class="n">TrajectoryPlan</span><span class="p">,</span>
+        <span class="n">validator</span><span class="p">:</span> <span class="n">ITrajectoryValidator</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">dsl_service</span><span class="p">:</span> <span class="n">IScaraDslService</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Initializes the SCARA DSL editor tab.</span>
+
+<span class="sd">            :param parent: Parent container widget.</span>
+<span class="sd">            :param plan: Active TrajectoryPlan instance.</span>
+<span class="sd">            :param validator: Optional ITrajectoryValidator instance.</span>
+<span class="sd">            :param dsl_service: Optional IScaraDslService instance.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">TrajectoryPlan</span><span class="p">]</span> <span class="o">=</span> <span class="n">plan</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dsl_service</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IScaraDslService</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">dsl_service</span>
+            <span class="k">if</span> <span class="n">dsl_service</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="n">ScaraDslService</span><span class="p">(</span><span class="n">validator</span><span class="o">=</span><span class="n">validator</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_examples_dir</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">/</span> <span class="s1">&#39;examples&#39;</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_layout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_load_initial_content</span><span class="p">()</span>
+
+<div class="viewcode-block" id="DslEditorTab._build_layout">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.components.dsl_editor_tab.html#scarajectory.infrastructure.gui.components.dsl_editor_tab.DslEditorTab._build_layout">[docs]</a>
+    <span class="k">def</span> <span class="nf">_build_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Constructs action toolbar, code editor, and status console.</span>
+
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">row_actions</span><span class="p">:</span> <span class="n">Frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">row_actions</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+        <span class="n">Button</span><span class="p">(</span>
+            <span class="n">row_actions</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="s1">&#39;⚡ Compile to Plan&#39;</span><span class="p">,</span>
+            <span class="n">style</span><span class="o">=</span><span class="s1">&#39;Accent.TButton&#39;</span><span class="p">,</span>
+            <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">compile_to_plan</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">Button</span><span class="p">(</span>
+            <span class="n">row_actions</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="s1">&#39;🔍 Validate&#39;</span><span class="p">,</span>
+            <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">validate_code</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">Button</span><span class="p">(</span>
+            <span class="n">row_actions</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="s1">&#39;📤 Export Plan to DSL&#39;</span><span class="p">,</span>
+            <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">export_plan_to_editor</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">Separator</span><span class="p">(</span><span class="n">row_actions</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="n">VERTICAL</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span>
+            <span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">Y</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">4</span>
+        <span class="p">)</span>
+
+        <span class="n">Button</span><span class="p">(</span>
+            <span class="n">row_actions</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="s1">&#39;🚀 Preview in SCARAEmu&#39;</span><span class="p">,</span>
+            <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">preview_in_scaraemu</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">row_files</span><span class="p">:</span> <span class="n">Frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">row_files</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+        <span class="n">Button</span><span class="p">(</span>
+            <span class="n">row_files</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="s1">&#39;📂 Open...&#39;</span><span class="p">,</span>
+            <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">open_file</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">Button</span><span class="p">(</span>
+            <span class="n">row_files</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="s1">&#39;💾 Save...&#39;</span><span class="p">,</span>
+            <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">save_file</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">Separator</span><span class="p">(</span><span class="n">row_files</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="n">VERTICAL</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span>
+            <span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">Y</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">4</span>
+        <span class="p">)</span>
+        <span class="n">Label</span><span class="p">(</span><span class="n">row_files</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Examples:&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cbo_examples</span> <span class="o">=</span> <span class="n">Combobox</span><span class="p">(</span>
+            <span class="n">row_files</span><span class="p">,</span>
+            <span class="n">state</span><span class="o">=</span><span class="s1">&#39;readonly&#39;</span><span class="p">,</span>
+            <span class="n">width</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cbo_examples</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_examples_dir</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+            <span class="n">files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_examples_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*.scara&#39;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">files</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_cbo_examples</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">files</span>
+                <span class="n">default_name</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="s1">&#39;12_industrial_pick_place.scara&#39;</span>
+                    <span class="k">if</span> <span class="s1">&#39;12_industrial_pick_place.scara&#39;</span> <span class="ow">in</span> <span class="n">files</span>
+                    <span class="k">else</span> <span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_cbo_examples</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">default_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cbo_examples</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;&lt;ComboboxSelected&gt;&gt;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_example_selected</span><span class="p">)</span>
+
+        <span class="n">Button</span><span class="p">(</span>
+            <span class="n">row_files</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="s1">&#39;📥 Load Demo&#39;</span><span class="p">,</span>
+            <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_on_example_selected</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">editor_frame</span><span class="p">:</span> <span class="n">Frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">editor_frame</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">scroll_y</span> <span class="o">=</span> <span class="n">Scrollbar</span><span class="p">(</span><span class="n">editor_frame</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="n">VERTICAL</span><span class="p">)</span>
+        <span class="n">scroll_y</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">RIGHT</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">Y</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_editor</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span>
+            <span class="n">editor_frame</span><span class="p">,</span>
+            <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">bg</span><span class="o">=</span><span class="s1">&#39;#14161a&#39;</span><span class="p">,</span>
+            <span class="n">fg</span><span class="o">=</span><span class="s1">&#39;#abb2bf&#39;</span><span class="p">,</span>
+            <span class="n">insertbackground</span><span class="o">=</span><span class="s1">&#39;#61afef&#39;</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;DejaVu Sans Mono&#39;</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span>
+            <span class="n">wrap</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span>
+            <span class="n">yscrollcommand</span><span class="o">=</span><span class="n">scroll_y</span><span class="o">.</span><span class="n">set</span><span class="p">,</span>
+            <span class="n">undo</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_editor</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">scroll_y</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_txt_editor</span><span class="o">.</span><span class="n">yview</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_highlighter</span> <span class="o">=</span> <span class="n">DslSyntaxHighlighter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_txt_editor</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_editor</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;KeyRelease&gt;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_key_release</span><span class="p">)</span>
+
+        <span class="n">console_frame</span> <span class="o">=</span> <span class="n">LabelFrame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39; Compilation &amp; Diagnostics &#39;</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">console_frame</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_console</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span>
+            <span class="n">console_frame</span><span class="p">,</span>
+            <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">height</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+            <span class="n">bg</span><span class="o">=</span><span class="s1">&#39;#1a1d23&#39;</span><span class="p">,</span>
+            <span class="n">fg</span><span class="o">=</span><span class="s1">&#39;#98c379&#39;</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;DejaVu Sans Mono&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
+            <span class="n">wrap</span><span class="o">=</span><span class="s1">&#39;word&#39;</span><span class="p">,</span>
+            <span class="n">state</span><span class="o">=</span><span class="n">DISABLED</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_console</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DslEditorTab._load_initial_content">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.components.dsl_editor_tab.html#scarajectory.infrastructure.gui.components.dsl_editor_tab.DslEditorTab._load_initial_content">[docs]</a>
+    <span class="k">def</span> <span class="nf">_load_initial_content</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Loads either the exported active plan or the demonstration script into the editor.</span>
+
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">export_plan_to_editor</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cbo_examples</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_on_example_selected</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_example</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="DslEditorTab._on_key_release">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.components.dsl_editor_tab.html#scarajectory.infrastructure.gui.components.dsl_editor_tab.DslEditorTab._on_key_release">[docs]</a>
+    <span class="k">def</span> <span class="nf">_on_key_release</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_event</span><span class="p">:</span> <span class="n">Event</span><span class="p">[</span><span class="n">Misc</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Refreshes syntax highlighting on keystrokes.</span>
+
+<span class="sd">            :param _event: Tkinter event.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_highlighter</span><span class="o">.</span><span class="n">highlight</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_txt_editor</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DslEditorTab._log_console">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.components.dsl_editor_tab.html#scarajectory.infrastructure.gui.components.dsl_editor_tab.DslEditorTab._log_console">[docs]</a>
+    <span class="k">def</span> <span class="nf">_log_console</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">is_error</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Appends message to the status console.</span>
+
+<span class="sd">            :param text: Message string.</span>
+<span class="sd">            :param is_error: True if message indicates error.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_console</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">NORMAL</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_console</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;1.0&#39;</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_console</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">fg</span><span class="o">=</span><span class="s1">&#39;#e06c75&#39;</span> <span class="k">if</span> <span class="n">is_error</span> <span class="k">else</span> <span class="s1">&#39;#98c379&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_console</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">END</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_console</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">DISABLED</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DslEditorTab.compile_to_plan">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.components.dsl_editor_tab.html#scarajectory.infrastructure.gui.components.dsl_editor_tab.DslEditorTab.compile_to_plan">[docs]</a>
+    <span class="k">def</span> <span class="nf">compile_to_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Compiles editor code and replaces waypoints in the active TrajectoryPlan.</span>
+
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">source</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_txt_editor</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;1.0&#39;</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">source</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log_console</span><span class="p">(</span><span class="s1">&#39;❌ Editor is empty. Nothing to compile.&#39;</span><span class="p">,</span> <span class="n">is_error</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">compiled_plan</span><span class="p">:</span> <span class="n">TrajectoryPlan</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dsl_service</span><span class="o">.</span><span class="n">compile_script</span><span class="p">(</span>
+                <span class="n">source</span><span class="o">=</span><span class="n">source</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">set_waypoints</span><span class="p">(</span><span class="n">compiled_plan</span><span class="o">.</span><span class="n">waypoints</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;✅ Successfully compiled and synchronized!</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;Waypoints in Plan: </span><span class="si">{</span><span class="n">compiled_plan</span><span class="o">.</span><span class="n">count</span><span class="si">}</span><span class="s1"> | &#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;Kinematic Feasibility: PASSED&#39;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log_console</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">is_error</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log_console</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;❌ Compilation error: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">is_error</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DslEditorTab.validate_code">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.components.dsl_editor_tab.html#scarajectory.infrastructure.gui.components.dsl_editor_tab.DslEditorTab.validate_code">[docs]</a>
+    <span class="k">def</span> <span class="nf">validate_code</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Validates editor code syntax and kinematics without modifying the plan.</span>
+
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">source</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_txt_editor</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;1.0&#39;</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">source</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log_console</span><span class="p">(</span><span class="s1">&#39;❌ Editor is empty. Nothing to validate.&#39;</span><span class="p">,</span> <span class="n">is_error</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">is_valid</span><span class="p">,</span> <span class="n">messages</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dsl_service</span><span class="o">.</span><span class="n">validate_script</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log_console</span><span class="p">(</span>
+            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">messages</span><span class="p">),</span>
+            <span class="n">is_error</span><span class="o">=</span><span class="ow">not</span> <span class="n">is_valid</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DslEditorTab.export_plan_to_editor">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.components.dsl_editor_tab.html#scarajectory.infrastructure.gui.components.dsl_editor_tab.DslEditorTab.export_plan_to_editor">[docs]</a>
+    <span class="k">def</span> <span class="nf">export_plan_to_editor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Serializes the active plan waypoints into the editor.</span>
+
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">script</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dsl_service</span><span class="o">.</span><span class="n">export_plan</span><span class="p">(</span><span class="n">plan</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_editor</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;1.0&#39;</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_editor</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">END</span><span class="p">,</span> <span class="n">script</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_highlighter</span><span class="o">.</span><span class="n">highlight</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_txt_editor</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log_console</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;ℹ️ Exported </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">count</span><span class="si">}</span><span class="s1"> waypoints to SCARA DSL format.&#39;</span><span class="p">,</span>
+            <span class="n">is_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DslEditorTab.preview_in_scaraemu">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.components.dsl_editor_tab.html#scarajectory.infrastructure.gui.components.dsl_editor_tab.DslEditorTab.preview_in_scaraemu">[docs]</a>
+    <span class="k">def</span> <span class="nf">preview_in_scaraemu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Exports active DSL script to temporary file and launches SCARAEmu for visual twin preview.</span>
+
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">code</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_txt_editor</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;1.0&#39;</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">code</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log_console</span><span class="p">(</span><span class="s1">&#39;[WARN]: DSL editor is empty. Nothing to preview.&#39;</span><span class="p">,</span> <span class="n">is_error</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">candidate_dirs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">/</span> <span class="s1">&#39;scaraemu&#39;</span> <span class="o">/</span> <span class="s1">&#39;github&#39;</span> <span class="o">/</span> <span class="s1">&#39;scaraemu&#39;</span><span class="p">,</span>
+            <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;/data/dev/python/3_tools/scaraemu/github/scaraemu&#39;</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="n">emu_dir</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">candidate_dirs</span> <span class="k">if</span> <span class="p">(</span><span class="n">d</span> <span class="o">/</span> <span class="s1">&#39;main.py&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">()),</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">emu_dir</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log_console</span><span class="p">(</span><span class="s1">&#39;[ERR]: SCARAEmu directory with main.py not found.&#39;</span><span class="p">,</span> <span class="n">is_error</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">with</span> <span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;.scara&#39;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">tmp</span><span class="p">:</span>
+            <span class="n">tmp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+            <span class="n">tmp_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">name</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">cmd</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">executable</span><span class="p">,</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">emu_dir</span> <span class="o">/</span> <span class="s1">&#39;main.py&#39;</span><span class="p">),</span>
+                <span class="s1">&#39;emulator&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;--file&#39;</span><span class="p">,</span>
+                <span class="n">tmp_path</span><span class="p">,</span>
+            <span class="p">]</span>
+            <span class="n">env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">environ</span><span class="p">)</span>
+            <span class="n">env</span><span class="p">[</span><span class="s1">&#39;PYTHONPATH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">emu_dir</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PYTHONPATH&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">Popen</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">emu_dir</span><span class="p">),</span> <span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log_console</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;🚀 Launched SCARAEmu preview with </span><span class="si">{</span><span class="n">tmp_path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">is_error</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log_console</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;[ERR]: Failed to launch SCARAEmu: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">is_error</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DslEditorTab.open_file">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.components.dsl_editor_tab.html#scarajectory.infrastructure.gui.components.dsl_editor_tab.DslEditorTab.open_file">[docs]</a>
+    <span class="k">def</span> <span class="nf">open_file</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Opens a .scara file and loads it into the editor.</span>
+
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_idletasks</span><span class="p">()</span>
+        <span class="n">init_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_examples_dir</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_examples_dir</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="n">filepath</span> <span class="o">=</span> <span class="n">askopenfilename</span><span class="p">(</span>
+            <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">winfo_toplevel</span><span class="p">(),</span>
+            <span class="n">initialdir</span><span class="o">=</span><span class="n">init_dir</span><span class="p">,</span>
+            <span class="n">filetypes</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;SCARA DSL Scripts&#39;</span><span class="p">,</span> <span class="s1">&#39;*.scara&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;All Files&#39;</span><span class="p">,</span> <span class="s1">&#39;*.*&#39;</span><span class="p">)]</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">filepath</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_txt_editor</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;1.0&#39;</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_txt_editor</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">END</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_highlighter</span><span class="o">.</span><span class="n">highlight</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_txt_editor</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log_console</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ℹ️ Loaded file: </span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">is_error</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_idletasks</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="n">showerror</span><span class="p">(</span><span class="s1">&#39;File Error&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Failed to open file:</span><span class="se">\n</span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DslEditorTab.save_file">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.components.dsl_editor_tab.html#scarajectory.infrastructure.gui.components.dsl_editor_tab.DslEditorTab.save_file">[docs]</a>
+    <span class="k">def</span> <span class="nf">save_file</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Saves editor content to a .scara file.</span>
+
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_idletasks</span><span class="p">()</span>
+        <span class="n">filepath</span> <span class="o">=</span> <span class="n">asksaveasfilename</span><span class="p">(</span>
+            <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">winfo_toplevel</span><span class="p">(),</span>
+            <span class="n">defaultextension</span><span class="o">=</span><span class="s1">&#39;.scara&#39;</span><span class="p">,</span>
+            <span class="n">filetypes</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;SCARA DSL Scripts&#39;</span><span class="p">,</span> <span class="s1">&#39;*.scara&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;All Files&#39;</span><span class="p">,</span> <span class="s1">&#39;*.*&#39;</span><span class="p">)],</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">filepath</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_txt_editor</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;1.0&#39;</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log_console</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ℹ️ Saved file: </span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">is_error</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_idletasks</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="n">showerror</span><span class="p">(</span><span class="s1">&#39;File Error&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Failed to save file:</span><span class="se">\n</span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DslEditorTab._on_example_selected">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.components.dsl_editor_tab.html#scarajectory.infrastructure.gui.components.dsl_editor_tab.DslEditorTab._on_example_selected">[docs]</a>
+    <span class="k">def</span> <span class="nf">_on_example_selected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_event</span><span class="p">:</span> <span class="nb">object</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Loads the selected example script from disk into the editor.</span>
+
+<span class="sd">            :param _event: Optional Tkinter event.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">selected</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cbo_examples</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">selected</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_examples_dir</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+            <span class="n">target_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_examples_dir</span> <span class="o">/</span> <span class="n">selected</span>
+            <span class="k">if</span> <span class="n">target_file</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">target_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                        <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_txt_editor</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;1.0&#39;</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_txt_editor</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">END</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_highlighter</span><span class="o">.</span><span class="n">highlight</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_txt_editor</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_log_console</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ℹ️ Loaded example: </span><span class="si">{</span><span class="n">selected</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">is_error</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                    <span class="k">return</span>
+                <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_log_console</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;❌ Failed to read example: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">is_error</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_example</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="DslEditorTab.load_example">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.components.dsl_editor_tab.html#scarajectory.infrastructure.gui.components.dsl_editor_tab.DslEditorTab.load_example">[docs]</a>
+    <span class="k">def</span> <span class="nf">load_example</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Inserts standard demonstration SCARA script.</span>
+
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_editor</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;1.0&#39;</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_editor</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">END</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_EXAMPLE_SCRIPT</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_highlighter</span><span class="o">.</span><span class="n">highlight</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_txt_editor</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log_console</span><span class="p">(</span><span class="s1">&#39;ℹ️ Demonstration SCARA DSL script loaded.&#39;</span><span class="p">,</span> <span class="n">is_error</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.components.dsl_editor_tab</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>scarajectory.core.service.dsl.scara_compiler &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/classic.css?v=514cf933" />
+    
+    <script src="../../../../../_static/documentation_options.js?v=57319df4"></script>
+    <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.core.service.dsl.scara_compiler</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for scarajectory.core.service.dsl.scara_compiler</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Module</span>
+<span class="sd">    scara_compiler.py</span>
+<span class="sd">Copyright</span>
+<span class="sd">    Copyright (C) 2026 Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;</span>
+<span class="sd">    scarajectory is free software: you can redistribute it and/or modify it</span>
+<span class="sd">    under the terms of the GNU General Public License as published by the</span>
+<span class="sd">    Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">    (at your option) any later version.</span>
+<span class="sd">    scarajectory is distributed in the hope that it will be useful, but</span>
+<span class="sd">    WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
+<span class="sd">    See the GNU General Public License for more details.</span>
+<span class="sd">    You should have received a copy of the GNU General Public License along</span>
+<span class="sd">    with this program. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">Info</span>
+<span class="sd">    Implementation of IScaraCompiler transforming SCARA DSL programs into validated trajectory plans.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Sequence</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.iscara_instruction</span> <span class="kn">import</span> <span class="n">IScaraInstruction</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.iscara_program</span> <span class="kn">import</span> <span class="n">IScaraProgram</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.scara_command_type</span> <span class="kn">import</span> <span class="n">ScaraCommandType</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.scara_diagnostic</span> <span class="kn">import</span> <span class="n">ScaraDiagnostic</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.scara_diagnostic_severity</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ScaraDiagnosticSeverity</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.scara_bounds</span> <span class="kn">import</span> <span class="n">ScaraBounds</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory_plan</span> <span class="kn">import</span> <span class="n">TrajectoryPlan</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.waypoint</span> <span class="kn">import</span> <span class="n">Waypoint</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.compiler.arc_interpolator</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ArcInterpolator</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.compiler.iarc_interpolator</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">IArcInterpolator</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.frame_macro_expander</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">FrameMacroExpander</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.imacro_expander</span> <span class="kn">import</span> <span class="n">IMacroExpander</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.jump_macro_expander</span> <span class="kn">import</span> <span class="n">JumpMacroExpander</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.linter.iscara_linter</span> <span class="kn">import</span> <span class="n">IScaraLinter</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.linter.scara_linter</span> <span class="kn">import</span> <span class="n">ScaraLinter</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.pallet_macro_expander</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">PalletMacroExpander</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.scara_compiler_context</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ScaraCompilerContext</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.tangent_macro_expander</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">TangentMacroExpander</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.itrajectory_validator</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ITrajectoryValidator</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory_validator</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">TrajectoryValidator</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
+<span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
+
+
+<div class="viewcode-block" id="ScaraCompiler">
+<a class="viewcode-back" href="../../../../../scarajectory.core.service.dsl.scara_compiler.html#scarajectory.core.service.dsl.scara_compiler.ScaraCompiler">[docs]</a>
+<span class="k">class</span> <span class="nc">ScaraCompiler</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Compiler orchestrator coordinating macro expansion, arc interpolation, and kinematic validation.</span>
+
+<span class="sd">        It defines:</span>
+
+<span class="sd">            :attributes:</span>
+<span class="sd">                | _macro_expanders - Tuple of registered IMacroExpander plugins.</span>
+<span class="sd">                | _validator - Kinematic reachability validator.</span>
+<span class="sd">                | _tangent_helper - Helper calculating heading angles.</span>
+<span class="sd">                | _arc_interpolator - Dedicated circular arc interpolator.</span>
+<span class="sd">                | _linter - Static analysis and safety linter.</span>
+<span class="sd">            :methods:</span>
+<span class="sd">                | __init__ - Initializes compiler with optional custom expanders, validator, interpolator, and linter.</span>
+<span class="sd">                | compile - Compiles IScaraProgram into validated TrajectoryPlan.</span>
+<span class="sd">                | lint - Lints IScaraProgram and returns diagnostic findings.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">macro_expanders</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">IMacroExpander</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">validator</span><span class="p">:</span> <span class="n">ITrajectoryValidator</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">arc_interpolator</span><span class="p">:</span> <span class="n">IArcInterpolator</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">linter</span><span class="p">:</span> <span class="n">IScaraLinter</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Initializes ScaraCompiler with injected components.</span>
+
+<span class="sd">            :param macro_expanders: Optional custom sequence of IMacroExpander components.</span>
+<span class="sd">            :param validator: Optional ITrajectoryValidator instance.</span>
+<span class="sd">            :param arc_interpolator: Optional IArcInterpolator component.</span>
+<span class="sd">            :param linter: Optional IScaraLinter component.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">macro_expanders</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_macro_expanders</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">IMacroExpander</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+                <span class="n">macro_expanders</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_macro_expanders</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">JumpMacroExpander</span><span class="p">(),</span>
+                <span class="n">FrameMacroExpander</span><span class="p">(),</span>
+                <span class="n">PalletMacroExpander</span><span class="p">(),</span>
+                <span class="n">TangentMacroExpander</span><span class="p">(),</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validator</span><span class="p">:</span> <span class="n">ITrajectoryValidator</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">validator</span> <span class="k">if</span> <span class="n">validator</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">TrajectoryValidator</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tangent_helper</span><span class="p">:</span> <span class="n">TangentMacroExpander</span> <span class="o">=</span> <span class="n">TangentMacroExpander</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_arc_interpolator</span><span class="p">:</span> <span class="n">IArcInterpolator</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">arc_interpolator</span>
+            <span class="k">if</span> <span class="n">arc_interpolator</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="n">ArcInterpolator</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_linter</span><span class="p">:</span> <span class="n">IScaraLinter</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">linter</span> <span class="k">if</span> <span class="n">linter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">ScaraLinter</span><span class="p">()</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="ScaraCompiler.lint">
+<a class="viewcode-back" href="../../../../../scarajectory.core.service.dsl.scara_compiler.html#scarajectory.core.service.dsl.scara_compiler.ScaraCompiler.lint">[docs]</a>
+    <span class="k">def</span> <span class="nf">lint</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">program</span><span class="p">:</span> <span class="n">IScaraProgram</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ScaraDiagnostic</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Lints a SCARA DSL program and returns diagnostic warnings and errors.</span>
+
+<span class="sd">            :param program: Parsed IScaraProgram AST root.</span>
+<span class="sd">            :return: Tuple of ScaraDiagnostic findings.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_linter</span><span class="o">.</span><span class="n">lint</span><span class="p">(</span><span class="n">program</span><span class="o">=</span><span class="n">program</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ScaraCompiler.compile">
+<a class="viewcode-back" href="../../../../../scarajectory.core.service.dsl.scara_compiler.html#scarajectory.core.service.dsl.scara_compiler.ScaraCompiler.compile">[docs]</a>
+    <span class="k">def</span> <span class="nf">compile</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">program</span><span class="p">:</span> <span class="n">IScaraProgram</span><span class="p">,</span>
+        <span class="n">bounds</span><span class="p">:</span> <span class="n">ScaraBounds</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryPlan</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Compiles a SCARA DSL program into an executable and validated TrajectoryPlan.</span>
+
+<span class="sd">            :param program: Parsed IScaraProgram AST root.</span>
+<span class="sd">            :param bounds: Optional kinematic boundary constraints.</span>
+<span class="sd">            :return: Validated TrajectoryPlan instance.</span>
+<span class="sd">            :exceptions: ValueError if static analysis or kinematic validation fails.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">diagnostics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lint</span><span class="p">(</span><span class="n">program</span><span class="o">=</span><span class="n">program</span><span class="p">)</span>
+        <span class="n">errors</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">diagnostics</span>
+            <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">severity</span> <span class="o">==</span> <span class="n">ScaraDiagnosticSeverity</span><span class="o">.</span><span class="n">ERROR</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
+            <span class="n">err_details</span> <span class="o">=</span> <span class="s1">&#39;; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">format_report</span><span class="p">()</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">errors</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Compilation aborted due to static analysis errors: </span><span class="si">{</span><span class="n">err_details</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="p">)</span>
+
+        <span class="n">context</span> <span class="o">=</span> <span class="n">ScaraCompilerContext</span><span class="p">()</span>
+        <span class="n">waypoints</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Waypoint</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">inst</span> <span class="ow">in</span> <span class="n">program</span><span class="o">.</span><span class="n">instructions</span><span class="p">:</span>
+            <span class="n">expanded</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">for</span> <span class="n">expander</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_macro_expanders</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">expander</span><span class="o">.</span><span class="n">can_expand</span><span class="p">(</span><span class="n">instruction</span><span class="o">=</span><span class="n">inst</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">new_inst</span> <span class="ow">in</span> <span class="n">expander</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+                        <span class="n">instruction</span><span class="o">=</span><span class="n">inst</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span>
+                    <span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_process_primitive</span><span class="p">(</span>
+                            <span class="n">instruction</span><span class="o">=</span><span class="n">new_inst</span><span class="p">,</span>
+                            <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">,</span>
+                            <span class="n">waypoints</span><span class="o">=</span><span class="n">waypoints</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="n">expanded</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">break</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">expanded</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_process_primitive</span><span class="p">(</span>
+                    <span class="n">instruction</span><span class="o">=</span><span class="n">inst</span><span class="p">,</span>
+                    <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">,</span>
+                    <span class="n">waypoints</span><span class="o">=</span><span class="n">waypoints</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="n">plan</span> <span class="o">=</span> <span class="n">TrajectoryPlan</span><span class="p">()</span>
+        <span class="n">plan</span><span class="o">.</span><span class="n">set_waypoints</span><span class="p">(</span><span class="n">waypoints</span><span class="p">)</span>
+
+        <span class="n">active_bounds</span> <span class="o">=</span> <span class="n">bounds</span> <span class="k">if</span> <span class="n">bounds</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">ScaraBounds</span><span class="p">()</span>
+        <span class="n">validator</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">TrajectoryValidator</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="n">active_bounds</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">bounds</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validator</span>
+        <span class="p">)</span>
+        <span class="n">is_valid</span><span class="p">,</span> <span class="n">messages</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">validate_plan</span><span class="p">(</span><span class="n">plan</span><span class="o">=</span><span class="n">plan</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_valid</span><span class="p">:</span>
+            <span class="n">err_msg</span> <span class="o">=</span> <span class="s1">&#39;; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Compilation failed kinematic validation: </span><span class="si">{</span><span class="n">err_msg</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">plan</span></div>
+
+
+<div class="viewcode-block" id="ScaraCompiler._process_primitive">
+<a class="viewcode-back" href="../../../../../scarajectory.core.service.dsl.scara_compiler.html#scarajectory.core.service.dsl.scara_compiler.ScaraCompiler._process_primitive">[docs]</a>
+    <span class="k">def</span> <span class="nf">_process_primitive</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">instruction</span><span class="p">:</span> <span class="n">IScaraInstruction</span><span class="p">,</span>
+        <span class="n">context</span><span class="p">:</span> <span class="n">ScaraCompilerContext</span><span class="p">,</span>
+        <span class="n">waypoints</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Waypoint</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Processes primitive non-macro instructions and updates context/waypoints.</span>
+
+<span class="sd">            :param instruction: Primitive instruction node.</span>
+<span class="sd">            :param context: Stateful compiler context.</span>
+<span class="sd">            :param waypoints: Accumulator list of compiled Waypoint instances.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">instruction</span><span class="o">.</span><span class="n">parameters</span>
+        <span class="n">cmd_type</span> <span class="o">=</span> <span class="n">instruction</span><span class="o">.</span><span class="n">command_type</span>
+
+        <span class="k">match</span> <span class="n">cmd_type</span><span class="p">:</span>
+            <span class="k">case</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">SPEED</span><span class="p">:</span>
+                <span class="n">mode</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">,</span> <span class="s1">&#39;WORK&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+                <span class="n">spd</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;speed&#39;</span><span class="p">,</span> <span class="mf">40.0</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;RAPID&#39;</span><span class="p">:</span>
+                    <span class="n">context</span><span class="o">.</span><span class="n">speed_rapid</span> <span class="o">=</span> <span class="n">spd</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">context</span><span class="o">.</span><span class="n">speed_work</span> <span class="o">=</span> <span class="n">spd</span>
+                    <span class="n">context</span><span class="o">.</span><span class="n">current_speed</span> <span class="o">=</span> <span class="n">spd</span>
+            <span class="k">case</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">ACCEL</span><span class="p">:</span>
+                <span class="n">context</span><span class="o">.</span><span class="n">active_accel</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;accel&#39;</span><span class="p">,</span> <span class="mf">300.0</span><span class="p">))</span>
+            <span class="k">case</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">OVERRIDE</span><span class="p">:</span>
+                <span class="n">context</span><span class="o">.</span><span class="n">speed_override_pct</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;percent&#39;</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">))</span>
+            <span class="k">case</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">CONFIG_ELBOW</span><span class="p">:</span>
+                <span class="n">context</span><span class="o">.</span><span class="n">elbow_config</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;elbow&#39;</span><span class="p">,</span> <span class="s1">&#39;RIGHT&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+            <span class="k">case</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">ZONE</span><span class="p">:</span>
+                <span class="n">context</span><span class="o">.</span><span class="n">zone_mode</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">,</span> <span class="s1">&#39;FINE&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+                <span class="n">context</span><span class="o">.</span><span class="n">zone_radius</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
+            <span class="k">case</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">HOME</span><span class="p">:</span>
+                <span class="n">waypoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">Waypoint</span><span class="p">(</span>
+                        <span class="n">x</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_x</span><span class="p">,</span>
+                        <span class="n">y</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_y</span><span class="p">,</span>
+                        <span class="n">z</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_z</span><span class="p">,</span>
+                        <span class="n">phi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                        <span class="n">speed</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">speed_rapid</span><span class="p">,</span>
+                        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;HOME&#39;</span><span class="p">,</span>
+                        <span class="n">command</span><span class="o">=</span><span class="s1">&#39;&lt;CMD:HOME&gt;&#39;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">case</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">PUMP</span><span class="p">:</span>
+                <span class="n">pump_on</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;OFF&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;ON&#39;</span>
+                <span class="n">waypoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">Waypoint</span><span class="p">(</span>
+                        <span class="n">x</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_x</span><span class="p">,</span>
+                        <span class="n">y</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_y</span><span class="p">,</span>
+                        <span class="n">z</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_z</span><span class="p">,</span>
+                        <span class="n">phi</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_phi</span><span class="p">,</span>
+                        <span class="n">speed</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_speed</span><span class="p">,</span>
+                        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;PUMP_ON&#39;</span> <span class="k">if</span> <span class="n">pump_on</span> <span class="k">else</span> <span class="s1">&#39;PUMP_OFF&#39;</span><span class="p">,</span>
+                        <span class="n">command</span><span class="o">=</span><span class="s1">&#39;&lt;CMD:PUMP#1&gt;&#39;</span> <span class="k">if</span> <span class="n">pump_on</span> <span class="k">else</span> <span class="s1">&#39;&lt;CMD:PUMP#0&gt;&#39;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">case</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">VALVE</span><span class="p">:</span>
+                <span class="n">valve_on</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;OFF&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;ON&#39;</span>
+                <span class="n">waypoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">Waypoint</span><span class="p">(</span>
+                        <span class="n">x</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_x</span><span class="p">,</span>
+                        <span class="n">y</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_y</span><span class="p">,</span>
+                        <span class="n">z</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_z</span><span class="p">,</span>
+                        <span class="n">phi</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_phi</span><span class="p">,</span>
+                        <span class="n">speed</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_speed</span><span class="p">,</span>
+                        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;VALVE_ON&#39;</span> <span class="k">if</span> <span class="n">valve_on</span> <span class="k">else</span> <span class="s1">&#39;VALVE_OFF&#39;</span><span class="p">,</span>
+                        <span class="n">command</span><span class="o">=</span><span class="s1">&#39;&lt;CMD:VALVE#1&gt;&#39;</span> <span class="k">if</span> <span class="n">valve_on</span> <span class="k">else</span> <span class="s1">&#39;&lt;CMD:VALVE#0&gt;&#39;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">case</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">WAIT_MS</span><span class="p">:</span>
+                <span class="n">delay_ms</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ms&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))))</span>
+                <span class="n">waypoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">Waypoint</span><span class="p">(</span>
+                        <span class="n">x</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_x</span><span class="p">,</span>
+                        <span class="n">y</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_y</span><span class="p">,</span>
+                        <span class="n">z</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_z</span><span class="p">,</span>
+                        <span class="n">phi</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_phi</span><span class="p">,</span>
+                        <span class="n">speed</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_speed</span><span class="p">,</span>
+                        <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;WAIT_</span><span class="si">{</span><span class="n">delay_ms</span><span class="si">}</span><span class="s1">MS&#39;</span><span class="p">,</span>
+                        <span class="n">command</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;&lt;CMD:WAIT#</span><span class="si">{</span><span class="n">delay_ms</span><span class="si">}</span><span class="s1">&gt;&#39;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">case</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">HOLD</span><span class="p">:</span>
+                <span class="n">waypoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">Waypoint</span><span class="p">(</span>
+                        <span class="n">x</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_x</span><span class="p">,</span>
+                        <span class="n">y</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_y</span><span class="p">,</span>
+                        <span class="n">z</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_z</span><span class="p">,</span>
+                        <span class="n">phi</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_phi</span><span class="p">,</span>
+                        <span class="n">speed</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_speed</span><span class="p">,</span>
+                        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;HOLD&#39;</span><span class="p">,</span>
+                        <span class="n">command</span><span class="o">=</span><span class="s1">&#39;&lt;CMD:HOLD&gt;&#39;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">case</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">RESUME</span><span class="p">:</span>
+                <span class="n">waypoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">Waypoint</span><span class="p">(</span>
+                        <span class="n">x</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_x</span><span class="p">,</span>
+                        <span class="n">y</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_y</span><span class="p">,</span>
+                        <span class="n">z</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_z</span><span class="p">,</span>
+                        <span class="n">phi</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_phi</span><span class="p">,</span>
+                        <span class="n">speed</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_speed</span><span class="p">,</span>
+                        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;RESUME&#39;</span><span class="p">,</span>
+                        <span class="n">command</span><span class="o">=</span><span class="s1">&#39;&lt;CMD:RESUME&gt;&#39;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">case</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">ESTOP</span><span class="p">:</span>
+                <span class="n">waypoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">Waypoint</span><span class="p">(</span>
+                        <span class="n">x</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_x</span><span class="p">,</span>
+                        <span class="n">y</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_y</span><span class="p">,</span>
+                        <span class="n">z</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_z</span><span class="p">,</span>
+                        <span class="n">phi</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_phi</span><span class="p">,</span>
+                        <span class="n">speed</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_speed</span><span class="p">,</span>
+                        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;ESTOP&#39;</span><span class="p">,</span>
+                        <span class="n">command</span><span class="o">=</span><span class="s1">&#39;&lt;CMD:ESTOP&gt;&#39;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">case</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">ENABLE</span> <span class="o">|</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">DISABLE</span><span class="p">:</span>
+                <span class="n">cmd_name</span> <span class="o">=</span> <span class="s1">&#39;ENABLE&#39;</span> <span class="k">if</span> <span class="n">cmd_type</span> <span class="o">==</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">ENABLE</span> <span class="k">else</span> <span class="s1">&#39;DISABLE&#39;</span>
+                <span class="n">waypoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">Waypoint</span><span class="p">(</span>
+                        <span class="n">x</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_x</span><span class="p">,</span>
+                        <span class="n">y</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_y</span><span class="p">,</span>
+                        <span class="n">z</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_z</span><span class="p">,</span>
+                        <span class="n">phi</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_phi</span><span class="p">,</span>
+                        <span class="n">speed</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_speed</span><span class="p">,</span>
+                        <span class="n">name</span><span class="o">=</span><span class="n">cmd_name</span><span class="p">,</span>
+                        <span class="n">command</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;&lt;CMD:</span><span class="si">{</span><span class="n">cmd_name</span><span class="si">}</span><span class="s1">&gt;&#39;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">case</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">MOVE_L</span> <span class="o">|</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">MOVE_J</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_compile_cartesian_move</span><span class="p">(</span>
+                    <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">,</span> <span class="n">waypoints</span><span class="o">=</span><span class="n">waypoints</span>
+                <span class="p">)</span>
+            <span class="k">case</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">APPROACH</span><span class="p">:</span>
+                <span class="n">dist</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;DIST&#39;</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">))</span>
+                <span class="n">spd</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;SPEED&#39;</span><span class="p">,</span> <span class="n">context</span><span class="o">.</span><span class="n">speed_work</span><span class="p">))</span>
+                <span class="n">target_z</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">context</span><span class="o">.</span><span class="n">current_z</span> <span class="o">-</span> <span class="n">dist</span><span class="p">)</span>
+                <span class="n">context</span><span class="o">.</span><span class="n">current_z</span> <span class="o">=</span> <span class="n">target_z</span>
+                <span class="n">waypoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">Waypoint</span><span class="p">(</span>
+                        <span class="n">x</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_x</span><span class="p">,</span>
+                        <span class="n">y</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_y</span><span class="p">,</span>
+                        <span class="n">z</span><span class="o">=</span><span class="n">target_z</span><span class="p">,</span>
+                        <span class="n">phi</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_phi</span><span class="p">,</span>
+                        <span class="n">speed</span><span class="o">=</span><span class="n">spd</span><span class="p">,</span>
+                        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;APPROACH&#39;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">case</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">RETRACT</span><span class="p">:</span>
+                <span class="n">dist</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;DIST&#39;</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">))</span>
+                <span class="n">spd</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;SPEED&#39;</span><span class="p">,</span> <span class="n">context</span><span class="o">.</span><span class="n">speed_rapid</span><span class="p">))</span>
+                <span class="n">target_z</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">current_z</span> <span class="o">+</span> <span class="n">dist</span>
+                <span class="n">context</span><span class="o">.</span><span class="n">current_z</span> <span class="o">=</span> <span class="n">target_z</span>
+                <span class="n">waypoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">Waypoint</span><span class="p">(</span>
+                        <span class="n">x</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_x</span><span class="p">,</span>
+                        <span class="n">y</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_y</span><span class="p">,</span>
+                        <span class="n">z</span><span class="o">=</span><span class="n">target_z</span><span class="p">,</span>
+                        <span class="n">phi</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_phi</span><span class="p">,</span>
+                        <span class="n">speed</span><span class="o">=</span><span class="n">spd</span><span class="p">,</span>
+                        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;RETRACT&#39;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">case</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">ARC_CW</span> <span class="o">|</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">ARC_CCW</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_compile_arc_move</span><span class="p">(</span>
+                    <span class="n">is_clockwise</span><span class="o">=</span><span class="p">(</span><span class="n">cmd_type</span> <span class="o">==</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">ARC_CW</span><span class="p">),</span>
+                    <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                    <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">,</span>
+                    <span class="n">waypoints</span><span class="o">=</span><span class="n">waypoints</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+                <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="ScaraCompiler._compile_cartesian_move">
+<a class="viewcode-back" href="../../../../../scarajectory.core.service.dsl.scara_compiler.html#scarajectory.core.service.dsl.scara_compiler.ScaraCompiler._compile_cartesian_move">[docs]</a>
+    <span class="k">def</span> <span class="nf">_compile_cartesian_move</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">params</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">context</span><span class="p">:</span> <span class="n">ScaraCompilerContext</span><span class="p">,</span>
+        <span class="n">waypoints</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Waypoint</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;Compiles MOVE_L / MOVE_J with frame translation and tangential heading.&#39;&#39;&#39;</span>
+        <span class="n">raw_x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">context</span><span class="o">.</span><span class="n">current_x</span><span class="p">))</span>
+        <span class="n">raw_y</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="n">context</span><span class="o">.</span><span class="n">current_y</span><span class="p">))</span>
+        <span class="n">target_z</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Z&#39;</span><span class="p">,</span> <span class="n">context</span><span class="o">.</span><span class="n">current_z</span><span class="p">))</span>
+        <span class="n">target_spd</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;SPEED&#39;</span><span class="p">,</span> <span class="n">context</span><span class="o">.</span><span class="n">current_speed</span><span class="p">))</span>
+
+        <span class="n">global_x</span><span class="p">,</span> <span class="n">global_y</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">transform_point</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">raw_x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">raw_y</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">tool_orient_mode</span> <span class="o">==</span> <span class="s1">&#39;TANGENTIAL&#39;</span><span class="p">:</span>
+            <span class="n">target_phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tangent_helper</span><span class="o">.</span><span class="n">calculate_tangent_angle</span><span class="p">(</span>
+                <span class="n">current_x</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_x</span><span class="p">,</span>
+                <span class="n">current_y</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_y</span><span class="p">,</span>
+                <span class="n">target_x</span><span class="o">=</span><span class="n">global_x</span><span class="p">,</span>
+                <span class="n">target_y</span><span class="o">=</span><span class="n">global_y</span><span class="p">,</span>
+                <span class="n">fallback_phi</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">current_phi</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">target_phi</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PHI&#39;</span><span class="p">,</span> <span class="n">context</span><span class="o">.</span><span class="n">current_phi</span><span class="p">))</span>
+
+        <span class="n">effective_spd</span> <span class="o">=</span> <span class="n">target_spd</span> <span class="o">*</span> <span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">speed_override_pct</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)</span>
+
+        <span class="n">waypoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">Waypoint</span><span class="p">(</span>
+                <span class="n">x</span><span class="o">=</span><span class="n">global_x</span><span class="p">,</span>
+                <span class="n">y</span><span class="o">=</span><span class="n">global_y</span><span class="p">,</span>
+                <span class="n">z</span><span class="o">=</span><span class="n">target_z</span><span class="p">,</span>
+                <span class="n">phi</span><span class="o">=</span><span class="n">target_phi</span><span class="p">,</span>
+                <span class="n">speed</span><span class="o">=</span><span class="n">effective_spd</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">context</span><span class="o">.</span><span class="n">current_x</span> <span class="o">=</span> <span class="n">global_x</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">current_y</span> <span class="o">=</span> <span class="n">global_y</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">current_z</span> <span class="o">=</span> <span class="n">target_z</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">current_phi</span> <span class="o">=</span> <span class="n">target_phi</span></div>
+
+
+<div class="viewcode-block" id="ScaraCompiler._compile_arc_move">
+<a class="viewcode-back" href="../../../../../scarajectory.core.service.dsl.scara_compiler.html#scarajectory.core.service.dsl.scara_compiler.ScaraCompiler._compile_arc_move">[docs]</a>
+    <span class="k">def</span> <span class="nf">_compile_arc_move</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">is_clockwise</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">params</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">context</span><span class="p">:</span> <span class="n">ScaraCompilerContext</span><span class="p">,</span>
+        <span class="n">waypoints</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Waypoint</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;Interpolates circular arc using injected IArcInterpolator.&#39;&#39;&#39;</span>
+        <span class="n">start_x</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">current_x</span>
+        <span class="n">start_y</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">current_y</span>
+        <span class="n">target_x_raw</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">start_x</span><span class="p">))</span>
+        <span class="n">target_y_raw</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="n">start_y</span><span class="p">))</span>
+        <span class="n">target_z</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Z&#39;</span><span class="p">,</span> <span class="n">context</span><span class="o">.</span><span class="n">current_z</span><span class="p">))</span>
+        <span class="n">spd</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;SPEED&#39;</span><span class="p">,</span> <span class="n">context</span><span class="o">.</span><span class="n">current_speed</span><span class="p">))</span>
+        <span class="n">offset_i</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
+        <span class="n">offset_j</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;J&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
+
+        <span class="n">end_x</span><span class="p">,</span> <span class="n">end_y</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">transform_point</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">target_x_raw</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">target_y_raw</span><span class="p">)</span>
+
+        <span class="n">arc_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arc_interpolator</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span>
+            <span class="n">start_x</span><span class="o">=</span><span class="n">start_x</span><span class="p">,</span>
+            <span class="n">start_y</span><span class="o">=</span><span class="n">start_y</span><span class="p">,</span>
+            <span class="n">target_x</span><span class="o">=</span><span class="n">end_x</span><span class="p">,</span>
+            <span class="n">target_y</span><span class="o">=</span><span class="n">end_y</span><span class="p">,</span>
+            <span class="n">offset_i</span><span class="o">=</span><span class="n">offset_i</span><span class="p">,</span>
+            <span class="n">offset_j</span><span class="o">=</span><span class="n">offset_j</span><span class="p">,</span>
+            <span class="n">is_clockwise</span><span class="o">=</span><span class="n">is_clockwise</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">effective_spd</span> <span class="o">=</span> <span class="n">spd</span> <span class="o">*</span> <span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">speed_override_pct</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">px</span><span class="p">,</span> <span class="n">py</span><span class="p">,</span> <span class="n">tangent_deg</span> <span class="ow">in</span> <span class="n">arc_points</span><span class="p">:</span>
+            <span class="n">phi</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">tangent_deg</span>
+                <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">tool_orient_mode</span> <span class="o">==</span> <span class="s1">&#39;TANGENTIAL&#39;</span>
+                <span class="k">else</span> <span class="n">context</span><span class="o">.</span><span class="n">current_phi</span>
+            <span class="p">)</span>
+            <span class="n">waypoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">Waypoint</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">px</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">py</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">target_z</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="n">effective_spd</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="n">context</span><span class="o">.</span><span class="n">current_x</span> <span class="o">=</span> <span class="n">end_x</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">current_y</span> <span class="o">=</span> <span class="n">end_y</span>
+        <span class="n">context</span><span class="o">.</span><span class="n">current_z</span> <span class="o">=</span> <span class="n">target_z</span></div>
+</div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.core.service.dsl.scara_compiler</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

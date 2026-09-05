@@ -21,7 +21,13 @@ Info
 
 from __future__ import annotations
 
-import socket
+from socket import (
+    AF_INET,
+    SHUT_RDWR,
+    SOCK_STREAM,
+    socket as Socket,
+    timeout as SocketTimeout,
+)
 from threading import Lock, Event, Thread
 from time import sleep
 from typing import Callable, Final
@@ -32,7 +38,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.2'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -60,7 +66,7 @@ class TcpTransport:
                 | send_raw - Transmits formatted command string over socket.
     '''
 
-    _sock: socket.socket | None
+    _sock: Socket | None
     _lock: Lock
     _stop_event: Event
     _reader_thread: Thread | None
@@ -130,7 +136,7 @@ class TcpTransport:
                 port_num = 8080
 
         try:
-            sock: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock: Socket = Socket(AF_INET, SOCK_STREAM)
             sock.settimeout(config.timeout)
             sock.connect((host, port_num))
             self._sock = sock
@@ -142,7 +148,7 @@ class TcpTransport:
                 self._on_log(f'[HOST]: Connected to TCP {host}:{port_num}', False)
 
             return True
-        except (OSError, socket.error) as exc:
+        except OSError as exc:
             if self._on_log:
                 self._on_log(f'[ERR]: TCP Connection failed: {exc}', False)
             self.disconnect()
@@ -157,9 +163,9 @@ class TcpTransport:
         self._stop_event.set()
         if self._sock:
             try:
-                self._sock.shutdown(socket.SHUT_RDWR)
+                self._sock.shutdown(SHUT_RDWR)
                 self._sock.close()
-            except (OSError, socket.error):
+            except OSError:
                 pass
             self._sock = None
 
@@ -187,7 +193,7 @@ class TcpTransport:
                 if self._on_log:
                     self._on_log(cmd.strip(), True)
                 return True
-            except (OSError, socket.error) as exc:
+            except OSError as exc:
                 if self._on_log:
                     self._on_log(f'[TX ERR]: {exc}', False)
                 return False
@@ -201,7 +207,7 @@ class TcpTransport:
         if self._sock:
             try:
                 self._sock.close()
-            except (OSError, socket.error):
+            except OSError:
                 pass
             self._sock = None
         if self._on_log:
@@ -233,9 +239,9 @@ class TcpTransport:
                     if line and self._on_line:
                         self._on_line(line)
 
-            except socket.timeout:
+            except SocketTimeout:
                 sleep(0.01)
-            except (OSError, socket.error):
+            except OSError:
                 abnormal_disconnect = not self._stop_event.is_set()
                 break
 

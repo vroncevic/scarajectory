@@ -27,7 +27,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.2'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -98,6 +98,8 @@ class CommandTemplates:
     )
     SET_ELBOW_TEMPLATE: ClassVar[str] = '<CMD:SET_ELBOW#{elbow}>'
     GET_ELBOW: ClassVar[str] = '<CMD:GET_ELBOW>'
+    OVERRIDE_TEMPLATE: ClassVar[str] = '<CMD:OVERRIDE#{percent:d}>'
+    WAIT_TEMPLATE: ClassVar[str] = '<CMD:WAIT#{delay_ms:d}>'
 
     _LOOKUP: ClassVar[dict[str, str]] = {
         'ENABLE': '<CMD:ENABLE>',
@@ -133,7 +135,11 @@ class CommandTemplates:
         ),
         'SET_STEPS': (
             '<CMD:SET_STEPS#GR_J1={gr_j1:.2f}#GR_J2={gr_j2:.2f}#GR_J4={gr_j4:.2f}#LEAD_Z={lead_z:.2f}>'
-        )
+        ),
+        'SET_ELBOW': '<CMD:SET_ELBOW#{elbow}>',
+        'GET_ELBOW': '<CMD:GET_ELBOW>',
+        'OVERRIDE': '<CMD:OVERRIDE#{percent:d}>',
+        'WAIT': '<CMD:WAIT#{delay_ms:d}>'
     }
 
     @classmethod

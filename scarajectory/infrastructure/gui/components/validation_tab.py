@@ -21,8 +21,8 @@ Info
 
 from __future__ import annotations
 
-import tkinter as tk
-from tkinter import ttk
+from tkinter import BOTH, END, LEFT, X, Text, Widget
+from tkinter.ttk import Button, Frame
 from typing import Final
 
 from scarajectory.core.model.itrajectory_plan import ITrajectoryPlan
@@ -32,13 +32,13 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.2'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class ValidationTab(ttk.Frame):
+class ValidationTab(Frame):
     '''
         Kinematic validation tab for inspecting trajectory plan workspace limits.
 
@@ -55,11 +55,11 @@ class ValidationTab(ttk.Frame):
 
     _plan: ITrajectoryPlan
     _validator: ITrajectoryValidator
-    _txt_val: tk.Text
+    _txt_val: Text
 
     def __init__(
         self,
-        parent: tk.Widget,
+        parent: Widget,
         plan: ITrajectoryPlan,
         validator: ITrajectoryValidator,
         **kwargs: object
@@ -83,12 +83,12 @@ class ValidationTab(ttk.Frame):
 
             :exceptions: None.
         '''
-        top: ttk.Frame = ttk.Frame(self)
-        top.pack(fill=tk.X, pady=2)
-        ttk.Button(top, text='Run Full Plan Validation', style='Accent.TButton', command=self.run_validation).pack(side=tk.LEFT)
+        top: Frame = Frame(self)
+        top.pack(fill=X, pady=2)
+        Button(top, text='Run Full Plan Validation', style='Accent.TButton', command=self.run_validation).pack(side=LEFT)
 
-        self._txt_val = tk.Text(self, height=6, bg='#14161a', fg='#abb2bf', font=('DejaVu Sans Mono', 8), wrap='word')
-        self._txt_val.pack(fill=tk.BOTH, expand=True, pady=4)
+        self._txt_val = Text(self, width=1, height=6, bg='#14161a', fg='#abb2bf', font=('DejaVu Sans Mono', 8), wrap='word')
+        self._txt_val.pack(fill=BOTH, expand=True, pady=4)
 
     def run_validation(self) -> None:
         '''
@@ -97,7 +97,7 @@ class ValidationTab(ttk.Frame):
             :exceptions: None.
         '''
         _, msgs = self._validator.validate_plan(self._plan)
-        self._txt_val.delete('1.0', tk.END)
+        self._txt_val.delete('1.0', END)
         for msg in msgs:
             prefix: str = '✅ ' if 'PASSED' in msg else '❌ '
-            self._txt_val.insert(tk.END, f'{prefix}{msg}\n')
+            self._txt_val.insert(END, f'{prefix}{msg}\n')

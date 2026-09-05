@@ -30,7 +30,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.2'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -50,6 +50,7 @@ class Waypoint:
                 | phi - Tool orientation rotation angle in degrees.
                 | speed - Motion feedrate speed in mm/s.
                 | name - Optional waypoint identifier.
+                | command - Optional raw protocol command string associated with point.
             :methods:
                 | to_dto - Converts waypoint entity to lightweight PointDTO.
                 | from_dto - Creates waypoint from PointDTO.
@@ -66,6 +67,7 @@ class Waypoint:
     phi: float = 0.0
     speed: float = 40.0
     name: str = ''
+    command: str = ''
 
     def to_dto(self) -> PointDTO:
         '''
@@ -131,6 +133,8 @@ class Waypoint:
             :return: ASCII command string.
             :exceptions: None.
         '''
+        if self.command:
+            return self.command
         if abs(self.phi) < 1e-4:
             return f'<pt#{self.x:.2f}#{self.y:.2f}#{self.z:.2f}#{self.speed:.1f}#end>'
         return f'<pt#{self.x:.2f}#{self.y:.2f}#{self.z:.2f}#{self.phi:.2f}#{self.speed:.1f}#end>'
@@ -148,7 +152,8 @@ class Waypoint:
             'z': round(self.z, 3),
             'phi': round(self.phi, 3),
             'speed': round(self.speed, 2),
-            'name': self.name
+            'name': self.name,
+            'command': self.command
         }
 
     @classmethod
@@ -166,5 +171,6 @@ class Waypoint:
             z=float(data.get('z', 20.0)),
             phi=float(data.get('phi', 0.0)),
             speed=float(data.get('speed', 40.0)),
-            name=str(data.get('name', ''))
+            name=str(data.get('name', '')),
+            command=str(data.get('command', ''))
         )

@@ -32,6 +32,7 @@ from scarajectory.core.service.itrajectory_validator import ITrajectoryValidator
 from scarajectory.core.service.itrajectory_streamer import ITrajectoryStreamer
 from scarajectory.infrastructure.communication.serial_port_scanner import SerialPortScanner
 from scarajectory.infrastructure.communication.serial_device_preferences import SerialDevicePreferences
+from scarajectory.infrastructure.communication.protocol.command_formatter import CommandFormatter
 from scarajectory.infrastructure.gui.components.serial_console import SerialConsole
 from scarajectory.infrastructure.gui.components.stream_status_bar import StreamStatusBar
 
@@ -39,7 +40,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.2'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -57,6 +58,10 @@ class StreamerTab(ttk.Frame):
                 | _streamer - Robot communication and streaming service.
                 | _cbo_ports - Serial port selection combobox.
                 | _btn_connect - Connect/disconnect action button.
+                | _override_slider - Feedrate speed override scale widget.
+                | _lbl_override - Percentage readout label for speed override.
+                | _pump_state - Flag storing end-effector vacuum pump active state.
+                | _btn_pump - Toggle button widget for vacuum pump control.
                 | _status_bar - Progress bar and summary readout widget.
                 | _console - Serial communication terminal output component.
             :methods:
@@ -64,6 +69,15 @@ class StreamerTab(ttk.Frame):
                 | refresh_ports - Scans available serial/USB ports on the host.
                 | append_log - Appends message to terminal log console.
                 | update_progress - Updates streamer progress bar and metrics.
+                | _build_layout - Constructs hardware serial connection and streaming widgets.
+                | _save_active_pref - Persists selected serial device port to storage.
+                | _on_toggle_connect - Connects or disconnects from selected serial port.
+                | _on_start_stream - Starts streaming trajectory after validation check.
+                | _on_pause_resume_stream - Toggles stream pause/resume.
+                | _on_override_change - Transmits feedrate speed override command to robot.
+                | _on_home_robot - Transmits homing calibration command to robot.
+                | _on_toggle_pump - Toggles vacuum pump state on or off.
+                | _on_purge_valve - Sends momentary purge valve command pulse.
     '''
 
     _plan: ITrajectoryPlan
@@ -71,6 +85,10 @@ class StreamerTab(ttk.Frame):
     _streamer: ITrajectoryStreamer
     _cbo_ports: ttk.Combobox
     _btn_connect: ttk.Button
+    _override_slider: ttk.Scale
+    _lbl_override: ttk.Label
+    _pump_state: bool
+    _btn_pump: ttk.Button
     _status_bar: StreamStatusBar
     _console: SerialConsole
 
@@ -95,6 +113,7 @@ class StreamerTab(ttk.Frame):
         self._plan: Final[ITrajectoryPlan] = plan
         self._validator: Final[ITrajectoryValidator] = validator
         self._streamer: Final[ITrajectoryStreamer] = streamer
+        self._pump_state = False
         self._build_layout()
         self.refresh_ports()
 
@@ -121,6 +140,27 @@ class StreamerTab(ttk.Frame):
         ttk.Button(ctrl_box, text='Pause / Resume', command=self._on_pause_resume_stream).pack(side=tk.LEFT, padx=3)
         ttk.Button(ctrl_box, text='Stop / E-STOP', style='Danger.TButton', command=self._streamer.stop_streaming).pack(side=tk.LEFT, padx=3)
 
+        action_box: ttk.Frame = ttk.Frame(self)
+        action_box.pack(fill=tk.X, pady=2)
+        ttk.Button(action_box, text='Home Robot', command=self._on_home_robot).pack(side=tk.LEFT, padx=3)
+        self._btn_pump = ttk.Button(action_box, text='Pump: OFF', command=self._on_toggle_pump)
+        self._btn_pump.pack(side=tk.LEFT, padx=3)
+        ttk.Button(action_box, text='Purge Valve', command=self._on_purge_valve).pack(side=tk.LEFT, padx=3)
+
+        override_box: ttk.Frame = ttk.Frame(self)
+        override_box.pack(fill=tk.X, pady=2)
+        ttk.Label(override_box, text='Feedrate Override:').pack(side=tk.LEFT, padx=(3, 2))
+        self._lbl_override = ttk.Label(override_box, text='100%', width=5)
+        self._override_slider = ttk.Scale(
+            override_box,
+            from_=10,
+            to=200,
+            value=100,
+            command=self._on_override_change
+        )
+        self._override_slider.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=4)
+        self._lbl_override.pack(side=tk.LEFT, padx=2)
+
         self._status_bar = StreamStatusBar(self)
         self._status_bar.pack(fill=tk.X, pady=2)
 
@@ -135,7 +175,7 @@ class StreamerTab(ttk.Frame):
         '''
         current_selection: str = self._cbo_ports.get()
         saved_port, _ = SerialDevicePreferences.load_preference()
-        ports = SerialPortScanner.scan_ports()
+        ports: list[str] = ['127.0.0.1:8888 (Digital Twin)'] + SerialPortScanner.scan_ports()
         self._cbo_ports['values'] = ports
 
         if current_selection in ports:
@@ -183,7 +223,7 @@ class StreamerTab(ttk.Frame):
             :exceptions: None.
         '''
         port_val: str = self._cbo_ports.get()
-        if port_val:
+        if port_val and not port_val.startswith('127.0.0.1:8888'):
             port: str = port_val.split(' ')[0] if ' ' in port_val else port_val
             SerialDevicePreferences.save_preference(port, 115200)
 
@@ -238,3 +278,56 @@ class StreamerTab(ttk.Frame):
             self._streamer.pause_streaming()
         except (AttributeError, RuntimeError):
             self._streamer.resume_streaming()
+
+    def _on_override_change(self, val: str) -> None:
+        '''
+            Transmits feedrate speed override command to robot.
+
+            :param val: Slider position value string.
+            :exceptions: None.
+        '''
+        pct: int = max(10, min(200, int(float(val))))
+        self._lbl_override.configure(text=f'{pct}%')
+        if self._streamer.is_connected():
+            cmd: str = CommandFormatter.format_override(pct)
+            self._streamer.send_raw_command(cmd)
+
+    def _on_home_robot(self) -> None:
+        '''
+            Transmits homing calibration command to robot.
+
+            :exceptions: None.
+        '''
+        if self._streamer.is_connected():
+            self._streamer.send_raw_command(CommandFormatter.format_home())
+        else:
+            messagebox.showinfo('Hardware Offline', 'Connect to robot first to run homing.')
+
+    def _on_toggle_pump(self) -> None:
+        '''
+            Toggles vacuum pump state on or off.
+
+            :exceptions: None.
+        '''
+        if self._streamer.is_connected():
+            self._pump_state = not self._pump_state
+            self._btn_pump.configure(
+                text='Pump: ON' if self._pump_state else 'Pump: OFF'
+            )
+            self._streamer.send_raw_command(
+                CommandFormatter.format_pump(self._pump_state)
+            )
+        else:
+            messagebox.showinfo('Hardware Offline', 'Connect to robot first.')
+
+    def _on_purge_valve(self) -> None:
+        '''
+            Sends momentary purge valve command pulse.
+
+            :exceptions: None.
+        '''
+        if self._streamer.is_connected():
+            self._streamer.send_raw_command(CommandFormatter.format_valve(True))
+            self.after(300, lambda: self._streamer.send_raw_command(CommandFormatter.format_valve(False)))
+        else:
+            messagebox.showinfo('Hardware Offline', 'Connect to robot first.')

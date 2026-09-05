@@ -70,6 +70,7 @@
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.itrajectory_streamer</span> <span class="kn">import</span> <span class="n">ITrajectoryStreamer</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.serial_port_scanner</span> <span class="kn">import</span> <span class="n">SerialPortScanner</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.serial_device_preferences</span> <span class="kn">import</span> <span class="n">SerialDevicePreferences</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.protocol.command_formatter</span> <span class="kn">import</span> <span class="n">CommandFormatter</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.components.serial_console</span> <span class="kn">import</span> <span class="n">SerialConsole</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.components.stream_status_bar</span> <span class="kn">import</span> <span class="n">StreamStatusBar</span>
 
@@ -77,7 +78,7 @@
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.2&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -97,6 +98,10 @@
 <span class="sd">                | _streamer - Robot communication and streaming service.</span>
 <span class="sd">                | _cbo_ports - Serial port selection combobox.</span>
 <span class="sd">                | _btn_connect - Connect/disconnect action button.</span>
+<span class="sd">                | _override_slider - Feedrate speed override scale widget.</span>
+<span class="sd">                | _lbl_override - Percentage readout label for speed override.</span>
+<span class="sd">                | _pump_state - Flag storing end-effector vacuum pump active state.</span>
+<span class="sd">                | _btn_pump - Toggle button widget for vacuum pump control.</span>
 <span class="sd">                | _status_bar - Progress bar and summary readout widget.</span>
 <span class="sd">                | _console - Serial communication terminal output component.</span>
 <span class="sd">            :methods:</span>
@@ -104,6 +109,15 @@
 <span class="sd">                | refresh_ports - Scans available serial/USB ports on the host.</span>
 <span class="sd">                | append_log - Appends message to terminal log console.</span>
 <span class="sd">                | update_progress - Updates streamer progress bar and metrics.</span>
+<span class="sd">                | _build_layout - Constructs hardware serial connection and streaming widgets.</span>
+<span class="sd">                | _save_active_pref - Persists selected serial device port to storage.</span>
+<span class="sd">                | _on_toggle_connect - Connects or disconnects from selected serial port.</span>
+<span class="sd">                | _on_start_stream - Starts streaming trajectory after validation check.</span>
+<span class="sd">                | _on_pause_resume_stream - Toggles stream pause/resume.</span>
+<span class="sd">                | _on_override_change - Transmits feedrate speed override command to robot.</span>
+<span class="sd">                | _on_home_robot - Transmits homing calibration command to robot.</span>
+<span class="sd">                | _on_toggle_pump - Toggles vacuum pump state on or off.</span>
+<span class="sd">                | _on_purge_valve - Sends momentary purge valve command pulse.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="n">_plan</span><span class="p">:</span> <span class="n">ITrajectoryPlan</span>
@@ -111,6 +125,10 @@
     <span class="n">_streamer</span><span class="p">:</span> <span class="n">ITrajectoryStreamer</span>
     <span class="n">_cbo_ports</span><span class="p">:</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Combobox</span>
     <span class="n">_btn_connect</span><span class="p">:</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Button</span>
+    <span class="n">_override_slider</span><span class="p">:</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Scale</span>
+    <span class="n">_lbl_override</span><span class="p">:</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Label</span>
+    <span class="n">_pump_state</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">_btn_pump</span><span class="p">:</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Button</span>
     <span class="n">_status_bar</span><span class="p">:</span> <span class="n">StreamStatusBar</span>
     <span class="n">_console</span><span class="p">:</span> <span class="n">SerialConsole</span>
 
@@ -135,6 +153,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ITrajectoryPlan</span><span class="p">]</span> <span class="o">=</span> <span class="n">plan</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_validator</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ITrajectoryValidator</span><span class="p">]</span> <span class="o">=</span> <span class="n">validator</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_streamer</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ITrajectoryStreamer</span><span class="p">]</span> <span class="o">=</span> <span class="n">streamer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pump_state</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_build_layout</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">refresh_ports</span><span class="p">()</span>
 
@@ -163,6 +182,27 @@
         <span class="n">ttk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">ctrl_box</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Pause / Resume&#39;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_on_pause_resume_stream</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
         <span class="n">ttk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">ctrl_box</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Stop / E-STOP&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;Danger.TButton&#39;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_streamer</span><span class="o">.</span><span class="n">stop_streaming</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 
+        <span class="n">action_box</span><span class="p">:</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Frame</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">action_box</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">ttk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">action_box</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Home Robot&#39;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_on_home_robot</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_btn_pump</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">action_box</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Pump: OFF&#39;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_on_toggle_pump</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_btn_pump</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">ttk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">action_box</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Purge Valve&#39;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_on_purge_valve</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+        <span class="n">override_box</span><span class="p">:</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Frame</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">override_box</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">ttk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">override_box</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Feedrate Override:&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lbl_override</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">override_box</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;100%&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_override_slider</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span>
+            <span class="n">override_box</span><span class="p">,</span>
+            <span class="n">from_</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">to</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+            <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_on_override_change</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_override_slider</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lbl_override</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_status_bar</span> <span class="o">=</span> <span class="n">StreamStatusBar</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_status_bar</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
@@ -180,7 +220,7 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">current_selection</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cbo_ports</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
         <span class="n">saved_port</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">SerialDevicePreferences</span><span class="o">.</span><span class="n">load_preference</span><span class="p">()</span>
-        <span class="n">ports</span> <span class="o">=</span> <span class="n">SerialPortScanner</span><span class="o">.</span><span class="n">scan_ports</span><span class="p">()</span>
+        <span class="n">ports</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;127.0.0.1:8888 (Digital Twin)&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">SerialPortScanner</span><span class="o">.</span><span class="n">scan_ports</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cbo_ports</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ports</span>
 
         <span class="k">if</span> <span class="n">current_selection</span> <span class="ow">in</span> <span class="n">ports</span><span class="p">:</span>
@@ -237,7 +277,7 @@
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">port_val</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cbo_ports</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">port_val</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">port_val</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">port_val</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;127.0.0.1:8888&#39;</span><span class="p">):</span>
             <span class="n">port</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">port_val</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39; &#39;</span> <span class="ow">in</span> <span class="n">port_val</span> <span class="k">else</span> <span class="n">port_val</span>
             <span class="n">SerialDevicePreferences</span><span class="o">.</span><span class="n">save_preference</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="mi">115200</span><span class="p">)</span></div>
 
@@ -301,6 +341,71 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_streamer</span><span class="o">.</span><span class="n">pause_streaming</span><span class="p">()</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">RuntimeError</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_streamer</span><span class="o">.</span><span class="n">resume_streaming</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="StreamerTab._on_override_change">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.components.streamer_tab.html#scarajectory.infrastructure.gui.components.streamer_tab.StreamerTab._on_override_change">[docs]</a>
+    <span class="k">def</span> <span class="nf">_on_override_change</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Transmits feedrate speed override command to robot.</span>
+
+<span class="sd">            :param val: Slider position value string.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">pct</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">))))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lbl_override</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">pct</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_streamer</span><span class="o">.</span><span class="n">is_connected</span><span class="p">():</span>
+            <span class="n">cmd</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">CommandFormatter</span><span class="o">.</span><span class="n">format_override</span><span class="p">(</span><span class="n">pct</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_streamer</span><span class="o">.</span><span class="n">send_raw_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="StreamerTab._on_home_robot">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.components.streamer_tab.html#scarajectory.infrastructure.gui.components.streamer_tab.StreamerTab._on_home_robot">[docs]</a>
+    <span class="k">def</span> <span class="nf">_on_home_robot</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Transmits homing calibration command to robot.</span>
+
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_streamer</span><span class="o">.</span><span class="n">is_connected</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_streamer</span><span class="o">.</span><span class="n">send_raw_command</span><span class="p">(</span><span class="n">CommandFormatter</span><span class="o">.</span><span class="n">format_home</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">messagebox</span><span class="o">.</span><span class="n">showinfo</span><span class="p">(</span><span class="s1">&#39;Hardware Offline&#39;</span><span class="p">,</span> <span class="s1">&#39;Connect to robot first to run homing.&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="StreamerTab._on_toggle_pump">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.components.streamer_tab.html#scarajectory.infrastructure.gui.components.streamer_tab.StreamerTab._on_toggle_pump">[docs]</a>
+    <span class="k">def</span> <span class="nf">_on_toggle_pump</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Toggles vacuum pump state on or off.</span>
+
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_streamer</span><span class="o">.</span><span class="n">is_connected</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pump_state</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pump_state</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_btn_pump</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span>
+                <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Pump: ON&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pump_state</span> <span class="k">else</span> <span class="s1">&#39;Pump: OFF&#39;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_streamer</span><span class="o">.</span><span class="n">send_raw_command</span><span class="p">(</span>
+                <span class="n">CommandFormatter</span><span class="o">.</span><span class="n">format_pump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pump_state</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">messagebox</span><span class="o">.</span><span class="n">showinfo</span><span class="p">(</span><span class="s1">&#39;Hardware Offline&#39;</span><span class="p">,</span> <span class="s1">&#39;Connect to robot first.&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="StreamerTab._on_purge_valve">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.components.streamer_tab.html#scarajectory.infrastructure.gui.components.streamer_tab.StreamerTab._on_purge_valve">[docs]</a>
+    <span class="k">def</span> <span class="nf">_on_purge_valve</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Sends momentary purge valve command pulse.</span>
+
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_streamer</span><span class="o">.</span><span class="n">is_connected</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_streamer</span><span class="o">.</span><span class="n">send_raw_command</span><span class="p">(</span><span class="n">CommandFormatter</span><span class="o">.</span><span class="n">format_valve</span><span class="p">(</span><span class="kc">True</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_streamer</span><span class="o">.</span><span class="n">send_raw_command</span><span class="p">(</span><span class="n">CommandFormatter</span><span class="o">.</span><span class="n">format_valve</span><span class="p">(</span><span class="kc">False</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">messagebox</span><span class="o">.</span><span class="n">showinfo</span><span class="p">(</span><span class="s1">&#39;Hardware Offline&#39;</span><span class="p">,</span> <span class="s1">&#39;Connect to robot first.&#39;</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

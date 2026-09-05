@@ -1,0 +1,15 @@
+# ==============================================================================
+# 03_joint_rapid.scara - Joint-Interpolated Rapid Positioning (MOVE_J)
+# ==============================================================================
+# Rapid multi-axis joint move prioritizing speed over straight-line path.
+# Ideal for clearance travels and transitions between workstations.
+# ==============================================================================
+
+ENABLE
+HOME
+
+# Rapid positioning to home clearance point
+MOVE_J X=120.0 Y=60.0 Z=45.0 PHI=0.0 SPEED=100.0
+
+# Rapid transfer across workspace
+MOVE_J X=160.0 Y=-60.0 Z=45.0 PHI=-30.0 SPEED=100.0

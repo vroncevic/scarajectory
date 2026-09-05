@@ -78,6 +78,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dt class="field-odd">attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><div class="line-block">
 <div class="line">_notebook - Multi-tab notebook container.</div>
+<div class="line">_dsl_editor_tab - SCARA DSL script editor and compiler tab.</div>
 <div class="line">_streamer_tab - Serial streaming and logging tab.</div>
 <div class="line">_validation_tab - Kinematic validation tab.</div>
 <div class="line">_jog_tab - Manual jog movement and actuator control tab.</div>
@@ -87,6 +88,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dt class="field-even">methods<span class="colon">:</span></dt>
 <dd class="field-even"><div class="line-block">
 <div class="line">__init__ - Initializes tabbed control panels and mounts subcomponents.</div>
+<div class="line">_on_tab_changed - Handles tab switch event and flushes pending drawing tasks.</div>
 <div class="line">refresh_ports - Scans and updates available serial ports.</div>
 <div class="line">append_log - Appends message to streamer terminal log console.</div>
 <div class="line">update_progress - Updates streamer progress bar and metrics.</div>
@@ -94,6 +96,11 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd>
 </dl>
 </div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.controls.ControlsPanel._dsl_editor_tab">
+<span class="sig-name descname"><span class="pre">_dsl_editor_tab</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.components.dsl_editor_tab.html#scarajectory.infrastructure.gui.components.dsl_editor_tab.DslEditorTab" title="scarajectory.infrastructure.gui.components.dsl_editor_tab.DslEditorTab"><span class="pre">DslEditorTab</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.controls.ControlsPanel._dsl_editor_tab" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.controls.ControlsPanel._jog_tab">
 <span class="sig-name descname"><span class="pre">_jog_tab</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.components.jog_tab.html#scarajectory.infrastructure.gui.components.jog_tab.JogTab" title="scarajectory.infrastructure.gui.components.jog_tab.JogTab"><span class="pre">JogTab</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.controls.ControlsPanel._jog_tab" title="Link to this definition">¶</a></dt>
@@ -103,6 +110,20 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.controls.ControlsPanel._notebook">
 <span class="sig-name descname"><span class="pre">_notebook</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Notebook</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.controls.ControlsPanel._notebook" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.controls.ControlsPanel._on_tab_changed">
+<span class="sig-name descname"><span class="pre">_on_tab_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Event</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/controls.html#ControlsPanel._on_tab_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.controls.ControlsPanel._on_tab_changed" title="Link to this definition">¶</a></dt>
+<dd><p>Handles tab switch event and forces geometry and drawing synchronization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>event</strong> – Tkinter event instance.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.controls.ControlsPanel._preview_tab">
@@ -177,8 +198,10 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <ul>
 <li><a class="reference internal" href="#">scarajectory.infrastructure.gui.controls module</a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.controls.ControlsPanel"><code class="docutils literal notranslate"><span class="pre">ControlsPanel</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.controls.ControlsPanel._dsl_editor_tab"><code class="docutils literal notranslate"><span class="pre">ControlsPanel._dsl_editor_tab</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.controls.ControlsPanel._jog_tab"><code class="docutils literal notranslate"><span class="pre">ControlsPanel._jog_tab</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.controls.ControlsPanel._notebook"><code class="docutils literal notranslate"><span class="pre">ControlsPanel._notebook</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.controls.ControlsPanel._on_tab_changed"><code class="docutils literal notranslate"><span class="pre">ControlsPanel._on_tab_changed()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.controls.ControlsPanel._preview_tab"><code class="docutils literal notranslate"><span class="pre">ControlsPanel._preview_tab</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.controls.ControlsPanel._streamer_tab"><code class="docutils literal notranslate"><span class="pre">ControlsPanel._streamer_tab</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.controls.ControlsPanel._validation_tab"><code class="docutils literal notranslate"><span class="pre">ControlsPanel._validation_tab</span></code></a></li>

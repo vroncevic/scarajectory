@@ -85,6 +85,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <div class="line">_worker_thread - Background transmission worker thread.</div>
 <div class="line">_stop_event - Event signaling stream abort.</div>
 <div class="line">_pause_event - Event signaling stream pause.</div>
+<div class="line">_barrier_event - Event signaling synchronization barrier clearance.</div>
 </div>
 </dd>
 <dt class="field-even">methods<span class="colon">:</span></dt>
@@ -106,6 +107,11 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dl class="py attribute">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.communication.serial_streamer.SerialStreamer.MAX_PICO_QUEUE_CAPACITY">
 <span class="sig-name descname"><span class="pre">MAX_PICO_QUEUE_CAPACITY</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">16</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.serial_streamer.SerialStreamer.MAX_PICO_QUEUE_CAPACITY" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.serial_streamer.SerialStreamer._barrier_event">
+<span class="sig-name descname"><span class="pre">_barrier_event</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Event</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.serial_streamer.SerialStreamer._barrier_event" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -336,6 +342,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <li><a class="reference internal" href="#">scarajectory.infrastructure.communication.serial_streamer module</a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.serial_streamer.SerialStreamer"><code class="docutils literal notranslate"><span class="pre">SerialStreamer</span></code></a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.serial_streamer.SerialStreamer.MAX_PICO_QUEUE_CAPACITY"><code class="docutils literal notranslate"><span class="pre">SerialStreamer.MAX_PICO_QUEUE_CAPACITY</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.serial_streamer.SerialStreamer._barrier_event"><code class="docutils literal notranslate"><span class="pre">SerialStreamer._barrier_event</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.serial_streamer.SerialStreamer._handle_serial_line"><code class="docutils literal notranslate"><span class="pre">SerialStreamer._handle_serial_line()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.serial_streamer.SerialStreamer._notify_progress"><code class="docutils literal notranslate"><span class="pre">SerialStreamer._notify_progress()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.serial_streamer.SerialStreamer._observer"><code class="docutils literal notranslate"><span class="pre">SerialStreamer._observer</span></code></a></li>

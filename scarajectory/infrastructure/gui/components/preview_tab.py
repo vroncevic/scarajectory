@@ -21,8 +21,8 @@ Info
 
 from __future__ import annotations
 
-import tkinter as tk
-from tkinter import ttk
+from tkinter import BOTH, END, LEFT, X, Text, Widget
+from tkinter.ttk import Button, Frame
 from typing import Final
 
 from scarajectory.core.model.trajectory_metrics import TrajectoryMetrics
@@ -32,13 +32,13 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.2'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class PreviewTab(ttk.Frame):
+class PreviewTab(Frame):
     '''
         ASCII trajectory stream generator and microcontroller program preview tab.
 
@@ -53,9 +53,9 @@ class PreviewTab(ttk.Frame):
     '''
 
     _plan: ITrajectoryPlan
-    _txt_preview: tk.Text
+    _txt_preview: Text
 
-    def __init__(self, parent: tk.Widget, plan: ITrajectoryPlan, **kwargs: object) -> None:
+    def __init__(self, parent: Widget, plan: ITrajectoryPlan, **kwargs: object) -> None:
         '''
             Initializes program preview tab layout.
 
@@ -73,12 +73,12 @@ class PreviewTab(ttk.Frame):
 
             :exceptions: None.
         '''
-        top: ttk.Frame = ttk.Frame(self)
-        top.pack(fill=tk.X, pady=2)
-        ttk.Button(top, text='Generate Microcontroller Program', style='Accent.TButton', command=self.generate_preview).pack(side=tk.LEFT)
+        top: Frame = Frame(self)
+        top.pack(fill=X, pady=2)
+        Button(top, text='Generate Microcontroller Program', style='Accent.TButton', command=self.generate_preview).pack(side=LEFT)
 
-        self._txt_preview = tk.Text(self, height=6, bg='#14161a', fg='#98c379', font=('DejaVu Sans Mono', 8), wrap='none')
-        self._txt_preview.pack(fill=tk.BOTH, expand=True, pady=4)
+        self._txt_preview = Text(self, width=1, height=6, bg='#14161a', fg='#98c379', font=('DejaVu Sans Mono', 8), wrap='none')
+        self._txt_preview.pack(fill=BOTH, expand=True, pady=4)
 
     def generate_preview(self) -> None:
         '''
@@ -88,5 +88,5 @@ class PreviewTab(ttk.Frame):
         '''
         waypoints = self._plan.waypoints
         ascii_prog: str = TrajectoryMetrics.to_ascii_program(waypoints)
-        self._txt_preview.delete('1.0', tk.END)
-        self._txt_preview.insert(tk.END, ascii_prog)
+        self._txt_preview.delete('1.0', END)
+        self._txt_preview.insert(END, ascii_prog)
