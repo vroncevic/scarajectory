@@ -28,11 +28,10 @@ from socket import (
     socket as Socket,
     timeout as SocketTimeout,
 )
-from threading import Lock, Event, Thread
-from time import sleep
-from typing import Callable, Final
+from collections.abc import Callable
 
-from scarajectory.core.model.stream_config import StreamConfig
+from scarajectory.core.model.communication.stream_config import StreamConfig
+from scarajectory.infrastructure.communication.transport.base_transport import BaseTransport
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -44,7 +43,7 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class TcpTransport:
+class TcpTransport(BaseTransport):
     '''
         Network TCP/IP communication transport communicating with robot controllers over sockets.
 
@@ -52,26 +51,11 @@ class TcpTransport:
 
             :attributes:
                 | _sock - Socket connection instance.
-                | _lock - Mutex protecting socket TX write operations.
-                | _stop_event - Event signaling reader thread termination.
-                | _reader_thread - Background RX polling thread.
-                | _on_line - Callback invoked when a complete line is received.
-                | _on_log - Callback for communication logging.
             :methods:
-                | __init__ - Initializes transport handle and sync primitives.
-                | is_connected - Checks if TCP socket is connected.
-                | set_callbacks - Registers packet reception and connection logging hooks.
-                | connect_with_config - Connects to host:port target using StreamConfig.
-                | disconnect - Closes TCP connection and stops RX thread.
-                | send_raw - Transmits formatted command string over socket.
+                | __init__ - Initializes transport handle and base synchronization primitives.
     '''
 
     _sock: Socket | None
-    _lock: Lock
-    _stop_event: Event
-    _reader_thread: Thread | None
-    _on_line: Callable[[str], None] | None
-    _on_log: Callable[[str, bool], None] | None
 
     def __init__(
         self,
@@ -79,52 +63,20 @@ class TcpTransport:
         on_log: Callable[[str, bool], None] | None = None
     ) -> None:
         '''
-            Initializes transport handle and sync primitives.
+            Initializes transport handle and base synchronization primitives.
 
             :param on_line: Optional line received callback.
             :param on_log: Optional logging callback.
-            :exceptions: None.
         '''
+        super().__init__(on_line=on_line, on_log=on_log)
         self._sock = None
-        self._lock: Final[Lock] = Lock()
-        self._stop_event: Final[Event] = Event()
-        self._reader_thread = None
-        self._on_line = on_line
-        self._on_log = on_log
 
-    def set_callbacks(
-        self,
-        on_line: Callable[[str], None] | None = None,
-        on_log: Callable[[str, bool], None] | None = None
-    ) -> None:
+    def _open_channel(self, config: StreamConfig) -> None:
         '''
-            Registers packet reception and connection logging hooks.
+            Connects TCP socket to target host:port.
 
-            :param on_line: Optional line received callback.
-            :param on_log: Optional logging callback.
-            :exceptions: None.
+            :param config: StreamConfig parameters.
         '''
-        self._on_line = on_line
-        self._on_log = on_log
-
-    def is_connected(self) -> bool:
-        '''
-            Checks if TCP socket is connected.
-
-            :return: True if connected, False otherwise.
-            :exceptions: None.
-        '''
-        return self._sock is not None
-
-    def connect_with_config(self, config: StreamConfig) -> bool:
-        '''
-            Connects to host:port target using StreamConfig.
-
-            :param config: StreamConfig containing host:port target and timeout.
-            :return: True if connected successfully, False otherwise.
-            :exceptions: None.
-        '''
-        self.disconnect()
         host: str = config.port
         port_num: int = 8080
         if ':' in config.port:
@@ -135,115 +87,71 @@ class TcpTransport:
             except ValueError:
                 port_num = 8080
 
-        try:
-            sock: Socket = Socket(AF_INET, SOCK_STREAM)
-            sock.settimeout(config.timeout)
-            sock.connect((host, port_num))
-            self._sock = sock
-            self._stop_event.clear()
-            self._reader_thread = Thread(target=self._reader_loop, daemon=True)
-            self._reader_thread.start()
+        sock: Socket = Socket(AF_INET, SOCK_STREAM)
+        timeout_val: float = config.timeout if config.timeout > 0.0 else 0.5
+        sock.settimeout(timeout_val)
+        sock.connect((host, port_num))
+        self._sock = sock
 
-            if self._on_log:
-                self._on_log(f'[HOST]: Connected to TCP {host}:{port_num}', False)
-
-            return True
-        except OSError as exc:
-            if self._on_log:
-                self._on_log(f'[ERR]: TCP Connection failed: {exc}', False)
-            self.disconnect()
-            return False
-
-    def disconnect(self) -> None:
+    def _close_channel(self) -> None:
         '''
-            Closes TCP connection and stops RX thread.
-
-            :exceptions: None.
+            Closes socket connection.
         '''
-        self._stop_event.set()
         if self._sock:
             try:
                 self._sock.shutdown(SHUT_RDWR)
+            except (OSError, AttributeError):
+                pass
+            try:
                 self._sock.close()
-            except OSError:
+            except (OSError, AttributeError):
                 pass
             self._sock = None
 
-        if self._reader_thread and self._reader_thread.is_alive():
-            self._reader_thread.join(timeout=0.2)
-            self._reader_thread = None
-
-        if self._on_log:
-            self._on_log('[HOST]: Disconnected from TCP transport', False)
-
-    def send_raw(self, cmd: str) -> bool:
+    def _read_bytes(self, size: int) -> bytes:
         '''
-            Transmits formatted command string over socket.
+            Reads bytes from TCP socket.
 
-            :param cmd: Formatted command string.
-            :return: True if written successfully, False otherwise.
-            :exceptions: None.
+            :param size: Maximum bytes to read.
+            :return: Read byte payload.
         '''
-        if not self.is_connected() or not self._sock:
-            return False
-        with self._lock:
-            try:
-                payload: bytes = f'{cmd.strip()}\n'.encode('utf-8')
-                self._sock.sendall(payload)
-                if self._on_log:
-                    self._on_log(cmd.strip(), True)
-                return True
-            except OSError as exc:
-                if self._on_log:
-                    self._on_log(f'[TX ERR]: {exc}', False)
-                return False
+        if not self._sock:
+            return b''
+        try:
+            return self._sock.recv(size)
+        except SocketTimeout:
+            return b''
 
-    def _cleanup_abnormal_disconnect(self) -> None:
+    def _write_bytes(self, payload: bytes) -> None:
         '''
-            Cleans up socket resources and notifies observers on abnormal network termination.
+            Transmits byte payload over TCP socket.
 
-            :exceptions: None.
+            :param payload: Bytes to write.
         '''
         if self._sock:
-            try:
-                self._sock.close()
-            except OSError:
-                pass
-            self._sock = None
-        if self._on_log:
-            self._on_log('[HOST]: Connection lost (remote socket closed)', False)
+            self._sock.sendall(payload)
 
-    def _reader_loop(self) -> None:
+    def _channel_is_open(self) -> bool:
         '''
-            Background thread polling and assembling incoming newline-terminated lines over TCP socket.
+            Checks if TCP socket is connected.
 
-            :exceptions: None.
+            :return: True if socket is active.
         '''
-        buffer: str = ''
-        abnormal_disconnect: bool = False
-        while not self._stop_event.is_set():
-            sock = self._sock
-            if not sock:
-                break
-            try:
-                data: bytes = sock.recv(128)
+        return self._sock is not None
 
-                if not data:
-                    abnormal_disconnect = not self._stop_event.is_set()
-                    break
-                buffer += data.decode('utf-8', errors='ignore')
+    def _channel_name(self) -> str:
+        '''
+            Returns descriptive name of TCP channel.
 
-                while '\n' in buffer:
-                    line, buffer = buffer.split('\n', 1)
-                    line = line.strip()
-                    if line and self._on_line:
-                        self._on_line(line)
+            :return: Channel name.
+        '''
+        return 'TCP socket'
 
-            except SocketTimeout:
-                sleep(0.01)
-            except OSError:
-                abnormal_disconnect = not self._stop_event.is_set()
-                break
+    def _connected_log_message(self, config: StreamConfig) -> str:
+        '''
+            Returns formatted log message upon establishing TCP connection.
 
-        if abnormal_disconnect:
-            self._cleanup_abnormal_disconnect()
+            :param config: StreamConfig parameters.
+            :return: Formatted connection message.
+        '''
+        return f'[HOST]: Connected to {config.port} via TCP'

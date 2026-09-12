@@ -27,7 +27,7 @@ from ats_utilities.base.setup.bundle import BaseBundle
 from ats_utilities.utils.reflection import instance_to_dict
 
 from scarajectory.core.service.iservice import IService
-from scarajectory.core.service.itrajectory_streamer import ITrajectoryStreamer
+from scarajectory.core.service.communication.itrajectory_streamer import ITrajectoryStreamer
 from scarajectory.infrastructure.gui.igui import IGUI
 from scarajectory.infrastructure.cli.icli import ICLI
 

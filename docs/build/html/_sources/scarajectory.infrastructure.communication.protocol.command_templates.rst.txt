@@ -5,4 +5,3 @@ scarajectory.infrastructure.communication.protocol.command\_templates module
    :members:
    :undoc-members:
    :show-inheritance:
-   :private-members:

@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="scarajectory.infrastructure.communication.serial_port_scanner module" href="scarajectory.infrastructure.communication.serial_port_scanner.html" />
-    <link rel="prev" title="scarajectory.infrastructure.communication.transport.tcp_transport module" href="scarajectory.infrastructure.communication.transport.tcp_transport.html" /> 
+    <link rel="prev" title="scarajectory.infrastructure.communication.transport.transport_factory module" href="scarajectory.infrastructure.communication.transport.transport_factory.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -31,7 +31,7 @@
           <a href="scarajectory.infrastructure.communication.serial_port_scanner.html" title="scarajectory.infrastructure.communication.serial_port_scanner module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.communication.transport.tcp_transport.html" title="scarajectory.infrastructure.communication.transport.tcp_transport module"
+          <a href="scarajectory.infrastructure.communication.transport.transport_factory.html" title="scarajectory.infrastructure.communication.transport.transport_factory module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
@@ -77,8 +77,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <div><dl class="field-list">
 <dt class="field-odd">attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><div class="line-block">
-<div class="line">CONFIG_DIR - Directory path for configuration storage.</div>
-<div class="line">CONFIG_FILE - File path to the serial device configuration JSON.</div>
+<div class="line">_repository - Default connection preferences repository.</div>
 </div>
 </dd>
 <dt class="field-even">methods<span class="colon">:</span></dt>
@@ -89,16 +88,6 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd>
 </dl>
 </div></blockquote>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.serial_device_preferences.SerialDevicePreferences.CONFIG_DIR">
-<span class="sig-name descname"><span class="pre">CONFIG_DIR</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Path</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">PosixPath('/home/wlama/.config/scara')</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.serial_device_preferences.SerialDevicePreferences.CONFIG_DIR" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.serial_device_preferences.SerialDevicePreferences.CONFIG_FILE">
-<span class="sig-name descname"><span class="pre">CONFIG_FILE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Path</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">PosixPath('/home/wlama/.config/scara/serial_device.json')</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.serial_device_preferences.SerialDevicePreferences.CONFIG_FILE" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.communication.serial_device_preferences.SerialDevicePreferences.load_preference">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_preference</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/serial_device_preferences.html#SerialDevicePreferences.load_preference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.serial_device_preferences.SerialDevicePreferences.load_preference" title="Link to this definition">¶</a></dt>
@@ -106,9 +95,6 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Tuple of (port, baud) or (None, None) if not found.</p>
-</dd>
-<dt class="field-even">Exceptions<span class="colon">:</span></dt>
-<dd class="field-even"><p>None.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -126,9 +112,6 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>True if persisted successfully, False otherwise.</p>
-</dd>
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -149,8 +132,6 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <ul>
 <li><a class="reference internal" href="#">scarajectory.infrastructure.communication.serial_device_preferences module</a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.serial_device_preferences.SerialDevicePreferences"><code class="docutils literal notranslate"><span class="pre">SerialDevicePreferences</span></code></a><ul>
-<li><a class="reference internal" href="#scarajectory.infrastructure.communication.serial_device_preferences.SerialDevicePreferences.CONFIG_DIR"><code class="docutils literal notranslate"><span class="pre">SerialDevicePreferences.CONFIG_DIR</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.communication.serial_device_preferences.SerialDevicePreferences.CONFIG_FILE"><code class="docutils literal notranslate"><span class="pre">SerialDevicePreferences.CONFIG_FILE</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.serial_device_preferences.SerialDevicePreferences.load_preference"><code class="docutils literal notranslate"><span class="pre">SerialDevicePreferences.load_preference()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.serial_device_preferences.SerialDevicePreferences.save_preference"><code class="docutils literal notranslate"><span class="pre">SerialDevicePreferences.save_preference()</span></code></a></li>
 </ul>
@@ -162,8 +143,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.communication.transport.tcp_transport.html"
-                          title="previous chapter">scarajectory.infrastructure.communication.transport.tcp_transport module</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.communication.transport.transport_factory.html"
+                          title="previous chapter">scarajectory.infrastructure.communication.transport.transport_factory module</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -204,7 +185,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="scarajectory.infrastructure.communication.serial_port_scanner.html" title="scarajectory.infrastructure.communication.serial_port_scanner module"
              >next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.communication.transport.tcp_transport.html" title="scarajectory.infrastructure.communication.transport.tcp_transport module"
+          <a href="scarajectory.infrastructure.communication.transport.transport_factory.html" title="scarajectory.infrastructure.communication.transport.transport_factory module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>

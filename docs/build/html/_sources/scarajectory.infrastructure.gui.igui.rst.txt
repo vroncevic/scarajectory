@@ -5,4 +5,3 @@ scarajectory.infrastructure.gui.igui module
    :members:
    :undoc-members:
    :show-inheritance:
-   :private-members:

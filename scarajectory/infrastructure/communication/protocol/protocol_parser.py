@@ -21,7 +21,7 @@ Info
 
 from __future__ import annotations
 
-import re
+from re import IGNORECASE, Pattern, compile
 from typing import ClassVar
 
 from scarajectory.infrastructure.communication.protocol.robot_response_dto import RobotResponseDTO
@@ -56,7 +56,7 @@ class ProtocolParser:
                 | is_error - Checks if packet signals an error condition.
     '''
 
-    _QUEUE_REGEX: ClassVar[re.Pattern[str]] = re.compile(r'QUEUE=(\d+)', re.IGNORECASE)
+    _QUEUE_REGEX: ClassVar[Pattern[str]] = compile(r'QUEUE=(\d+)', IGNORECASE)
 
     @classmethod
     def parse_response(cls, line: str) -> RobotResponseDTO:

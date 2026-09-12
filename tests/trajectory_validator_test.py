@@ -21,19 +21,18 @@ Info
 
 from __future__ import annotations
 
-import os
-import sys
-import unittest
+from os.path import abspath, dirname
+from sys import path
+from unittest import TestCase, main
 
-pkg_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if pkg_dir not in sys.path:
-    sys.path.insert(0, pkg_dir)
+pkg_dir = dirname(dirname(abspath(__file__)))
+if pkg_dir not in path:
+    path.insert(0, pkg_dir)
 
-from scarajectory.core.model.point import Point
-from scarajectory.core.model.waypoint import Waypoint
-from scarajectory.core.model.scara_bounds import ScaraBounds
-from scarajectory.core.model.trajectory_plan import TrajectoryPlan
-from scarajectory.core.service.trajectory_validator import TrajectoryValidator
+from scarajectory.core.model.trajectory.waypoint import Waypoint
+from scarajectory.core.model.kinematics.scara_bounds import ScaraBounds
+from scarajectory.core.model.trajectory.trajectory_plan import TrajectoryPlan
+from scarajectory.core.service.trajectory.trajectory_validator import TrajectoryValidator
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -45,7 +44,7 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class TestTrajectoryValidator(unittest.TestCase):
+class TestTrajectoryValidator(TestCase):
     '''
         Test cases for TrajectoryValidator kinematic validation.
 
@@ -75,8 +74,8 @@ class TestTrajectoryValidator(unittest.TestCase):
 
             :exceptions: None.
         '''
-        pt = Point(x=100.0, y=100.0, z=20.0, phi=0.0, speed=40.0)
-        res = self.validator.validate_point_dto(pt)
+        pt = Waypoint(x=100.0, y=100.0, z=20.0, phi=0.0, speed=40.0)
+        res = self.validator.validate_point(pt)
         self.assertTrue(res.is_valid)
 
     def test_out_of_reach(self) -> None:
@@ -85,8 +84,8 @@ class TestTrajectoryValidator(unittest.TestCase):
 
             :exceptions: None.
         '''
-        pt = Point(x=250.0, y=250.0, z=20.0, phi=0.0, speed=40.0)
-        res = self.validator.validate_point_dto(pt)
+        pt = Waypoint(x=250.0, y=250.0, z=20.0, phi=0.0, speed=40.0)
+        res = self.validator.validate_point(pt)
         self.assertFalse(res.is_valid)
 
     def test_deadzone_point(self) -> None:
@@ -95,8 +94,8 @@ class TestTrajectoryValidator(unittest.TestCase):
 
             :exceptions: None.
         '''
-        pt = Point(x=10.0, y=10.0, z=20.0, phi=0.0, speed=40.0)
-        res = self.validator.validate_point_dto(pt)
+        pt = Waypoint(x=10.0, y=10.0, z=20.0, phi=0.0, speed=40.0)
+        res = self.validator.validate_point(pt)
         self.assertFalse(res.is_valid)
 
     def test_z_axis_limits(self) -> None:
@@ -105,10 +104,10 @@ class TestTrajectoryValidator(unittest.TestCase):
 
             :exceptions: None.
         '''
-        pt_low = Point(x=100.0, y=100.0, z=-10.0, phi=0.0, speed=40.0)
-        pt_high = Point(x=100.0, y=100.0, z=150.0, phi=0.0, speed=40.0)
-        self.assertFalse(self.validator.validate_point_dto(pt_low).is_valid)
-        self.assertFalse(self.validator.validate_point_dto(pt_high).is_valid)
+        pt_low = Waypoint(x=100.0, y=100.0, z=-10.0, phi=0.0, speed=40.0)
+        pt_high = Waypoint(x=100.0, y=100.0, z=150.0, phi=0.0, speed=40.0)
+        self.assertFalse(self.validator.validate_point(pt_low).is_valid)
+        self.assertFalse(self.validator.validate_point(pt_high).is_valid)
 
     def test_validate_plan(self) -> None:
         '''
@@ -124,6 +123,18 @@ class TestTrajectoryValidator(unittest.TestCase):
         self.assertTrue(is_valid)
         self.assertGreater(len(messages), 0)
 
+    def test_validate_point_with_waypoint(self) -> None:
+        '''
+            Tests validate_point directly with Waypoint entity.
+
+            :exceptions: None.
+        '''
+        wp_valid = Waypoint(x=100.0, y=100.0, z=20.0, phi=0.0, speed=40.0)
+        self.assertTrue(self.validator.validate_point(wp_valid).is_valid)
+
+        wp_invalid = Waypoint(x=250.0, y=250.0, z=20.0, phi=0.0, speed=40.0)
+        self.assertFalse(self.validator.validate_point(wp_invalid).is_valid)
+
 
 if __name__ == '__main__':
-    unittest.main()
+    main()

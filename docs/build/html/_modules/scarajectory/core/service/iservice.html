@@ -61,10 +61,14 @@
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.itrajectory_plan</span> <span class="kn">import</span> <span class="n">ITrajectoryPlan</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.iplan_storage_service</span> <span class="kn">import</span> <span class="n">IPlanStorageService</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.itrajectory_validator</span> <span class="kn">import</span> <span class="n">ITrajectoryValidator</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.itrajectory_streamer</span> <span class="kn">import</span> <span class="n">ITrajectoryStreamer</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.itrajectory_plan</span> <span class="kn">import</span> <span class="n">ITrajectoryPlan</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.iplan_storage_service</span> <span class="kn">import</span> <span class="n">IPlanStorageService</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.itrajectory_validator</span> <span class="kn">import</span> <span class="n">ITrajectoryValidator</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.communication.itrajectory_streamer</span> <span class="kn">import</span> <span class="n">ITrajectoryStreamer</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.iscara_dsl_service</span> <span class="kn">import</span> <span class="n">IScaraDslService</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.iplan_command_service</span> <span class="kn">import</span> <span class="n">IPlanCommandService</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.iplan_persistence_service</span> <span class="kn">import</span> <span class="n">IPlanPersistenceService</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.iplan_validation_service</span> <span class="kn">import</span> <span class="n">IPlanValidationService</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
@@ -79,9 +83,14 @@
 <div class="viewcode-block" id="IService">
 <a class="viewcode-back" href="../../../../scarajectory.core.service.iservice.html#scarajectory.core.service.iservice.IService">[docs]</a>
 <span class="nd">@runtime_checkable</span>
-<span class="k">class</span> <span class="nc">IService</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">IService</span><span class="p">(</span>
+    <span class="n">IPlanCommandService</span><span class="p">,</span>
+    <span class="n">IPlanPersistenceService</span><span class="p">,</span>
+    <span class="n">IPlanValidationService</span><span class="p">,</span>
+    <span class="n">Protocol</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Interface for orchestrating trajectory operations and services.</span>
+<span class="sd">        Composite interface for orchestrating trajectory operations and services.</span>
 
 <span class="sd">        It defines:</span>
 
@@ -91,11 +100,7 @@
 <span class="sd">                | get_storage - Returns the active IPlanStorageService.</span>
 <span class="sd">                | get_validator - Returns the active ITrajectoryValidator.</span>
 <span class="sd">                | get_streamer - Returns the active ITrajectoryStreamer.</span>
-<span class="sd">                | validate_plan - Validates the current trajectory plan.</span>
-<span class="sd">                | save_plan - Saves current plan to file path.</span>
-<span class="sd">                | load_plan - Loads plan from file path.</span>
-<span class="sd">                | start_streaming - Initiates streaming of current plan.</span>
-<span class="sd">                | stop_streaming - Aborts active streaming.</span>
+<span class="sd">                | get_dsl_service - Returns the active IScaraDslService.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
 <div class="viewcode-block" id="IService.is_initialized">
@@ -105,7 +110,6 @@
 <span class="sd">            Checks if the service is properly initialized.</span>
 
 <span class="sd">            :return: True if initialized, False otherwise.</span>
-<span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span></div>
 
 
@@ -116,7 +120,6 @@
 <span class="sd">            Returns the active ITrajectoryPlan.</span>
 
 <span class="sd">            :return: ITrajectoryPlan instance.</span>
-<span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span></div>
 
 
@@ -127,7 +130,6 @@
 <span class="sd">            Returns the active IPlanStorageService.</span>
 
 <span class="sd">            :return: IPlanStorageService instance.</span>
-<span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span></div>
 
 
@@ -138,7 +140,6 @@
 <span class="sd">            Returns the active ITrajectoryValidator.</span>
 
 <span class="sd">            :return: ITrajectoryValidator instance.</span>
-<span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span></div>
 
 
@@ -149,63 +150,19 @@
 <span class="sd">            Returns the active ITrajectoryStreamer.</span>
 
 <span class="sd">            :return: ITrajectoryStreamer instance.</span>
-<span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span></div>
 
 
-<div class="viewcode-block" id="IService.validate_plan">
-<a class="viewcode-back" href="../../../../scarajectory.core.service.iservice.html#scarajectory.core.service.iservice.IService.validate_plan">[docs]</a>
-    <span class="k">def</span> <span class="nf">validate_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<div class="viewcode-block" id="IService.get_dsl_service">
+<a class="viewcode-back" href="../../../../scarajectory.core.service.iservice.html#scarajectory.core.service.iservice.IService.get_dsl_service">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_dsl_service</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IScaraDslService</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Validates the current trajectory plan against robot kinematic bounds.</span>
+<span class="sd">            Returns the active IScaraDslService.</span>
 
-<span class="sd">            :return: Tuple of (is_valid, messages_list).</span>
-<span class="sd">            :exceptions: None.</span>
-<span class="sd">        &#39;&#39;&#39;</span></div>
-
-
-<div class="viewcode-block" id="IService.save_plan">
-<a class="viewcode-back" href="../../../../scarajectory.core.service.iservice.html#scarajectory.core.service.iservice.IService.save_plan">[docs]</a>
-    <span class="k">def</span> <span class="nf">save_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Saves current plan to file path.</span>
-
-<span class="sd">            :param filepath: Target file path.</span>
-<span class="sd">            :exceptions: OSError.</span>
-<span class="sd">        &#39;&#39;&#39;</span></div>
-
-
-<div class="viewcode-block" id="IService.load_plan">
-<a class="viewcode-back" href="../../../../scarajectory.core.service.iservice.html#scarajectory.core.service.iservice.IService.load_plan">[docs]</a>
-    <span class="k">def</span> <span class="nf">load_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Loads plan from file path.</span>
-
-<span class="sd">            :param filepath: Source file path.</span>
-<span class="sd">            :exceptions: OSError.</span>
-<span class="sd">        &#39;&#39;&#39;</span></div>
-
-
-<div class="viewcode-block" id="IService.start_streaming">
-<a class="viewcode-back" href="../../../../scarajectory.core.service.iservice.html#scarajectory.core.service.iservice.IService.start_streaming">[docs]</a>
-    <span class="k">def</span> <span class="nf">start_streaming</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Initiates streaming of current plan.</span>
-
-<span class="sd">            :return: True if stream started, False otherwise.</span>
-<span class="sd">            :exceptions: None.</span>
-<span class="sd">        &#39;&#39;&#39;</span></div>
-
-
-<div class="viewcode-block" id="IService.stop_streaming">
-<a class="viewcode-back" href="../../../../scarajectory.core.service.iservice.html#scarajectory.core.service.iservice.IService.stop_streaming">[docs]</a>
-    <span class="k">def</span> <span class="nf">stop_streaming</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Aborts active streaming.</span>
-
-<span class="sd">            :exceptions: None.</span>
+<span class="sd">            :return: IScaraDslService instance.</span>
 <span class="sd">        &#39;&#39;&#39;</span></div>
 </div>
+
 
 </pre></div>
 

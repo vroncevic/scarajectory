@@ -5,4 +5,3 @@ scarajectory.infrastructure.communication.serial\_port\_scanner module
    :members:
    :undoc-members:
    :show-inheritance:
-   :private-members:

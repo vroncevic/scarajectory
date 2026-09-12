@@ -136,7 +136,6 @@ Tool structure
          │   │   ├── __init__.py
          │   │   ├── itrajectory_plan.py
          │   │   ├── plan_history.py
-         │   │   ├── point.py
          │   │   ├── scara_bounds.py
          │   │   ├── stream_config.py
          │   │   ├── stream_progress.py

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>scarajectory.infrastructure.gui.gui_event_mediator module &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
+    
+    <script src="_static/documentation_options.js?v=57319df4"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="scarajectory.infrastructure.gui.igui module" href="scarajectory.infrastructure.gui.igui.html" />
+    <link rel="prev" title="scarajectory.infrastructure.gui.engine module" href="scarajectory.infrastructure.gui.engine.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.igui.html" title="scarajectory.infrastructure.gui.igui module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.engine.html" title="scarajectory.infrastructure.gui.engine module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.gui.html" accesskey="U">scarajectory.infrastructure.gui package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.gui_event_mediator module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-scarajectory.infrastructure.gui.gui_event_mediator">
+<span id="scarajectory-infrastructure-gui-gui-event-mediator-module"></span><h1>scarajectory.infrastructure.gui.gui_event_mediator module<a class="headerlink" href="#module-scarajectory.infrastructure.gui.gui_event_mediator" title="Link to this heading">¶</a></h1>
+<dl class="simple">
+<dt>Module</dt><dd><p>gui_event_mediator.py</p>
+</dd>
+<dt>Copyright</dt><dd><p>Copyright (C) 2026 Vladimir Roncevic &lt;<a class="reference external" href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+scarajectory is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+scarajectory is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along
+with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+</dd>
+<dt>Info</dt><dd><p>Mediator coordinating waypoint selection and UI event notifications across views.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.gui.gui_event_mediator.</span></span><span class="sig-name descname"><span class="pre">GuiEventMediator</span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/gui_event_mediator.html#GuiEventMediator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Mediator managing UI selection state and observer notifications across GUI components.</p>
+<p>It defines:</p>
+<blockquote>
+<div><dl class="field-list">
+<dt class="field-odd">attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="line-block">
+<div class="line">_observers - Registered observer components.</div>
+<div class="line">_selected_index - Index of currently selected waypoint.</div>
+</div>
+</dd>
+<dt class="field-even">methods<span class="colon">:</span></dt>
+<dd class="field-even"><div class="line-block">
+<div class="line">__init__ - Initializes mediator with empty observer list and no selection.</div>
+<div class="line">selected_index - Returns currently selected waypoint index.</div>
+<div class="line">set_selected_index - Updates selected waypoint index and dispatches notifications.</div>
+<div class="line">add_observer - Registers an observer for GUI events.</div>
+<div class="line">remove_observer - Unregisters an observer from GUI events.</div>
+<div class="line">notify_trajectory_updated - Dispatches trajectory updated event to all observers.</div>
+<div class="line">notify_point_selected - Dispatches point selected event to all observers.</div>
+<div class="line">clear_selection - Clears selection and notifies observers.</div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.add_observer">
+<span class="sig-name descname"><span class="pre">add_observer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.itrajectory_observer.html#scarajectory.core.service.trajectory.itrajectory_observer.ITrajectoryObserver" title="scarajectory.core.service.trajectory.itrajectory_observer.ITrajectoryObserver"><span class="pre">ITrajectoryObserver</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/gui_event_mediator.html#GuiEventMediator.add_observer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.add_observer" title="Link to this definition">¶</a></dt>
+<dd><p>Registers an observer for GUI events.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>observer</strong> – ITrajectoryObserver instance.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.clear_selection">
+<span class="sig-name descname"><span class="pre">clear_selection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/gui_event_mediator.html#GuiEventMediator.clear_selection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.clear_selection" title="Link to this definition">¶</a></dt>
+<dd><p>Clears selection and notifies observers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.notify_point_selected">
+<span class="sig-name descname"><span class="pre">notify_point_selected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/gui_event_mediator.html#GuiEventMediator.notify_point_selected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.notify_point_selected" title="Link to this definition">¶</a></dt>
+<dd><p>Dispatches point selected event to all observers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> – Selected waypoint index.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.notify_trajectory_updated">
+<span class="sig-name descname"><span class="pre">notify_trajectory_updated</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/gui_event_mediator.html#GuiEventMediator.notify_trajectory_updated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.notify_trajectory_updated" title="Link to this definition">¶</a></dt>
+<dd><p>Dispatches trajectory updated event to all observers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.remove_observer">
+<span class="sig-name descname"><span class="pre">remove_observer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.itrajectory_observer.html#scarajectory.core.service.trajectory.itrajectory_observer.ITrajectoryObserver" title="scarajectory.core.service.trajectory.itrajectory_observer.ITrajectoryObserver"><span class="pre">ITrajectoryObserver</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/gui_event_mediator.html#GuiEventMediator.remove_observer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.remove_observer" title="Link to this definition">¶</a></dt>
+<dd><p>Unregisters an observer from GUI events.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>observer</strong> – ITrajectoryObserver instance.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.selected_index">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">selected_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.selected_index" title="Link to this definition">¶</a></dt>
+<dd><p>Returns currently selected waypoint index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Selected waypoint index or -1.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.set_selected_index">
+<span class="sig-name descname"><span class="pre">set_selected_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/gui_event_mediator.html#GuiEventMediator.set_selected_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.set_selected_index" title="Link to this definition">¶</a></dt>
+<dd><p>Updates selected waypoint index and dispatches notifications.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index</strong> – Target waypoint index (-1 to deselect).</p></li>
+<li><p><strong>total_count</strong> – Optional upper bound limit check.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">scarajectory.infrastructure.gui.gui_event_mediator module</a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator"><code class="docutils literal notranslate"><span class="pre">GuiEventMediator</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.add_observer"><code class="docutils literal notranslate"><span class="pre">GuiEventMediator.add_observer()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.clear_selection"><code class="docutils literal notranslate"><span class="pre">GuiEventMediator.clear_selection()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.notify_point_selected"><code class="docutils literal notranslate"><span class="pre">GuiEventMediator.notify_point_selected()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.notify_trajectory_updated"><code class="docutils literal notranslate"><span class="pre">GuiEventMediator.notify_trajectory_updated()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.remove_observer"><code class="docutils literal notranslate"><span class="pre">GuiEventMediator.remove_observer()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.selected_index"><code class="docutils literal notranslate"><span class="pre">GuiEventMediator.selected_index</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.set_selected_index"><code class="docutils literal notranslate"><span class="pre">GuiEventMediator.set_selected_index()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.engine.html"
+                          title="previous chapter">scarajectory.infrastructure.gui.engine module</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.igui.html"
+                          title="next chapter">scarajectory.infrastructure.gui.igui module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/scarajectory.infrastructure.gui.gui_event_mediator.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.igui.html" title="scarajectory.infrastructure.gui.igui module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.engine.html" title="scarajectory.infrastructure.gui.engine module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.gui.html" >scarajectory.infrastructure.gui package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.gui_event_mediator module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

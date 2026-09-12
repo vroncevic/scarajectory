@@ -21,15 +21,15 @@ Info
 
 from __future__ import annotations
 
-import os
-import sys
-import unittest
+from os.path import abspath, dirname
+from sys import path
+from unittest import TestCase, main
 
-pkg_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if pkg_dir not in sys.path:
-    sys.path.insert(0, pkg_dir)
+pkg_dir = dirname(dirname(abspath(__file__)))
+if pkg_dir not in path:
+    path.insert(0, pkg_dir)
 
-from scarajectory.core.model.canvas_interaction_state import CanvasInteractionState
+from scarajectory.infrastructure.gui.model.canvas_interaction_state import CanvasInteractionState
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -41,7 +41,7 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class TestCanvasInteractionState(unittest.TestCase):
+class TestCanvasInteractionState(TestCase):
     '''
         Test cases for CanvasInteractionState.
 
@@ -97,4 +97,4 @@ class TestCanvasInteractionState(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    main()

@@ -5,4 +5,3 @@ scarajectory.core.service.dsl.compiler.arc\_interpolator module
    :members:
    :undoc-members:
    :show-inheritance:
-   :private-members:

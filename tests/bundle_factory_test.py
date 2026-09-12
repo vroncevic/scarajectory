@@ -21,13 +21,13 @@ Info
 
 from __future__ import annotations
 
-import os
-import sys
-import unittest
+from os.path import abspath, dirname
+from sys import path
+from unittest import TestCase, main
 
-pkg_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if pkg_dir not in sys.path:
-    sys.path.insert(0, pkg_dir)
+pkg_dir = dirname(dirname(abspath(__file__)))
+if pkg_dir not in path:
+    path.insert(0, pkg_dir)
 
 from scarajectory.setup.keys import SCARAjectoryBundleKeys
 from scarajectory.setup.factory import SCARAjectoryBundleFactory
@@ -43,7 +43,7 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class TestBundleFactory(unittest.TestCase):
+class TestBundleFactory(TestCase):
     '''
         Test cases for SCARAjectoryBundleFactory and SCARAjectory life cycle.
 
@@ -96,4 +96,4 @@ class TestBundleFactory(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    main()

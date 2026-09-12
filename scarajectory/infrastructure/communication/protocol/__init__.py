@@ -1,8 +1,8 @@
 # -*- coding: UTF-8 -*-
 
 '''
-Package
-    scarajectory/infrastructure/communication/protocol
+Module
+    __init__.py
 Copyright
     Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
     scarajectory is free software: you can redistribute it and/or modify it

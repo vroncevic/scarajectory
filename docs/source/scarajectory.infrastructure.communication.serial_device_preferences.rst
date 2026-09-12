@@ -5,4 +5,3 @@ scarajectory.infrastructure.communication.serial\_device\_preferences module
    :members:
    :undoc-members:
    :show-inheritance:
-   :private-members:

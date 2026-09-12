@@ -59,7 +59,7 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">re</span> <span class="kn">import</span> <span class="n">IGNORECASE</span><span class="p">,</span> <span class="n">Pattern</span><span class="p">,</span> <span class="nb">compile</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">ClassVar</span>
 
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.protocol.robot_response_dto</span> <span class="kn">import</span> <span class="n">RobotResponseDTO</span>
@@ -96,7 +96,7 @@
 <span class="sd">                | is_error - Checks if packet signals an error condition.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="n">_QUEUE_REGEX</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">re</span><span class="o">.</span><span class="n">Pattern</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;QUEUE=(\d+)&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+    <span class="n">_QUEUE_REGEX</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">Pattern</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;QUEUE=(\d+)&#39;</span><span class="p">,</span> <span class="n">IGNORECASE</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ProtocolParser.parse_response">
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.protocol.protocol_parser.html#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.parse_response">[docs]</a>

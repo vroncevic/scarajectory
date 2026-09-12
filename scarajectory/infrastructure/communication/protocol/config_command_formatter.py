@@ -21,7 +21,7 @@ Info
 
 from __future__ import annotations
 
-from scarajectory.core.model.scara_bounds import ScaraBounds
+from scarajectory.core.model.kinematics.scara_bounds import ScaraBounds
 from scarajectory.infrastructure.communication.protocol.command_templates import (
     CommandTemplates
 )

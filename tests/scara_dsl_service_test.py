@@ -29,8 +29,8 @@ pkg_dir = str(Path(__file__).resolve().parent.parent)
 if pkg_dir not in path:
     path.insert(0, pkg_dir)
 
-from scarajectory.core.model.trajectory_plan import TrajectoryPlan
-from scarajectory.core.model.waypoint import Waypoint
+from scarajectory.core.model.trajectory.trajectory_plan import TrajectoryPlan
+from scarajectory.core.model.trajectory.waypoint import Waypoint
 from scarajectory.core.service.dsl.scara_dsl_service import ScaraDslService
 
 __author__ = 'Vladimir Roncevic'

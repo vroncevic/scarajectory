@@ -5,4 +5,3 @@ scarajectory.infrastructure.communication.protocol.robot\_response\_dto module
    :members:
    :undoc-members:
    :show-inheritance:
-   :private-members:

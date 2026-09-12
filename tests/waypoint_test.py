@@ -16,21 +16,23 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Unit tests for Waypoint entity and Point conversions.
+    Unit tests for Waypoint entity.
 '''
 
 from __future__ import annotations
 
-import os
-import sys
-import unittest
+from os.path import abspath, dirname
+from sys import path
+from unittest import TestCase, main
 
-pkg_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if pkg_dir not in sys.path:
-    sys.path.insert(0, pkg_dir)
+pkg_dir = dirname(dirname(abspath(__file__)))
+if pkg_dir not in path:
+    path.insert(0, pkg_dir)
 
-from scarajectory.core.model.waypoint import Waypoint
-from scarajectory.core.model.point import Point
+from scarajectory.core.model.trajectory.waypoint import Waypoint
+from scarajectory.infrastructure.communication.protocol.motion_command_formatter import (
+    MotionCommandFormatter
+)
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -42,7 +44,7 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class TestWaypoint(unittest.TestCase):
+class TestWaypoint(TestCase):
     '''
         Test cases for Waypoint data class and DTO conversion.
 
@@ -50,7 +52,6 @@ class TestWaypoint(unittest.TestCase):
 
             :methods:
                 | test_waypoint_creation - Tests instantiation and property access of Waypoint.
-                | test_point_dto_conversion - Tests roundtrip between Waypoint and Point.
                 | test_waypoint_equality - Tests equality and string representation.
     '''
 
@@ -68,22 +69,6 @@ class TestWaypoint(unittest.TestCase):
         self.assertEqual(pt.speed, 35.0)
         self.assertEqual(pt.name, 'P1')
 
-    def test_point_dto_conversion(self) -> None:
-        '''
-            Tests conversion between Waypoint entity and Point.
-
-            :exceptions: None.
-        '''
-        dto = Point(x=80.0, y=120.0, z=20.0, phi=0.0, speed=40.0, name='DTO_PT')
-        pt = Waypoint.from_dto(dto)
-        self.assertEqual(pt.x, 80.0)
-        self.assertEqual(pt.y, 120.0)
-        self.assertEqual(pt.name, 'DTO_PT')
-
-        exported_dto = pt.to_dto()
-        self.assertEqual(exported_dto.x, 80.0)
-        self.assertEqual(exported_dto.y, 120.0)
-        self.assertEqual(exported_dto.name, 'DTO_PT')
 
     def test_waypoint_equality(self) -> None:
         '''
@@ -99,13 +84,19 @@ class TestWaypoint(unittest.TestCase):
 
     def test_waypoint_command_packet(self) -> None:
         '''
-            Tests packet generation with and without raw command attribute.
+            Tests packet generation with and without raw command attribute via formatter.
         '''
         pt_move = Waypoint(x=100.0, y=50.0, z=20.0, phi=0.0, speed=40.0)
-        self.assertEqual(pt_move.to_ascii_packet(), '<pt#100.00#50.00#20.00#40.0#end>')
+        self.assertEqual(
+            MotionCommandFormatter.format_move(pt_move),
+            '<pt#100.00#50.00#20.00#0.00#40.0#end>'
+        )
 
         pt_cmd = Waypoint(x=100.0, y=50.0, z=20.0, command='<CMD:WAIT#500>')
-        self.assertEqual(pt_cmd.to_ascii_packet(), '<CMD:WAIT#500>')
+        self.assertEqual(
+            MotionCommandFormatter.format_move(pt_cmd),
+            '<CMD:WAIT#500>'
+        )
 
     def test_waypoint_dict_serialization(self) -> None:
         '''
@@ -120,4 +111,4 @@ class TestWaypoint(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    main()

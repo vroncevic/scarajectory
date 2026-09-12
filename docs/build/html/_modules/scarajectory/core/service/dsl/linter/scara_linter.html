@@ -59,12 +59,30 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.iscara_instruction</span> <span class="kn">import</span> <span class="n">IScaraInstruction</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.iscara_program</span> <span class="kn">import</span> <span class="n">IScaraProgram</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.scara_command_type</span> <span class="kn">import</span> <span class="n">ScaraCommandType</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.scara_diagnostic</span> <span class="kn">import</span> <span class="n">ScaraDiagnostic</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.scara_diagnostic_severity</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Sequence</span>
+
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.iscara_program</span> <span class="kn">import</span> <span class="n">IScaraProgram</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.scara_diagnostic</span> <span class="kn">import</span> <span class="n">ScaraDiagnostic</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.scara_diagnostic_severity</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">ScaraDiagnosticSeverity</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.linter.rules.iscara_lint_rule</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">IScaraLintRule</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.linter.rules.motion_lint_rule</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">MotionLintRule</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.linter.rules.pneumatic_lint_rule</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">PneumaticLintRule</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.linter.rules.state_lint_rule</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">StateLintRule</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.linter.rules.timing_lint_rule</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">TimingLintRule</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.linter.scara_lint_context</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ScaraLintContext</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
@@ -81,26 +99,37 @@
 <a class="viewcode-back" href="../../../../../../scarajectory.core.service.dsl.linter.scara_linter.html#scarajectory.core.service.dsl.linter.scara_linter.ScaraLinter">[docs]</a>
 <span class="k">class</span> <span class="nc">ScaraLinter</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Static analyzer checking SCARA DSL AST programs for safety risks and sequencing issues.</span>
+<span class="sd">        Static analyzer orchestrating rule evaluations across SCARA DSL AST programs.</span>
 
 <span class="sd">        It defines:</span>
 
 <span class="sd">            :attributes:</span>
-<span class="sd">                | None.</span>
+<span class="sd">                | _rules - Sequence of registered IScaraLintRule components.</span>
 <span class="sd">            :methods:</span>
-<span class="sd">                | __init__ - Initializes ScaraLinter instance.</span>
+<span class="sd">                | __init__ - Initializes ScaraLinter with optional custom lint rules.</span>
 <span class="sd">                | lint - Performs static analysis and returns tuple of ScaraDiagnostic findings.</span>
-<span class="sd">                | _check_pneumatics - Evaluates vacuum pump and blow-off valve state consistency.</span>
-<span class="sd">                | _check_motion - Evaluates calibration prerequisites and duplicate trajectory moves.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">rules</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">IScaraLintRule</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Initializes ScaraLinter instance.</span>
+<span class="sd">            Initializes ScaraLinter with injected or default lint rules.</span>
 
+<span class="sd">            :param rules: Optional custom sequence of IScaraLintRule components.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">pass</span>
+        <span class="k">if</span> <span class="n">rules</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rules</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">IScaraLintRule</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">rules</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rules</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">StateLintRule</span><span class="p">(),</span>
+                <span class="n">MotionLintRule</span><span class="p">(),</span>
+                <span class="n">PneumaticLintRule</span><span class="p">(),</span>
+                <span class="n">TimingLintRule</span><span class="p">(),</span>
+            <span class="p">)</span>
 
 <div class="viewcode-block" id="ScaraLinter.lint">
 <a class="viewcode-back" href="../../../../../../scarajectory.core.service.dsl.linter.scara_linter.html#scarajectory.core.service.dsl.linter.scara_linter.ScaraLinter.lint">[docs]</a>
@@ -131,258 +160,16 @@
             <span class="p">)</span>
             <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">diagnostics</span><span class="p">)</span>
 
-        <span class="n">is_homed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="n">motion_occurred</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="n">pump_on</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="n">valve_on</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="n">zone_mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;FINE&#39;</span>
-        <span class="n">zone_radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
-        <span class="n">last_coords</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-
+        <span class="n">context</span> <span class="o">=</span> <span class="n">ScaraLintContext</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">inst</span> <span class="ow">in</span> <span class="n">instructions</span><span class="p">:</span>
-            <span class="n">cmd</span> <span class="o">=</span> <span class="n">inst</span><span class="o">.</span><span class="n">command_type</span>
-            <span class="n">params</span> <span class="o">=</span> <span class="n">inst</span><span class="o">.</span><span class="n">parameters</span>
-            <span class="n">line</span> <span class="o">=</span> <span class="n">inst</span><span class="o">.</span><span class="n">line_number</span>
-
-            <span class="k">match</span> <span class="n">cmd</span><span class="p">:</span>
-                <span class="k">case</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">HOME</span><span class="p">:</span>
-                    <span class="n">is_homed</span> <span class="o">=</span> <span class="kc">True</span>
-                    <span class="n">last_coords</span> <span class="o">=</span> <span class="kc">None</span>
-
-                <span class="k">case</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">ZONE</span><span class="p">:</span>
-                    <span class="n">zone_mode</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">,</span> <span class="s1">&#39;FINE&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
-                    <span class="n">zone_radius</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
-
-                <span class="k">case</span> <span class="p">(</span>
-                    <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">MOVE_L</span>
-                    <span class="o">|</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">MOVE_J</span>
-                    <span class="o">|</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">ARC_CW</span>
-                    <span class="o">|</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">ARC_CCW</span>
-                    <span class="o">|</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">JUMP</span>
-                    <span class="o">|</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">APPROACH</span>
-                    <span class="o">|</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">RETRACT</span>
-                    <span class="o">|</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">MOVE_PALLET</span>
-                <span class="p">):</span>
-                    <span class="n">last_coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_motion</span><span class="p">(</span>
-                        <span class="n">inst</span><span class="o">=</span><span class="n">inst</span><span class="p">,</span>
-                        <span class="n">is_homed</span><span class="o">=</span><span class="n">is_homed</span><span class="p">,</span>
-                        <span class="n">motion_occurred</span><span class="o">=</span><span class="n">motion_occurred</span><span class="p">,</span>
-                        <span class="n">last_coords</span><span class="o">=</span><span class="n">last_coords</span><span class="p">,</span>
-                        <span class="n">diagnostics</span><span class="o">=</span><span class="n">diagnostics</span><span class="p">,</span>
-                    <span class="p">)</span>
-                    <span class="n">motion_occurred</span> <span class="o">=</span> <span class="kc">True</span>
-
-                <span class="k">case</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">PUMP</span> <span class="o">|</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">VALVE</span><span class="p">:</span>
-                    <span class="n">pump_on</span><span class="p">,</span> <span class="n">valve_on</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_pneumatics</span><span class="p">(</span>
-                        <span class="n">inst</span><span class="o">=</span><span class="n">inst</span><span class="p">,</span>
-                        <span class="n">pump_on</span><span class="o">=</span><span class="n">pump_on</span><span class="p">,</span>
-                        <span class="n">valve_on</span><span class="o">=</span><span class="n">valve_on</span><span class="p">,</span>
-                        <span class="n">zone_mode</span><span class="o">=</span><span class="n">zone_mode</span><span class="p">,</span>
-                        <span class="n">zone_radius</span><span class="o">=</span><span class="n">zone_radius</span><span class="p">,</span>
-                        <span class="n">diagnostics</span><span class="o">=</span><span class="n">diagnostics</span><span class="p">,</span>
-                    <span class="p">)</span>
-                    <span class="n">last_coords</span> <span class="o">=</span> <span class="kc">None</span>
-
-                <span class="k">case</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">WAIT_MS</span><span class="p">:</span>
-                    <span class="n">delay_ms</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ms&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
-                    <span class="k">if</span> <span class="n">delay_ms</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
-                        <span class="n">diagnostics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                            <span class="n">ScaraDiagnostic</span><span class="p">(</span>
-                                <span class="n">code</span><span class="o">=</span><span class="s1">&#39;DEAD_WAIT&#39;</span><span class="p">,</span>
-                                <span class="n">severity</span><span class="o">=</span><span class="n">ScaraDiagnosticSeverity</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
-                                <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Dwell delay WAIT_MS </span><span class="si">{</span><span class="n">delay_ms</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1"> is non-positive and produces no pause.&#39;</span><span class="p">,</span>
-                                <span class="n">line</span><span class="o">=</span><span class="n">line</span><span class="p">,</span>
-                                <span class="n">command</span><span class="o">=</span><span class="s1">&#39;WAIT_MS&#39;</span><span class="p">,</span>
-                            <span class="p">)</span>
-                        <span class="p">)</span>
-                    <span class="k">if</span> <span class="n">zone_mode</span> <span class="o">!=</span> <span class="s1">&#39;FINE&#39;</span> <span class="ow">and</span> <span class="n">zone_radius</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
-                        <span class="n">diagnostics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                            <span class="n">ScaraDiagnostic</span><span class="p">(</span>
-                                <span class="n">code</span><span class="o">=</span><span class="s1">&#39;TOOL_IN_FLYBY&#39;</span><span class="p">,</span>
-                                <span class="n">severity</span><span class="o">=</span><span class="n">ScaraDiagnosticSeverity</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span>
-                                <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Dwell pause WAIT_MS issued during active continuous blend zone.&#39;</span><span class="p">,</span>
-                                <span class="n">line</span><span class="o">=</span><span class="n">line</span><span class="p">,</span>
-                                <span class="n">command</span><span class="o">=</span><span class="s1">&#39;WAIT_MS&#39;</span><span class="p">,</span>
-                            <span class="p">)</span>
-                        <span class="p">)</span>
-                    <span class="n">last_coords</span> <span class="o">=</span> <span class="kc">None</span>
-
-                <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
-                    <span class="k">pass</span>
+            <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rules</span><span class="p">:</span>
+                <span class="n">rule</span><span class="o">.</span><span class="n">check</span><span class="p">(</span>
+                    <span class="n">instruction</span><span class="o">=</span><span class="n">inst</span><span class="p">,</span>
+                    <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">,</span>
+                    <span class="n">diagnostics</span><span class="o">=</span><span class="n">diagnostics</span><span class="p">,</span>
+                <span class="p">)</span>
 
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">diagnostics</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="ScaraLinter._check_pneumatics">
-<a class="viewcode-back" href="../../../../../../scarajectory.core.service.dsl.linter.scara_linter.html#scarajectory.core.service.dsl.linter.scara_linter.ScaraLinter._check_pneumatics">[docs]</a>
-    <span class="k">def</span> <span class="nf">_check_pneumatics</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">inst</span><span class="p">:</span> <span class="n">IScaraInstruction</span><span class="p">,</span>
-        <span class="n">pump_on</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-        <span class="n">valve_on</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-        <span class="n">zone_mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">zone_radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">diagnostics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ScaraDiagnostic</span><span class="p">],</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Evaluates vacuum pump and blow-off valve state consistency.</span>
-
-<span class="sd">            :param inst: Current tool instruction node.</span>
-<span class="sd">            :param pump_on: Active vacuum pump state.</span>
-<span class="sd">            :param valve_on: Active blow-off valve state.</span>
-<span class="sd">            :param zone_mode: Active zone mode (&#39;FINE&#39; or &#39;BLEND&#39;).</span>
-<span class="sd">            :param zone_radius: Active blend corner radius.</span>
-<span class="sd">            :param diagnostics: Accumulator list for diagnostic findings.</span>
-<span class="sd">            :return: Tuple of updated (pump_on, valve_on) states.</span>
-<span class="sd">            :exceptions: None.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">line</span> <span class="o">=</span> <span class="n">inst</span><span class="o">.</span><span class="n">line_number</span>
-        <span class="n">is_pump</span> <span class="o">=</span> <span class="n">inst</span><span class="o">.</span><span class="n">command_type</span> <span class="o">==</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">PUMP</span>
-        <span class="n">target_state</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">inst</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;OFF&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;ON&#39;</span>
-
-        <span class="k">if</span> <span class="n">zone_mode</span> <span class="o">!=</span> <span class="s1">&#39;FINE&#39;</span> <span class="ow">and</span> <span class="n">zone_radius</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
-            <span class="n">diagnostics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">ScaraDiagnostic</span><span class="p">(</span>
-                    <span class="n">code</span><span class="o">=</span><span class="s1">&#39;TOOL_IN_FLYBY&#39;</span><span class="p">,</span>
-                    <span class="n">severity</span><span class="o">=</span><span class="n">ScaraDiagnosticSeverity</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span>
-                    <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Tool action </span><span class="si">{</span><span class="n">inst</span><span class="o">.</span><span class="n">command_type</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1"> issued during active continuous blend zone.&#39;</span><span class="p">,</span>
-                    <span class="n">line</span><span class="o">=</span><span class="n">line</span><span class="p">,</span>
-                    <span class="n">command</span><span class="o">=</span><span class="n">inst</span><span class="o">.</span><span class="n">command_type</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-                <span class="p">)</span>
-            <span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">is_pump</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">target_state</span> <span class="ow">and</span> <span class="n">pump_on</span><span class="p">:</span>
-                <span class="n">diagnostics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="n">ScaraDiagnostic</span><span class="p">(</span>
-                        <span class="n">code</span><span class="o">=</span><span class="s1">&#39;REDUNDANT_TOOL_CMD&#39;</span><span class="p">,</span>
-                        <span class="n">severity</span><span class="o">=</span><span class="n">ScaraDiagnosticSeverity</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span>
-                        <span class="n">message</span><span class="o">=</span><span class="s1">&#39;PUMP is already ON. Redundant actuation command.&#39;</span><span class="p">,</span>
-                        <span class="n">line</span><span class="o">=</span><span class="n">line</span><span class="p">,</span>
-                        <span class="n">command</span><span class="o">=</span><span class="s1">&#39;PUMP&#39;</span><span class="p">,</span>
-                    <span class="p">)</span>
-                <span class="p">)</span>
-            <span class="k">elif</span> <span class="ow">not</span> <span class="n">target_state</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">pump_on</span><span class="p">:</span>
-                <span class="n">diagnostics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="n">ScaraDiagnostic</span><span class="p">(</span>
-                        <span class="n">code</span><span class="o">=</span><span class="s1">&#39;REDUNDANT_TOOL_CMD&#39;</span><span class="p">,</span>
-                        <span class="n">severity</span><span class="o">=</span><span class="n">ScaraDiagnosticSeverity</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span>
-                        <span class="n">message</span><span class="o">=</span><span class="s1">&#39;PUMP is already OFF. Redundant actuation command.&#39;</span><span class="p">,</span>
-                        <span class="n">line</span><span class="o">=</span><span class="n">line</span><span class="p">,</span>
-                        <span class="n">command</span><span class="o">=</span><span class="s1">&#39;PUMP&#39;</span><span class="p">,</span>
-                    <span class="p">)</span>
-                <span class="p">)</span>
-            <span class="k">if</span> <span class="n">target_state</span> <span class="ow">and</span> <span class="n">valve_on</span><span class="p">:</span>
-                <span class="n">diagnostics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="n">ScaraDiagnostic</span><span class="p">(</span>
-                        <span class="n">code</span><span class="o">=</span><span class="s1">&#39;PNEUMATIC_CONFLICT&#39;</span><span class="p">,</span>
-                        <span class="n">severity</span><span class="o">=</span><span class="n">ScaraDiagnosticSeverity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span>
-                        <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Cannot turn PUMP ON while blow-off VALVE is active. Pneumatic contention detected.&#39;</span><span class="p">,</span>
-                        <span class="n">line</span><span class="o">=</span><span class="n">line</span><span class="p">,</span>
-                        <span class="n">command</span><span class="o">=</span><span class="s1">&#39;PUMP&#39;</span><span class="p">,</span>
-                    <span class="p">)</span>
-                <span class="p">)</span>
-            <span class="k">return</span> <span class="n">target_state</span><span class="p">,</span> <span class="n">valve_on</span>
-
-        <span class="k">if</span> <span class="n">target_state</span> <span class="ow">and</span> <span class="n">valve_on</span><span class="p">:</span>
-            <span class="n">diagnostics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">ScaraDiagnostic</span><span class="p">(</span>
-                    <span class="n">code</span><span class="o">=</span><span class="s1">&#39;REDUNDANT_TOOL_CMD&#39;</span><span class="p">,</span>
-                    <span class="n">severity</span><span class="o">=</span><span class="n">ScaraDiagnosticSeverity</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span>
-                    <span class="n">message</span><span class="o">=</span><span class="s1">&#39;VALVE is already ON. Redundant actuation command.&#39;</span><span class="p">,</span>
-                    <span class="n">line</span><span class="o">=</span><span class="n">line</span><span class="p">,</span>
-                    <span class="n">command</span><span class="o">=</span><span class="s1">&#39;VALVE&#39;</span><span class="p">,</span>
-                <span class="p">)</span>
-            <span class="p">)</span>
-        <span class="k">elif</span> <span class="ow">not</span> <span class="n">target_state</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">valve_on</span><span class="p">:</span>
-            <span class="n">diagnostics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">ScaraDiagnostic</span><span class="p">(</span>
-                    <span class="n">code</span><span class="o">=</span><span class="s1">&#39;REDUNDANT_TOOL_CMD&#39;</span><span class="p">,</span>
-                    <span class="n">severity</span><span class="o">=</span><span class="n">ScaraDiagnosticSeverity</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span>
-                    <span class="n">message</span><span class="o">=</span><span class="s1">&#39;VALVE is already OFF. Redundant actuation command.&#39;</span><span class="p">,</span>
-                    <span class="n">line</span><span class="o">=</span><span class="n">line</span><span class="p">,</span>
-                    <span class="n">command</span><span class="o">=</span><span class="s1">&#39;VALVE&#39;</span><span class="p">,</span>
-                <span class="p">)</span>
-            <span class="p">)</span>
-        <span class="k">if</span> <span class="n">target_state</span> <span class="ow">and</span> <span class="n">pump_on</span><span class="p">:</span>
-            <span class="n">diagnostics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">ScaraDiagnostic</span><span class="p">(</span>
-                    <span class="n">code</span><span class="o">=</span><span class="s1">&#39;PNEUMATIC_CONFLICT&#39;</span><span class="p">,</span>
-                    <span class="n">severity</span><span class="o">=</span><span class="n">ScaraDiagnosticSeverity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span>
-                    <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Cannot turn blow-off VALVE ON while vacuum PUMP is active. Pneumatic contention detected.&#39;</span><span class="p">,</span>
-                    <span class="n">line</span><span class="o">=</span><span class="n">line</span><span class="p">,</span>
-                    <span class="n">command</span><span class="o">=</span><span class="s1">&#39;VALVE&#39;</span><span class="p">,</span>
-                <span class="p">)</span>
-            <span class="p">)</span>
-        <span class="k">return</span> <span class="n">pump_on</span><span class="p">,</span> <span class="n">target_state</span></div>
-
-
-<div class="viewcode-block" id="ScaraLinter._check_motion">
-<a class="viewcode-back" href="../../../../../../scarajectory.core.service.dsl.linter.scara_linter.html#scarajectory.core.service.dsl.linter.scara_linter.ScaraLinter._check_motion">[docs]</a>
-    <span class="k">def</span> <span class="nf">_check_motion</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">inst</span><span class="p">:</span> <span class="n">IScaraInstruction</span><span class="p">,</span>
-        <span class="n">is_homed</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-        <span class="n">motion_occurred</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-        <span class="n">last_coords</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">diagnostics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ScaraDiagnostic</span><span class="p">],</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Evaluates calibration prerequisites and duplicate trajectory moves.</span>
-
-<span class="sd">            :param inst: Current motion instruction node.</span>
-<span class="sd">            :param is_homed: True if machine has been homed or calibrated.</span>
-<span class="sd">            :param motion_occurred: True if a prior motion instruction was processed.</span>
-<span class="sd">            :param last_coords: Coordinates of prior linear move or None.</span>
-<span class="sd">            :param diagnostics: Accumulator list for diagnostic findings.</span>
-<span class="sd">            :return: Updated target coordinates or None.</span>
-<span class="sd">            :exceptions: None.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">line</span> <span class="o">=</span> <span class="n">inst</span><span class="o">.</span><span class="n">line_number</span>
-        <span class="n">cmd</span> <span class="o">=</span> <span class="n">inst</span><span class="o">.</span><span class="n">command_type</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="n">inst</span><span class="o">.</span><span class="n">parameters</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_homed</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">motion_occurred</span><span class="p">:</span>
-            <span class="n">diagnostics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">ScaraDiagnostic</span><span class="p">(</span>
-                    <span class="n">code</span><span class="o">=</span><span class="s1">&#39;UNCALIBRATED_MOTION&#39;</span><span class="p">,</span>
-                    <span class="n">severity</span><span class="o">=</span><span class="n">ScaraDiagnosticSeverity</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span>
-                    <span class="n">message</span><span class="o">=</span><span class="s1">&#39;First motion instruction occurs before HOME or SETPOS calibration. Machine coordinates unreferenced.&#39;</span><span class="p">,</span>
-                    <span class="n">line</span><span class="o">=</span><span class="n">line</span><span class="p">,</span>
-                    <span class="n">command</span><span class="o">=</span><span class="n">cmd</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-                <span class="p">)</span>
-            <span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="p">(</span><span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">MOVE_L</span><span class="p">,</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">MOVE_J</span><span class="p">):</span>
-            <span class="n">x_val</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">))</span>
-            <span class="n">y_val</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">))</span>
-            <span class="n">z_val</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Z&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">))</span>
-            <span class="n">phi_val</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PHI&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;phi&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
-            <span class="k">if</span> <span class="n">x_val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">y_val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">z_val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">coords</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="nb">float</span><span class="p">(</span><span class="n">x_val</span><span class="p">),</span>
-                    <span class="nb">float</span><span class="p">(</span><span class="n">y_val</span><span class="p">),</span>
-                    <span class="nb">float</span><span class="p">(</span><span class="n">z_val</span><span class="p">),</span>
-                    <span class="nb">float</span><span class="p">(</span><span class="n">phi_val</span><span class="p">),</span>
-                <span class="p">)</span>
-                <span class="k">if</span> <span class="n">last_coords</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">coords</span> <span class="o">==</span> <span class="n">last_coords</span><span class="p">:</span>
-                    <span class="n">diagnostics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                        <span class="n">ScaraDiagnostic</span><span class="p">(</span>
-                            <span class="n">code</span><span class="o">=</span><span class="s1">&#39;DUPLICATE_MOTION&#39;</span><span class="p">,</span>
-                            <span class="n">severity</span><span class="o">=</span><span class="n">ScaraDiagnosticSeverity</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
-                            <span class="n">message</span><span class="o">=</span><span class="p">(</span>
-                                <span class="sa">f</span><span class="s1">&#39;Consecutive move to identical target coordinates &#39;</span>
-                                <span class="sa">f</span><span class="s1">&#39;(</span><span class="si">{</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">coords</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">coords</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">coords</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">).&#39;</span>
-                            <span class="p">),</span>
-                            <span class="n">line</span><span class="o">=</span><span class="n">line</span><span class="p">,</span>
-                            <span class="n">command</span><span class="o">=</span><span class="n">cmd</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-                        <span class="p">)</span>
-                    <span class="p">)</span>
-                <span class="k">return</span> <span class="n">coords</span>
-
-        <span class="k">return</span> <span class="kc">None</span></div>
 </div>
 
 </pre></div>

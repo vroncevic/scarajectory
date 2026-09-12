@@ -23,8 +23,8 @@ from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
-from scarajectory.core.model.dsl.iscara_instruction import IScaraInstruction
-from scarajectory.core.model.dsl.scara_token import ScaraToken
+from scarajectory.core.model.dsl.ast.iscara_instruction import IScaraInstruction
+from scarajectory.core.model.dsl.token.scara_token import ScaraToken
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -57,7 +57,6 @@ class ICommandParser(Protocol):
             :param command_name: Uppercase command keyword name.
             :return: True if handler can parse this command, False otherwise.
         '''
-        ...
 
     def parse(
         self,
@@ -73,6 +72,4 @@ class ICommandParser(Protocol):
             :param line_num: 1-indexed source line number.
             :param raw_text: Original raw line string.
             :return: IScaraInstruction AST node.
-            :exceptions: ValueError if statement syntax or parameters are invalid.
         '''
-        ...

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>scarajectory.infrastructure.communication.streamer.robot_controller module &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
+    
+    <script src="_static/documentation_options.js?v=57319df4"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="scarajectory.infrastructure.communication.streamer.stream_execution_worker module" href="scarajectory.infrastructure.communication.streamer.stream_execution_worker.html" />
+    <link rel="prev" title="scarajectory.infrastructure.communication.streamer.flow_controller module" href="scarajectory.infrastructure.communication.streamer.flow_controller.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.communication.streamer.stream_execution_worker.html" title="scarajectory.infrastructure.communication.streamer.stream_execution_worker module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.communication.streamer.flow_controller.html" title="scarajectory.infrastructure.communication.streamer.flow_controller module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.communication.html" >scarajectory.infrastructure.communication package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.infrastructure.communication.streamer.html" accesskey="U">scarajectory.infrastructure.communication.streamer package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.communication.streamer.robot_controller module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-scarajectory.infrastructure.communication.streamer.robot_controller">
+<span id="scarajectory-infrastructure-communication-streamer-robot-controller-module"></span><h1>scarajectory.infrastructure.communication.streamer.robot_controller module<a class="headerlink" href="#module-scarajectory.infrastructure.communication.streamer.robot_controller" title="Link to this heading">¶</a></h1>
+<dl class="simple">
+<dt>Module</dt><dd><p>robot_controller.py</p>
+</dd>
+<dt>Copyright</dt><dd><p>Copyright (C) 2026 Vladimir Roncevic &lt;<a class="reference external" href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+scarajectory is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+scarajectory is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along
+with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+</dd>
+<dt>Info</dt><dd><p>Dedicated semantic robot controller adapter for immediate hardware actuation and diagnostics.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.robot_controller.RobotController">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.communication.streamer.robot_controller.</span></span><span class="sig-name descname"><span class="pre">RobotController</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">streamer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.communication.itrajectory_streamer.html#scarajectory.core.service.communication.itrajectory_streamer.ITrajectoryStreamer" title="scarajectory.core.service.communication.itrajectory_streamer.ITrajectoryStreamer"><span class="pre">ITrajectoryStreamer</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/robot_controller.html#RobotController"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Semantic robot controller executing immediate manual actuation commands.</p>
+<p>It defines:</p>
+<blockquote>
+<div><dl class="field-list">
+<dt class="field-odd">attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="line-block">
+<div class="line">_streamer - Trajectory streamer used for transmitting ASCII protocol commands.</div>
+</div>
+</dd>
+<dt class="field-even">methods<span class="colon">:</span></dt>
+<dd class="field-even"><div class="line-block">
+<div class="line">__init__ - Initializes the robot controller with injected streamer.</div>
+<div class="line">is_connected - Checks if communication transport is connected.</div>
+<div class="line">send_command - Transmits formatted command string if connected.</div>
+<div class="line">home - Executes robot homing routine.</div>
+<div class="line">enable - Energizes joint stepper motors.</div>
+<div class="line">disable - De-energizes joint stepper motors.</div>
+<div class="line">set_feedrate_override - Sets execution speed override percentage.</div>
+<div class="line">set_vacuum_pump - Sets end-effector vacuum pump state.</div>
+<div class="line">pulse_purge_valve - Pulses purge valve briefly to release vacuum suction.</div>
+<div class="line">set_valve - Sets purge valve state.</div>
+<div class="line">jog - Jogs specific robot axis by relative distance.</div>
+<div class="line">query_status - Queries microcontroller runtime status.</div>
+<div class="line">query_position - Queries current end-effector coordinates.</div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.disable">
+<span class="sig-name descname"><span class="pre">disable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/robot_controller.html#RobotController.disable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.disable" title="Link to this definition">¶</a></dt>
+<dd><p>De-energizes joint stepper motors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if command transmitted successfully.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.enable">
+<span class="sig-name descname"><span class="pre">enable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/robot_controller.html#RobotController.enable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.enable" title="Link to this definition">¶</a></dt>
+<dd><p>Energizes joint stepper motors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if command transmitted successfully.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.home">
+<span class="sig-name descname"><span class="pre">home</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/robot_controller.html#RobotController.home"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.home" title="Link to this definition">¶</a></dt>
+<dd><p>Executes robot homing routine.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if command transmitted successfully.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.is_connected">
+<span class="sig-name descname"><span class="pre">is_connected</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/robot_controller.html#RobotController.is_connected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.is_connected" title="Link to this definition">¶</a></dt>
+<dd><p>Checks whether communication transport is active.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if connected, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.jog">
+<span class="sig-name descname"><span class="pre">jog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/robot_controller.html#RobotController.jog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.jog" title="Link to this definition">¶</a></dt>
+<dd><p>Jogs specific robot axis by relative distance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>axis</strong> – Axis identifier (‘X’, ‘Y’, ‘Z’, ‘Phi’).</p></li>
+<li><p><strong>step</strong> – Displacement step value.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if command transmitted successfully.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.pulse_purge_valve">
+<span class="sig-name descname"><span class="pre">pulse_purge_valve</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/robot_controller.html#RobotController.pulse_purge_valve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.pulse_purge_valve" title="Link to this definition">¶</a></dt>
+<dd><p>Pulses purge valve briefly to release vacuum suction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if command transmitted successfully.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.query_position">
+<span class="sig-name descname"><span class="pre">query_position</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/robot_controller.html#RobotController.query_position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.query_position" title="Link to this definition">¶</a></dt>
+<dd><p>Queries current end-effector coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if command transmitted successfully.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.query_status">
+<span class="sig-name descname"><span class="pre">query_status</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/robot_controller.html#RobotController.query_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.query_status" title="Link to this definition">¶</a></dt>
+<dd><p>Queries microcontroller runtime status.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if command transmitted successfully.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.send_command">
+<span class="sig-name descname"><span class="pre">send_command</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/robot_controller.html#RobotController.send_command"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.send_command" title="Link to this definition">¶</a></dt>
+<dd><p>Transmits formatted command string if connected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cmd</strong> – Formatted command string.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if transmitted, False if disconnected.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.set_feedrate_override">
+<span class="sig-name descname"><span class="pre">set_feedrate_override</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pct</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/robot_controller.html#RobotController.set_feedrate_override"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.set_feedrate_override" title="Link to this definition">¶</a></dt>
+<dd><p>Sets execution speed override percentage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pct</strong> – Speed override percentage between 10 and 200.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if command transmitted successfully.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.set_vacuum_pump">
+<span class="sig-name descname"><span class="pre">set_vacuum_pump</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/robot_controller.html#RobotController.set_vacuum_pump"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.set_vacuum_pump" title="Link to this definition">¶</a></dt>
+<dd><p>Sets end-effector vacuum pump state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>state</strong> – True for ON, False for OFF.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if command transmitted successfully.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.set_valve">
+<span class="sig-name descname"><span class="pre">set_valve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/robot_controller.html#RobotController.set_valve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.set_valve" title="Link to this definition">¶</a></dt>
+<dd><p>Sets purge valve state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>state</strong> – True for open, False for closed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if command transmitted successfully.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">scarajectory.infrastructure.communication.streamer.robot_controller module</a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController"><code class="docutils literal notranslate"><span class="pre">RobotController</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.disable"><code class="docutils literal notranslate"><span class="pre">RobotController.disable()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.enable"><code class="docutils literal notranslate"><span class="pre">RobotController.enable()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.home"><code class="docutils literal notranslate"><span class="pre">RobotController.home()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.is_connected"><code class="docutils literal notranslate"><span class="pre">RobotController.is_connected()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.jog"><code class="docutils literal notranslate"><span class="pre">RobotController.jog()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.pulse_purge_valve"><code class="docutils literal notranslate"><span class="pre">RobotController.pulse_purge_valve()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.query_position"><code class="docutils literal notranslate"><span class="pre">RobotController.query_position()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.query_status"><code class="docutils literal notranslate"><span class="pre">RobotController.query_status()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.send_command"><code class="docutils literal notranslate"><span class="pre">RobotController.send_command()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.set_feedrate_override"><code class="docutils literal notranslate"><span class="pre">RobotController.set_feedrate_override()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.set_vacuum_pump"><code class="docutils literal notranslate"><span class="pre">RobotController.set_vacuum_pump()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.set_valve"><code class="docutils literal notranslate"><span class="pre">RobotController.set_valve()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.communication.streamer.flow_controller.html"
+                          title="previous chapter">scarajectory.infrastructure.communication.streamer.flow_controller module</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.communication.streamer.stream_execution_worker.html"
+                          title="next chapter">scarajectory.infrastructure.communication.streamer.stream_execution_worker module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/scarajectory.infrastructure.communication.streamer.robot_controller.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.communication.streamer.stream_execution_worker.html" title="scarajectory.infrastructure.communication.streamer.stream_execution_worker module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.communication.streamer.flow_controller.html" title="scarajectory.infrastructure.communication.streamer.flow_controller module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.communication.html" >scarajectory.infrastructure.communication package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.infrastructure.communication.streamer.html" >scarajectory.infrastructure.communication.streamer package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.communication.streamer.robot_controller module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

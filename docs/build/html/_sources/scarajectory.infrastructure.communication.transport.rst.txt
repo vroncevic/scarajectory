@@ -7,9 +7,11 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
+   scarajectory.infrastructure.communication.transport.base_transport
    scarajectory.infrastructure.communication.transport.itransport
    scarajectory.infrastructure.communication.transport.serial_transport
    scarajectory.infrastructure.communication.transport.tcp_transport
+   scarajectory.infrastructure.communication.transport.transport_factory
 
 Module contents
 ---------------
@@ -18,4 +20,3 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
-   :private-members:

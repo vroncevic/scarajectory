@@ -5,4 +5,3 @@ scarajectory.core.service.dsl.iscara\_dsl\_service module
    :members:
    :undoc-members:
    :show-inheritance:
-   :private-members:

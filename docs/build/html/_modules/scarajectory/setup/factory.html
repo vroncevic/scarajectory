@@ -59,7 +59,7 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">exists</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">abspath</span><span class="p">,</span> <span class="n">dirname</span><span class="p">,</span> <span class="n">exists</span><span class="p">,</span> <span class="n">join</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sqrt</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
 
@@ -73,13 +73,15 @@
 <span class="kn">from</span> <span class="nn">ats_utilities.config_io.setup.options</span> <span class="kn">import</span> <span class="n">ConfigIOBundleOptions</span>
 <span class="kn">from</span> <span class="nn">ats_utilities.config_io.setup.keys</span> <span class="kn">import</span> <span class="n">ConfigIOBundleKeys</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.scara_bounds</span> <span class="kn">import</span> <span class="n">ScaraBounds</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory_plan</span> <span class="kn">import</span> <span class="n">TrajectoryPlan</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory_validator</span> <span class="kn">import</span> <span class="n">TrajectoryValidator</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.plan_storage_service</span> <span class="kn">import</span> <span class="n">PlanStorageService</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.kinematics.scara_bounds</span> <span class="kn">import</span> <span class="n">ScaraBounds</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.trajectory_plan</span> <span class="kn">import</span> <span class="n">TrajectoryPlan</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.kinematics.kinematics_service</span> <span class="kn">import</span> <span class="n">KinematicsService</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.trajectory_validator</span> <span class="kn">import</span> <span class="n">TrajectoryValidator</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.storage.plan_storage_service</span> <span class="kn">import</span> <span class="n">PlanStorageService</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.scara_dsl_service</span> <span class="kn">import</span> <span class="n">ScaraDslService</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.engine</span> <span class="kn">import</span> <span class="n">Service</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.transport.serial_transport</span> <span class="kn">import</span> <span class="n">SerialTransport</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.serial_streamer</span> <span class="kn">import</span> <span class="n">SerialStreamer</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.streamer.trajectory_streamer</span> <span class="kn">import</span> <span class="n">TrajectoryStreamer</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.engine</span> <span class="kn">import</span> <span class="n">ScarajectoryGUI</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.cli.engine</span> <span class="kn">import</span> <span class="n">CLI</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.cli.setup.bundle</span> <span class="kn">import</span> <span class="n">CLIBundle</span>
@@ -120,12 +122,13 @@
 <span class="sd">                | get_version - Returns the factory version.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="n">_info_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;scarajectory/infrastructure/config/scarajectory.cfg&#39;</span>
+    <span class="n">_info_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span>
+        <span class="n">dirname</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))),</span>
+        <span class="s1">&#39;infrastructure&#39;</span><span class="p">,</span> <span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="s1">&#39;scarajectory.cfg&#39;</span>
+    <span class="p">)</span>
     <span class="n">_geometry_config_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;scarajectory/infrastructure/config/scara_geometry.json&#39;</span>
     <span class="n">_geometry_scheme_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;scarajectory/infrastructure/config/scheme.json&#39;</span>
 
-<div class="viewcode-block" id="SCARAjectoryBundleFactory._resolve_bounds">
-<a class="viewcode-back" href="../../../scarajectory.setup.factory.html#scarajectory.setup.factory.SCARAjectoryBundleFactory._resolve_bounds">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_resolve_bounds</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">options</span><span class="p">:</span> <span class="n">SCARAjectoryBundleOptions</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScaraBounds</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
@@ -235,8 +238,7 @@
             <span class="n">singularity_inner_margin_mm</span><span class="o">=</span><span class="n">singularity_inner_margin_mm</span><span class="p">,</span>
             <span class="n">singularity_theta2_min_rad</span><span class="o">=</span><span class="n">singularity_theta2_min_rad</span><span class="p">,</span>
             <span class="n">deadzone_r_min</span><span class="o">=</span><span class="n">deadzone_r_min</span>
-        <span class="p">)</span></div>
-
+        <span class="p">)</span>
 
 <div class="viewcode-block" id="SCARAjectoryBundleFactory.create_bundle">
 <a class="viewcode-back" href="../../../scarajectory.setup.factory.html#scarajectory.setup.factory.SCARAjectoryBundleFactory.create_bundle">[docs]</a>
@@ -271,12 +273,20 @@
         <span class="p">)</span>
 
         <span class="n">bounds</span><span class="p">:</span> <span class="n">ScaraBounds</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_resolve_bounds</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
-        <span class="n">validator</span><span class="p">:</span> <span class="n">TrajectoryValidator</span> <span class="o">=</span> <span class="n">TrajectoryValidator</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="n">bounds</span><span class="p">)</span>
+        <span class="n">kinematics</span><span class="p">:</span> <span class="n">KinematicsService</span> <span class="o">=</span> <span class="n">KinematicsService</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="n">bounds</span><span class="p">)</span>
+        <span class="n">validator</span><span class="p">:</span> <span class="n">TrajectoryValidator</span> <span class="o">=</span> <span class="n">TrajectoryValidator</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="n">bounds</span><span class="p">,</span> <span class="n">kinematics</span><span class="o">=</span><span class="n">kinematics</span><span class="p">)</span>
         <span class="n">transport</span><span class="p">:</span> <span class="n">SerialTransport</span> <span class="o">=</span> <span class="n">SerialTransport</span><span class="p">()</span>
-        <span class="n">streamer</span><span class="p">:</span> <span class="n">SerialStreamer</span> <span class="o">=</span> <span class="n">SerialStreamer</span><span class="p">(</span><span class="n">transport</span><span class="o">=</span><span class="n">transport</span><span class="p">)</span>
-        <span class="n">storage</span><span class="p">:</span> <span class="n">PlanStorageService</span> <span class="o">=</span> <span class="n">PlanStorageService</span><span class="p">()</span>
+        <span class="n">streamer</span><span class="p">:</span> <span class="n">TrajectoryStreamer</span> <span class="o">=</span> <span class="n">TrajectoryStreamer</span><span class="p">(</span><span class="n">transport</span><span class="o">=</span><span class="n">transport</span><span class="p">)</span>
+        <span class="n">storage</span><span class="p">:</span> <span class="n">PlanStorageService</span> <span class="o">=</span> <span class="n">PlanStorageService</span><span class="p">(</span><span class="n">context_bundle</span><span class="o">=</span><span class="n">context_bundle</span><span class="p">)</span>
         <span class="n">plan</span><span class="p">:</span> <span class="n">TrajectoryPlan</span> <span class="o">=</span> <span class="n">TrajectoryPlan</span><span class="p">()</span>
-        <span class="n">service</span><span class="p">:</span> <span class="n">Service</span> <span class="o">=</span> <span class="n">Service</span><span class="p">(</span><span class="n">validator</span><span class="o">=</span><span class="n">validator</span><span class="p">,</span> <span class="n">streamer</span><span class="o">=</span><span class="n">streamer</span><span class="p">,</span> <span class="n">storage</span><span class="o">=</span><span class="n">storage</span><span class="p">,</span> <span class="n">plan</span><span class="o">=</span><span class="n">plan</span><span class="p">)</span>
+        <span class="n">dsl_service</span><span class="p">:</span> <span class="n">ScaraDslService</span> <span class="o">=</span> <span class="n">ScaraDslService</span><span class="p">(</span><span class="n">validator</span><span class="o">=</span><span class="n">validator</span><span class="p">)</span>
+        <span class="n">service</span><span class="p">:</span> <span class="n">Service</span> <span class="o">=</span> <span class="n">Service</span><span class="p">(</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">validator</span><span class="p">,</span>
+            <span class="n">streamer</span><span class="o">=</span><span class="n">streamer</span><span class="p">,</span>
+            <span class="n">storage</span><span class="o">=</span><span class="n">storage</span><span class="p">,</span>
+            <span class="n">plan</span><span class="o">=</span><span class="n">plan</span><span class="p">,</span>
+            <span class="n">dsl_service</span><span class="o">=</span><span class="n">dsl_service</span>
+        <span class="p">)</span>
         <span class="n">gui</span><span class="p">:</span> <span class="n">ScarajectoryGUI</span> <span class="o">=</span> <span class="n">ScarajectoryGUI</span><span class="p">(</span><span class="n">service</span><span class="o">=</span><span class="n">service</span><span class="p">)</span>
 
         <span class="n">cli_bundle</span><span class="p">:</span> <span class="n">CLIBundle</span> <span class="o">=</span> <span class="n">CLIBundleFactory</span><span class="o">.</span><span class="n">create_bundle</span><span class="p">(</span>

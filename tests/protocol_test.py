@@ -21,15 +21,15 @@ Info
 
 from __future__ import annotations
 
-import os
-import sys
-import unittest
+from os.path import abspath, dirname
+from sys import path
+from unittest import TestCase, main
 
-pkg_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if pkg_dir not in sys.path:
-    sys.path.insert(0, pkg_dir)
+pkg_dir = dirname(dirname(abspath(__file__)))
+if pkg_dir not in path:
+    path.insert(0, pkg_dir)
 
-from scarajectory.core.model.waypoint import Waypoint
+from scarajectory.core.model.trajectory.waypoint import Waypoint
 from scarajectory.infrastructure.communication.protocol.command_formatter import CommandFormatter
 from scarajectory.infrastructure.communication.protocol.protocol_parser import ProtocolParser
 
@@ -43,7 +43,7 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class TestProtocol(unittest.TestCase):
+class TestProtocol(TestCase):
     '''
         Test cases for ASCII serial protocol formatting and parsing.
 
@@ -134,4 +134,4 @@ class TestProtocol(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    main()

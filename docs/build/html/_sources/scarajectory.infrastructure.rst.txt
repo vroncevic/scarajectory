@@ -11,6 +11,7 @@ Subpackages
    scarajectory.infrastructure.command
    scarajectory.infrastructure.communication
    scarajectory.infrastructure.gui
+   scarajectory.infrastructure.storage
 
 Module contents
 ---------------
@@ -19,4 +20,3 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
-   :private-members:

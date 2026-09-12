@@ -119,88 +119,135 @@ Tool structure
          ├── core/
          │   ├── __init__.py
          │   ├── model/
-         │   │   ├── canvas_interaction_state.py
-         │   │   ├── canvas_settings.py
-         │   │   ├── canvas_tool_mode.py
-         │   │   ├── dsl/
+         │   │   ├── communication/
          │   │   │   ├── __init__.py
-         │   │   │   ├── iscara_instruction.py
-         │   │   │   ├── iscara_program.py
-         │   │   │   ├── scara_command_type.py
-         │   │   │   ├── scara_diagnostic.py
-         │   │   │   ├── scara_diagnostic_severity.py
-         │   │   │   ├── scara_instruction.py
-         │   │   │   ├── scara_program.py
-         │   │   │   ├── scara_token.py
-         │   │   │   └── scara_token_type.py
+         │   │   │   ├── stream_config.py
+         │   │   │   ├── stream_progress.py
+         │   │   │   ├── stream_session.py
+         │   │   │   └── stream_state.py
+         │   │   ├── dsl/
+         │   │   │   ├── ast/
+         │   │   │   │   ├── __init__.py
+         │   │   │   │   ├── iscara_instruction.py
+         │   │   │   │   ├── iscara_program.py
+         │   │   │   │   ├── scara_command_type.py
+         │   │   │   │   ├── scara_instruction.py
+         │   │   │   │   └── scara_program.py
+         │   │   │   ├── diagnostic/
+         │   │   │   │   ├── __init__.py
+         │   │   │   │   ├── scara_diagnostic.py
+         │   │   │   │   └── scara_diagnostic_severity.py
+         │   │   │   ├── __init__.py
+         │   │   │   └── token/
+         │   │   │       ├── __init__.py
+         │   │   │       ├── scara_token.py
+         │   │   │       └── scara_token_type.py
          │   │   ├── __init__.py
-         │   │   ├── itrajectory_plan.py
-         │   │   ├── plan_history.py
-         │   │   ├── point.py
-         │   │   ├── scara_bounds.py
-         │   │   ├── stream_config.py
-         │   │   ├── stream_progress.py
-         │   │   ├── stream_state.py
-         │   │   ├── trajectory_metrics.py
-         │   │   ├── trajectory_plan.py
-         │   │   ├── trajectory_serializer.py
-         │   │   ├── validation_result.py
-         │   │   ├── viewport_transform.py
-         │   │   └── waypoint.py
+         │   │   ├── kinematics/
+         │   │   │   ├── __init__.py
+         │   │   │   └── scara_bounds.py
+         │   │   └── trajectory/
+         │   │       ├── __init__.py
+         │   │       ├── itrajectory_history.py
+         │   │       ├── itrajectory_mutable.py
+         │   │       ├── itrajectory_plan.py
+         │   │       ├── itrajectory_read_only.py
+         │   │       ├── plan_history.py
+         │   │       ├── trajectory_metrics.py
+         │   │       ├── trajectory_plan.py
+         │   │       ├── trajectory_serializer.py
+         │   │       ├── validation_result.py
+         │   │       └── waypoint.py
          │   └── service/
+         │       ├── communication/
+         │       │   ├── __init__.py
+         │       │   ├── irobot_controller.py
+         │       │   ├── istream_execution_service.py
+         │       │   ├── istream_observer.py
+         │       │   └── itrajectory_streamer.py
          │       ├── dsl/
          │       │   ├── compiler/
          │       │   │   ├── arc_interpolator.py
+         │       │   │   ├── control_command_compiler.py
          │       │   │   ├── iarc_interpolator.py
-         │       │   │   └── __init__.py
-         │       │   ├── frame_macro_expander.py
-         │       │   ├── imacro_expander.py
+         │       │   │   ├── __init__.py
+         │       │   │   ├── iprimitive_compiler.py
+         │       │   │   ├── iscara_compiler.py
+         │       │   │   ├── motion_command_compiler.py
+         │       │   │   ├── scara_compiler.py
+         │       │   │   ├── scara_compiler_context.py
+         │       │   │   ├── state_command_compiler.py
+         │       │   │   └── tool_command_compiler.py
+         │       │   ├── exporter/
+         │       │   │   ├── __init__.py
+         │       │   │   ├── iscara_plan_exporter.py
+         │       │   │   └── scara_plan_exporter.py
          │       │   ├── __init__.py
-         │       │   ├── iscara_compiler.py
+         │       │   ├── iscara_dsl_compiler.py
          │       │   ├── iscara_dsl_service.py
-         │       │   ├── iscara_lexer.py
-         │       │   ├── iscara_parser.py
-         │       │   ├── iscara_plan_exporter.py
-         │       │   ├── jump_macro_expander.py
+         │       │   ├── iscara_dsl_validator.py
+         │       │   ├── iscara_plan_exporter_service.py
+         │       │   ├── lexer/
+         │       │   │   ├── __init__.py
+         │       │   │   ├── iscara_lexer.py
+         │       │   │   └── scara_lexer.py
          │       │   ├── linter/
          │       │   │   ├── __init__.py
          │       │   │   ├── iscara_linter.py
+         │       │   │   ├── rules/
+         │       │   │   │   ├── __init__.py
+         │       │   │   │   ├── iscara_lint_rule.py
+         │       │   │   │   ├── motion_lint_rule.py
+         │       │   │   │   ├── pneumatic_lint_rule.py
+         │       │   │   │   ├── state_lint_rule.py
+         │       │   │   │   └── timing_lint_rule.py
+         │       │   │   ├── scara_lint_context.py
          │       │   │   └── scara_linter.py
-         │       │   ├── pallet_macro_expander.py
+         │       │   ├── macro/
+         │       │   │   ├── frame_macro_expander.py
+         │       │   │   ├── imacro_expander.py
+         │       │   │   ├── __init__.py
+         │       │   │   ├── jump_macro_expander.py
+         │       │   │   ├── pallet_macro_expander.py
+         │       │   │   └── tangent_macro_expander.py
          │       │   ├── parser/
-         │       │   │   ├── approach_retract_parser.py
-         │       │   │   ├── arc_command_parser.py
-         │       │   │   ├── config_command_parser.py
-         │       │   │   ├── flow_command_parser.py
-         │       │   │   ├── frame_command_parser.py
+         │       │   │   ├── commands/
+         │       │   │   │   ├── approach_retract_parser.py
+         │       │   │   │   ├── arc_command_parser.py
+         │       │   │   │   ├── config_command_parser.py
+         │       │   │   │   ├── flow_command_parser.py
+         │       │   │   │   ├── frame_command_parser.py
+         │       │   │   │   ├── __init__.py
+         │       │   │   │   ├── jog_command_parser.py
+         │       │   │   │   ├── jump_command_parser.py
+         │       │   │   │   ├── motion_command_parser.py
+         │       │   │   │   ├── pallet_command_parser.py
+         │       │   │   │   ├── probe_command_parser.py
+         │       │   │   │   ├── tool_command_parser.py
+         │       │   │   │   ├── tool_orient_command_parser.py
+         │       │   │   │   └── zone_command_parser.py
          │       │   │   ├── icommand_parser.py
          │       │   │   ├── __init__.py
-         │       │   │   ├── jog_command_parser.py
-         │       │   │   ├── jump_command_parser.py
-         │       │   │   ├── motion_command_parser.py
-         │       │   │   ├── pallet_command_parser.py
+         │       │   │   ├── iscara_parser.py
          │       │   │   ├── parameter_extractor.py
-         │       │   │   ├── probe_command_parser.py
-         │       │   │   ├── tool_command_parser.py
-         │       │   │   ├── tool_orient_command_parser.py
-         │       │   │   └── zone_command_parser.py
-         │       │   ├── scara_compiler.py
-         │       │   ├── scara_compiler_context.py
-         │       │   ├── scara_dsl_service.py
-         │       │   ├── scara_lexer.py
-         │       │   ├── scara_parser.py
-         │       │   ├── scara_plan_exporter.py
-         │       │   └── tangent_macro_expander.py
+         │       │   │   └── scara_parser.py
+         │       │   └── scara_dsl_service.py
          │       ├── engine.py
          │       ├── __init__.py
-         │       ├── iplan_storage_service.py
          │       ├── iservice.py
-         │       ├── istream_observer.py
-         │       ├── itrajectory_observer.py
-         │       ├── itrajectory_streamer.py
-         │       ├── itrajectory_validator.py
-         │       ├── plan_storage_service.py
-         │       └── trajectory_validator.py
+         │       ├── kinematics/
+         │       │   ├── ikinematics_service.py
+         │       │   ├── __init__.py
+         │       │   └── kinematics_service.py
+         │       └── trajectory/
+         │           ├── __init__.py
+         │           ├── iplan_command_service.py
+         │           ├── iplan_persistence_service.py
+         │           ├── iplan_storage_service.py
+         │           ├── iplan_validation_service.py
+         │           ├── itrajectory_observer.py
+         │           ├── itrajectory_validator.py
+         │           └── trajectory_validator.py
          ├── engine.py
          ├── infrastructure/
          │   ├── cli/
@@ -227,6 +274,10 @@ Tool structure
          │   │   └── studio_command_executor.py
          │   ├── communication/
          │   │   ├── __init__.py
+         │   │   ├── preferences/
+         │   │   │   ├── connection_preferences_repository.py
+         │   │   │   ├── iconnection_preferences_repository.py
+         │   │   │   └── __init__.py
          │   │   ├── protocol/
          │   │   │   ├── command_formatter.py
          │   │   │   ├── command_templates.py
@@ -238,45 +289,93 @@ Tool structure
          │   │   │   └── tool_command_formatter.py
          │   │   ├── serial_device_preferences.py
          │   │   ├── serial_port_scanner.py
-         │   │   ├── serial_streamer.py
-         │   │   ├── stream_session.py
+         │   │   ├── streamer/
+         │   │   │   ├── flow_controller.py
+         │   │   │   ├── __init__.py
+         │   │   │   ├── robot_controller.py
+         │   │   │   ├── stream_execution_worker.py
+         │   │   │   └── trajectory_streamer.py
          │   │   └── transport/
+         │   │       ├── base_transport.py
          │   │       ├── __init__.py
          │   │       ├── itransport.py
          │   │       ├── serial_transport.py
-         │   │       └── tcp_transport.py
+         │   │       ├── tcp_transport.py
+         │   │       └── transport_factory.py
          │   ├── config/
          │   │   ├── scara_geometry.json
          │   │   ├── scarajectory.cfg
          │   │   ├── scarajectory.logo
          │   │   └── scheme.json
          │   ├── gui/
-         │   │   ├── canvas.py
-         │   │   ├── components/
+         │   │   ├── canvas/
+         │   │   │   ├── canvas.py
+         │   │   │   ├── canvas_background_renderer.py
+         │   │   │   ├── canvas_event_binder.py
+         │   │   │   ├── canvas_mouse_handler.py
+         │   │   │   ├── canvas_preview_renderer.py
          │   │   │   ├── canvas_renderer.py
          │   │   │   ├── canvas_tool_handler.py
+         │   │   │   ├── canvas_trajectory_renderer.py
+         │   │   │   ├── icanvas.py
+         │   │   │   └── __init__.py
+         │   │   ├── controls/
+         │   │   │   ├── controls.py
+         │   │   │   ├── icontrols_panel.py
+         │   │   │   └── __init__.py
+         │   │   ├── dsl/
+         │   │   │   ├── dsl_code_editor.py
+         │   │   │   ├── dsl_console_view.py
+         │   │   │   ├── dsl_document_manager.py
          │   │   │   ├── dsl_editor_tab.py
+         │   │   │   ├── dsl_editor_toolbar.py
+         │   │   │   ├── dsl_example_catalog.py
          │   │   │   ├── dsl_syntax_highlighter.py
+         │   │   │   ├── emulator_launcher.py
+         │   │   │   ├── iemulator_launcher.py
+         │   │   │   └── __init__.py
+         │   │   ├── editor/
          │   │   │   ├── __init__.py
-         │   │   │   ├── jog_tab.py
-         │   │   │   ├── menu_bar.py
+         │   │   │   ├── itable.py
          │   │   │   ├── preview_tab.py
-         │   │   │   ├── serial_console.py
-         │   │   │   ├── stream_status_bar.py
-         │   │   │   ├── streamer_tab.py
-         │   │   │   ├── toolbar.py
+         │   │   │   ├── table.py
          │   │   │   ├── validation_tab.py
          │   │   │   └── waypoint_editor.py
-         │   │   ├── controls.py
          │   │   ├── engine.py
-         │   │   ├── icanvas.py
-         │   │   ├── icontrols.py
+         │   │   ├── gui_event_mediator.py
          │   │   ├── igui.py
          │   │   ├── __init__.py
-         │   │   ├── itable.py
-         │   │   ├── table.py
-         │   │   └── theme.py
-         │   └── __init__.py
+         │   │   ├── menu/
+         │   │   │   ├── iapp_menu_bar.py
+         │   │   │   ├── __init__.py
+         │   │   │   └── menu_bar.py
+         │   │   ├── model/
+         │   │   │   ├── canvas_interaction_state.py
+         │   │   │   ├── canvas_settings.py
+         │   │   │   ├── canvas_tool_mode.py
+         │   │   │   ├── __init__.py
+         │   │   │   └── viewport_transform.py
+         │   │   ├── stream/
+         │   │   │   ├── __init__.py
+         │   │   │   ├── jog_tab.py
+         │   │   │   ├── port_connection_panel.py
+         │   │   │   ├── robot_override_panel.py
+         │   │   │   ├── serial_console.py
+         │   │   │   ├── stream_control_panel.py
+         │   │   │   ├── stream_progress_adapter.py
+         │   │   │   ├── stream_status_bar.py
+         │   │   │   └── streamer_tab.py
+         │   │   ├── theme/
+         │   │   │   ├── __init__.py
+         │   │   │   └── theme.py
+         │   │   └── toolbar/
+         │   │       ├── __init__.py
+         │   │       ├── itoolbar.py
+         │   │       └── toolbar.py
+         │   ├── __init__.py
+         │   └── storage/
+         │       ├── __init__.py
+         │       └── plan_storage_service.py
          ├── __init__.py
          ├── py.typed
          └── setup/
@@ -291,7 +390,7 @@ Tool structure
              ├── registry.py
              └── validator.py
 
-     20 directories, 155 files
+     45 directories, 229 files
 
 ✨ Features
 -----------

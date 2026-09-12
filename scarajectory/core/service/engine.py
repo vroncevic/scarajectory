@@ -16,17 +16,19 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Core service implementation orchestrating trajectory modeling, validation, storage and streaming.
+    Core service implementation orchestrating trajectory modeling, validation, storage, dsl, and streaming.
 '''
 
 from __future__ import annotations
 
 from typing import Final
 
-from scarajectory.core.model.itrajectory_plan import ITrajectoryPlan
-from scarajectory.core.service.iplan_storage_service import IPlanStorageService
-from scarajectory.core.service.itrajectory_validator import ITrajectoryValidator
-from scarajectory.core.service.itrajectory_streamer import ITrajectoryStreamer
+from scarajectory.core.model.trajectory.itrajectory_plan import ITrajectoryPlan
+from scarajectory.core.service.trajectory.iplan_storage_service import IPlanStorageService
+from scarajectory.core.service.trajectory.itrajectory_validator import ITrajectoryValidator
+from scarajectory.core.service.communication.itrajectory_streamer import ITrajectoryStreamer
+from scarajectory.core.service.dsl.iscara_dsl_service import IScaraDslService
+from scarajectory.core.service.dsl.scara_dsl_service import ScaraDslService
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -40,7 +42,7 @@ __status__ = 'Updated'
 
 class Service:
     '''
-        Service orchestrating trajectory domain modeling, validation and execution.
+        Service orchestrating trajectory domain modeling, validation, storage, and execution.
 
         It defines:
 
@@ -49,6 +51,7 @@ class Service:
                 | _storage - Dedicated plan serialization and storage service.
                 | _validator - Kinematic reachability validator.
                 | _streamer - Robot communication and motion streamer.
+                | _dsl_service - High-level SCARA DSL compilation and export service.
             :methods:
                 | __init__ - Initializes the service with injected abstractions.
                 | is_initialized - Checks if the service is properly initialized.
@@ -56,24 +59,29 @@ class Service:
                 | get_storage - Returns the active IPlanStorageService.
                 | get_validator - Returns the active ITrajectoryValidator.
                 | get_streamer - Returns the active ITrajectoryStreamer.
+                | get_dsl_service - Returns the active IScaraDslService.
                 | validate_plan - Validates the current trajectory plan.
                 | save_plan - Saves current plan to file path.
                 | load_plan - Loads plan from file path.
-                | start_streaming - Initiates streaming of current plan.
-                | stop_streaming - Aborts active streaming.
+                | clear_plan - Clears all waypoints from active plan.
+                | undo - Reverts last plan modification.
+                | redo - Re-applies undone plan modification.
+                | new_plan - Resets active plan to empty state.
     '''
 
     _plan: ITrajectoryPlan
     _storage: IPlanStorageService
     _validator: ITrajectoryValidator
     _streamer: ITrajectoryStreamer
+    _dsl_service: IScaraDslService
 
     def __init__(
         self,
         validator: ITrajectoryValidator,
         streamer: ITrajectoryStreamer,
         storage: IPlanStorageService,
-        plan: ITrajectoryPlan
+        plan: ITrajectoryPlan,
+        dsl_service: IScaraDslService | None = None
     ) -> None:
         '''
             Initializes the service with injected abstractions.
@@ -82,25 +90,28 @@ class Service:
             :param streamer: ITrajectoryStreamer instance.
             :param storage: IPlanStorageService instance.
             :param plan: ITrajectoryPlan instance.
-            :exceptions: None.
+            :param dsl_service: Optional IScaraDslService instance.
         '''
         self._validator: Final[ITrajectoryValidator] = validator
         self._streamer: Final[ITrajectoryStreamer] = streamer
         self._storage: Final[IPlanStorageService] = storage
         self._plan: Final[ITrajectoryPlan] = plan
+        self._dsl_service: Final[IScaraDslService] = (
+            dsl_service or ScaraDslService(validator=validator)
+        )
 
     def is_initialized(self) -> bool:
         '''
             Checks if the service is properly initialized.
 
             :return: True if initialized, False otherwise.
-            :exceptions: None.
         '''
         return (
             self._plan is not None and
             self._validator is not None and
             self._streamer is not None and
-            self._storage is not None
+            self._storage is not None and
+            self._dsl_service is not None
         )
 
     def get_plan(self) -> ITrajectoryPlan:
@@ -108,7 +119,6 @@ class Service:
             Returns the active ITrajectoryPlan.
 
             :return: ITrajectoryPlan instance.
-            :exceptions: None.
         '''
         return self._plan
 
@@ -117,7 +127,6 @@ class Service:
             Returns the active IPlanStorageService.
 
             :return: IPlanStorageService instance.
-            :exceptions: None.
         '''
         return self._storage
 
@@ -126,7 +135,6 @@ class Service:
             Returns the active ITrajectoryValidator.
 
             :return: ITrajectoryValidator instance.
-            :exceptions: None.
         '''
         return self._validator
 
@@ -135,16 +143,22 @@ class Service:
             Returns the active ITrajectoryStreamer.
 
             :return: ITrajectoryStreamer instance.
-            :exceptions: None.
         '''
         return self._streamer
+
+    def get_dsl_service(self) -> IScaraDslService:
+        '''
+            Returns the active IScaraDslService.
+
+            :return: IScaraDslService instance.
+        '''
+        return self._dsl_service
 
     def validate_plan(self) -> tuple[bool, list[str]]:
         '''
             Validates the current trajectory plan against robot kinematic bounds.
 
             :return: Tuple of (is_valid, messages_list).
-            :exceptions: None.
         '''
         return self._validator.validate_plan(self._plan)
 
@@ -153,7 +167,6 @@ class Service:
             Saves current plan to file path.
 
             :param filepath: Target file path.
-            :exceptions: OSError.
         '''
         self._storage.save_plan(self._plan, filepath)
 
@@ -162,24 +175,35 @@ class Service:
             Loads plan from file path.
 
             :param filepath: Source file path.
-            :exceptions: OSError.
         '''
         loaded_pts = self._storage.load_plan(filepath)
         self._plan.set_waypoints(loaded_pts)
 
-    def start_streaming(self) -> bool:
+    def clear_plan(self) -> None:
         '''
-            Initiates streaming of current plan.
+            Clears all waypoints from active plan.
+        '''
+        self._plan.clear()
 
-            :return: True if stream started, False otherwise.
-            :exceptions: None.
+    def undo(self) -> bool:
         '''
-        return self._streamer.start_streaming(self._plan.waypoints)
+            Reverts last plan modification.
 
-    def stop_streaming(self) -> None:
+            :return: True if undone, False otherwise.
         '''
-            Aborts active streaming.
+        return self._plan.undo()
 
-            :exceptions: None.
+    def redo(self) -> bool:
         '''
-        self._streamer.stop_streaming()
+            Re-applies undone plan modification.
+
+            :return: True if redone, False otherwise.
+        '''
+        return self._plan.redo()
+
+    def new_plan(self) -> None:
+        '''
+            Resets active plan to empty state.
+        '''
+        self._plan.clear()
+

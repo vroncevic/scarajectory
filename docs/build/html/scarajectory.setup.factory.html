@@ -90,38 +90,6 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd>
 </dl>
 </div></blockquote>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.setup.factory.SCARAjectoryBundleFactory._geometry_config_file">
-<span class="sig-name descname"><span class="pre">_geometry_config_file</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'scarajectory/infrastructure/config/scara_geometry.json'</span></em><a class="headerlink" href="#scarajectory.setup.factory.SCARAjectoryBundleFactory._geometry_config_file" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.setup.factory.SCARAjectoryBundleFactory._geometry_scheme_file">
-<span class="sig-name descname"><span class="pre">_geometry_scheme_file</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'scarajectory/infrastructure/config/scheme.json'</span></em><a class="headerlink" href="#scarajectory.setup.factory.SCARAjectoryBundleFactory._geometry_scheme_file" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.setup.factory.SCARAjectoryBundleFactory._info_file">
-<span class="sig-name descname"><span class="pre">_info_file</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'scarajectory/infrastructure/config/scarajectory.cfg'</span></em><a class="headerlink" href="#scarajectory.setup.factory.SCARAjectoryBundleFactory._info_file" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.setup.factory.SCARAjectoryBundleFactory._resolve_bounds">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_resolve_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.setup.options.html#scarajectory.setup.options.SCARAjectoryBundleOptions" title="scarajectory.setup.options.SCARAjectoryBundleOptions"><span class="pre">SCARAjectoryBundleOptions</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.core.model.scara_bounds.html#scarajectory.core.model.scara_bounds.ScaraBounds" title="scarajectory.core.model.scara_bounds.ScaraBounds"><span class="pre">ScaraBounds</span></a></span></span><a class="reference internal" href="_modules/scarajectory/setup/factory.html#SCARAjectoryBundleFactory._resolve_bounds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.setup.factory.SCARAjectoryBundleFactory._resolve_bounds" title="Link to this definition">¶</a></dt>
-<dd><p>Resolves and constructs ScaraBounds from JSON configuration and options.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>options</strong> – Optional bundle configuration options.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>ScaraBounds domain model.</p>
-</dd>
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.setup.factory.SCARAjectoryBundleFactory.create_bundle">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_bundle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.setup.options.html#scarajectory.setup.options.SCARAjectoryBundleOptions" title="scarajectory.setup.options.SCARAjectoryBundleOptions"><span class="pre">SCARAjectoryBundleOptions</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.setup.bundle.html#scarajectory.setup.bundle.SCARAjectoryBundle" title="scarajectory.setup.bundle.SCARAjectoryBundle"><span class="pre">SCARAjectoryBundle</span></a></span></span><a class="reference internal" href="_modules/scarajectory/setup/factory.html#SCARAjectoryBundleFactory.create_bundle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.setup.factory.SCARAjectoryBundleFactory.create_bundle" title="Link to this definition">¶</a></dt>
@@ -172,10 +140,6 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <ul>
 <li><a class="reference internal" href="#">scarajectory.setup.factory module</a><ul>
 <li><a class="reference internal" href="#scarajectory.setup.factory.SCARAjectoryBundleFactory"><code class="docutils literal notranslate"><span class="pre">SCARAjectoryBundleFactory</span></code></a><ul>
-<li><a class="reference internal" href="#scarajectory.setup.factory.SCARAjectoryBundleFactory._geometry_config_file"><code class="docutils literal notranslate"><span class="pre">SCARAjectoryBundleFactory._geometry_config_file</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.setup.factory.SCARAjectoryBundleFactory._geometry_scheme_file"><code class="docutils literal notranslate"><span class="pre">SCARAjectoryBundleFactory._geometry_scheme_file</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.setup.factory.SCARAjectoryBundleFactory._info_file"><code class="docutils literal notranslate"><span class="pre">SCARAjectoryBundleFactory._info_file</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.setup.factory.SCARAjectoryBundleFactory._resolve_bounds"><code class="docutils literal notranslate"><span class="pre">SCARAjectoryBundleFactory._resolve_bounds()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.setup.factory.SCARAjectoryBundleFactory.create_bundle"><code class="docutils literal notranslate"><span class="pre">SCARAjectoryBundleFactory.create_bundle()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.setup.factory.SCARAjectoryBundleFactory.get_version"><code class="docutils literal notranslate"><span class="pre">SCARAjectoryBundleFactory.get_version()</span></code></a></li>
 </ul>

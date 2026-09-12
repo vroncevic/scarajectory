@@ -16,28 +16,40 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Implementation of IScaraDslService coordinating lexing, parsing, compiling and exporting.
+    High-level facade orchestrating SCARA DSL compilation, validation, linting, and plan serialization.
 '''
 
 from __future__ import annotations
 
-from scarajectory.core.model.dsl.scara_diagnostic import ScaraDiagnostic
-from scarajectory.core.model.dsl.scara_diagnostic_severity import (
+from scarajectory.core.model.dsl.diagnostic.scara_diagnostic import (
+    ScaraDiagnostic,
     ScaraDiagnosticSeverity,
 )
-from scarajectory.core.model.itrajectory_plan import ITrajectoryPlan
-from scarajectory.core.model.scara_bounds import ScaraBounds
-from scarajectory.core.model.trajectory_plan import TrajectoryPlan
-from scarajectory.core.service.dsl.iscara_compiler import IScaraCompiler
-from scarajectory.core.service.dsl.iscara_lexer import IScaraLexer
-from scarajectory.core.service.dsl.iscara_parser import IScaraParser
-from scarajectory.core.service.dsl.iscara_plan_exporter import IScaraPlanExporter
-from scarajectory.core.service.dsl.scara_compiler import ScaraCompiler
-from scarajectory.core.service.dsl.scara_lexer import ScaraLexer
-from scarajectory.core.service.dsl.scara_parser import ScaraParser
-from scarajectory.core.service.dsl.scara_plan_exporter import ScaraPlanExporter
-from scarajectory.core.service.itrajectory_validator import ITrajectoryValidator
-from scarajectory.core.service.trajectory_validator import TrajectoryValidator
+from scarajectory.core.model.trajectory.itrajectory_read_only import (
+    ITrajectoryReadOnly,
+)
+from scarajectory.core.model.kinematics.scara_bounds import ScaraBounds
+from scarajectory.core.model.trajectory.trajectory_plan import TrajectoryPlan
+from scarajectory.core.service.dsl.compiler.iscara_compiler import (
+    IScaraCompiler,
+)
+from scarajectory.core.service.dsl.compiler.scara_compiler import ScaraCompiler
+from scarajectory.core.service.dsl.exporter.iscara_plan_exporter import (
+    IScaraPlanExporter,
+)
+from scarajectory.core.service.dsl.exporter.scara_plan_exporter import (
+    ScaraPlanExporter,
+)
+from scarajectory.core.service.dsl.lexer.iscara_lexer import IScaraLexer
+from scarajectory.core.service.dsl.lexer.scara_lexer import ScaraLexer
+from scarajectory.core.service.dsl.parser.iscara_parser import IScaraParser
+from scarajectory.core.service.dsl.parser.scara_parser import ScaraParser
+from scarajectory.core.service.trajectory.itrajectory_validator import (
+    ITrajectoryValidator,
+)
+from scarajectory.core.service.trajectory.trajectory_validator import (
+    TrajectoryValidator,
+)
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -85,7 +97,6 @@ class ScaraDslService:
             :param compiler: Optional IScaraCompiler instance.
             :param exporter: Optional IScaraPlanExporter instance.
             :param validator: Optional ITrajectoryValidator instance.
-            :exceptions: None.
         '''
         self._lexer: IScaraLexer = lexer if lexer is not None else ScaraLexer()
         self._parser: IScaraParser = (
@@ -115,7 +126,6 @@ class ScaraDslService:
             :param source: Raw .scara script text.
             :param bounds: Optional robot kinematic boundary constraints.
             :return: Validated TrajectoryPlan instance.
-            :exceptions: ValueError if parsing or kinematic validation fails.
         '''
         tokens = self._lexer.tokenize(source=source)
         program = self._parser.parse_tokens(tokens=tokens)
@@ -133,7 +143,6 @@ class ScaraDslService:
             :param source: Raw .scara script text.
             :param bounds: Optional robot kinematic boundary constraints.
             :return: Tuple of (is_valid, messages_list).
-            :exceptions: None.
         '''
         messages: list[str] = []
         try:
@@ -170,7 +179,6 @@ class ScaraDslService:
 
             :param source: Raw .scara script text.
             :return: Tuple of ScaraDiagnostic findings.
-            :exceptions: None.
         '''
         try:
             tokens = self._lexer.tokenize(source=source)
@@ -187,12 +195,11 @@ class ScaraDslService:
                 ),
             )
 
-    def export_plan(self, *, plan: ITrajectoryPlan) -> str:
+    def export_plan(self, *, plan: ITrajectoryReadOnly) -> str:
         '''
             Serializes active TrajectoryPlan into formatted .scara DSL source text.
 
-            :param plan: TrajectoryPlan instance to serialize.
+            :param plan: Read-only trajectory plan instance to serialize.
             :return: Formatted SCARA DSL script.
-            :exceptions: None.
         '''
         return self._exporter.export_plan(plan=plan)

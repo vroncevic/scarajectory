@@ -29,11 +29,14 @@ pkg_dir = str(Path(__file__).resolve().parent.parent)
 if pkg_dir not in path:
     path.insert(0, pkg_dir)
 
-from scarajectory.core.model.dsl.scara_diagnostic_severity import ScaraDiagnosticSeverity
-from scarajectory.core.model.dsl.scara_program import ScaraProgram
+from scarajectory.core.model.dsl.diagnostic.scara_diagnostic_severity import ScaraDiagnosticSeverity
+from scarajectory.core.model.dsl.ast.scara_program import ScaraProgram
+from scarajectory.core.service.dsl.lexer.scara_lexer import ScaraLexer
+from scarajectory.core.service.dsl.linter.rules.timing_lint_rule import (
+    TimingLintRule,
+)
 from scarajectory.core.service.dsl.linter.scara_linter import ScaraLinter
-from scarajectory.core.service.dsl.scara_lexer import ScaraLexer
-from scarajectory.core.service.dsl.scara_parser import ScaraParser
+from scarajectory.core.service.dsl.parser.scara_parser import ScaraParser
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -192,6 +195,17 @@ class TestScaraLinter(TestCase):
         program = self._parse(source)
         diagnostics = self._linter.lint(program=program)
         self.assertEqual(len(diagnostics), 0)
+
+    def test_custom_rule_injection(self) -> None:
+        '''
+            Verifies ScaraLinter accepts customized sequence of rules.
+        '''
+        custom_linter = ScaraLinter(rules=(TimingLintRule(),))
+        source = 'MOVE_L X=150.0 Y=50.0 Z=20.0\nWAIT_MS -10\n'
+        program = self._parse(source)
+        diagnostics = custom_linter.lint(program=program)
+        self.assertEqual(len(diagnostics), 1)
+        self.assertEqual(diagnostics[0].code, 'DEAD_WAIT')
 
 
 if __name__ == '__main__':

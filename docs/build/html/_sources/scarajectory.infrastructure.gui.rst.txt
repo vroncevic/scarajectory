@@ -7,7 +7,15 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.gui.components
+   scarajectory.infrastructure.gui.canvas
+   scarajectory.infrastructure.gui.controls
+   scarajectory.infrastructure.gui.dsl
+   scarajectory.infrastructure.gui.editor
+   scarajectory.infrastructure.gui.menu
+   scarajectory.infrastructure.gui.model
+   scarajectory.infrastructure.gui.stream
+   scarajectory.infrastructure.gui.theme
+   scarajectory.infrastructure.gui.toolbar
 
 Submodules
 ----------
@@ -15,15 +23,9 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.gui.canvas
-   scarajectory.infrastructure.gui.controls
    scarajectory.infrastructure.gui.engine
-   scarajectory.infrastructure.gui.icanvas
-   scarajectory.infrastructure.gui.icontrols
+   scarajectory.infrastructure.gui.gui_event_mediator
    scarajectory.infrastructure.gui.igui
-   scarajectory.infrastructure.gui.itable
-   scarajectory.infrastructure.gui.table
-   scarajectory.infrastructure.gui.theme
 
 Module contents
 ---------------
@@ -32,4 +34,3 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
-   :private-members:

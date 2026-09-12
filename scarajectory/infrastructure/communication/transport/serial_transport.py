@@ -21,13 +21,12 @@ Info
 
 from __future__ import annotations
 
-from threading import Lock, Event, Thread
-from time import sleep
-from typing import Callable, Final
+from collections.abc import Callable
 
 from serial import Serial, SerialException
 
-from scarajectory.core.model.stream_config import StreamConfig
+from scarajectory.core.model.communication.stream_config import StreamConfig
+from scarajectory.infrastructure.communication.transport.base_transport import BaseTransport
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -39,7 +38,7 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class SerialTransport:
+class SerialTransport(BaseTransport):
     '''
         Hardware serial communication transport communicating with microcontroller over UART/USB.
 
@@ -47,26 +46,11 @@ class SerialTransport:
 
             :attributes:
                 | _serial - PySerial connection instance.
-                | _lock - Mutex protecting serial TX write operations.
-                | _stop_event - Event signaling reader thread termination.
-                | _reader_thread - Background RX polling thread.
-                | _on_line - Callback invoked when a complete line is received.
-                | _on_log - Callback for communication logging.
             :methods:
-                | __init__ - Initializes transport handle and sync primitives.
-                | is_connected - Checks if serial port is open.
-                | set_callbacks - Registers packet reception and connection logging hooks.
-                | connect_with_config - Opens serial port using configuration DTO.
-                | disconnect - Closes serial connection and stops RX thread.
-                | send_raw - Transmits formatted command string over serial.
+                | __init__ - Initializes transport handle and base synchronization primitives.
     '''
 
     _serial: Serial | None
-    _lock: Lock
-    _stop_event: Event
-    _reader_thread: Thread | None
-    _on_line: Callable[[str], None] | None
-    _on_log: Callable[[str, bool], None] | None
 
     def __init__(
         self,
@@ -74,75 +58,26 @@ class SerialTransport:
         on_log: Callable[[str, bool], None] | None = None
     ) -> None:
         '''
-            Initializes transport handle and sync primitives.
+            Initializes transport handle and base synchronization primitives.
 
             :param on_line: Optional line received callback.
             :param on_log: Optional logging callback.
-            :exceptions: None.
         '''
+        super().__init__(on_line=on_line, on_log=on_log)
         self._serial = None
-        self._lock: Final[Lock] = Lock()
-        self._stop_event: Final[Event] = Event()
-        self._reader_thread = None
-        self._on_line = on_line
-        self._on_log = on_log
 
-    def set_callbacks(
-        self,
-        on_line: Callable[[str], None] | None = None,
-        on_log: Callable[[str, bool], None] | None = None
-    ) -> None:
+    def _open_channel(self, config: StreamConfig) -> None:
         '''
-            Registers packet reception and connection logging hooks.
+            Opens serial port with configuration.
 
-            :param on_line: Optional line received callback.
-            :param on_log: Optional logging callback.
-            :exceptions: None.
+            :param config: StreamConfig parameters.
         '''
-        self._on_line = on_line
-        self._on_log = on_log
+        self._serial = Serial(config.port, config.baudrate, timeout=config.timeout)
 
-    def is_connected(self) -> bool:
+    def _close_channel(self) -> None:
         '''
-            Checks if serial port is open.
-
-            :return: True if open, False otherwise.
-            :exceptions: None.
+            Closes serial port connection if open.
         '''
-        return bool(self._serial and self._serial.is_open)
-
-    def connect_with_config(self, config: StreamConfig) -> bool:
-        '''
-            Opens serial port using configuration DTO.
-
-            :param config: StreamConfig containing port, baudrate, and timeout.
-            :return: True if connected successfully, False otherwise.
-            :exceptions: None.
-        '''
-        self.disconnect()
-        try:
-            self._serial = Serial(config.port, config.baudrate, timeout=config.timeout)
-            self._stop_event.clear()
-            self._reader_thread = Thread(target=self._reader_loop, daemon=True)
-            self._reader_thread.start()
-
-            if self._on_log:
-                self._on_log(f'[HOST]: Connected to {config.port} @ {config.baudrate} bps', False)
-
-            return True
-        except (OSError, SerialException) as exc:
-            if self._on_log:
-                self._on_log(f'[ERR]: Connection failed: {exc}', False)
-            self.disconnect()
-            return False
-
-    def disconnect(self) -> None:
-        '''
-            Closes serial connection and stops RX thread.
-
-            :exceptions: None.
-        '''
-        self._stop_event.set()
         if self._serial:
             try:
                 self._serial.close()
@@ -150,71 +85,48 @@ class SerialTransport:
                 pass
             self._serial = None
 
-        if self._reader_thread and self._reader_thread.is_alive():
-            self._reader_thread.join(timeout=0.2)
-            self._reader_thread = None
-
-        if self._on_log:
-            self._on_log('[HOST]: Disconnected from serial port', False)
-
-    def send_raw(self, cmd: str) -> bool:
+    def _read_bytes(self, size: int) -> bytes:
         '''
-            Transmits formatted command string over serial.
+            Reads bytes from serial connection.
 
-            :param cmd: Formatted command string.
-            :return: True if written successfully, False otherwise.
-            :exceptions: None.
+            :param size: Number of bytes to read.
+            :return: Read byte payload.
         '''
-        if not self.is_connected() or not self._serial:
-            return False
-        with self._lock:
-            try:
-                payload: bytes = f'{cmd.strip()}\n'.encode('utf-8')
-                self._serial.write(payload)
-                self._serial.flush()
-                if self._on_log:
-                    self._on_log(cmd.strip(), True)
-                return True
-            except (OSError, SerialException) as exc:
-                if self._on_log:
-                    self._on_log(f'[TX ERR]: {exc}', False)
-                return False
+        if self._serial and self._serial.is_open:
+            return self._serial.read(size)
+        return b''
 
-    def _reader_loop(self) -> None:
+    def _write_bytes(self, payload: bytes) -> None:
         '''
-            Background thread polling and assembling incoming newline-terminated lines.
+            Transmits byte payload over serial.
 
-            :exceptions: None.
+            :param payload: Bytes to write.
         '''
-        buffer: str = ''
-        abnormal_disconnect: bool = False
-        while not self._stop_event.is_set():
-            ser = self._serial
-            if not ser or not ser.is_open:
-                break
-            try:
-                data: bytes = ser.read(64)
-                if data:
-                    buffer += data.decode('utf-8', errors='ignore')
-                    while '\n' in buffer:
-                        line: str
-                        line, buffer = buffer.split('\n', 1)
-                        line = line.strip()
-                        if line and self._on_line:
-                            self._on_line(line)
-                else:
-                    sleep(0.01)
-            except (OSError, SerialException, TypeError, AttributeError):
-                if not self._stop_event.is_set():
-                    abnormal_disconnect = True
-                break
+        if self._serial and self._serial.is_open:
+            self._serial.write(payload)
+            self._serial.flush()
 
-        if abnormal_disconnect:
-            if self._serial:
-                try:
-                    self._serial.close()
-                except (OSError, SerialException, TypeError, AttributeError):
-                    pass
-                self._serial = None
-            if self._on_log:
-                self._on_log('[HOST]: Connection lost (device disconnected / unplugged)', False)
+    def _channel_is_open(self) -> bool:
+        '''
+            Checks if serial port is open.
+
+            :return: True if port is open.
+        '''
+        return bool(self._serial and self._serial.is_open)
+
+    def _channel_name(self) -> str:
+        '''
+            Returns descriptive name of serial channel.
+
+            :return: Channel name.
+        '''
+        return 'serial port'
+
+    def _connected_log_message(self, config: StreamConfig) -> str:
+        '''
+            Returns formatted log message upon connecting to serial device.
+
+            :param config: StreamConfig parameters.
+            :return: Formatted connection message.
+        '''
+        return f'[HOST]: Connected to {config.port} @ {config.baudrate} bps'

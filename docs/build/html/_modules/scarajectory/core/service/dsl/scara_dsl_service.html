@@ -54,28 +54,40 @@
 <span class="sd">    You should have received a copy of the GNU General Public License along</span>
 <span class="sd">    with this program. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 <span class="sd">Info</span>
-<span class="sd">    Implementation of IScaraDslService coordinating lexing, parsing, compiling and exporting.</span>
+<span class="sd">    High-level facade orchestrating SCARA DSL compilation, validation, linting, and plan serialization.</span>
 <span class="sd">&#39;&#39;&#39;</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.scara_diagnostic</span> <span class="kn">import</span> <span class="n">ScaraDiagnostic</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.scara_diagnostic_severity</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.scara_diagnostic</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ScaraDiagnostic</span><span class="p">,</span>
     <span class="n">ScaraDiagnosticSeverity</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.itrajectory_plan</span> <span class="kn">import</span> <span class="n">ITrajectoryPlan</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.scara_bounds</span> <span class="kn">import</span> <span class="n">ScaraBounds</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory_plan</span> <span class="kn">import</span> <span class="n">TrajectoryPlan</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.iscara_compiler</span> <span class="kn">import</span> <span class="n">IScaraCompiler</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.iscara_lexer</span> <span class="kn">import</span> <span class="n">IScaraLexer</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.iscara_parser</span> <span class="kn">import</span> <span class="n">IScaraParser</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.iscara_plan_exporter</span> <span class="kn">import</span> <span class="n">IScaraPlanExporter</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.scara_compiler</span> <span class="kn">import</span> <span class="n">ScaraCompiler</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.scara_lexer</span> <span class="kn">import</span> <span class="n">ScaraLexer</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.scara_parser</span> <span class="kn">import</span> <span class="n">ScaraParser</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.scara_plan_exporter</span> <span class="kn">import</span> <span class="n">ScaraPlanExporter</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.itrajectory_validator</span> <span class="kn">import</span> <span class="n">ITrajectoryValidator</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory_validator</span> <span class="kn">import</span> <span class="n">TrajectoryValidator</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.itrajectory_read_only</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ITrajectoryReadOnly</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.kinematics.scara_bounds</span> <span class="kn">import</span> <span class="n">ScaraBounds</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.trajectory_plan</span> <span class="kn">import</span> <span class="n">TrajectoryPlan</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.compiler.iscara_compiler</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">IScaraCompiler</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.compiler.scara_compiler</span> <span class="kn">import</span> <span class="n">ScaraCompiler</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.exporter.iscara_plan_exporter</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">IScaraPlanExporter</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.exporter.scara_plan_exporter</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ScaraPlanExporter</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.lexer.iscara_lexer</span> <span class="kn">import</span> <span class="n">IScaraLexer</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.lexer.scara_lexer</span> <span class="kn">import</span> <span class="n">ScaraLexer</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.parser.iscara_parser</span> <span class="kn">import</span> <span class="n">IScaraParser</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.parser.scara_parser</span> <span class="kn">import</span> <span class="n">ScaraParser</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.itrajectory_validator</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ITrajectoryValidator</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.trajectory_validator</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">TrajectoryValidator</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
@@ -125,7 +137,6 @@
 <span class="sd">            :param compiler: Optional IScaraCompiler instance.</span>
 <span class="sd">            :param exporter: Optional IScaraPlanExporter instance.</span>
 <span class="sd">            :param validator: Optional ITrajectoryValidator instance.</span>
-<span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_lexer</span><span class="p">:</span> <span class="n">IScaraLexer</span> <span class="o">=</span> <span class="n">lexer</span> <span class="k">if</span> <span class="n">lexer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">ScaraLexer</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="p">:</span> <span class="n">IScaraParser</span> <span class="o">=</span> <span class="p">(</span>
@@ -157,7 +168,6 @@
 <span class="sd">            :param source: Raw .scara script text.</span>
 <span class="sd">            :param bounds: Optional robot kinematic boundary constraints.</span>
 <span class="sd">            :return: Validated TrajectoryPlan instance.</span>
-<span class="sd">            :exceptions: ValueError if parsing or kinematic validation fails.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lexer</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
         <span class="n">program</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">parse_tokens</span><span class="p">(</span><span class="n">tokens</span><span class="o">=</span><span class="n">tokens</span><span class="p">)</span>
@@ -178,7 +188,6 @@
 <span class="sd">            :param source: Raw .scara script text.</span>
 <span class="sd">            :param bounds: Optional robot kinematic boundary constraints.</span>
 <span class="sd">            :return: Tuple of (is_valid, messages_list).</span>
-<span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">messages</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">try</span><span class="p">:</span>
@@ -218,7 +227,6 @@
 
 <span class="sd">            :param source: Raw .scara script text.</span>
 <span class="sd">            :return: Tuple of ScaraDiagnostic findings.</span>
-<span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lexer</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
@@ -238,13 +246,12 @@
 
 <div class="viewcode-block" id="ScaraDslService.export_plan">
 <a class="viewcode-back" href="../../../../../scarajectory.core.service.dsl.scara_dsl_service.html#scarajectory.core.service.dsl.scara_dsl_service.ScaraDslService.export_plan">[docs]</a>
-    <span class="k">def</span> <span class="nf">export_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">plan</span><span class="p">:</span> <span class="n">ITrajectoryPlan</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">export_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">plan</span><span class="p">:</span> <span class="n">ITrajectoryReadOnly</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Serializes active TrajectoryPlan into formatted .scara DSL source text.</span>
 
-<span class="sd">            :param plan: TrajectoryPlan instance to serialize.</span>
+<span class="sd">            :param plan: Read-only trajectory plan instance to serialize.</span>
 <span class="sd">            :return: Formatted SCARA DSL script.</span>
-<span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exporter</span><span class="o">.</span><span class="n">export_plan</span><span class="p">(</span><span class="n">plan</span><span class="o">=</span><span class="n">plan</span><span class="p">)</span></div>
 </div>

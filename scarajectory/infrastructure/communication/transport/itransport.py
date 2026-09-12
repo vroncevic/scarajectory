@@ -24,7 +24,7 @@ from __future__ import annotations
 from typing import Protocol, runtime_checkable
 from collections.abc import Callable
 
-from scarajectory.core.model.stream_config import StreamConfig
+from scarajectory.core.model.communication.stream_config import StreamConfig
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'

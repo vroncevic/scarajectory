@@ -144,9 +144,6 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Formatted get elbow command packet.</p>
 </dd>
-<dt class="field-even">Exceptions<span class="colon">:</span></dt>
-<dd class="field-even"><p>None.</p>
-</dd>
 </dl>
 </dd></dl>
 
@@ -200,7 +197,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_move">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">waypoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.waypoint.html#scarajectory.core.model.waypoint.Waypoint" title="scarajectory.core.model.waypoint.Waypoint"><span class="pre">Waypoint</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/motion_command_formatter.html#MotionCommandFormatter.format_move"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_move" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">waypoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.trajectory.waypoint.html#scarajectory.core.model.trajectory.waypoint.Waypoint" title="scarajectory.core.model.trajectory.waypoint.Waypoint"><span class="pre">Waypoint</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/motion_command_formatter.html#MotionCommandFormatter.format_move"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_move" title="Link to this definition">¶</a></dt>
 <dd><p>Formats waypoint motion command from Waypoint model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -225,6 +222,23 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd>
 <dt class="field-even">Exceptions<span class="colon">:</span></dt>
 <dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_program">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_program</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">waypoints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.trajectory.waypoint.html#scarajectory.core.model.trajectory.waypoint.Waypoint" title="scarajectory.core.model.trajectory.waypoint.Waypoint"><span class="pre">Waypoint</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_distance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/motion_command_formatter.html#MotionCommandFormatter.format_program"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_program" title="Link to this definition">¶</a></dt>
+<dd><p>Formats sequence of waypoints into sequential ASCII firmware instruction stream.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>waypoints</strong> – Sequence of waypoints.</p></li>
+<li><p><strong>total_distance</strong> – Optional pre-calculated total distance in mm.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Multi-line ASCII firmware instruction stream.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -274,6 +288,20 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_waypoint_packet">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_waypoint_packet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">waypoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.trajectory.waypoint.html#scarajectory.core.model.trajectory.waypoint.Waypoint" title="scarajectory.core.model.trajectory.waypoint.Waypoint"><span class="pre">Waypoint</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/protocol/motion_command_formatter.html#MotionCommandFormatter.format_waypoint_packet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_waypoint_packet" title="Link to this definition">¶</a></dt>
+<dd><p>Formats waypoint model into low-level firmware wire packet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>waypoint</strong> – Waypoint domain model.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted packet string.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -299,9 +327,11 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_jog"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_jog()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_move"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_move()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_pause"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_pause()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_program"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_program()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_resume"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_resume()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_set_elbow"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_set_elbow()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_status"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_status()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_waypoint_packet"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_waypoint_packet()</span></code></a></li>
 </ul>
 </li>
 </ul>

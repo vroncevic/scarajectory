@@ -15,8 +15,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="scarajectory.core.service.dsl.linter.scara_linter module" href="scarajectory.core.service.dsl.linter.scara_linter.html" />
-    <link rel="prev" title="scarajectory.core.service.dsl.linter package" href="scarajectory.core.service.dsl.linter.html" /> 
+    <link rel="next" title="scarajectory.core.service.dsl.linter.scara_lint_context module" href="scarajectory.core.service.dsl.linter.scara_lint_context.html" />
+    <link rel="prev" title="scarajectory.core.service.dsl.linter.rules.timing_lint_rule module" href="scarajectory.core.service.dsl.linter.rules.timing_lint_rule.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -28,10 +28,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.core.service.dsl.linter.scara_linter.html" title="scarajectory.core.service.dsl.linter.scara_linter module"
+          <a href="scarajectory.core.service.dsl.linter.scara_lint_context.html" title="scarajectory.core.service.dsl.linter.scara_lint_context module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.core.service.dsl.linter.html" title="scarajectory.core.service.dsl.linter package"
+          <a href="scarajectory.core.service.dsl.linter.rules.timing_lint_rule.html" title="scarajectory.core.service.dsl.linter.rules.timing_lint_rule module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
@@ -89,24 +89,9 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd>
 </dl>
 </div></blockquote>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.core.service.dsl.linter.iscara_linter.IScaraLinter._abc_impl">
-<span class="sig-name descname"><span class="pre">_abc_impl</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;_abc._abc_data</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#scarajectory.core.service.dsl.linter.iscara_linter.IScaraLinter._abc_impl" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.core.service.dsl.linter.iscara_linter.IScaraLinter._is_protocol">
-<span class="sig-name descname"><span class="pre">_is_protocol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#scarajectory.core.service.dsl.linter.iscara_linter.IScaraLinter._is_protocol" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.core.service.dsl.linter.iscara_linter.IScaraLinter._is_runtime_protocol">
-<span class="sig-name descname"><span class="pre">_is_runtime_protocol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#scarajectory.core.service.dsl.linter.iscara_linter.IScaraLinter._is_runtime_protocol" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.core.service.dsl.linter.iscara_linter.IScaraLinter.lint">
-<span class="sig-name descname"><span class="pre">lint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">program</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.dsl.iscara_program.html#scarajectory.core.model.dsl.iscara_program.IScaraProgram" title="scarajectory.core.model.dsl.iscara_program.IScaraProgram"><span class="pre">IScaraProgram</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.dsl.scara_diagnostic.html#scarajectory.core.model.dsl.scara_diagnostic.ScaraDiagnostic" title="scarajectory.core.model.dsl.scara_diagnostic.ScaraDiagnostic"><span class="pre">ScaraDiagnostic</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/dsl/linter/iscara_linter.html#IScaraLinter.lint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.dsl.linter.iscara_linter.IScaraLinter.lint" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">lint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">program</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.dsl.ast.iscara_program.html#scarajectory.core.model.dsl.ast.iscara_program.IScaraProgram" title="scarajectory.core.model.dsl.ast.iscara_program.IScaraProgram"><span class="pre">IScaraProgram</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.dsl.diagnostic.scara_diagnostic.html#scarajectory.core.model.dsl.diagnostic.scara_diagnostic.ScaraDiagnostic" title="scarajectory.core.model.dsl.diagnostic.scara_diagnostic.ScaraDiagnostic"><span class="pre">ScaraDiagnostic</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/dsl/linter/iscara_linter.html#IScaraLinter.lint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.dsl.linter.iscara_linter.IScaraLinter.lint" title="Link to this definition">¶</a></dt>
 <dd><p>Performs static analysis checks on a SCARA DSL AST program.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -134,9 +119,6 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <ul>
 <li><a class="reference internal" href="#">scarajectory.core.service.dsl.linter.iscara_linter module</a><ul>
 <li><a class="reference internal" href="#scarajectory.core.service.dsl.linter.iscara_linter.IScaraLinter"><code class="docutils literal notranslate"><span class="pre">IScaraLinter</span></code></a><ul>
-<li><a class="reference internal" href="#scarajectory.core.service.dsl.linter.iscara_linter.IScaraLinter._abc_impl"><code class="docutils literal notranslate"><span class="pre">IScaraLinter._abc_impl</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.service.dsl.linter.iscara_linter.IScaraLinter._is_protocol"><code class="docutils literal notranslate"><span class="pre">IScaraLinter._is_protocol</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.service.dsl.linter.iscara_linter.IScaraLinter._is_runtime_protocol"><code class="docutils literal notranslate"><span class="pre">IScaraLinter._is_runtime_protocol</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.core.service.dsl.linter.iscara_linter.IScaraLinter.lint"><code class="docutils literal notranslate"><span class="pre">IScaraLinter.lint()</span></code></a></li>
 </ul>
 </li>
@@ -147,13 +129,13 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.core.service.dsl.linter.html"
-                          title="previous chapter">scarajectory.core.service.dsl.linter package</a></p>
+    <p class="topless"><a href="scarajectory.core.service.dsl.linter.rules.timing_lint_rule.html"
+                          title="previous chapter">scarajectory.core.service.dsl.linter.rules.timing_lint_rule module</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="scarajectory.core.service.dsl.linter.scara_linter.html"
-                          title="next chapter">scarajectory.core.service.dsl.linter.scara_linter module</a></p>
+    <p class="topless"><a href="scarajectory.core.service.dsl.linter.scara_lint_context.html"
+                          title="next chapter">scarajectory.core.service.dsl.linter.scara_lint_context module</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -186,10 +168,10 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.core.service.dsl.linter.scara_linter.html" title="scarajectory.core.service.dsl.linter.scara_linter module"
+          <a href="scarajectory.core.service.dsl.linter.scara_lint_context.html" title="scarajectory.core.service.dsl.linter.scara_lint_context module"
              >next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.core.service.dsl.linter.html" title="scarajectory.core.service.dsl.linter package"
+          <a href="scarajectory.core.service.dsl.linter.rules.timing_lint_rule.html" title="scarajectory.core.service.dsl.linter.rules.timing_lint_rule module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>

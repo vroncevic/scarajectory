@@ -1,6 +1,14 @@
 scarajectory.core.service.dsl.linter package
 ============================================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   scarajectory.core.service.dsl.linter.rules
+
 Submodules
 ----------
 
@@ -8,6 +16,7 @@ Submodules
    :maxdepth: 4
 
    scarajectory.core.service.dsl.linter.iscara_linter
+   scarajectory.core.service.dsl.linter.scara_lint_context
    scarajectory.core.service.dsl.linter.scara_linter
 
 Module contents
@@ -17,4 +26,3 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
-   :private-members:

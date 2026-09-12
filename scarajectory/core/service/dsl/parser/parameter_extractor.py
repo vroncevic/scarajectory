@@ -24,8 +24,8 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import Any
 
-from scarajectory.core.model.dsl.scara_token import ScaraToken
-from scarajectory.core.model.dsl.scara_token_type import ScaraTokenType
+from scarajectory.core.model.dsl.token.scara_token import ScaraToken
+from scarajectory.core.model.dsl.token.scara_token_type import ScaraTokenType
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'

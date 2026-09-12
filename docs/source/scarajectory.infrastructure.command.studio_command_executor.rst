@@ -5,4 +5,3 @@ scarajectory.infrastructure.command.studio\_command\_executor module
    :members:
    :undoc-members:
    :show-inheritance:
-   :private-members:

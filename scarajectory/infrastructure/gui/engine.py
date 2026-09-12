@@ -21,22 +21,23 @@ Info
 
 from __future__ import annotations
 
-import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import BOTH, HORIZONTAL, TOP, VERTICAL, X, TclError, Tk
+from tkinter.messagebox import showerror
+from tkinter.ttk import Frame, PanedWindow
 from typing import Final
 
-from scarajectory.core.model.canvas_settings import CanvasSettings
-from scarajectory.core.model.stream_progress import StreamProgress
+from scarajectory.infrastructure.gui.model.canvas_settings import CanvasSettings
+from scarajectory.core.model.communication.stream_progress import StreamProgress
 from scarajectory.core.service.iservice import IService
-from scarajectory.infrastructure.gui.icanvas import ICanvas
-from scarajectory.infrastructure.gui.icontrols import IControls
-from scarajectory.infrastructure.gui.itable import ITable
-from scarajectory.infrastructure.gui.canvas import TrajectoryCanvas
-from scarajectory.infrastructure.gui.controls import ControlsPanel
-from scarajectory.infrastructure.gui.theme import ThemeManager
-from scarajectory.infrastructure.gui.components.waypoint_editor import WaypointEditor
-from scarajectory.infrastructure.gui.components.toolbar import Toolbar
-from scarajectory.infrastructure.gui.components.menu_bar import AppMenuBar
+from scarajectory.infrastructure.gui.canvas.icanvas import ICanvas
+from scarajectory.infrastructure.gui.controls.icontrols_panel import IControlsPanel
+from scarajectory.infrastructure.gui.editor.itable import ITable
+from scarajectory.infrastructure.gui.canvas.canvas import TrajectoryCanvas
+from scarajectory.infrastructure.gui.controls.controls import ControlsPanel
+from scarajectory.infrastructure.gui.theme.theme import ThemeManager
+from scarajectory.infrastructure.gui.editor.waypoint_editor import WaypointEditor
+from scarajectory.infrastructure.gui.toolbar.toolbar import Toolbar
+from scarajectory.infrastructure.gui.menu.menu_bar import AppMenuBar
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -75,15 +76,15 @@ class ScarajectoryGUI:
                 | on_point_selected - Receives waypoint selection notifications.
     '''
 
-    _root: tk.Tk
+    _root: Tk
     _service: IService
     _canvas: ICanvas
     _table: ITable
-    _controls: IControls
+    _controls: IControlsPanel
     _toolbar: Toolbar
     _menu_bar: AppMenuBar
 
-    def __init__(self, service: IService, root: tk.Tk | None = None) -> None:
+    def __init__(self, service: IService, root: Tk | None = None) -> None:
         '''
             Initializes GUI window and layout.
 
@@ -92,7 +93,7 @@ class ScarajectoryGUI:
             :exceptions: None.
         '''
         self._service: Final[IService] = service
-        self._root: Final[tk.Tk] = root if root is not None else tk.Tk()
+        self._root: Final[Tk] = root if root is not None else Tk()
         self._root.title('SCARAjectory — Motion Trajectory Studio & Streamer')
         sw: int = self._root.winfo_screenwidth()
         sh: int = self._root.winfo_screenheight()
@@ -116,10 +117,10 @@ class ScarajectoryGUI:
 
         try:
             self._root.attributes('-zoomed', True)
-        except tk.TclError:
+        except TclError:
             try:
                 self._root.state('zoomed')
-            except tk.TclError:
+            except TclError:
                 pass
 
         self._root.after(150, self._canvas.fit_reach_view)
@@ -165,7 +166,7 @@ class ScarajectoryGUI:
             self._service.load_plan(filepath)
             self._canvas.fit_reach_view()
         except OSError as exc:
-            messagebox.showerror('Load Error', f'Failed to load plan: {exc}')
+            showerror('Load Error', f'Failed to load plan: {exc}')
 
     def set_deadzone(self, enabled: bool) -> None:
         '''
@@ -181,9 +182,8 @@ class ScarajectoryGUI:
             Receives streamer progress updates.
 
             :param progress: StreamProgress model.
-            :exceptions: None.
         '''
-        self._controls.update_progress(progress)
+        self._root.after(0, self._controls.update_progress, progress)
 
     def on_serial_log(self, text: str, is_outgoing: bool = False) -> None:
         '''
@@ -191,9 +191,8 @@ class ScarajectoryGUI:
 
             :param text: Log line text.
             :param is_outgoing: True if transmitted command.
-            :exceptions: None.
         '''
-        self._controls.append_log(text, is_outgoing)
+        self._root.after(0, self._controls.append_log, text, is_outgoing)
 
     def on_trajectory_updated(self) -> None:
         '''
@@ -219,9 +218,9 @@ class ScarajectoryGUI:
         '''
         settings = CanvasSettings(default_z=20.0, default_speed=40.0, enforce_deadzone=True)
 
-        main_paned = ttk.PanedWindow(self._root, orient=tk.HORIZONTAL)
+        main_paned = PanedWindow(self._root, orient=HORIZONTAL)
 
-        left_frame = ttk.Frame(main_paned)
+        left_frame = Frame(main_paned)
         main_paned.add(left_frame, weight=3)
 
         self._canvas = TrajectoryCanvas(
@@ -230,31 +229,34 @@ class ScarajectoryGUI:
             validator=self._service.get_validator(),
             settings=settings
         )
-        self._canvas.pack(fill=tk.BOTH, expand=True)
+        self._canvas.pack(fill=BOTH, expand=True)
 
         self._toolbar = Toolbar(
             self._root,
             canvas=self._canvas,
             plan=self._service.get_plan()
         )
-        self._toolbar.pack(side=tk.TOP, fill=tk.X)
-        main_paned.pack(fill=tk.BOTH, expand=True, padx=8, pady=4)
+        self._toolbar.pack(side=TOP, fill=X)
+        main_paned.pack(fill=BOTH, expand=True, padx=8, pady=4)
 
-        right_frame = ttk.Frame(main_paned)
+        right_frame = Frame(main_paned)
         main_paned.add(right_frame, weight=2)
 
-        right_paned = ttk.PanedWindow(right_frame, orient=tk.VERTICAL)
-        right_paned.pack(fill=tk.BOTH, expand=True)
+        right_paned = PanedWindow(right_frame, orient=VERTICAL)
+        right_paned.pack(fill=BOTH, expand=True)
 
         self._table = WaypointEditor(right_paned, plan=self._service.get_plan())
         right_paned.add(self._table, weight=1)
 
-        ctl_frame = ttk.Frame(right_paned)
+        ctl_frame = Frame(right_paned)
         right_paned.add(ctl_frame, weight=1)
         self._controls = ControlsPanel(
             ctl_frame,
             plan=self._service.get_plan(),
             validator=self._service.get_validator(),
-            streamer=self._service.get_streamer()
+            streamer=self._service.get_streamer(),
+            storage=self._service.get_storage(),
+            dsl_service=self._service.get_dsl_service(),
+            service=self._service
         )
-        self._controls.pack(fill=tk.BOTH, expand=True)
+        self._controls.pack(fill=BOTH, expand=True)

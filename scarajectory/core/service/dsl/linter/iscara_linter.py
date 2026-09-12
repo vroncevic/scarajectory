@@ -23,8 +23,8 @@ from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
-from scarajectory.core.model.dsl.iscara_program import IScaraProgram
-from scarajectory.core.model.dsl.scara_diagnostic import ScaraDiagnostic
+from scarajectory.core.model.dsl.ast.iscara_program import IScaraProgram
+from scarajectory.core.model.dsl.diagnostic.scara_diagnostic import ScaraDiagnostic
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'

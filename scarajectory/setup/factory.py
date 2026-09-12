@@ -21,7 +21,7 @@ Info
 
 from __future__ import annotations
 
-from os.path import exists
+from os.path import abspath, dirname, exists, join
 from math import cos, sqrt
 from typing import Any
 
@@ -35,13 +35,15 @@ from ats_utilities.config_io.setup.factory import ConfigIOBundleFactory
 from ats_utilities.config_io.setup.options import ConfigIOBundleOptions
 from ats_utilities.config_io.setup.keys import ConfigIOBundleKeys
 
-from scarajectory.core.model.scara_bounds import ScaraBounds
-from scarajectory.core.model.trajectory_plan import TrajectoryPlan
-from scarajectory.core.service.trajectory_validator import TrajectoryValidator
-from scarajectory.core.service.plan_storage_service import PlanStorageService
+from scarajectory.core.model.kinematics.scara_bounds import ScaraBounds
+from scarajectory.core.model.trajectory.trajectory_plan import TrajectoryPlan
+from scarajectory.core.service.kinematics.kinematics_service import KinematicsService
+from scarajectory.core.service.trajectory.trajectory_validator import TrajectoryValidator
+from scarajectory.infrastructure.storage.plan_storage_service import PlanStorageService
+from scarajectory.core.service.dsl.scara_dsl_service import ScaraDslService
 from scarajectory.core.service.engine import Service
 from scarajectory.infrastructure.communication.transport.serial_transport import SerialTransport
-from scarajectory.infrastructure.communication.serial_streamer import SerialStreamer
+from scarajectory.infrastructure.communication.streamer.trajectory_streamer import TrajectoryStreamer
 from scarajectory.infrastructure.gui.engine import ScarajectoryGUI
 from scarajectory.infrastructure.cli.engine import CLI
 from scarajectory.infrastructure.cli.setup.bundle import CLIBundle
@@ -80,7 +82,10 @@ class SCARAjectoryBundleFactory:
                 | get_version - Returns the factory version.
     '''
 
-    _info_file: str = 'scarajectory/infrastructure/config/scarajectory.cfg'
+    _info_file: str = join(
+        dirname(dirname(abspath(__file__))),
+        'infrastructure', 'config', 'scarajectory.cfg'
+    )
     _geometry_config_file: str = 'scarajectory/infrastructure/config/scara_geometry.json'
     _geometry_scheme_file: str = 'scarajectory/infrastructure/config/scheme.json'
 
@@ -226,12 +231,20 @@ class SCARAjectoryBundleFactory:
         )
 
         bounds: ScaraBounds = cls._resolve_bounds(options=options)
-        validator: TrajectoryValidator = TrajectoryValidator(bounds=bounds)
+        kinematics: KinematicsService = KinematicsService(bounds=bounds)
+        validator: TrajectoryValidator = TrajectoryValidator(bounds=bounds, kinematics=kinematics)
         transport: SerialTransport = SerialTransport()
-        streamer: SerialStreamer = SerialStreamer(transport=transport)
-        storage: PlanStorageService = PlanStorageService()
+        streamer: TrajectoryStreamer = TrajectoryStreamer(transport=transport)
+        storage: PlanStorageService = PlanStorageService(context_bundle=context_bundle)
         plan: TrajectoryPlan = TrajectoryPlan()
-        service: Service = Service(validator=validator, streamer=streamer, storage=storage, plan=plan)
+        dsl_service: ScaraDslService = ScaraDslService(validator=validator)
+        service: Service = Service(
+            validator=validator,
+            streamer=streamer,
+            storage=storage,
+            plan=plan,
+            dsl_service=dsl_service
+        )
         gui: ScarajectoryGUI = ScarajectoryGUI(service=service)
 
         cli_bundle: CLIBundle = CLIBundleFactory.create_bundle(

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>scarajectory.infrastructure.communication.streamer.flow_controller &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/classic.css?v=514cf933" />
+    
+    <script src="../../../../../_static/documentation_options.js?v=57319df4"></script>
+    <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.communication.streamer.flow_controller</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for scarajectory.infrastructure.communication.streamer.flow_controller</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Module</span>
+<span class="sd">    flow_controller.py</span>
+<span class="sd">Copyright</span>
+<span class="sd">    Copyright (C) 2026 Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;</span>
+<span class="sd">    scarajectory is free software: you can redistribute it and/or modify it</span>
+<span class="sd">    under the terms of the GNU General Public License as published by the</span>
+<span class="sd">    Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">    (at your option) any later version.</span>
+<span class="sd">    scarajectory is distributed in the hope that it will be useful, but</span>
+<span class="sd">    WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
+<span class="sd">    See the GNU General Public License for more details.</span>
+<span class="sd">    You should have received a copy of the GNU General Public License along</span>
+<span class="sd">    with this program. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">Info</span>
+<span class="sd">    Sliding window flow controller managing microcontroller queue depth and synchronization barriers.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Event</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">ClassVar</span><span class="p">,</span> <span class="n">Final</span>
+
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.communication.stream_session</span> <span class="kn">import</span> <span class="n">StreamSession</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.protocol.protocol_parser</span> <span class="kn">import</span> <span class="n">ProtocolParser</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
+<span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
+
+
+<div class="viewcode-block" id="FlowController">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.streamer.flow_controller.html#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController">[docs]</a>
+<span class="k">class</span> <span class="nc">FlowController</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Manages sliding window queue pacing, buffer occupancy, and command synchronization barriers.</span>
+
+<span class="sd">        It defines:</span>
+
+<span class="sd">            :attributes:</span>
+<span class="sd">                | DEFAULT_QUEUE_CAPACITY - Default capacity of microcontroller ring buffer.</span>
+<span class="sd">                | capacity - Maximum allowed queue depth before throttling.</span>
+<span class="sd">                | _barrier_event - Thread synchronization barrier for synchronous commands.</span>
+<span class="sd">            :methods:</span>
+<span class="sd">                | __init__ - Initializes flow controller with specified queue capacity.</span>
+<span class="sd">                | reset - Clears flow control state and unlocks barrier.</span>
+<span class="sd">                | set_barrier - Locks barrier event until confirmation is received.</span>
+<span class="sd">                | clear_barrier - Unlocks barrier event.</span>
+<span class="sd">                | is_barrier_clear - Checks whether synchronization barrier is cleared.</span>
+<span class="sd">                | can_send - Checks whether next packet or command is permitted to be transmitted.</span>
+<span class="sd">                | process_response - Processes response line from firmware and updates session.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">DEFAULT_QUEUE_CAPACITY</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">16</span>
+    <span class="n">capacity</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">_barrier_event</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">Event</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">capacity</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_QUEUE_CAPACITY</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Initializes flow controller with specified queue capacity.</span>
+
+<span class="sd">            :param capacity: Microcontroller ring buffer capacity.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span> <span class="o">=</span> <span class="n">capacity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_barrier_event</span> <span class="o">=</span> <span class="n">Event</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_barrier_event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+
+<div class="viewcode-block" id="FlowController.reset">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.streamer.flow_controller.html#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.reset">[docs]</a>
+    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Clears flow control state and unlocks barrier.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_barrier_event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="FlowController.set_barrier">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.streamer.flow_controller.html#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.set_barrier">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_barrier</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Locks barrier event until confirmation is received.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_barrier_event</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="FlowController.clear_barrier">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.streamer.flow_controller.html#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.clear_barrier">[docs]</a>
+    <span class="k">def</span> <span class="nf">clear_barrier</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Unlocks barrier event.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_barrier_event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="FlowController.is_barrier_clear">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.streamer.flow_controller.html#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.is_barrier_clear">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_barrier_clear</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Checks whether synchronization barrier is cleared.</span>
+
+<span class="sd">            :return: True if barrier is clear.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_barrier_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="FlowController.can_send">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.streamer.flow_controller.html#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.can_send">[docs]</a>
+    <span class="k">def</span> <span class="nf">can_send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">StreamSession</span><span class="p">,</span> <span class="n">is_command</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Checks whether next packet or command is permitted to be transmitted.</span>
+
+<span class="sd">            :param session: Active StreamSession model.</span>
+<span class="sd">            :param is_command: True if next item is a synchronous command (default False).</span>
+<span class="sd">            :return: True if transmission is allowed.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_barrier_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="n">is_command</span> <span class="ow">and</span> <span class="n">session</span><span class="o">.</span><span class="n">remote_queue_depth</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="n">session</span><span class="o">.</span><span class="n">remote_queue_depth</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span></div>
+
+
+<div class="viewcode-block" id="FlowController.process_response">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.streamer.flow_controller.html#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.process_response">[docs]</a>
+    <span class="k">def</span> <span class="nf">process_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">StreamSession</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Processes response line from firmware and updates session queue depth.</span>
+
+<span class="sd">            :param line: Raw response line from firmware.</span>
+<span class="sd">            :param session: Active StreamSession instance.</span>
+<span class="sd">            :return: Tuple of (is_fatal_error, error_message).</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">ProtocolParser</span><span class="o">.</span><span class="n">is_homing_failed</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clear_barrier</span><span class="p">()</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">failed_count</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">waypoints</span><span class="p">),</span> <span class="n">session</span><span class="o">.</span><span class="n">failed_count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Microcontroller Homing Failed: </span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s1">&#39;</span>
+
+        <span class="k">if</span> <span class="n">ProtocolParser</span><span class="o">.</span><span class="n">is_action_done</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clear_barrier</span><span class="p">()</span>
+
+        <span class="n">q_depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">ProtocolParser</span><span class="o">.</span><span class="n">parse_queue_depth</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">q_depth</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">remote_queue_depth</span> <span class="o">=</span> <span class="n">q_depth</span>
+        <span class="k">elif</span> <span class="n">ProtocolParser</span><span class="o">.</span><span class="n">is_buffer_full</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">remote_queue_depth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span>
+        <span class="k">elif</span> <span class="n">ProtocolParser</span><span class="o">.</span><span class="n">is_complete</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">done_count</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">waypoints</span><span class="p">),</span> <span class="n">session</span><span class="o">.</span><span class="n">done_count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">session</span><span class="o">.</span><span class="n">remote_queue_depth</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">session</span><span class="o">.</span><span class="n">remote_queue_depth</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">ProtocolParser</span><span class="o">.</span><span class="n">is_move_failed</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clear_barrier</span><span class="p">()</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">failed_count</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">waypoints</span><span class="p">),</span> <span class="n">session</span><span class="o">.</span><span class="n">failed_count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">session</span><span class="o">.</span><span class="n">remote_queue_depth</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">session</span><span class="o">.</span><span class="n">remote_queue_depth</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">line</span>
+        <span class="k">elif</span> <span class="n">ProtocolParser</span><span class="o">.</span><span class="n">is_error</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clear_barrier</span><span class="p">()</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">failed_count</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">waypoints</span><span class="p">),</span> <span class="n">session</span><span class="o">.</span><span class="n">failed_count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">session</span><span class="o">.</span><span class="n">remote_queue_depth</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">session</span><span class="o">.</span><span class="n">remote_queue_depth</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">line</span>
+
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span></div>
+</div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.communication.streamer.flow_controller</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

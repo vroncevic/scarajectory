@@ -5,4 +5,3 @@ scarajectory.infrastructure.communication.protocol.config\_command\_formatter mo
    :members:
    :undoc-members:
    :show-inheritance:
-   :private-members:

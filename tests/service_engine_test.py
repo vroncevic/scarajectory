@@ -21,22 +21,23 @@ Info
 
 from __future__ import annotations
 
-import os
-import sys
-import tempfile
-import unittest
+from os import remove
+from os.path import abspath, dirname, exists
+from sys import path
+from tempfile import NamedTemporaryFile
+from unittest import TestCase, main
 
-pkg_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if pkg_dir not in sys.path:
-    sys.path.insert(0, pkg_dir)
+pkg_dir = dirname(dirname(abspath(__file__)))
+if pkg_dir not in path:
+    path.insert(0, pkg_dir)
 
-from scarajectory.core.model.waypoint import Waypoint
-from scarajectory.core.model.scara_bounds import ScaraBounds
-from scarajectory.core.model.trajectory_plan import TrajectoryPlan
-from scarajectory.core.service.trajectory_validator import TrajectoryValidator
-from scarajectory.core.service.plan_storage_service import PlanStorageService
+from scarajectory.core.model.trajectory.waypoint import Waypoint
+from scarajectory.core.model.kinematics.scara_bounds import ScaraBounds
+from scarajectory.core.model.trajectory.trajectory_plan import TrajectoryPlan
+from scarajectory.core.service.trajectory.trajectory_validator import TrajectoryValidator
+from scarajectory.infrastructure.storage.plan_storage_service import PlanStorageService
 from scarajectory.infrastructure.communication.transport.serial_transport import SerialTransport
-from scarajectory.infrastructure.communication.serial_streamer import SerialStreamer
+from scarajectory.infrastructure.communication.streamer.trajectory_streamer import TrajectoryStreamer
 from scarajectory.core.service.engine import Service
 
 __author__ = 'Vladimir Roncevic'
@@ -49,7 +50,7 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class TestServiceEngine(unittest.TestCase):
+class TestServiceEngine(TestCase):
     '''
         Test cases for Service business facade.
 
@@ -59,6 +60,8 @@ class TestServiceEngine(unittest.TestCase):
                 | setUp - Initializes service fixtures.
                 | test_service_initialization - Tests accessor methods and initialization flag.
                 | test_save_and_load_plan - Tests facade plan saving and loading.
+                | test_plan_facade_methods - Tests facade plan operations (clear, undo, redo, new_plan).
+                | test_streaming_facade_methods - Tests facade streaming operations (pause, resume, stop).
     '''
 
     def setUp(self) -> None:
@@ -70,7 +73,7 @@ class TestServiceEngine(unittest.TestCase):
         self.bounds = ScaraBounds(l1=150.0, l2=120.0, z_min=0.0, z_max=100.0)
         self.validator = TrajectoryValidator(self.bounds)
         self.storage = PlanStorageService()
-        self.streamer = SerialStreamer(SerialTransport())
+        self.streamer = TrajectoryStreamer(SerialTransport())
         self.plan = TrajectoryPlan()
         self.service = Service(
             validator=self.validator,
@@ -100,7 +103,7 @@ class TestServiceEngine(unittest.TestCase):
         pt = Waypoint(x=100.0, y=50.0, z=20.0, phi=0.0, speed=40.0)
         self.plan.add_point(pt)
 
-        with tempfile.NamedTemporaryFile(suffix='.json', delete=False) as tf:
+        with NamedTemporaryFile(suffix='.json', delete=False) as tf:
             tmp_path = tf.name
 
         try:
@@ -113,9 +116,49 @@ class TestServiceEngine(unittest.TestCase):
             self.assertEqual(self.plan.count, 1)
             self.assertEqual(self.plan.waypoints[0].x, 100.0)
         finally:
-            if os.path.exists(tmp_path):
-                os.remove(tmp_path)
+            if exists(tmp_path):
+                remove(tmp_path)
+
+    def test_plan_facade_methods(self) -> None:
+        '''
+            Tests clear_plan, undo, redo, and new_plan facade methods.
+
+            :exceptions: None.
+        '''
+        pt1 = Waypoint(x=50.0, y=20.0, z=10.0, phi=0.0, speed=20.0)
+        pt2 = Waypoint(x=80.0, y=40.0, z=15.0, phi=5.0, speed=30.0)
+
+        self.plan.add_point(pt1)
+        self.plan.add_point(pt2)
+        self.assertEqual(self.plan.count, 2)
+
+        undone = self.service.undo()
+        self.assertTrue(undone)
+        self.assertEqual(self.plan.count, 1)
+
+        redone = self.service.redo()
+        self.assertTrue(redone)
+        self.assertEqual(self.plan.count, 2)
+
+        self.service.clear_plan()
+        self.assertEqual(self.plan.count, 0)
+
+        self.plan.add_point(pt1)
+        self.assertEqual(self.plan.count, 1)
+        self.service.new_plan()
+        self.assertEqual(self.plan.count, 0)
+
+    def test_streaming_facade_methods(self) -> None:
+        '''
+            Tests streamer access via get_streamer.
+
+            :exceptions: None.
+        '''
+        streamer = self.service.get_streamer()
+        streamer.pause_streaming()
+        streamer.resume_streaming()
+        streamer.stop_streaming()
 
 
 if __name__ == '__main__':
-    unittest.main()
+    main()

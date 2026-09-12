@@ -23,10 +23,14 @@ from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
-from scarajectory.core.model.itrajectory_plan import ITrajectoryPlan
-from scarajectory.core.service.iplan_storage_service import IPlanStorageService
-from scarajectory.core.service.itrajectory_validator import ITrajectoryValidator
-from scarajectory.core.service.itrajectory_streamer import ITrajectoryStreamer
+from scarajectory.core.model.trajectory.itrajectory_plan import ITrajectoryPlan
+from scarajectory.core.service.trajectory.iplan_storage_service import IPlanStorageService
+from scarajectory.core.service.trajectory.itrajectory_validator import ITrajectoryValidator
+from scarajectory.core.service.communication.itrajectory_streamer import ITrajectoryStreamer
+from scarajectory.core.service.dsl.iscara_dsl_service import IScaraDslService
+from scarajectory.core.service.trajectory.iplan_command_service import IPlanCommandService
+from scarajectory.core.service.trajectory.iplan_persistence_service import IPlanPersistenceService
+from scarajectory.core.service.trajectory.iplan_validation_service import IPlanValidationService
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -39,9 +43,14 @@ __status__ = 'Updated'
 
 
 @runtime_checkable
-class IService(Protocol):
+class IService(
+    IPlanCommandService,
+    IPlanPersistenceService,
+    IPlanValidationService,
+    Protocol
+):
     '''
-        Interface for orchestrating trajectory operations and services.
+        Composite interface for orchestrating trajectory operations and services.
 
         It defines:
 
@@ -51,11 +60,7 @@ class IService(Protocol):
                 | get_storage - Returns the active IPlanStorageService.
                 | get_validator - Returns the active ITrajectoryValidator.
                 | get_streamer - Returns the active ITrajectoryStreamer.
-                | validate_plan - Validates the current trajectory plan.
-                | save_plan - Saves current plan to file path.
-                | load_plan - Loads plan from file path.
-                | start_streaming - Initiates streaming of current plan.
-                | stop_streaming - Aborts active streaming.
+                | get_dsl_service - Returns the active IScaraDslService.
     '''
 
     def is_initialized(self) -> bool:
@@ -93,35 +98,10 @@ class IService(Protocol):
             :return: ITrajectoryStreamer instance.
         '''
 
-    def validate_plan(self) -> tuple[bool, list[str]]:
+    def get_dsl_service(self) -> IScaraDslService:
         '''
-            Validates the current trajectory plan against robot kinematic bounds.
+            Returns the active IScaraDslService.
 
-            :return: Tuple of (is_valid, messages_list).
-        '''
-
-    def save_plan(self, filepath: str) -> None:
-        '''
-            Saves current plan to file path.
-
-            :param filepath: Target file path.
+            :return: IScaraDslService instance.
         '''
 
-    def load_plan(self, filepath: str) -> None:
-        '''
-            Loads plan from file path.
-
-            :param filepath: Source file path.
-        '''
-
-    def start_streaming(self) -> bool:
-        '''
-            Initiates streaming of current plan.
-
-            :return: True if stream started, False otherwise.
-        '''
-
-    def stop_streaming(self) -> None:
-        '''
-            Aborts active streaming.
-        '''

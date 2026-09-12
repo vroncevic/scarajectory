@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>scarajectory.infrastructure.communication.streamer.trajectory_streamer module &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
+    
+    <script src="_static/documentation_options.js?v=57319df4"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="scarajectory.infrastructure.communication.transport package" href="scarajectory.infrastructure.communication.transport.html" />
+    <link rel="prev" title="scarajectory.infrastructure.communication.streamer.stream_execution_worker module" href="scarajectory.infrastructure.communication.streamer.stream_execution_worker.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.communication.transport.html" title="scarajectory.infrastructure.communication.transport package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.communication.streamer.stream_execution_worker.html" title="scarajectory.infrastructure.communication.streamer.stream_execution_worker module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.communication.html" >scarajectory.infrastructure.communication package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.infrastructure.communication.streamer.html" accesskey="U">scarajectory.infrastructure.communication.streamer package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.communication.streamer.trajectory_streamer module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-scarajectory.infrastructure.communication.streamer.trajectory_streamer">
+<span id="scarajectory-infrastructure-communication-streamer-trajectory-streamer-module"></span><h1>scarajectory.infrastructure.communication.streamer.trajectory_streamer module<a class="headerlink" href="#module-scarajectory.infrastructure.communication.streamer.trajectory_streamer" title="Link to this heading">¶</a></h1>
+<dl class="simple">
+<dt>Module</dt><dd><p>trajectory_streamer.py</p>
+</dd>
+<dt>Copyright</dt><dd><p>Copyright (C) 2026 Vladimir Roncevic &lt;<a class="reference external" href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+scarajectory is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+scarajectory is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along
+with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+</dd>
+<dt>Info</dt><dd><p>Thread-safe Hardware Trajectory Streamer coordinating transports and execution workers.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.communication.streamer.trajectory_streamer.</span></span><span class="sig-name descname"><span class="pre">TrajectoryStreamer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.itransport.html#scarajectory.infrastructure.communication.transport.itransport.ITransport" title="scarajectory.infrastructure.communication.transport.itransport.ITransport"><span class="pre">ITransport</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flow_controller</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.communication.streamer.flow_controller.html#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController" title="scarajectory.infrastructure.communication.streamer.flow_controller.FlowController"><span class="pre">FlowController</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worker</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.communication.streamer.stream_execution_worker.html#scarajectory.infrastructure.communication.streamer.stream_execution_worker.StreamExecutionWorker" title="scarajectory.infrastructure.communication.streamer.stream_execution_worker.StreamExecutionWorker"><span class="pre">StreamExecutionWorker</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/trajectory_streamer.html#TrajectoryStreamer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Thread-safe background streamer coordinating hardware communication and robot actuation.</p>
+<p>It defines:</p>
+<blockquote>
+<div><dl class="field-list">
+<dt class="field-odd">attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="line-block">
+<div class="line">MAX_PICO_QUEUE_CAPACITY - Microcontroller buffer queue capacity.</div>
+<div class="line">_observer - Progress and logging callback receiver.</div>
+<div class="line">_transport - Communication transport layer instance.</div>
+<div class="line">_state - Current streaming state enum value.</div>
+<div class="line">_session - Active streaming session metrics.</div>
+<div class="line">_flow_controller - Queue flow controller.</div>
+<div class="line">_worker - Dedicated background transmission worker.</div>
+<div class="line">_robot_controller - Dedicated manual actuation controller.</div>
+</div>
+</dd>
+<dt class="field-even">methods<span class="colon">:</span></dt>
+<dd class="field-even"><div class="line-block">
+<div class="line">__init__ - Initializes streamer instance with transport, controller, and worker.</div>
+<div class="line">set_observer - Sets or updates progress observer.</div>
+<div class="line">is_connected - Checks whether transport connection is active.</div>
+<div class="line">connect_with_config - Opens transport connection using configuration DTO.</div>
+<div class="line">disconnect - Terminates active stream and closes transport connection.</div>
+<div class="line">send_raw_command - Transmits single raw command string directly.</div>
+<div class="line">send_semantic_command - Transmits semantic command if connected.</div>
+<div class="line">get_robot_controller - Returns the dedicated RobotController instance.</div>
+<div class="line">start_streaming - Launches background streaming worker.</div>
+<div class="line">pause_streaming - Pauses background streaming transmission.</div>
+<div class="line">resume_streaming - Resumes paused background streaming transmission.</div>
+<div class="line">stop_streaming - Aborts active streaming session and triggers E-STOP.</div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.MAX_PICO_QUEUE_CAPACITY">
+<span class="sig-name descname"><span class="pre">MAX_PICO_QUEUE_CAPACITY</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">16</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.MAX_PICO_QUEUE_CAPACITY" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.connect_with_config">
+<span class="sig-name descname"><span class="pre">connect_with_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.communication.stream_config.html#scarajectory.core.model.communication.stream_config.StreamConfig" title="scarajectory.core.model.communication.stream_config.StreamConfig"><span class="pre">StreamConfig</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/trajectory_streamer.html#TrajectoryStreamer.connect_with_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.connect_with_config" title="Link to this definition">¶</a></dt>
+<dd><p>Opens transport connection using configuration DTO.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> – StreamConfig parameters.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if connected successfully.</p>
+</dd>
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.disconnect">
+<span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/trajectory_streamer.html#TrajectoryStreamer.disconnect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.disconnect" title="Link to this definition">¶</a></dt>
+<dd><p>Terminates active stream and closes transport connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.get_robot_controller">
+<span class="sig-name descname"><span class="pre">get_robot_controller</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.infrastructure.communication.streamer.robot_controller.html#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController" title="scarajectory.infrastructure.communication.streamer.robot_controller.RobotController"><span class="pre">RobotController</span></a></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/trajectory_streamer.html#TrajectoryStreamer.get_robot_controller"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.get_robot_controller" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the dedicated RobotController instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>RobotController instance.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.is_connected">
+<span class="sig-name descname"><span class="pre">is_connected</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/trajectory_streamer.html#TrajectoryStreamer.is_connected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.is_connected" title="Link to this definition">¶</a></dt>
+<dd><p>Checks whether transport connection is currently active.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if connected, False otherwise.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.pause_streaming">
+<span class="sig-name descname"><span class="pre">pause_streaming</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/trajectory_streamer.html#TrajectoryStreamer.pause_streaming"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.pause_streaming" title="Link to this definition">¶</a></dt>
+<dd><p>Pauses background streaming transmission.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.resume_streaming">
+<span class="sig-name descname"><span class="pre">resume_streaming</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/trajectory_streamer.html#TrajectoryStreamer.resume_streaming"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.resume_streaming" title="Link to this definition">¶</a></dt>
+<dd><p>Resumes paused background streaming transmission.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.send_raw_command">
+<span class="sig-name descname"><span class="pre">send_raw_command</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/trajectory_streamer.html#TrajectoryStreamer.send_raw_command"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.send_raw_command" title="Link to this definition">¶</a></dt>
+<dd><p>Transmits single raw command string directly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cmd</strong> – Formatted command string.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.send_semantic_command">
+<span class="sig-name descname"><span class="pre">send_semantic_command</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/trajectory_streamer.html#TrajectoryStreamer.send_semantic_command"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.send_semantic_command" title="Link to this definition">¶</a></dt>
+<dd><p>Transmits semantic command if connected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cmd</strong> – Formatted protocol command string.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if transmitted successfully.</p>
+</dd>
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.set_observer">
+<span class="sig-name descname"><span class="pre">set_observer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.communication.istream_observer.html#scarajectory.core.service.communication.istream_observer.IStreamObserver" title="scarajectory.core.service.communication.istream_observer.IStreamObserver"><span class="pre">IStreamObserver</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/trajectory_streamer.html#TrajectoryStreamer.set_observer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.set_observer" title="Link to this definition">¶</a></dt>
+<dd><p>Sets or updates the progress observer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>observer</strong> – IStreamObserver instance.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.start_streaming">
+<span class="sig-name descname"><span class="pre">start_streaming</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">waypoints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.trajectory.waypoint.html#scarajectory.core.model.trajectory.waypoint.Waypoint" title="scarajectory.core.model.trajectory.waypoint.Waypoint"><span class="pre">Waypoint</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/trajectory_streamer.html#TrajectoryStreamer.start_streaming"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.start_streaming" title="Link to this definition">¶</a></dt>
+<dd><p>Launches background streaming worker thread.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>waypoints</strong> – Sequence of waypoints to stream.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if streaming started, False otherwise.</p>
+</dd>
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.stop_streaming">
+<span class="sig-name descname"><span class="pre">stop_streaming</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/trajectory_streamer.html#TrajectoryStreamer.stop_streaming"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.stop_streaming" title="Link to this definition">¶</a></dt>
+<dd><p>Aborts active streaming session and triggers E-STOP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">scarajectory.infrastructure.communication.streamer.trajectory_streamer module</a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer"><code class="docutils literal notranslate"><span class="pre">TrajectoryStreamer</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.MAX_PICO_QUEUE_CAPACITY"><code class="docutils literal notranslate"><span class="pre">TrajectoryStreamer.MAX_PICO_QUEUE_CAPACITY</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.connect_with_config"><code class="docutils literal notranslate"><span class="pre">TrajectoryStreamer.connect_with_config()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.disconnect"><code class="docutils literal notranslate"><span class="pre">TrajectoryStreamer.disconnect()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.get_robot_controller"><code class="docutils literal notranslate"><span class="pre">TrajectoryStreamer.get_robot_controller()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.is_connected"><code class="docutils literal notranslate"><span class="pre">TrajectoryStreamer.is_connected()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.pause_streaming"><code class="docutils literal notranslate"><span class="pre">TrajectoryStreamer.pause_streaming()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.resume_streaming"><code class="docutils literal notranslate"><span class="pre">TrajectoryStreamer.resume_streaming()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.send_raw_command"><code class="docutils literal notranslate"><span class="pre">TrajectoryStreamer.send_raw_command()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.send_semantic_command"><code class="docutils literal notranslate"><span class="pre">TrajectoryStreamer.send_semantic_command()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.set_observer"><code class="docutils literal notranslate"><span class="pre">TrajectoryStreamer.set_observer()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.start_streaming"><code class="docutils literal notranslate"><span class="pre">TrajectoryStreamer.start_streaming()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.trajectory_streamer.TrajectoryStreamer.stop_streaming"><code class="docutils literal notranslate"><span class="pre">TrajectoryStreamer.stop_streaming()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.communication.streamer.stream_execution_worker.html"
+                          title="previous chapter">scarajectory.infrastructure.communication.streamer.stream_execution_worker module</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.communication.transport.html"
+                          title="next chapter">scarajectory.infrastructure.communication.transport package</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/scarajectory.infrastructure.communication.streamer.trajectory_streamer.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.communication.transport.html" title="scarajectory.infrastructure.communication.transport package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.communication.streamer.stream_execution_worker.html" title="scarajectory.infrastructure.communication.streamer.stream_execution_worker module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.communication.html" >scarajectory.infrastructure.communication package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.infrastructure.communication.streamer.html" >scarajectory.infrastructure.communication.streamer package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.communication.streamer.trajectory_streamer module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

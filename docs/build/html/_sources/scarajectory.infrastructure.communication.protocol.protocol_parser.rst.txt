@@ -5,4 +5,3 @@ scarajectory.infrastructure.communication.protocol.protocol\_parser module
    :members:
    :undoc-members:
    :show-inheritance:
-   :private-members:

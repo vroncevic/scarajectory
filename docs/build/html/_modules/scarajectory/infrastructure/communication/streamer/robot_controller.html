@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>scarajectory.infrastructure.communication.streamer.robot_controller &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/classic.css?v=514cf933" />
+    
+    <script src="../../../../../_static/documentation_options.js?v=57319df4"></script>
+    <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.communication.streamer.robot_controller</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for scarajectory.infrastructure.communication.streamer.robot_controller</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Module</span>
+<span class="sd">    robot_controller.py</span>
+<span class="sd">Copyright</span>
+<span class="sd">    Copyright (C) 2026 Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;</span>
+<span class="sd">    scarajectory is free software: you can redistribute it and/or modify it</span>
+<span class="sd">    under the terms of the GNU General Public License as published by the</span>
+<span class="sd">    Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">    (at your option) any later version.</span>
+<span class="sd">    scarajectory is distributed in the hope that it will be useful, but</span>
+<span class="sd">    WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
+<span class="sd">    See the GNU General Public License for more details.</span>
+<span class="sd">    You should have received a copy of the GNU General Public License along</span>
+<span class="sd">    with this program. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">Info</span>
+<span class="sd">    Dedicated semantic robot controller adapter for immediate hardware actuation and diagnostics.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span>
+
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.communication.itrajectory_streamer</span> <span class="kn">import</span> <span class="n">ITrajectoryStreamer</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.protocol.command_formatter</span> <span class="kn">import</span> <span class="n">CommandFormatter</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
+<span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
+
+
+<div class="viewcode-block" id="RobotController">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.streamer.robot_controller.html#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController">[docs]</a>
+<span class="k">class</span> <span class="nc">RobotController</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Semantic robot controller executing immediate manual actuation commands.</span>
+
+<span class="sd">        It defines:</span>
+
+<span class="sd">            :attributes:</span>
+<span class="sd">                | _streamer - Trajectory streamer used for transmitting ASCII protocol commands.</span>
+<span class="sd">            :methods:</span>
+<span class="sd">                | __init__ - Initializes the robot controller with injected streamer.</span>
+<span class="sd">                | is_connected - Checks if communication transport is connected.</span>
+<span class="sd">                | send_command - Transmits formatted command string if connected.</span>
+<span class="sd">                | home - Executes robot homing routine.</span>
+<span class="sd">                | enable - Energizes joint stepper motors.</span>
+<span class="sd">                | disable - De-energizes joint stepper motors.</span>
+<span class="sd">                | set_feedrate_override - Sets execution speed override percentage.</span>
+<span class="sd">                | set_vacuum_pump - Sets end-effector vacuum pump state.</span>
+<span class="sd">                | pulse_purge_valve - Pulses purge valve briefly to release vacuum suction.</span>
+<span class="sd">                | set_valve - Sets purge valve state.</span>
+<span class="sd">                | jog - Jogs specific robot axis by relative distance.</span>
+<span class="sd">                | query_status - Queries microcontroller runtime status.</span>
+<span class="sd">                | query_position - Queries current end-effector coordinates.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">_streamer</span><span class="p">:</span> <span class="n">ITrajectoryStreamer</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">streamer</span><span class="p">:</span> <span class="n">ITrajectoryStreamer</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Initializes the robot controller with injected streamer.</span>
+
+<span class="sd">            :param streamer: ITrajectoryStreamer instance.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_streamer</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ITrajectoryStreamer</span><span class="p">]</span> <span class="o">=</span> <span class="n">streamer</span>
+
+<div class="viewcode-block" id="RobotController.is_connected">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.streamer.robot_controller.html#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.is_connected">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_connected</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Checks whether communication transport is active.</span>
+
+<span class="sd">            :return: True if connected, False otherwise.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_streamer</span><span class="o">.</span><span class="n">is_connected</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="RobotController.send_command">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.streamer.robot_controller.html#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.send_command">[docs]</a>
+    <span class="k">def</span> <span class="nf">send_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Transmits formatted command string if connected.</span>
+
+<span class="sd">            :param cmd: Formatted command string.</span>
+<span class="sd">            :return: True if transmitted, False if disconnected.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_connected</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_streamer</span><span class="o">.</span><span class="n">send_raw_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="RobotController.home">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.streamer.robot_controller.html#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.home">[docs]</a>
+    <span class="k">def</span> <span class="nf">home</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Executes robot homing routine.</span>
+
+<span class="sd">            :return: True if command transmitted successfully.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="n">CommandFormatter</span><span class="o">.</span><span class="n">format_home</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="RobotController.enable">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.streamer.robot_controller.html#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.enable">[docs]</a>
+    <span class="k">def</span> <span class="nf">enable</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Energizes joint stepper motors.</span>
+
+<span class="sd">            :return: True if command transmitted successfully.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="n">CommandFormatter</span><span class="o">.</span><span class="n">format_enable</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="RobotController.disable">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.streamer.robot_controller.html#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.disable">[docs]</a>
+    <span class="k">def</span> <span class="nf">disable</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            De-energizes joint stepper motors.</span>
+
+<span class="sd">            :return: True if command transmitted successfully.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="n">CommandFormatter</span><span class="o">.</span><span class="n">format_disable</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="RobotController.set_feedrate_override">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.streamer.robot_controller.html#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.set_feedrate_override">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_feedrate_override</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pct</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Sets execution speed override percentage.</span>
+
+<span class="sd">            :param pct: Speed override percentage between 10 and 200.</span>
+<span class="sd">            :return: True if command transmitted successfully.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="n">CommandFormatter</span><span class="o">.</span><span class="n">format_override</span><span class="p">(</span><span class="n">pct</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="RobotController.set_vacuum_pump">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.streamer.robot_controller.html#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.set_vacuum_pump">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_vacuum_pump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Sets end-effector vacuum pump state.</span>
+
+<span class="sd">            :param state: True for ON, False for OFF.</span>
+<span class="sd">            :return: True if command transmitted successfully.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="n">CommandFormatter</span><span class="o">.</span><span class="n">format_pump</span><span class="p">(</span><span class="n">state</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="RobotController.pulse_purge_valve">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.streamer.robot_controller.html#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.pulse_purge_valve">[docs]</a>
+    <span class="k">def</span> <span class="nf">pulse_purge_valve</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Pulses purge valve briefly to release vacuum suction.</span>
+
+<span class="sd">            :return: True if command transmitted successfully.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_connected</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="n">CommandFormatter</span><span class="o">.</span><span class="n">format_valve</span><span class="p">(</span><span class="kc">True</span><span class="p">))</span>
+        <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_delayed_valve_off</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_delayed_valve_off</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Internal worker turning purge valve off after brief pulse.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mf">0.3</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_connected</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="n">CommandFormatter</span><span class="o">.</span><span class="n">format_valve</span><span class="p">(</span><span class="kc">False</span><span class="p">))</span>
+
+<div class="viewcode-block" id="RobotController.set_valve">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.streamer.robot_controller.html#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.set_valve">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_valve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Sets purge valve state.</span>
+
+<span class="sd">            :param state: True for open, False for closed.</span>
+<span class="sd">            :return: True if command transmitted successfully.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="n">CommandFormatter</span><span class="o">.</span><span class="n">format_valve</span><span class="p">(</span><span class="n">state</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="RobotController.jog">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.streamer.robot_controller.html#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.jog">[docs]</a>
+    <span class="k">def</span> <span class="nf">jog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">step</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Jogs specific robot axis by relative distance.</span>
+
+<span class="sd">            :param axis: Axis identifier (&#39;X&#39;, &#39;Y&#39;, &#39;Z&#39;, &#39;Phi&#39;).</span>
+<span class="sd">            :param step: Displacement step value.</span>
+<span class="sd">            :return: True if command transmitted successfully.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="n">CommandFormatter</span><span class="o">.</span><span class="n">format_jog</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">step</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="RobotController.query_status">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.streamer.robot_controller.html#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.query_status">[docs]</a>
+    <span class="k">def</span> <span class="nf">query_status</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Queries microcontroller runtime status.</span>
+
+<span class="sd">            :return: True if command transmitted successfully.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="n">CommandFormatter</span><span class="o">.</span><span class="n">format_status</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="RobotController.query_position">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.streamer.robot_controller.html#scarajectory.infrastructure.communication.streamer.robot_controller.RobotController.query_position">[docs]</a>
+    <span class="k">def</span> <span class="nf">query_position</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Queries current end-effector coordinates.</span>
+
+<span class="sd">            :return: True if command transmitted successfully.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">send_command</span><span class="p">(</span><span class="n">CommandFormatter</span><span class="o">.</span><span class="n">format_getpos</span><span class="p">())</span></div>
+</div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.communication.streamer.robot_controller</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

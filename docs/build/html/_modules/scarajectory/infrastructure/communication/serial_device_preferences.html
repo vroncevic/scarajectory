@@ -59,10 +59,11 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">ClassVar</span>
+
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.preferences.connection_preferences_repository</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ConnectionPreferencesRepository</span>
+<span class="p">)</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
@@ -74,6 +75,7 @@
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
 
 
+
 <div class="viewcode-block" id="SerialDevicePreferences">
 <a class="viewcode-back" href="../../../../scarajectory.infrastructure.communication.serial_device_preferences.html#scarajectory.infrastructure.communication.serial_device_preferences.SerialDevicePreferences">[docs]</a>
 <span class="k">class</span> <span class="nc">SerialDevicePreferences</span><span class="p">:</span>
@@ -83,15 +85,13 @@
 <span class="sd">        It defines:</span>
 
 <span class="sd">            :attributes:</span>
-<span class="sd">                | CONFIG_DIR - Directory path for configuration storage.</span>
-<span class="sd">                | CONFIG_FILE - File path to the serial device configuration JSON.</span>
+<span class="sd">                | _repository - Default connection preferences repository.</span>
 <span class="sd">            :methods:</span>
 <span class="sd">                | load_preference - Reads previously saved port and baud rate.</span>
 <span class="sd">                | save_preference - Persists active port and baud rate to storage.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="n">CONFIG_DIR</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~/.config/scara&#39;</span><span class="p">))</span>
-    <span class="n">CONFIG_FILE</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~/.config/scara/serial_device.json&#39;</span><span class="p">))</span>
+    <span class="n">_repository</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">ConnectionPreferencesRepository</span><span class="p">]</span> <span class="o">=</span> <span class="n">ConnectionPreferencesRepository</span><span class="p">()</span>
 
 <div class="viewcode-block" id="SerialDevicePreferences.load_preference">
 <a class="viewcode-back" href="../../../../scarajectory.infrastructure.communication.serial_device_preferences.html#scarajectory.infrastructure.communication.serial_device_preferences.SerialDevicePreferences.load_preference">[docs]</a>
@@ -101,20 +101,8 @@
 <span class="sd">            Reads previously saved serial port and baud rate.</span>
 
 <span class="sd">            :return: Tuple of (port, baud) or (None, None) if not found.</span>
-<span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">CONFIG_FILE</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
-                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">CONFIG_FILE</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
-                    <span class="n">payload</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
-                    <span class="n">raw_port</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;port&#39;</span><span class="p">)</span>
-                    <span class="n">raw_baud</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;baud&#39;</span><span class="p">)</span>
-                    <span class="n">port</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">raw_port</span><span class="p">)</span> <span class="k">if</span> <span class="n">raw_port</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
-                    <span class="n">baud</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">raw_baud</span><span class="p">)</span> <span class="k">if</span> <span class="n">raw_baud</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
-                    <span class="k">return</span> <span class="n">port</span><span class="p">,</span> <span class="n">baud</span>
-        <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">):</span>
-            <span class="k">pass</span>
-        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_repository</span><span class="o">.</span><span class="n">load_preference</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="SerialDevicePreferences.save_preference">
@@ -127,17 +115,8 @@
 <span class="sd">            :param port: Serial port identifier (e.g. &#39;/dev/ttyACM0&#39;).</span>
 <span class="sd">            :param baud: Communication baud rate integer.</span>
 <span class="sd">            :return: True if persisted successfully, False otherwise.</span>
-<span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">port</span> <span class="ow">or</span> <span class="n">port</span> <span class="o">==</span> <span class="s1">&#39;Virtual / None&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">cls</span><span class="o">.</span><span class="n">CONFIG_DIR</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">CONFIG_FILE</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
-                <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">({</span><span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="n">port</span><span class="p">,</span> <span class="s1">&#39;baud&#39;</span><span class="p">:</span> <span class="n">baud</span><span class="p">},</span> <span class="n">stream</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-            <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_repository</span><span class="o">.</span><span class="n">save_preference</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">baud</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

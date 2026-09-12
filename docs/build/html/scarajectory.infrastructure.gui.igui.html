@@ -15,8 +15,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="scarajectory.infrastructure.gui.itable module" href="scarajectory.infrastructure.gui.itable.html" />
-    <link rel="prev" title="scarajectory.infrastructure.gui.icontrols module" href="scarajectory.infrastructure.gui.icontrols.html" /> 
+    <link rel="next" title="scarajectory.infrastructure.storage package" href="scarajectory.infrastructure.storage.html" />
+    <link rel="prev" title="scarajectory.infrastructure.gui.gui_event_mediator module" href="scarajectory.infrastructure.gui.gui_event_mediator.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -28,10 +28,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.gui.itable.html" title="scarajectory.infrastructure.gui.itable module"
+          <a href="scarajectory.infrastructure.storage.html" title="scarajectory.infrastructure.storage package"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.gui.icontrols.html" title="scarajectory.infrastructure.gui.icontrols module"
+          <a href="scarajectory.infrastructure.gui.gui_event_mediator.html" title="scarajectory.infrastructure.gui.gui_event_mediator module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
@@ -86,21 +86,6 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd>
 </dl>
 </div></blockquote>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.igui.IGUI._abc_impl">
-<span class="sig-name descname"><span class="pre">_abc_impl</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;_abc._abc_data</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.igui.IGUI._abc_impl" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.igui.IGUI._is_protocol">
-<span class="sig-name descname"><span class="pre">_is_protocol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.igui.IGUI._is_protocol" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.igui.IGUI._is_runtime_protocol">
-<span class="sig-name descname"><span class="pre">_is_runtime_protocol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.igui.IGUI._is_runtime_protocol" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.igui.IGUI.is_initialized">
 <span class="sig-name descname"><span class="pre">is_initialized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/igui.html#IGUI.is_initialized"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.igui.IGUI.is_initialized" title="Link to this definition">¶</a></dt>
@@ -108,9 +93,6 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>True if initialized, False otherwise.</p>
-</dd>
-<dt class="field-even">Exceptions<span class="colon">:</span></dt>
-<dd class="field-even"><p>None.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -123,9 +105,6 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>filepath</strong> – Path to the trajectory JSON file.</p>
 </dd>
-<dt class="field-even">Exceptions<span class="colon">:</span></dt>
-<dd class="field-even"><p>None.</p>
-</dd>
 </dl>
 </dd></dl>
 
@@ -137,9 +116,6 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>enabled</strong> – True to enforce deadzone, False to disable.</p>
 </dd>
-<dt class="field-even">Exceptions<span class="colon">:</span></dt>
-<dd class="field-even"><p>None.</p>
-</dd>
 </dl>
 </dd></dl>
 
@@ -147,22 +123,12 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.igui.IGUI.start">
 <span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/igui.html#IGUI.start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.igui.IGUI.start" title="Link to this definition">¶</a></dt>
 <dd><p>Starts the GUI main event loop.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.igui.IGUI.stop">
 <span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/igui.html#IGUI.stop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.igui.IGUI.stop" title="Link to this definition">¶</a></dt>
 <dd><p>Closes and destroys the GUI window.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
-</dd>
-</dl>
 </dd></dl>
 
 </dd></dl>
@@ -181,9 +147,6 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <ul>
 <li><a class="reference internal" href="#">scarajectory.infrastructure.gui.igui module</a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.igui.IGUI"><code class="docutils literal notranslate"><span class="pre">IGUI</span></code></a><ul>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.igui.IGUI._abc_impl"><code class="docutils literal notranslate"><span class="pre">IGUI._abc_impl</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.igui.IGUI._is_protocol"><code class="docutils literal notranslate"><span class="pre">IGUI._is_protocol</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.igui.IGUI._is_runtime_protocol"><code class="docutils literal notranslate"><span class="pre">IGUI._is_runtime_protocol</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.igui.IGUI.is_initialized"><code class="docutils literal notranslate"><span class="pre">IGUI.is_initialized()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.igui.IGUI.load_file"><code class="docutils literal notranslate"><span class="pre">IGUI.load_file()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.igui.IGUI.set_deadzone"><code class="docutils literal notranslate"><span class="pre">IGUI.set_deadzone()</span></code></a></li>
@@ -198,13 +161,13 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.gui.icontrols.html"
-                          title="previous chapter">scarajectory.infrastructure.gui.icontrols module</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.gui_event_mediator.html"
+                          title="previous chapter">scarajectory.infrastructure.gui.gui_event_mediator module</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.gui.itable.html"
-                          title="next chapter">scarajectory.infrastructure.gui.itable module</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.storage.html"
+                          title="next chapter">scarajectory.infrastructure.storage package</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -237,10 +200,10 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.gui.itable.html" title="scarajectory.infrastructure.gui.itable module"
+          <a href="scarajectory.infrastructure.storage.html" title="scarajectory.infrastructure.storage package"
              >next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.gui.icontrols.html" title="scarajectory.infrastructure.gui.icontrols module"
+          <a href="scarajectory.infrastructure.gui.gui_event_mediator.html" title="scarajectory.infrastructure.gui.gui_event_mediator module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>

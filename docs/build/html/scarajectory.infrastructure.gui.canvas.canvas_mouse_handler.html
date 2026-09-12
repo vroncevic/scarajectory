@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>scarajectory.infrastructure.gui.canvas.canvas_mouse_handler module &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
+    
+    <script src="_static/documentation_options.js?v=57319df4"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="scarajectory.infrastructure.gui.canvas.canvas_preview_renderer module" href="scarajectory.infrastructure.gui.canvas.canvas_preview_renderer.html" />
+    <link rel="prev" title="scarajectory.infrastructure.gui.canvas.canvas_event_binder module" href="scarajectory.infrastructure.gui.canvas.canvas_event_binder.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.canvas.canvas_preview_renderer.html" title="scarajectory.infrastructure.gui.canvas.canvas_preview_renderer module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.canvas.canvas_event_binder.html" title="scarajectory.infrastructure.gui.canvas.canvas_event_binder module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.gui.html" >scarajectory.infrastructure.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.infrastructure.gui.canvas.html" accesskey="U">scarajectory.infrastructure.gui.canvas package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.canvas.canvas_mouse_handler module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-scarajectory.infrastructure.gui.canvas.canvas_mouse_handler">
+<span id="scarajectory-infrastructure-gui-canvas-canvas-mouse-handler-module"></span><h1>scarajectory.infrastructure.gui.canvas.canvas_mouse_handler module<a class="headerlink" href="#module-scarajectory.infrastructure.gui.canvas.canvas_mouse_handler" title="Link to this heading">¶</a></h1>
+<dl class="simple">
+<dt>Module</dt><dd><p>canvas_mouse_handler.py</p>
+</dd>
+<dt>Copyright</dt><dd><p>Copyright (C) 2026 Vladimir Roncevic &lt;<a class="reference external" href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+scarajectory is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+scarajectory is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along
+with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+</dd>
+<dt>Info</dt><dd><p>Translates mouse interaction and drag events into CAD vector canvas operations.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.</span></span><span class="sig-name descname"><span class="pre">CanvasMouseHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.trajectory.itrajectory_plan.html#scarajectory.core.model.trajectory.itrajectory_plan.ITrajectoryPlan" title="scarajectory.core.model.trajectory.itrajectory_plan.ITrajectoryPlan"><span class="pre">ITrajectoryPlan</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">vp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.model.viewport_transform.html#scarajectory.infrastructure.gui.model.viewport_transform.ViewportTransform" title="scarajectory.infrastructure.gui.model.viewport_transform.ViewportTransform"><span class="pre">ViewportTransform</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.model.canvas_interaction_state.html#scarajectory.infrastructure.gui.model.canvas_interaction_state.CanvasInteractionState" title="scarajectory.infrastructure.gui.model.canvas_interaction_state.CanvasInteractionState"><span class="pre">CanvasInteractionState</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas/canvas_mouse_handler.html#CanvasMouseHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Handles mouse press, drag, release, and wheel interaction for CAD vector drawing.</p>
+<p>It defines:</p>
+<blockquote>
+<div><dl class="field-list">
+<dt class="field-odd">attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="line-block">
+<div class="line">SELECT_HIT_RADIUS_PX - Hit detection pixel radius for selecting waypoints.</div>
+<div class="line">FREEHAND_MIN_DISTANCE_MM - Minimum distance threshold in mm for freehand point sampling.</div>
+<div class="line">CIRCLE_MIN_RADIUS_MM - Minimum radius threshold in mm for inserting circle shapes.</div>
+<div class="line">CIRCLE_DEFAULT_STEPS - Number of waypoint segments used for circle discretization.</div>
+<div class="line">_plan - Active trajectory plan interface.</div>
+<div class="line">_vp - Viewport transformation matrix.</div>
+<div class="line">_state - Interactive mouse pan, drag, and selection state.</div>
+</div>
+</dd>
+<dt class="field-even">methods<span class="colon">:</span></dt>
+<dd class="field-even"><div class="line-block">
+<div class="line">__init__ - Initializes handler with injected plan, viewport, and interaction state.</div>
+<div class="line">handle_mouse_down - Processes mouse button press for tool interaction or panning.</div>
+<div class="line">handle_mouse_drag - Processes mouse motion for active tool or viewport panning.</div>
+<div class="line">handle_mouse_up - Processes mouse button release and commits shape insertions.</div>
+<div class="line">format_cursor_status - Computes world coordinates and zoom percentage for cursor status.</div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.CIRCLE_DEFAULT_STEPS">
+<span class="sig-name descname"><span class="pre">CIRCLE_DEFAULT_STEPS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">16</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.CIRCLE_DEFAULT_STEPS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.CIRCLE_MIN_RADIUS_MM">
+<span class="sig-name descname"><span class="pre">CIRCLE_MIN_RADIUS_MM</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5.0</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.CIRCLE_MIN_RADIUS_MM" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.FREEHAND_MIN_DISTANCE_MM">
+<span class="sig-name descname"><span class="pre">FREEHAND_MIN_DISTANCE_MM</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5.0</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.FREEHAND_MIN_DISTANCE_MM" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.SELECT_HIT_RADIUS_PX">
+<span class="sig-name descname"><span class="pre">SELECT_HIT_RADIUS_PX</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">12.0</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.SELECT_HIT_RADIUS_PX" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.format_cursor_status">
+<span class="sig-name descname"><span class="pre">format_cursor_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas/canvas_mouse_handler.html#CanvasMouseHandler.format_cursor_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.format_cursor_status" title="Link to this definition">¶</a></dt>
+<dd><p>Computes world coordinates and zoom percentage for cursor status bar display.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>event</strong> – Tkinter mouse Event.</p></li>
+<li><p><strong>width</strong> – Current canvas pixel width.</p></li>
+<li><p><strong>height</strong> – Current canvas pixel height.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted status readout string.</p>
+</dd>
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.handle_mouse_down">
+<span class="sig-name descname"><span class="pre">handle_mouse_down</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tool_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.model.canvas_tool_mode.html#scarajectory.infrastructure.gui.model.canvas_tool_mode.CanvasToolMode" title="scarajectory.infrastructure.gui.model.canvas_tool_mode.CanvasToolMode"><span class="pre">CanvasToolMode</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.model.canvas_settings.html#scarajectory.infrastructure.gui.model.canvas_settings.CanvasSettings" title="scarajectory.infrastructure.gui.model.canvas_settings.CanvasSettings"><span class="pre">CanvasSettings</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas/canvas_mouse_handler.html#CanvasMouseHandler.handle_mouse_down"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.handle_mouse_down" title="Link to this definition">¶</a></dt>
+<dd><p>Processes mouse button press for tool interaction or viewport panning.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>event</strong> – Tkinter mouse Event.</p></li>
+<li><p><strong>width</strong> – Current canvas pixel width.</p></li>
+<li><p><strong>height</strong> – Current canvas pixel height.</p></li>
+<li><p><strong>tool_mode</strong> – Active CanvasToolMode.</p></li>
+<li><p><strong>settings</strong> – Active CanvasSettings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.handle_mouse_drag">
+<span class="sig-name descname"><span class="pre">handle_mouse_drag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tool_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.model.canvas_tool_mode.html#scarajectory.infrastructure.gui.model.canvas_tool_mode.CanvasToolMode" title="scarajectory.infrastructure.gui.model.canvas_tool_mode.CanvasToolMode"><span class="pre">CanvasToolMode</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.model.canvas_settings.html#scarajectory.infrastructure.gui.model.canvas_settings.CanvasSettings" title="scarajectory.infrastructure.gui.model.canvas_settings.CanvasSettings"><span class="pre">CanvasSettings</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas/canvas_mouse_handler.html#CanvasMouseHandler.handle_mouse_drag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.handle_mouse_drag" title="Link to this definition">¶</a></dt>
+<dd><p>Processes mouse motion for active tool or viewport panning.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>event</strong> – Tkinter mouse Event.</p></li>
+<li><p><strong>width</strong> – Current canvas pixel width.</p></li>
+<li><p><strong>height</strong> – Current canvas pixel height.</p></li>
+<li><p><strong>tool_mode</strong> – Active CanvasToolMode.</p></li>
+<li><p><strong>settings</strong> – Active CanvasSettings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if canvas redraw is needed, False otherwise.</p>
+</dd>
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.handle_mouse_up">
+<span class="sig-name descname"><span class="pre">handle_mouse_up</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tool_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.model.canvas_tool_mode.html#scarajectory.infrastructure.gui.model.canvas_tool_mode.CanvasToolMode" title="scarajectory.infrastructure.gui.model.canvas_tool_mode.CanvasToolMode"><span class="pre">CanvasToolMode</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.model.canvas_settings.html#scarajectory.infrastructure.gui.model.canvas_settings.CanvasSettings" title="scarajectory.infrastructure.gui.model.canvas_settings.CanvasSettings"><span class="pre">CanvasSettings</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas/canvas_mouse_handler.html#CanvasMouseHandler.handle_mouse_up"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.handle_mouse_up" title="Link to this definition">¶</a></dt>
+<dd><p>Processes mouse button release and commits shape insertions to plan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>event</strong> – Tkinter mouse Event.</p></li>
+<li><p><strong>width</strong> – Current canvas pixel width.</p></li>
+<li><p><strong>height</strong> – Current canvas pixel height.</p></li>
+<li><p><strong>tool_mode</strong> – Active CanvasToolMode.</p></li>
+<li><p><strong>settings</strong> – Active CanvasSettings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">scarajectory.infrastructure.gui.canvas.canvas_mouse_handler module</a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler"><code class="docutils literal notranslate"><span class="pre">CanvasMouseHandler</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.CIRCLE_DEFAULT_STEPS"><code class="docutils literal notranslate"><span class="pre">CanvasMouseHandler.CIRCLE_DEFAULT_STEPS</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.CIRCLE_MIN_RADIUS_MM"><code class="docutils literal notranslate"><span class="pre">CanvasMouseHandler.CIRCLE_MIN_RADIUS_MM</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.FREEHAND_MIN_DISTANCE_MM"><code class="docutils literal notranslate"><span class="pre">CanvasMouseHandler.FREEHAND_MIN_DISTANCE_MM</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.SELECT_HIT_RADIUS_PX"><code class="docutils literal notranslate"><span class="pre">CanvasMouseHandler.SELECT_HIT_RADIUS_PX</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.format_cursor_status"><code class="docutils literal notranslate"><span class="pre">CanvasMouseHandler.format_cursor_status()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.handle_mouse_down"><code class="docutils literal notranslate"><span class="pre">CanvasMouseHandler.handle_mouse_down()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.handle_mouse_drag"><code class="docutils literal notranslate"><span class="pre">CanvasMouseHandler.handle_mouse_drag()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.handle_mouse_up"><code class="docutils literal notranslate"><span class="pre">CanvasMouseHandler.handle_mouse_up()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.canvas.canvas_event_binder.html"
+                          title="previous chapter">scarajectory.infrastructure.gui.canvas.canvas_event_binder module</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.canvas.canvas_preview_renderer.html"
+                          title="next chapter">scarajectory.infrastructure.gui.canvas.canvas_preview_renderer module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.canvas.canvas_preview_renderer.html" title="scarajectory.infrastructure.gui.canvas.canvas_preview_renderer module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.canvas.canvas_event_binder.html" title="scarajectory.infrastructure.gui.canvas.canvas_event_binder module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.gui.html" >scarajectory.infrastructure.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.infrastructure.gui.canvas.html" >scarajectory.infrastructure.gui.canvas package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.canvas.canvas_mouse_handler module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

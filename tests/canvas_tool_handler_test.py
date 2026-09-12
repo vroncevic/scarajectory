@@ -21,17 +21,17 @@ Info
 
 from __future__ import annotations
 
-import os
-import sys
-import unittest
+from os.path import abspath, dirname
+from sys import path
+from unittest import TestCase, main
 
-pkg_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if pkg_dir not in sys.path:
-    sys.path.insert(0, pkg_dir)
+pkg_dir = dirname(dirname(abspath(__file__)))
+if pkg_dir not in path:
+    path.insert(0, pkg_dir)
 
-from scarajectory.core.model.waypoint import Waypoint
-from scarajectory.core.model.canvas_settings import CanvasSettings
-from scarajectory.infrastructure.gui.components.canvas_tool_handler import CanvasToolHandler
+from scarajectory.core.model.trajectory.waypoint import Waypoint
+from scarajectory.infrastructure.gui.model.canvas_settings import CanvasSettings
+from scarajectory.infrastructure.gui.canvas.canvas_tool_handler import CanvasToolHandler
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -43,7 +43,7 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-class TestCanvasToolHandler(unittest.TestCase):
+class TestCanvasToolHandler(TestCase):
     '''
         Test cases for CanvasToolHandler geometry discretization and hit detection.
 
@@ -127,4 +127,4 @@ class TestCanvasToolHandler(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    main()

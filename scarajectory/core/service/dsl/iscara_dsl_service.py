@@ -23,10 +23,11 @@ from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
-from scarajectory.core.model.dsl.scara_diagnostic import ScaraDiagnostic
-from scarajectory.core.model.itrajectory_plan import ITrajectoryPlan
-from scarajectory.core.model.scara_bounds import ScaraBounds
-from scarajectory.core.model.trajectory_plan import TrajectoryPlan
+from scarajectory.core.service.dsl.iscara_dsl_compiler import IScaraDslCompiler
+from scarajectory.core.service.dsl.iscara_dsl_validator import IScaraDslValidator
+from scarajectory.core.service.dsl.iscara_plan_exporter_service import (
+    IScaraPlanExporterService,
+)
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -39,67 +40,15 @@ __status__ = 'Updated'
 
 
 @runtime_checkable
-class IScaraDslService(Protocol):
+class IScaraDslService(
+    IScaraDslCompiler,
+    IScaraDslValidator,
+    IScaraPlanExporterService,
+    Protocol,
+):
     '''
-        High-level orchestration service for SCARA DSL source processing.
+        High-level composite orchestration service protocol for SCARA DSL processing.
 
-        It defines:
-
-            :methods:
-                | compile_script - Compiles DSL source code into executable TrajectoryPlan.
-                | validate_script - Checks syntax and kinematics of DSL script.
-                | lint_script - Performs static analysis checks on DSL script string.
-                | export_plan - Serializes active TrajectoryPlan to DSL source text.
+        Combines compilation, validation, linting, and trajectory plan export contracts.
     '''
 
-    def compile_script(
-        self,
-        *,
-        source: str,
-        bounds: ScaraBounds | None = None,
-    ) -> TrajectoryPlan:
-        '''
-            Compiles DSL source code into an executable and validated TrajectoryPlan.
-
-            :param source: Raw .scara script text.
-            :param bounds: Optional robot kinematic boundary constraints.
-            :return: Validated TrajectoryPlan instance.
-            :exceptions: ValueError if parsing or kinematic validation fails.
-        '''
-
-    def validate_script(
-        self,
-        *,
-        source: str,
-        bounds: ScaraBounds | None = None,
-    ) -> tuple[bool, list[str]]:
-        '''
-            Validates syntax and kinematic feasibility of a DSL script without mutating active plan.
-
-            :param source: Raw .scara script text.
-            :param bounds: Optional robot kinematic boundary constraints.
-            :return: Tuple of (is_valid, messages_list).
-            :exceptions: None.
-        '''
-
-    def lint_script(
-        self,
-        *,
-        source: str,
-    ) -> tuple[ScaraDiagnostic, ...]:
-        '''
-            Performs static analysis checks on a DSL script string.
-
-            :param source: Raw .scara script text.
-            :return: Tuple of ScaraDiagnostic findings.
-            :exceptions: None.
-        '''
-
-    def export_plan(self, *, plan: ITrajectoryPlan) -> str:
-        '''
-            Serializes active TrajectoryPlan into formatted .scara DSL source text.
-
-            :param plan: TrajectoryPlan instance to serialize.
-            :return: Formatted SCARA DSL script.
-            :exceptions: None.
-        '''
