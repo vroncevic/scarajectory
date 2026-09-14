@@ -118,7 +118,13 @@ class TcpTransport(BaseTransport):
         if not self._sock:
             return b''
         try:
-            return self._sock.recv(size)
+            chunk: bytes = self._sock.recv(size)
+
+            if not chunk:
+                raise ConnectionResetError('Remote peer disconnected')
+
+            return chunk
+
         except SocketTimeout:
             return b''
 

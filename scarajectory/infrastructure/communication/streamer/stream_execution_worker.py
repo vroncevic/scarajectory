@@ -225,7 +225,7 @@ class StreamExecutionWorker:
                 False,
             )
 
-    def handle_incoming_line(self, *, line: str) -> None:
+    def handle_incoming_line(self, line: str) -> None:
         '''
             Evaluates incoming serial response line and updates buffer capacity counters.
 

@@ -132,6 +132,7 @@ class BaseTransport:
         '''
             Terminates communication link and frees resources.
         '''
+        was_open: bool = self._channel_is_open()
         self._stop_event.set()
         self._close_channel()
 
@@ -139,7 +140,7 @@ class BaseTransport:
             self._reader_thread.join(timeout=0.2)
             self._reader_thread = None
 
-        if self._on_log:
+        if was_open and self._on_log:
             self._on_log(f'[HOST]: Disconnected from {self._channel_name()}', False)
 
     def send_raw(self, cmd: str) -> bool:
@@ -179,14 +180,22 @@ class BaseTransport:
                 data: bytes = self._read_bytes(64)
                 if data:
                     buffer += data.decode('utf-8', errors='ignore')
+
                     while '\n' in buffer:
                         line: str
                         line, buffer = buffer.split('\n', 1)
                         line = line.strip()
+
                         if line and self._on_line:
-                            self._on_line(line)
+                            try:
+                                self._on_line(line)
+
+                            except Exception as cb_exc:
+                                if self._on_log:
+                                    self._on_log(f'[ERR]: Packet callback error: {cb_exc}', False)
                 else:
                     sleep(0.01)
+
             except Exception:
                 if not self._stop_event.is_set():
                     abnormal_disconnect = True

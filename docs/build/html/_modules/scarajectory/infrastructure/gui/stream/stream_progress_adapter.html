@@ -134,7 +134,13 @@
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="s1">&#39;Connection lost&#39;</span> <span class="ow">in</span> <span class="n">text</span> <span class="ow">or</span> <span class="s1">&#39;Disconnected from&#39;</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_disconnected</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_disconnected</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="s1">&#39;Connected to &#39;</span> <span class="ow">in</span> <span class="n">text</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&gt;&gt;&gt;&#39;</span><span class="p">):</span>
+            <span class="n">parts</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;Connected to &#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">target</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_connected</span><span class="p">(</span><span class="n">target</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="StreamProgressAdapter.set_connected">

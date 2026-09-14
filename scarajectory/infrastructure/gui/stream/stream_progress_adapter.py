@@ -90,6 +90,12 @@ class StreamProgressAdapter:
         '''
         if 'Connection lost' in text or 'Disconnected from' in text:
             self.set_disconnected()
+        elif 'Connected to ' in text and not text.startswith('>>>'):
+            parts = text.split('Connected to ')
+
+            if len(parts) > 1:
+                target = parts[1].split(' ')[0]
+                self.set_connected(target)
 
     def set_connected(self, port: str) -> None:
         '''
