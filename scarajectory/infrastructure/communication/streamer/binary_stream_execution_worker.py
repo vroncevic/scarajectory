@@ -27,18 +27,19 @@ from threading import Event, Thread
 from time import sleep, time
 from typing import Final
 
-from scarajectory.core.model.communication.protocol.binary_frame import BinaryFrame
+from scaralang.core.model.protocol.binary_frame import BinaryFrame
 from scarajectory.core.model.communication.telemetry.diagnostics_snapshot import DiagnosticsSnapshot
 from scarajectory.core.model.communication.event.fault_event import FaultEvent
-from scarajectory.core.model.communication.protocol.message_id import MessageId
+from scaralang.core.model.protocol.message_id import MessageId
 from scarajectory.core.model.communication.event.move_event import MoveEvent
 from scarajectory.core.model.communication.telemetry.scara_status import ScaraStatus
 from scarajectory.core.model.communication.stream.stream_session import StreamSession
 from scarajectory.core.model.communication.stream.stream_state import StreamState
-from scarajectory.core.model.dsl.binary.program import Program
-from scarajectory.core.model.dsl.binary.step import Step
+from scaralang.core.model.dsl.binary.program import Program
+from scaralang.core.model.dsl.binary.step import Step
 from scarajectory.core.model.trajectory.waypoint import Waypoint
-from scarajectory.infrastructure.communication.protocol.binary.parser.binary_frame_parser import BinaryFrameParser
+from scaralang.infrastructure.communication.protocol.binary.parser.binary_frame_parser import BinaryFrameParser
+from scaralang.infrastructure.communication.protocol.binary.parser.binary_payload_unpacker import BinaryPayloadUnpacker
 from scarajectory.infrastructure.communication.streamer.binary_packet_strategy import BinaryPacketStrategy
 from scarajectory.infrastructure.communication.streamer.flow_controller import FlowController
 
@@ -237,7 +238,7 @@ class BinaryStreamExecutionWorker:
         """
         session: StreamSession | None = self._session
         if frame.msg_id == MessageId.RESP_ACK:
-            acked_id, q_count = BinaryFrameParser.unpack_ack(frame.payload)
+            acked_id, q_count = BinaryPayloadUnpacker.unpack_ack(frame.payload)
             if session is not None:
                 self._flow_controller.handle_binary_ack(session, q_count)
         elif frame.msg_id == MessageId.RESP_NACK:
@@ -246,11 +247,11 @@ class BinaryStreamExecutionWorker:
                 if session.remote_queue_depth > 0:
                     session.remote_queue_depth -= 1
         elif frame.msg_id == MessageId.RESP_MOVE_EVENT:
-            evt: MoveEvent = BinaryFrameParser.unpack_move_event(frame.payload)
+            evt: MoveEvent = BinaryPayloadUnpacker.unpack_move_event(frame.payload)
             if session is not None:
                 self._flow_controller.handle_binary_move_event(session, evt.event_type)
         elif frame.msg_id == MessageId.RESP_FAULT_EVENT:
-            fault: FaultEvent = BinaryFrameParser.unpack_fault_event(frame.payload)
+            fault: FaultEvent = BinaryPayloadUnpacker.unpack_fault_event(frame.payload)
             self._notify_log(
                 f'[FIRMWARE FAULT]: code={fault.fault_code} severity={fault.severity}',
                 False,
@@ -259,13 +260,13 @@ class BinaryStreamExecutionWorker:
                 self.stop()
                 self._on_state_change(StreamState.STOPPED)
         elif frame.msg_id == MessageId.RESP_DIAGNOSTICS:
-            diag: DiagnosticsSnapshot = BinaryFrameParser.unpack_diagnostics(frame.payload)
+            diag: DiagnosticsSnapshot = BinaryPayloadUnpacker.unpack_diagnostics(frame.payload)
             self._notify_log(
                 f'[FIRMWARE DIAG]: uptime={diag.uptime_ms}ms heap_free={diag.heap_free_bytes}B step_buf={diag.step_buffer_free}',
                 False,
             )
         elif frame.msg_id == MessageId.RESP_STATUS:
-            status: ScaraStatus = BinaryFrameParser.unpack_scara_status(frame.payload)
+            status: ScaraStatus = BinaryPayloadUnpacker.unpack_scara_status(frame.payload)
             self._notify_log(
                 f'[FIRMWARE STATUS]: state={status.state} x={status.x:.2f} y={status.y:.2f} z={status.z:.2f}',
                 False,

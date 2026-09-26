@@ -24,10 +24,10 @@ from __future__ import annotations
 from threading import Thread
 from time import sleep
 
-from scarajectory.core.model.communication.protocol.binary_frame import BinaryFrame
+from scaralang.core.model.protocol.binary_frame import BinaryFrame
 from scarajectory.core.model.communication.protocol.protocol_mode import ProtocolMode
-from scarajectory.core.model.communication.protocol.tool_id import ToolId
-from scarajectory.core.service.communication.protocol.ibinary_frame_builder import IBinaryFrameBuilder
+from scaralang.core.model.protocol.tool_id import ToolId
+from scaralang.core.service.protocol.ibinary_frame_builder import IBinaryFrameBuilder
 from scarajectory.core.service.communication.stream.iraw_channel import IRawChannel
 from scarajectory.infrastructure.communication.controller.base_sub_controller import BaseSubController
 from scarajectory.infrastructure.communication.protocol.ascii.formatter.command_formatter import CommandFormatter

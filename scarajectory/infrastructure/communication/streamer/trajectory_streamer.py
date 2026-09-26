@@ -25,21 +25,21 @@ from collections.abc import Sequence
 from datetime import datetime
 from time import time
 
-from scarajectory.core.model.communication.protocol.binary_frame import BinaryFrame
-from scarajectory.core.model.communication.protocol.message_id import MessageId
+from scaralang.core.model.protocol.binary_frame import BinaryFrame
+from scaralang.core.model.protocol.message_id import MessageId
 from scarajectory.core.model.communication.protocol.protocol_mode import ProtocolMode
 from scarajectory.core.model.communication.stream.stream_config import StreamConfig
 from scarajectory.core.model.communication.stream.stream_session import StreamSession
 from scarajectory.core.model.communication.stream.stream_state import StreamState
-from scarajectory.core.model.dsl.binary.program import Program
+from scaralang.core.model.dsl.binary.program import Program
 from scarajectory.core.model.trajectory.waypoint import Waypoint
-from scarajectory.core.service.communication.protocol.ibinary_frame_builder import IBinaryFrameBuilder
+from scaralang.core.service.protocol.ibinary_frame_builder import IBinaryFrameBuilder
 from scarajectory.core.service.communication.stream.iexecution_worker import IExecutionWorker
 from scarajectory.core.service.communication.stream.iobserver import IObserver
 from scarajectory.core.service.communication.stream.session_factory import SessionFactory
 from scarajectory.infrastructure.communication.controller.robot_controller import RobotController
 from scarajectory.infrastructure.communication.protocol.ascii.formatter.command_formatter import CommandFormatter
-from scarajectory.infrastructure.communication.protocol.binary.builder.binary_frame_builder_factory import BinaryFrameBuilderFactory
+from scaralang.infrastructure.communication.protocol.binary.builder.binary_frame_builder_factory import BinaryFrameBuilderFactory
 from scarajectory.infrastructure.communication.streamer.flow_controller import FlowController
 from scarajectory.infrastructure.communication.streamer.stream_connection_manager import StreamConnectionManager
 from scarajectory.infrastructure.communication.streamer.stream_observer_dispatcher import StreamObserverDispatcher

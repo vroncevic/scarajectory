@@ -129,14 +129,9 @@ Tool structure
          │   │   │   │   ├── connection_preference.py
          │   │   │   │   └── __init__.py
          │   │   │   ├── protocol/
-         │   │   │   │   ├── binary_frame.py
-         │   │   │   │   ├── error_code.py
          │   │   │   │   ├── __init__.py
-         │   │   │   │   ├── joint_steps.py
-         │   │   │   │   ├── message_id.py
          │   │   │   │   ├── protocol_mode.py
-         │   │   │   │   ├── scara_response.py
-         │   │   │   │   └── tool_id.py
+         │   │   │   │   └── scara_response.py
          │   │   │   ├── stream/
          │   │   │   │   ├── __init__.py
          │   │   │   │   ├── stream_config.py
@@ -150,23 +145,9 @@ Tool structure
          │   │   │       └── scara_status.py
          │   │   ├── dsl/
          │   │   │   ├── ast/
-         │   │   │   │   ├── command_type.py
-         │   │   │   │   ├── __init__.py
-         │   │   │   │   ├── instruction.py
-         │   │   │   │   └── program.py
          │   │   │   ├── binary/
-         │   │   │   │   ├── __init__.py
-         │   │   │   │   ├── program.py
-         │   │   │   │   └── step.py
          │   │   │   ├── diagnostic/
-         │   │   │   │   ├── diagnostic.py
-         │   │   │   │   ├── diagnostic_severity.py
-         │   │   │   │   └── __init__.py
-         │   │   │   ├── __init__.py
          │   │   │   └── token/
-         │   │   │       ├── __init__.py
-         │   │   │       ├── token.py
-         │   │   │       └── token_type.py
          │   │   ├── __init__.py
          │   │   ├── kinematics/
          │   │   │   ├── __init__.py
@@ -197,8 +178,6 @@ Tool structure
          │       │   │   ├── connection_preference_factory.py
          │       │   │   └── __init__.py
          │       │   ├── protocol/
-         │       │   │   ├── ibinary_frame_builder.py
-         │       │   │   ├── ibinary_frame_parser.py
          │       │   │   ├── icommand_formatter.py
          │       │   │   ├── __init__.py
          │       │   │   └── iprotocol_parser.py
@@ -225,119 +204,21 @@ Tool structure
          │       │   └── iscara_config_loader.py
          │       ├── dsl/
          │       │   ├── ast/
-         │       │   │   ├── iinstruction_factory.py
-         │       │   │   ├── __init__.py
-         │       │   │   ├── instruction_factory.py
-         │       │   │   ├── iprogram_factory.py
-         │       │   │   ├── program_factory.py
-         │       │   │   ├── scara_program_serializer.py
-         │       │   │   └── scara_source_generator.py
          │       │   ├── binary/
          │       │   │   ├── command/
-         │       │   │   │   ├── command_compiler.py
-         │       │   │   │   ├── command_compiler_factory.py
-         │       │   │   │   ├── icommand_compiler.py
-         │       │   │   │   └── __init__.py
-         │       │   │   ├── compiler.py
-         │       │   │   ├── compiler_factory.py
-         │       │   │   ├── icompiler.py
-         │       │   │   ├── __init__.py
          │       │   │   ├── motion/
-         │       │   │   │   ├── imotion_compiler.py
-         │       │   │   │   ├── __init__.py
-         │       │   │   │   ├── motion_compiler.py
-         │       │   │   │   └── motion_compiler_factory.py
          │       │   │   └── step/
-         │       │   │       ├── __init__.py
-         │       │   │       ├── istep_discretizer.py
-         │       │   │       ├── step_discretizer.py
-         │       │   │       └── step_discretizer_factory.py
          │       │   ├── compiler/
-         │       │   │   ├── __init__.py
-         │       │   │   ├── iscara_compiler.py
          │       │   │   ├── motion/
-         │       │   │   │   ├── arc_interpolator.py
-         │       │   │   │   ├── arc_move_compiler.py
-         │       │   │   │   ├── arc_move_compiler_factory.py
-         │       │   │   │   ├── cartesian_move_compiler.py
-         │       │   │   │   ├── cartesian_move_compiler_factory.py
-         │       │   │   │   ├── iarc_interpolator.py
-         │       │   │   │   ├── __init__.py
-         │       │   │   │   ├── motion_command_compiler.py
-         │       │   │   │   ├── motion_command_compiler_factory.py
-         │       │   │   │   ├── vertical_move_compiler.py
-         │       │   │   │   └── vertical_move_compiler_factory.py
-         │       │   │   ├── primitive/
-         │       │   │   │   ├── control_command_compiler.py
-         │       │   │   │   ├── __init__.py
-         │       │   │   │   ├── iprimitive_compiler.py
-         │       │   │   │   ├── state_command_compiler.py
-         │       │   │   │   └── tool_command_compiler.py
-         │       │   │   ├── scara_compiler.py
-         │       │   │   ├── scara_compiler_context.py
-         │       │   │   └── scara_compiler_factory.py
+         │       │   │   └── primitive/
          │       │   ├── diagnostic/
-         │       │   │   ├── __init__.py
-         │       │   │   └── scara_diagnostic_formatter.py
          │       │   ├── exporter/
-         │       │   │   ├── __init__.py
-         │       │   │   ├── iscara_plan_exporter.py
-         │       │   │   ├── scara_plan_exporter.py
-         │       │   │   └── scara_plan_exporter_factory.py
-         │       │   ├── __init__.py
-         │       │   ├── iscara_dsl_compiler.py
-         │       │   ├── iscara_dsl_service.py
-         │       │   ├── iscara_dsl_validator.py
-         │       │   ├── iscara_plan_exporter_service.py
          │       │   ├── lexer/
-         │       │   │   ├── __init__.py
-         │       │   │   ├── iscara_lexer.py
-         │       │   │   ├── scara_lexer.py
-         │       │   │   └── scara_lexer_factory.py
          │       │   ├── linter/
-         │       │   │   ├── __init__.py
-         │       │   │   ├── iscara_linter.py
-         │       │   │   ├── rules/
-         │       │   │   │   ├── __init__.py
-         │       │   │   │   ├── iscara_lint_rule.py
-         │       │   │   │   ├── motion_lint_rule.py
-         │       │   │   │   ├── pneumatic_lint_rule.py
-         │       │   │   │   ├── state_lint_rule.py
-         │       │   │   │   └── timing_lint_rule.py
-         │       │   │   ├── scara_lint_context.py
-         │       │   │   ├── scara_linter.py
-         │       │   │   └── scara_linter_factory.py
+         │       │   │   └── rules/
          │       │   ├── macro/
-         │       │   │   ├── frame_macro_expander.py
-         │       │   │   ├── imacro_expander.py
-         │       │   │   ├── __init__.py
-         │       │   │   ├── jump_macro_expander.py
-         │       │   │   ├── pallet_macro_expander.py
-         │       │   │   └── tangent_macro_expander.py
-         │       │   ├── parser/
-         │       │   │   ├── commands/
-         │       │   │   │   ├── approach_retract_parser.py
-         │       │   │   │   ├── arc_command_parser.py
-         │       │   │   │   ├── config_command_parser.py
-         │       │   │   │   ├── flow_command_parser.py
-         │       │   │   │   ├── frame_command_parser.py
-         │       │   │   │   ├── __init__.py
-         │       │   │   │   ├── jog_command_parser.py
-         │       │   │   │   ├── jump_command_parser.py
-         │       │   │   │   ├── motion_command_parser.py
-         │       │   │   │   ├── pallet_command_parser.py
-         │       │   │   │   ├── probe_command_parser.py
-         │       │   │   │   ├── tool_command_parser.py
-         │       │   │   │   ├── tool_orient_command_parser.py
-         │       │   │   │   └── zone_command_parser.py
-         │       │   │   ├── icommand_parser.py
-         │       │   │   ├── __init__.py
-         │       │   │   ├── iscara_parser.py
-         │       │   │   ├── parameter_extractor.py
-         │       │   │   ├── scara_parser.py
-         │       │   │   └── scara_parser_factory.py
-         │       │   ├── scara_dsl_service.py
-         │       │   └── scara_dsl_service_factory.py
+         │       │   └── parser/
+         │       │       └── commands/
          │       ├── engine.py
          │       ├── __init__.py
          │       ├── iservice.py
@@ -450,22 +331,9 @@ Tool structure
          │   │   │   │       ├── protocol_status_classifier.py
          │   │   │   │       └── response_parser.py
          │   │   │   ├── binary/
-         │   │   │   │   ├── binary_delimiter.py
-         │   │   │   │   ├── binary_struct_format.py
          │   │   │   │   ├── builder/
-         │   │   │   │   │   ├── binary_frame_builder.py
-         │   │   │   │   │   ├── binary_frame_builder_factory.py
-         │   │   │   │   │   └── __init__.py
          │   │   │   │   ├── checksum/
-         │   │   │   │   │   ├── crc16_ccitt.py
-         │   │   │   │   │   └── __init__.py
-         │   │   │   │   ├── __init__.py
          │   │   │   │   └── parser/
-         │   │   │   │       ├── binary_frame_parser.py
-         │   │   │   │       ├── binary_frame_parser_factory.py
-         │   │   │   │       ├── binary_payload_unpacker.py
-         │   │   │   │       ├── __init__.py
-         │   │   │   │       └── parser_state.py
          │   │   │   └── __init__.py
          │   │   ├── serial_port_scanner.py
          │   │   ├── streamer/
@@ -592,7 +460,7 @@ Tool structure
              ├── registry.py
              └── validator.py
 
-     81 directories, 395 files
+     81 directories, 263 files
 
 ✨ Features
 -----------

@@ -7,8 +7,6 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.core.service.communication.protocol.ibinary_frame_builder
-   scarajectory.core.service.communication.protocol.ibinary_frame_parser
    scarajectory.core.service.communication.protocol.icommand_formatter
    scarajectory.core.service.communication.protocol.iprotocol_parser
 

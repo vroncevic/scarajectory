@@ -23,8 +23,8 @@ from __future__ import annotations
 
 from scarajectory.core.model.kinematics.transmission_parameters import TransmissionParameters
 from scarajectory.core.service.kinematics.ikinematics_service import IKinematicsService
-from scarajectory.infrastructure.communication.protocol.binary.builder.binary_frame_builder import BinaryFrameBuilder
-from scarajectory.infrastructure.communication.protocol.binary.builder.binary_frame_builder_factory import BinaryFrameBuilderFactory
+from scaralang.infrastructure.communication.protocol.binary.builder.binary_frame_builder import BinaryFrameBuilder
+from scaralang.infrastructure.communication.protocol.binary.builder.binary_frame_builder_factory import BinaryFrameBuilderFactory
 from scarajectory.infrastructure.communication.streamer.binary_packet_strategy import BinaryPacketStrategy
 
 __author__ = 'Vladimir Roncevic'

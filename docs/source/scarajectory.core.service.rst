@@ -9,7 +9,6 @@ Subpackages
 
    scarajectory.core.service.communication
    scarajectory.core.service.config
-   scarajectory.core.service.dsl
    scarajectory.core.service.kinematics
    scarajectory.core.service.trajectory
 

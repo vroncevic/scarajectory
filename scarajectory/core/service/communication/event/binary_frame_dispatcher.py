@@ -24,7 +24,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from typing import Any
 
-from scarajectory.core.model.communication.protocol.binary_frame import BinaryFrame
+from scaralang.core.model.protocol.binary_frame import BinaryFrame
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'

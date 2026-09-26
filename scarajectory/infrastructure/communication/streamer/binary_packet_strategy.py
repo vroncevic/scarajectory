@@ -24,12 +24,12 @@ from __future__ import annotations
 from math import pi, radians
 from typing import Final
 
-from scarajectory.core.model.communication.protocol.binary_frame import BinaryFrame
-from scarajectory.core.model.communication.protocol.joint_steps import JointSteps
+from scaralang.core.model.protocol.binary_frame import BinaryFrame
+from scaralang.core.model.protocol.joint_steps import JointSteps
 from scarajectory.core.model.kinematics.transmission_parameters import TransmissionParameters
 from scarajectory.core.model.trajectory.waypoint import Waypoint
 from scarajectory.core.service.kinematics.ikinematics_service import IKinematicsService
-from scarajectory.infrastructure.communication.protocol.binary.builder.binary_frame_builder import BinaryFrameBuilder
+from scaralang.infrastructure.communication.protocol.binary.builder.binary_frame_builder import BinaryFrameBuilder
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'

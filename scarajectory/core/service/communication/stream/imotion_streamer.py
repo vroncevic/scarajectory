@@ -24,7 +24,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import Protocol, runtime_checkable
 
-from scarajectory.core.model.dsl.binary.program import Program
+from scaralang.core.model.dsl.binary.program import Program
 from scarajectory.core.model.trajectory.waypoint import Waypoint
 
 __author__ = 'Vladimir Roncevic'

@@ -8,7 +8,6 @@ Subpackages
    :maxdepth: 4
 
    scarajectory.infrastructure.communication.protocol.ascii
-   scarajectory.infrastructure.communication.protocol.binary
 
 Module contents
 ---------------

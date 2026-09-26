@@ -24,8 +24,8 @@ from __future__ import annotations
 from collections.abc import Callable
 
 from scarajectory.core.model.communication.stream.stream_state import StreamState
-from scarajectory.infrastructure.communication.protocol.binary.parser.binary_frame_parser import BinaryFrameParser
-from scarajectory.infrastructure.communication.protocol.binary.parser.binary_frame_parser_factory import BinaryFrameParserFactory
+from scaralang.infrastructure.communication.protocol.binary.parser.binary_frame_parser import BinaryFrameParser
+from scaralang.infrastructure.communication.protocol.binary.parser.binary_frame_parser_factory import BinaryFrameParserFactory
 from scarajectory.infrastructure.communication.streamer.binary_packet_strategy import BinaryPacketStrategy
 from scarajectory.infrastructure.communication.streamer.binary_stream_execution_worker import BinaryStreamExecutionWorker
 from scarajectory.infrastructure.communication.streamer.flow_controller import FlowController

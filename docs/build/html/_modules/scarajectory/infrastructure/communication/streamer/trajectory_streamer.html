@@ -63,21 +63,21 @@
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.communication.protocol.binary_frame</span> <span class="kn">import</span> <span class="n">BinaryFrame</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.communication.protocol.message_id</span> <span class="kn">import</span> <span class="n">MessageId</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.model.protocol.binary_frame</span> <span class="kn">import</span> <span class="n">BinaryFrame</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.model.protocol.message_id</span> <span class="kn">import</span> <span class="n">MessageId</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.model.communication.protocol.protocol_mode</span> <span class="kn">import</span> <span class="n">ProtocolMode</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.model.communication.stream.stream_config</span> <span class="kn">import</span> <span class="n">StreamConfig</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.model.communication.stream.stream_session</span> <span class="kn">import</span> <span class="n">StreamSession</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.model.communication.stream.stream_state</span> <span class="kn">import</span> <span class="n">StreamState</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.binary.program</span> <span class="kn">import</span> <span class="n">Program</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.model.dsl.binary.program</span> <span class="kn">import</span> <span class="n">Program</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.waypoint</span> <span class="kn">import</span> <span class="n">Waypoint</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.communication.protocol.ibinary_frame_builder</span> <span class="kn">import</span> <span class="n">IBinaryFrameBuilder</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.protocol.ibinary_frame_builder</span> <span class="kn">import</span> <span class="n">IBinaryFrameBuilder</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.communication.stream.iexecution_worker</span> <span class="kn">import</span> <span class="n">IExecutionWorker</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.communication.stream.iobserver</span> <span class="kn">import</span> <span class="n">IObserver</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.communication.stream.session_factory</span> <span class="kn">import</span> <span class="n">SessionFactory</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.controller.robot_controller</span> <span class="kn">import</span> <span class="n">RobotController</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.protocol.ascii.formatter.command_formatter</span> <span class="kn">import</span> <span class="n">CommandFormatter</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.protocol.binary.builder.binary_frame_builder_factory</span> <span class="kn">import</span> <span class="n">BinaryFrameBuilderFactory</span>
+<span class="kn">from</span> <span class="nn">scaralang.infrastructure.communication.protocol.binary.builder.binary_frame_builder_factory</span> <span class="kn">import</span> <span class="n">BinaryFrameBuilderFactory</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.streamer.flow_controller</span> <span class="kn">import</span> <span class="n">FlowController</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.streamer.stream_connection_manager</span> <span class="kn">import</span> <span class="n">StreamConnectionManager</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.streamer.stream_observer_dispatcher</span> <span class="kn">import</span> <span class="n">StreamObserverDispatcher</span>

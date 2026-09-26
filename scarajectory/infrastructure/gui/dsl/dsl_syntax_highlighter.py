@@ -24,7 +24,7 @@ from __future__ import annotations
 from re import compile as re_compile, Pattern
 from tkinter import END, Text
 
-from scarajectory.core.model.dsl.ast.command_type import CommandType
+from scaralang.core.model.dsl.ast.command_type import CommandType
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'

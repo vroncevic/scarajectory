@@ -21,9 +21,9 @@ Info
 
 from __future__ import annotations
 
-from scarajectory.core.model.communication.protocol.binary_frame import BinaryFrame
+from scaralang.core.model.protocol.binary_frame import BinaryFrame
 from scarajectory.core.model.communication.protocol.protocol_mode import ProtocolMode
-from scarajectory.core.service.communication.protocol.ibinary_frame_builder import IBinaryFrameBuilder
+from scaralang.core.service.protocol.ibinary_frame_builder import IBinaryFrameBuilder
 from scarajectory.core.service.communication.stream.iraw_channel import IRawChannel
 
 __author__ = 'Vladimir Roncevic'

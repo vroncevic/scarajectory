@@ -22,7 +22,7 @@ Info
 from __future__ import annotations
 
 from scarajectory.core.model.communication.protocol.protocol_mode import ProtocolMode
-from scarajectory.core.service.communication.protocol.ibinary_frame_builder import IBinaryFrameBuilder
+from scaralang.core.service.protocol.ibinary_frame_builder import IBinaryFrameBuilder
 from scarajectory.core.service.communication.stream.iraw_channel import IRawChannel
 from scarajectory.infrastructure.communication.controller.jog_controller import JogController
 from scarajectory.infrastructure.communication.controller.jog_controller_factory import JogControllerFactory
@@ -33,7 +33,7 @@ from scarajectory.infrastructure.communication.controller.query_controller_facto
 from scarajectory.infrastructure.communication.controller.robot_controller import RobotController
 from scarajectory.infrastructure.communication.controller.tool_controller import ToolController
 from scarajectory.infrastructure.communication.controller.tool_controller_factory import ToolControllerFactory
-from scarajectory.infrastructure.communication.protocol.binary.builder.binary_frame_builder_factory import BinaryFrameBuilderFactory
+from scaralang.infrastructure.communication.protocol.binary.builder.binary_frame_builder_factory import BinaryFrameBuilderFactory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'

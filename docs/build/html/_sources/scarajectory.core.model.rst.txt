@@ -8,7 +8,6 @@ Subpackages
    :maxdepth: 4
 
    scarajectory.core.model.communication
-   scarajectory.core.model.dsl
    scarajectory.core.model.kinematics
    scarajectory.core.model.trajectory
 

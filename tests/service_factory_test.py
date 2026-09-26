@@ -36,7 +36,7 @@ from scarajectory.core.service.trajectory.validation.trajectory_validator_factor
 from scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory import TrajectoryStreamerFactory
 from scarajectory.infrastructure.storage.plan_storage_service_factory import PlanStorageServiceFactory
 from scarajectory.core.service.trajectory.plan.trajectory_plan_factory import TrajectoryPlanFactory
-from scarajectory.core.service.dsl.scara_dsl_service_factory import ScaraDslServiceFactory
+from scaralang.core.service.dsl.scara_dsl_service_factory import ScaraDslServiceFactory
 from scarajectory.core.service.kinematics.kinematics_service_factory import KinematicsServiceFactory
 
 __author__ = 'Vladimir Roncevic'

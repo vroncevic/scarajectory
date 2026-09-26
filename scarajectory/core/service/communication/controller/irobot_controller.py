@@ -23,7 +23,7 @@ from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
-from scarajectory.core.model.communication.protocol.binary_frame import BinaryFrame
+from scaralang.core.model.protocol.binary_frame import BinaryFrame
 from scarajectory.core.model.communication.protocol.protocol_mode import ProtocolMode
 from scarajectory.core.service.communication.controller.ijog_controller import IJogController
 from scarajectory.core.service.communication.controller.imotion_controller import IMotionController

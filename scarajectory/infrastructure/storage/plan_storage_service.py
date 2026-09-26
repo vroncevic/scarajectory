@@ -32,7 +32,7 @@ from ats_utilities.context.factory import ContextBundleFactory
 
 from scarajectory.core.model.trajectory.waypoint import Waypoint
 from scarajectory.core.service.trajectory.plan.itrajectory_plan import ITrajectoryPlan
-from scarajectory.core.model.dsl.binary.program import Program
+from scaralang.core.model.dsl.binary.program import Program
 from scarajectory.infrastructure.storage.trajectory_serializer import TrajectorySerializer
 
 __author__ = 'Vladimir Roncevic'

@@ -29,13 +29,13 @@ pkg_dir = dirname(dirname(abspath(__file__)))
 if pkg_dir not in path:
     path.insert(0, pkg_dir)
 
-from scarajectory.core.model.communication.protocol.binary_frame import BinaryFrame
-from scarajectory.core.model.communication.protocol.message_id import MessageId
+from scaralang.core.model.protocol.binary_frame import BinaryFrame
+from scaralang.core.model.protocol.message_id import MessageId
 from scarajectory.core.model.communication.protocol.protocol_mode import ProtocolMode
 from scarajectory.core.model.communication.stream.stream_session import StreamSession
 from scarajectory.core.model.communication.stream.stream_state import StreamState
-from scarajectory.core.model.dsl.binary.program import Program
-from scarajectory.core.model.dsl.binary.step import Step
+from scaralang.core.model.dsl.binary.program import Program
+from scaralang.core.model.dsl.binary.step import Step
 from scarajectory.core.model.kinematics.scara_bounds import ScaraBounds
 from scarajectory.core.model.kinematics.transmission_parameters import TransmissionParameters
 from scarajectory.infrastructure.settings.config_loader_factory import ScaraConfigLoaderFactory
@@ -44,10 +44,10 @@ from scarajectory.core.service.trajectory.discretization.waypoint_factory import
 from scarajectory.core.service.communication.event.binary_frame_dispatcher_factory import BinaryFrameDispatcherFactory
 from scarajectory.core.service.communication.stream.session_factory import SessionFactory
 from scarajectory.core.service.kinematics.kinematics_service_factory import KinematicsServiceFactory
-from scarajectory.infrastructure.communication.protocol.binary.builder.binary_frame_builder import BinaryFrameBuilder
-from scarajectory.infrastructure.communication.protocol.binary.builder.binary_frame_builder_factory import BinaryFrameBuilderFactory
-from scarajectory.infrastructure.communication.protocol.binary.parser.binary_frame_parser import BinaryFrameParser
-from scarajectory.infrastructure.communication.protocol.binary.parser.binary_frame_parser_factory import BinaryFrameParserFactory
+from scaralang.infrastructure.communication.protocol.binary.builder.binary_frame_builder import BinaryFrameBuilder
+from scaralang.infrastructure.communication.protocol.binary.builder.binary_frame_builder_factory import BinaryFrameBuilderFactory
+from scaralang.infrastructure.communication.protocol.binary.parser.binary_frame_parser import BinaryFrameParser
+from scaralang.infrastructure.communication.protocol.binary.parser.binary_frame_parser_factory import BinaryFrameParserFactory
 from scarajectory.infrastructure.communication.streamer.binary_packet_strategy import BinaryPacketStrategy
 from scarajectory.infrastructure.communication.streamer.binary_packet_strategy_factory import BinaryPacketStrategyFactory
 from scarajectory.infrastructure.communication.streamer.binary_stream_execution_worker import BinaryStreamExecutionWorker
