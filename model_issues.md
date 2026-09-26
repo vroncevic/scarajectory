@@ -32,11 +32,8 @@ In clean domain-driven architecture and consistent with project constraints:
 |---|---|---|---|---|---|
 | `kinematics/` | `ScaraBounds` | Pure Dataclass | 🟢 RESOLVED | Hardcoded defaults removed; loaded from JSON SSoT via `ScaraConfigLoader` | Pure frozen dataclass with slots, no hardcoded defaults |
 | `kinematics/` | `TransmissionParameters` | Pure Dataclass | 🟢 RESOLVED | Kinematic calculation methods and hardcoded defaults removed; loaded from JSON SSoT | Pure frozen dataclass with slots, no hardcoded defaults |
-| `communication/protocol/` | `MessageId` | Enum | 🟢 RESOLVED | Defined in `core/model/communication/protocol/message_id.py` | Pure Enum, wire opcodes |
-| `communication/protocol/` | `ErrorCode` | Enum | 🟢 RESOLVED | Defined in `core/model/communication/protocol/error_code.py` | Pure Enum, protocol NACK codes |
+| `communication/protocol/` | `MessageId`, `ErrorCode`, `BinaryFrame`, `JointSteps`, `ToolId` | Protocol Models | 🟢 RESOLVED (MIGRATED TO SCARALANG) | Extracted to `scaralang.core.model.protocol`; duplicate files removed from `scarajectory` | Imported directly from `scaralang` |
 | `communication/protocol/` | `ProtocolMode` | StrEnum | 🟢 RESOLVED | Defined in `core/model/communication/protocol/protocol_mode.py` (`ASCII`, `BINARY`) | Pure StrEnum wire protocol mode |
-| `communication/protocol/` | `BinaryFrame` | Pure Dataclass | 🟢 RESOLVED | Defined in `core/model/communication/protocol/binary_frame.py`; packing moved to `BinaryFrameBuilder` | Pure frozen dataclass with slots, 0 defaults |
-| `communication/protocol/` | `JointSteps` | Pure Dataclass | 🟢 RESOLVED | Defined in `core/model/communication/protocol/joint_steps.py`; codecs removed, feedrate in JSON SSoT | Pure frozen dataclass with slots, 0 defaults |
 | `communication/protocol/` | `ScaraResponse` | Pure Dataclass | 🟢 RESOLVED | Defined in `core/model/communication/protocol/scara_response.py`; 0 defaults, 0 `None` | Pure frozen dataclass with slots, 0 defaults |
 | `communication/event/` | `MoveEvent` | Pure Dataclass | 🟢 RESOLVED | Defined in `core/model/communication/event/move_event.py` for firmware `MSG_RESP_MOVE_EVENT (0x85)` | Pure frozen dataclass with slots, 0 defaults |
 | `communication/event/` | `FaultEvent` | Pure Dataclass | 🟢 RESOLVED | Defined in `core/model/communication/event/fault_event.py` for firmware `MSG_RESP_FAULT_EVENT (0x89)` | Pure frozen dataclass with slots, 0 defaults |
@@ -57,18 +54,7 @@ In clean domain-driven architecture and consistent with project constraints:
 | `trajectory/` | `PlanHistory` | Domain Service | 🟢 RESOLVED | Relocated to `core/service/trajectory/plan_history.py` | Clean service placement |
 | `trajectory/` | `TrajectoryMetrics` | Domain Service | 🟢 RESOLVED | Relocated to `core/service/trajectory/trajectory_metrics.py` | Clean service placement |
 | `trajectory/` | `TrajectorySerializer` | Storage Codec | 🟢 RESOLVED | Relocated to `infrastructure/storage/trajectory_serializer.py` | Clean infrastructure placement |
-| `dsl/binary/` | `Step` | Pure Dataclass | 🟢 RESOLVED | Defined in `step.py`; unused properties and defaults removed; legacy alias `binary_step.py`/`scara_binary_step.py` DELETED | Pure frozen dataclass with slots, 0 defaults |
-| `dsl/binary/` | `Program` | Pure Dataclass | 🟢 RESOLVED | Defined in `program.py`; file I/O and defaults removed; legacy alias `binary_program.py`/`scara_binary_program.py` DELETED | Pure frozen dataclass with slots, 0 defaults |
-| `dsl/ast/` | `Instruction` | Pure Dataclass | 🟢 RESOLVED | Defined in `instruction.py`; defaults and `to_dict()` removed; legacy alias `scara_instruction.py` DELETED | Pure frozen dataclass with slots, 0 defaults, 0 methods |
-| `dsl/ast/` | `CommandType` | StrEnum | 🟢 RESOLVED | Defined in `command_type.py`; legacy alias `scara_command_type.py` DELETED | Pure StrEnum, 1 entity per module |
-| `dsl/ast/` | `Program` | Pure Dataclass | 🟢 RESOLVED | Defined in `program.py`; methods removed, typed `tuple[Instruction, ...]`; legacy alias `scara_program.py` DELETED | Pure frozen dataclass with slots, 0 methods |
-| `dsl/ast/` | `InstructionFactory` / `ProgramFactory` | Domain Factory Services | 🟢 RESOLVED | Defined in `core/service/dsl/ast/` for safe instantiation | Clean domain service placement |
-| `dsl/ast/` | `ScaraProgramSerializer` | Domain Service | 🟢 RESOLVED | Created in `core/service/dsl/ast/scara_program_serializer.py` for dictionary serialization | Clean domain service placement |
-| `dsl/ast/` | `ScaraSourceGenerator` | Domain Service | 🟢 RESOLVED | Created in `core/service/dsl/ast/scara_source_generator.py` for DSL text unparsing | Clean domain service placement |
-| `dsl/ast/` | `IScaraInstruction` / `IScaraProgram` | Redundant Protocols | 🟢 RESOLVED | Structural protocols eliminated from model subpackage | Consumers depend directly on pure AST model nodes |
-| `dsl/diagnostic/` | `Diagnostic` & `DiagnosticSeverity` | Pure Value Objects | 🟢 RESOLVED | Defined in `diagnostic.py` & `diagnostic_severity.py`; legacy aliases DELETED | Pure frozen dataclass with slots, 0 methods |
-| `dsl/diagnostic/` | `ScaraDiagnosticFormatter` | Domain Presenter Service | 🟢 RESOLVED | Created in `core/service/dsl/diagnostic/scara_diagnostic_formatter.py` | Clean domain service placement |
-| `dsl/token/` | `Token` & `TokenType` | Pure Value Objects | 🟢 RESOLVED | Defined in `token.py` & `token_type.py`; legacy aliases DELETED | Pure models, 1 entity per module |
+| `dsl/` | All AST, Token, Diagnostic, and Binary Models | Standalone Toolchain | 🟢 RESOLVED (MIGRATED TO SCARALANG) | Extracted to `scaralang.core.model.dsl`; duplicate files removed from `scarajectory` | `scarajectory` is now a pure consumer importing from `scaralang` |
 
 
 ---

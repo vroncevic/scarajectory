@@ -30,17 +30,8 @@ This document tracks architectural compliance, SOLID principles, decomposition r
 
 | Service / Subsystem | Current State | Audit Status | Violations Identified | Actionable Remediation |
 |---|---|---|---|---|
-| `dsl/binary/Compiler` | Decomposed Coordinator (154 lines) | 🟢 RESOLVED | Decomposed into `MotionCompiler` and `CommandCompiler` with dedicated sub-factories (`compiler.py`, `motion_compiler.py`, `command_compiler.py`) | Zero private methods, pure DI |
-| `dsl/compiler/MotionCommandCompiler` | Decomposed Coordinator (179 lines) | 🟢 RESOLVED | Decomposed into `CartesianMoveCompiler`, `VerticalMoveCompiler`, `ArcMoveCompiler` with `MotionCommandCompilerFactory` | Zero private methods, pure DI |
-| `dsl/compiler/CartesianMoveCompiler` | Focused Sub-compiler (138 lines) | 🟢 COMPLIANT | None | Handles `MOVE_L` and `MOVE_J` with injected `TangentMacroExpander` |
-| `dsl/compiler/VerticalMoveCompiler` | Focused Sub-compiler (109 lines) | 🟢 COMPLIANT | None | Handles `APPROACH` and `RETRACT` vertical height offsets |
-| `dsl/compiler/ArcMoveCompiler` | Focused Sub-compiler (140 lines) | 🟢 COMPLIANT | None | Handles `ARC_CW` and `ARC_CCW` with injected `IArcInterpolator` |
-| `dsl/compiler/ScaraCompiler` | Coordinator (188 lines) | 🟢 RESOLVED | Calls `TrajectoryPlanFactory` and `TrajectoryValidatorFactory` directly | Inject `ITrajectoryPlanFactory` via `ScaraCompilerFactory` (`SVC-12`) |
-| `dsl/parser/ScaraParser` | Coordinator (175 lines) | 🟢 RESOLVED | Directly calls `ScaraProgramFactory.create(...)`; sub-parsers call `ScaraInstructionFactory` directly | Inject `IProgramFactory` and `IInstructionFactory` (`SVC-12`) |
-| `dsl/linter/ScaraLinter` | Rule Runner (144 lines) | 🟢 COMPLIANT | Pure DI via `ScaraLinterFactory`, executes rule collection | Maintain decoupled structure |
-| `dsl/ScaraDslService` | Façade / Engine (254 lines) | 🟡 MONITOR | High line count, coordinates 6 sub-services | Ensure zero internal logic; strictly delegate to sub-services |
-| `dsl/binary/` Sub-compilers | Sub-compilers | 🟢 RESOLVED | High-level sub-compilers depend strictly on `core/service/communication/protocol/ibinary_frame_builder.py` | Relocate interface abstraction to `core/service/communication/` |
-| `communication/IBinaryFrameBuilder` | Protocol Interface | 🟢 RESOLVED | Relocated to `core/service/communication/protocol/ibinary_frame_builder.py` | Clean service protocol placement |
+| `dsl/` (Toolchain & Compilers) | Standalone Package | 🟢 RESOLVED (MIGRATED TO SCARALANG) | Extracted to dedicated `scaralang` package (`scaralang.core.service.dsl`); local duplicates removed from `scarajectory` | `scarajectory` is a pure consumer importing from `scaralang` |
+| `communication/IBinaryFrameBuilder` | Protocol Interface | 🟢 RESOLVED (MIGRATED TO SCARALANG) | Extracted to `scaralang.core.service.protocol.ibinary_frame_builder`; local duplicate removed from `scarajectory` | Imported directly from `scaralang` |
 | `config/IScaraConfigLoader` | Protocol Interface | 🟢 RESOLVED | Relocated to `core/service/config/iscara_config_loader.py` | Clean service protocol placement |
 | `Service` (Engine) | Façade (207 lines) | 🟢 RESOLVED | Mandatory pure DI for `dsl_service` without fallback instantiation; 100% protocol dependencies | Require pure DI for `dsl_service` |
 | `ServiceFactory` | Domain Factory Service | 🟢 RESOLVED | Created in `core/service/service_factory.py` for assembling Service instances | Clean service factory placement |
