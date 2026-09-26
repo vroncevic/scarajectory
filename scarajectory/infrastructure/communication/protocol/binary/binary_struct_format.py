@@ -42,7 +42,7 @@ class BinaryStructFormat(StrEnum):
             :attributes:
                 | HEADER - 3-byte wire frame header (<BBB: msg_id, seq_num, len).
                 | TRAILER - 3-byte wire frame trailer (<HB: crc16, eof).
-                | JOINT_STEPS - 22-byte joint step target payload (<iiiIIH).
+                | JOINT_STEPS - 22-byte joint step target payload (<iiiiIH).
                 | TOOL_CMD - 2-byte tool command payload (<BB: tool_id, state).
                 | STATUS - 19-byte consolidated robot status payload (<BBBiiii).
                 | MOVE_EVENT - 5-byte motion execution event payload (<BI).
@@ -54,7 +54,7 @@ class BinaryStructFormat(StrEnum):
 
     HEADER = '<BBB'
     TRAILER = '<HB'
-    JOINT_STEPS = '<iiiIIH'
+    JOINT_STEPS = '<iiiiIH'
     TOOL_CMD = '<BB'
     STATUS = '<BBBiiii'
     MOVE_EVENT = '<BI'

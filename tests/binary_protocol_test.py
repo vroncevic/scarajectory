@@ -128,7 +128,7 @@ class BinaryProtocolTest(TestCase):
         '''
         self.assertEqual(str(BinaryStructFormat.HEADER), '<BBB')
         self.assertEqual(str(BinaryStructFormat.TRAILER), '<HB')
-        self.assertEqual(str(BinaryStructFormat.JOINT_STEPS), '<iiiIIH')
+        self.assertEqual(str(BinaryStructFormat.JOINT_STEPS), '<iiiiIH')
         self.assertEqual(str(BinaryStructFormat.TOOL_CMD), '<BB')
         self.assertEqual(str(BinaryStructFormat.STATUS), '<BBBiiii')
         self.assertEqual(str(BinaryStructFormat.MOVE_EVENT), '<BI')
