@@ -26,8 +26,10 @@ from tkinter import LEFT, Widget, X
 from tkinter.ttk import Button, Combobox, Frame, Label
 from typing import Final
 
+from scarajectory.core.model.communication.preferences.connection_preference import ConnectionPreference
+from scarajectory.core.service.communication.preferences.connection_preference_factory import ConnectionPreferenceFactory
 from scarajectory.infrastructure.communication.serial_port_scanner import SerialPortScanner
-from scarajectory.infrastructure.communication.serial_device_preferences import SerialDevicePreferences
+from scarajectory.infrastructure.communication.preferences.iconnection_repository import IConnectionRepository
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -49,6 +51,7 @@ class PortConnectionPanel(Frame):
                 | _cbo_ports - Dropdown list of detected serial communication ports.
                 | _btn_connect - Connect and disconnect action toggle button.
                 | _on_toggle_connect - Callback invoked on connect/disconnect click.
+                | _connection_repository - Injected hardware connection preferences repository.
             :methods:
                 | __init__ - Initializes the port connection controls layout.
                 | refresh_ports - Scans available serial/USB ports and selects preference.
@@ -60,12 +63,14 @@ class PortConnectionPanel(Frame):
     _cbo_ports: Combobox
     _btn_connect: Button
     _on_toggle_connect: Callable[[], None]
+    _connection_repository: IConnectionRepository
 
     def __init__(
         self,
         parent: Widget,
         *,
         on_toggle_connect: Callable[[], None],
+        connection_repository: IConnectionRepository,
         **kwargs: object,
     ) -> None:
         '''
@@ -73,10 +78,12 @@ class PortConnectionPanel(Frame):
 
             :param parent: Parent container widget.
             :param on_toggle_connect: Callback invoked when connection button is clicked.
+            :param connection_repository: Injected IConnectionRepository instance.
             :exceptions: None.
         '''
         super().__init__(parent, **kwargs)
         self._on_toggle_connect: Final[Callable[[], None]] = on_toggle_connect
+        self._connection_repository: Final[IConnectionRepository] = connection_repository
 
         Label(self, text='Port:').pack(side=LEFT)
         self._cbo_ports = Combobox(self, width=16)
@@ -101,14 +108,14 @@ class PortConnectionPanel(Frame):
             :exceptions: None.
         '''
         current_selection: str = self._cbo_ports.get()
-        saved_port, _ = SerialDevicePreferences.load_preference()
+        preference: ConnectionPreference = self._connection_repository.load_preference()
         ports: list[str] = ['127.0.0.1:8888 (Digital Twin)'] + SerialPortScanner.scan_ports()
         self._cbo_ports['values'] = ports
 
         if current_selection in ports:
             self._cbo_ports.set(current_selection)
-        elif saved_port:
-            matched_port = next((p for p in ports if p.startswith(saved_port)), None)
+        elif preference.port:
+            matched_port = next((p for p in ports if p.startswith(preference.port)), None)
             if matched_port:
                 self._cbo_ports.set(matched_port)
             elif ports:
@@ -155,4 +162,8 @@ class PortConnectionPanel(Frame):
         port: str = self.get_selected_port()
 
         if port and not port.startswith('127.0.0.1:8888'):
-            SerialDevicePreferences.save_preference(port, 115200)
+            preference: ConnectionPreference = ConnectionPreferenceFactory.create(
+                port=port,
+                baud=115200
+            )
+            self._connection_repository.save_preference(preference)

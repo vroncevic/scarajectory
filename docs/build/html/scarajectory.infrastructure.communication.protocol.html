@@ -15,8 +15,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="scarajectory.infrastructure.communication.protocol.command_formatter module" href="scarajectory.infrastructure.communication.protocol.command_formatter.html" />
-    <link rel="prev" title="scarajectory.infrastructure.communication.preferences.iconnection_preferences_repository module" href="scarajectory.infrastructure.communication.preferences.iconnection_preferences_repository.html" /> 
+    <link rel="next" title="scarajectory.infrastructure.communication.protocol.ascii package" href="scarajectory.infrastructure.communication.protocol.ascii.html" />
+    <link rel="prev" title="scarajectory.infrastructure.communication.preferences.iconnection_repository module" href="scarajectory.infrastructure.communication.preferences.iconnection_repository.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -28,10 +28,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.communication.protocol.command_formatter.html" title="scarajectory.infrastructure.communication.protocol.command_formatter module"
+          <a href="scarajectory.infrastructure.communication.protocol.ascii.html" title="scarajectory.infrastructure.communication.protocol.ascii package"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.communication.preferences.iconnection_preferences_repository.html" title="scarajectory.infrastructure.communication.preferences.iconnection_preferences_repository module"
+          <a href="scarajectory.infrastructure.communication.preferences.iconnection_repository.html" title="scarajectory.infrastructure.communication.preferences.iconnection_repository module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
@@ -49,115 +49,58 @@
             
   <section id="scarajectory-infrastructure-communication-protocol-package">
 <h1>scarajectory.infrastructure.communication.protocol package<a class="headerlink" href="#scarajectory-infrastructure-communication-protocol-package" title="Link to this heading">¶</a></h1>
-<section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_formatter.html">scarajectory.infrastructure.communication.protocol.command_formatter module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_formatter.html#scarajectory.infrastructure.communication.protocol.command_formatter.CommandFormatter"><code class="docutils literal notranslate"><span class="pre">CommandFormatter</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.ascii.html">scarajectory.infrastructure.communication.protocol.ascii package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.ascii.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.ascii.formatter.html">scarajectory.infrastructure.communication.protocol.ascii.formatter package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.ascii.formatter.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.ascii.formatter.html#module-scarajectory.infrastructure.communication.protocol.ascii.formatter">Module contents</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html">scarajectory.infrastructure.communication.protocol.command_templates module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates"><code class="docutils literal notranslate"><span class="pre">CommandTemplates</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.DISABLE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.DISABLE</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.ENABLE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.ENABLE</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.ESTOP"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.ESTOP</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.GETPOS"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.GETPOS</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.GET_CONFIG"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.GET_CONFIG</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.GET_ELBOW"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.GET_ELBOW</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.HOLD"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.HOLD</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.HOME"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.HOME</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.JOG_TEMPLATE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.JOG_TEMPLATE</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.MOVE_TEMPLATE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.MOVE_TEMPLATE</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.OVERRIDE_TEMPLATE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.OVERRIDE_TEMPLATE</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.PAUSE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.PAUSE</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.PUMP_OFF"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.PUMP_OFF</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.PUMP_ON"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.PUMP_ON</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.RESET_CONFIG"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.RESET_CONFIG</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.RESUME"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.RESUME</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SAVE_CONFIG"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.SAVE_CONFIG</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SETPOS_TEMPLATE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.SETPOS_TEMPLATE</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SET_CONFIG_TEMPLATE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.SET_CONFIG_TEMPLATE</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SET_DYNAMICS_TEMPLATE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.SET_DYNAMICS_TEMPLATE</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SET_ELBOW_TEMPLATE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.SET_ELBOW_TEMPLATE</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SET_HOMING_TEMPLATE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.SET_HOMING_TEMPLATE</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SET_LIMITS_TEMPLATE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.SET_LIMITS_TEMPLATE</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.SET_STEPS_TEMPLATE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.SET_STEPS_TEMPLATE</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.STATUS"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.STATUS</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.VALVE_OFF"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.VALVE_OFF</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.VALVE_ON"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.VALVE_ON</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.WAIT_TEMPLATE"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.WAIT_TEMPLATE</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.get_template"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.get_template()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.command_templates.html#scarajectory.infrastructure.communication.protocol.command_templates.CommandTemplates.list_actions"><code class="docutils literal notranslate"><span class="pre">CommandTemplates.list_actions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.ascii.parser.html">scarajectory.infrastructure.communication.protocol.ascii.parser package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.ascii.parser.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.ascii.parser.html#module-scarajectory.infrastructure.communication.protocol.ascii.parser">Module contents</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.config_command_formatter.html">scarajectory.infrastructure.communication.protocol.config_command_formatter module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.config_command_formatter.html#scarajectory.infrastructure.communication.protocol.config_command_formatter.ConfigCommandFormatter"><code class="docutils literal notranslate"><span class="pre">ConfigCommandFormatter</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.config_command_formatter.html#scarajectory.infrastructure.communication.protocol.config_command_formatter.ConfigCommandFormatter.format_get_config"><code class="docutils literal notranslate"><span class="pre">ConfigCommandFormatter.format_get_config()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.config_command_formatter.html#scarajectory.infrastructure.communication.protocol.config_command_formatter.ConfigCommandFormatter.format_save_config"><code class="docutils literal notranslate"><span class="pre">ConfigCommandFormatter.format_save_config()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.config_command_formatter.html#scarajectory.infrastructure.communication.protocol.config_command_formatter.ConfigCommandFormatter.format_set_config"><code class="docutils literal notranslate"><span class="pre">ConfigCommandFormatter.format_set_config()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.ascii.html#module-scarajectory.infrastructure.communication.protocol.ascii">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.binary.html">scarajectory.infrastructure.communication.protocol.binary package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.binary.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.binary.builder.html">scarajectory.infrastructure.communication.protocol.binary.builder package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.binary.builder.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.binary.builder.html#module-scarajectory.infrastructure.communication.protocol.binary.builder">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.binary.checksum.html">scarajectory.infrastructure.communication.protocol.binary.checksum package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.binary.checksum.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.binary.checksum.html#module-scarajectory.infrastructure.communication.protocol.binary.checksum">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.binary.parser.html">scarajectory.infrastructure.communication.protocol.binary.parser package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.binary.parser.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.binary.parser.html#module-scarajectory.infrastructure.communication.protocol.binary.parser">Module contents</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.motion_command_formatter.html">scarajectory.infrastructure.communication.protocol.motion_command_formatter module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.motion_command_formatter.html#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.motion_command_formatter.html#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_disable"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_disable()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.motion_command_formatter.html#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_enable"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_enable()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.motion_command_formatter.html#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_estop"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_estop()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.motion_command_formatter.html#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_get_elbow"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_get_elbow()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.motion_command_formatter.html#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_getpos"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_getpos()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.motion_command_formatter.html#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_home"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_home()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.motion_command_formatter.html#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_jog"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_jog()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.motion_command_formatter.html#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_move"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_move()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.motion_command_formatter.html#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_pause"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_pause()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.motion_command_formatter.html#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_program"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_program()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.motion_command_formatter.html#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_resume"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_resume()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.motion_command_formatter.html#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_set_elbow"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_set_elbow()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.motion_command_formatter.html#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_status"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_status()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.motion_command_formatter.html#scarajectory.infrastructure.communication.protocol.motion_command_formatter.MotionCommandFormatter.format_waypoint_packet"><code class="docutils literal notranslate"><span class="pre">MotionCommandFormatter.format_waypoint_packet()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.binary.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.binary.binary_delimiter.html">scarajectory.infrastructure.communication.protocol.binary.binary_delimiter module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.binary.binary_delimiter.html#scarajectory.infrastructure.communication.protocol.binary.binary_delimiter.BinaryDelimiter"><code class="docutils literal notranslate"><span class="pre">BinaryDelimiter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.binary.binary_struct_format.html">scarajectory.infrastructure.communication.protocol.binary.binary_struct_format module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.binary.binary_struct_format.html#scarajectory.infrastructure.communication.protocol.binary.binary_struct_format.BinaryStructFormat"><code class="docutils literal notranslate"><span class="pre">BinaryStructFormat</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.protocol_parser.html">scarajectory.infrastructure.communication.protocol.protocol_parser module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.protocol_parser.html#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser"><code class="docutils literal notranslate"><span class="pre">ProtocolParser</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.protocol_parser.html#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.is_action_done"><code class="docutils literal notranslate"><span class="pre">ProtocolParser.is_action_done()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.protocol_parser.html#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.is_buffer_full"><code class="docutils literal notranslate"><span class="pre">ProtocolParser.is_buffer_full()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.protocol_parser.html#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.is_complete"><code class="docutils literal notranslate"><span class="pre">ProtocolParser.is_complete()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.protocol_parser.html#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.is_error"><code class="docutils literal notranslate"><span class="pre">ProtocolParser.is_error()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.protocol_parser.html#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.is_homed_success"><code class="docutils literal notranslate"><span class="pre">ProtocolParser.is_homed_success()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.protocol_parser.html#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.is_homing_failed"><code class="docutils literal notranslate"><span class="pre">ProtocolParser.is_homing_failed()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.protocol_parser.html#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.is_move_done"><code class="docutils literal notranslate"><span class="pre">ProtocolParser.is_move_done()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.protocol_parser.html#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.is_move_failed"><code class="docutils literal notranslate"><span class="pre">ProtocolParser.is_move_failed()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.protocol_parser.html#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.is_telemetry"><code class="docutils literal notranslate"><span class="pre">ProtocolParser.is_telemetry()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.protocol_parser.html#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.parse_queue_depth"><code class="docutils literal notranslate"><span class="pre">ProtocolParser.parse_queue_depth()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.protocol_parser.html#scarajectory.infrastructure.communication.protocol.protocol_parser.ProtocolParser.parse_response"><code class="docutils literal notranslate"><span class="pre">ProtocolParser.parse_response()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.robot_response_dto.html">scarajectory.infrastructure.communication.protocol.robot_response_dto module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.robot_response_dto.html#scarajectory.infrastructure.communication.protocol.robot_response_dto.RobotResponseDTO"><code class="docutils literal notranslate"><span class="pre">RobotResponseDTO</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.robot_response_dto.html#scarajectory.infrastructure.communication.protocol.robot_response_dto.RobotResponseDTO.is_success"><code class="docutils literal notranslate"><span class="pre">RobotResponseDTO.is_success</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.robot_response_dto.html#scarajectory.infrastructure.communication.protocol.robot_response_dto.RobotResponseDTO.message"><code class="docutils literal notranslate"><span class="pre">RobotResponseDTO.message</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.robot_response_dto.html#scarajectory.infrastructure.communication.protocol.robot_response_dto.RobotResponseDTO.queue_depth"><code class="docutils literal notranslate"><span class="pre">RobotResponseDTO.queue_depth</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.robot_response_dto.html#scarajectory.infrastructure.communication.protocol.robot_response_dto.RobotResponseDTO.raw_line"><code class="docutils literal notranslate"><span class="pre">RobotResponseDTO.raw_line</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.robot_response_dto.html#scarajectory.infrastructure.communication.protocol.robot_response_dto.RobotResponseDTO.response_type"><code class="docutils literal notranslate"><span class="pre">RobotResponseDTO.response_type</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.tool_command_formatter.html">scarajectory.infrastructure.communication.protocol.tool_command_formatter module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.tool_command_formatter.html#scarajectory.infrastructure.communication.protocol.tool_command_formatter.ToolCommandFormatter"><code class="docutils literal notranslate"><span class="pre">ToolCommandFormatter</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.tool_command_formatter.html#scarajectory.infrastructure.communication.protocol.tool_command_formatter.ToolCommandFormatter.format_override"><code class="docutils literal notranslate"><span class="pre">ToolCommandFormatter.format_override()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.tool_command_formatter.html#scarajectory.infrastructure.communication.protocol.tool_command_formatter.ToolCommandFormatter.format_pump"><code class="docutils literal notranslate"><span class="pre">ToolCommandFormatter.format_pump()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.tool_command_formatter.html#scarajectory.infrastructure.communication.protocol.tool_command_formatter.ToolCommandFormatter.format_valve"><code class="docutils literal notranslate"><span class="pre">ToolCommandFormatter.format_valve()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.tool_command_formatter.html#scarajectory.infrastructure.communication.protocol.tool_command_formatter.ToolCommandFormatter.format_wait"><code class="docutils literal notranslate"><span class="pre">ToolCommandFormatter.format_wait()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.binary.html#module-scarajectory.infrastructure.communication.protocol.binary">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -197,7 +140,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <h3><a href="index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">scarajectory.infrastructure.communication.protocol package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#module-scarajectory.infrastructure.communication.protocol">Module contents</a></li>
 </ul>
 </li>
@@ -206,13 +149,13 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.communication.preferences.iconnection_preferences_repository.html"
-                          title="previous chapter">scarajectory.infrastructure.communication.preferences.iconnection_preferences_repository module</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.communication.preferences.iconnection_repository.html"
+                          title="previous chapter">scarajectory.infrastructure.communication.preferences.iconnection_repository module</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.communication.protocol.command_formatter.html"
-                          title="next chapter">scarajectory.infrastructure.communication.protocol.command_formatter module</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.communication.protocol.ascii.html"
+                          title="next chapter">scarajectory.infrastructure.communication.protocol.ascii package</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -245,10 +188,10 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.communication.protocol.command_formatter.html" title="scarajectory.infrastructure.communication.protocol.command_formatter module"
+          <a href="scarajectory.infrastructure.communication.protocol.ascii.html" title="scarajectory.infrastructure.communication.protocol.ascii package"
              >next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.communication.preferences.iconnection_preferences_repository.html" title="scarajectory.infrastructure.communication.preferences.iconnection_preferences_repository module"
+          <a href="scarajectory.infrastructure.communication.preferences.iconnection_repository.html" title="scarajectory.infrastructure.communication.preferences.iconnection_repository module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>

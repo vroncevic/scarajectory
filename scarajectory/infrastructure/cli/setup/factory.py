@@ -78,14 +78,13 @@ class CLIBundleFactory:
         '''
         CLIBundleOptionsValidator.validate(options)
 
-        service: IService | None = options.get(CLIBundleKeys.OPTION_SERVICE) if options else None
-        parser: IOptionManager | None = options.get(CLIBundleKeys.OPTION_PARSER) if options else None
-        gui: IGUI | None = options.get(CLIBundleKeys.OPTION_GUI) if options else None
+        service: IService = options[CLIBundleKeys.OPTION_SERVICE]
+        parser: IOptionManager = options[CLIBundleKeys.OPTION_PARSER]
+        gui: IGUI = options[CLIBundleKeys.OPTION_GUI]
 
         studio_definition: ICommandDefinition = StudioCommandDefinition()
         studio_executor: ICommandExecutor[ICommandDefinition, object, object, object] = StudioCommandExecutor(
-            definition=studio_definition,
-            gui=gui
+            definition=studio_definition, gui=gui
         )
         studio_cmd: CommandBundle = CommandBundle(definition=studio_definition, executor=studio_executor)
 

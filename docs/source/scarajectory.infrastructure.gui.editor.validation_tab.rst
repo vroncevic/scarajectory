@@ -5,3 +5,4 @@ scarajectory.infrastructure.gui.editor.validation\_tab module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

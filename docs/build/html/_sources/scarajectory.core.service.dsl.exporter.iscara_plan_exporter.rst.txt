@@ -5,3 +5,4 @@ scarajectory.core.service.dsl.exporter.iscara\_plan\_exporter module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

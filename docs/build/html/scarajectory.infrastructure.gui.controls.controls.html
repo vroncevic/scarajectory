@@ -15,7 +15,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="scarajectory.infrastructure.gui.controls.icontrols_panel module" href="scarajectory.infrastructure.gui.controls.icontrols_panel.html" />
+    <link rel="next" title="scarajectory.infrastructure.gui.controls.controls_panel_factory module" href="scarajectory.infrastructure.gui.controls.controls_panel_factory.html" />
     <link rel="prev" title="scarajectory.infrastructure.gui.controls package" href="scarajectory.infrastructure.gui.controls.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -28,7 +28,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.gui.controls.icontrols_panel.html" title="scarajectory.infrastructure.gui.controls.icontrols_panel module"
+          <a href="scarajectory.infrastructure.gui.controls.controls_panel_factory.html" title="scarajectory.infrastructure.gui.controls.controls_panel_factory module"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="scarajectory.infrastructure.gui.controls.html" title="scarajectory.infrastructure.gui.controls package"
@@ -70,7 +70,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.controls.controls.ControlsPanel">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.gui.controls.controls.</span></span><span class="sig-name descname"><span class="pre">ControlsPanel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.trajectory.itrajectory_plan.html#scarajectory.core.model.trajectory.itrajectory_plan.ITrajectoryPlan" title="scarajectory.core.model.trajectory.itrajectory_plan.ITrajectoryPlan"><span class="pre">ITrajectoryPlan</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">validator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.itrajectory_validator.html#scarajectory.core.service.trajectory.itrajectory_validator.ITrajectoryValidator" title="scarajectory.core.service.trajectory.itrajectory_validator.ITrajectoryValidator"><span class="pre">ITrajectoryValidator</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">streamer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.communication.itrajectory_streamer.html#scarajectory.core.service.communication.itrajectory_streamer.ITrajectoryStreamer" title="scarajectory.core.service.communication.itrajectory_streamer.ITrajectoryStreamer"><span class="pre">ITrajectoryStreamer</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.iplan_storage_service.html#scarajectory.core.service.trajectory.iplan_storage_service.IPlanStorageService" title="scarajectory.core.service.trajectory.iplan_storage_service.IPlanStorageService"><span class="pre">IPlanStorageService</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dsl_service</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.dsl.iscara_dsl_service.html#scarajectory.core.service.dsl.iscara_dsl_service.IScaraDslService" title="scarajectory.core.service.dsl.iscara_dsl_service.IScaraDslService"><span class="pre">IScaraDslService</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.iservice.html#scarajectory.core.service.iservice.IService" title="scarajectory.core.service.iservice.IService"><span class="pre">IService</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/controls/controls.html#ControlsPanel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.gui.controls.controls.</span></span><span class="sig-name descname"><span class="pre">ControlsPanel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Widget</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/controls/controls.html#ControlsPanel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></p>
 <p>Tabbed controller housing Streamer, Validation, Jog and Program preview panels.</p>
 <p>It defines:</p>
@@ -88,8 +88,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd>
 <dt class="field-even">methods<span class="colon">:</span></dt>
 <dd class="field-even"><div class="line-block">
-<div class="line">__init__ - Initializes tabbed control panels and mounts subcomponents.</div>
-<div class="line">_on_tab_changed - Handles tab switch event and flushes pending drawing tasks.</div>
+<div class="line">__init__ - Initializes tabbed container frame.</div>
+<div class="line">mount_tabs - Mounts injected tab subcomponents into notebook.</div>
 <div class="line">refresh_ports - Scans and updates available serial ports.</div>
 <div class="line">append_log - Appends message to streamer terminal log console.</div>
 <div class="line">update_progress - Updates streamer progress bar and metrics.</div>
@@ -97,47 +97,65 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd>
 </dl>
 </div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.controls.controls.ControlsPanel._dsl_editor_tab">
+<span class="sig-name descname"><span class="pre">_dsl_editor_tab</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.html#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab" title="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab"><span class="pre">DslEditorTab</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel._dsl_editor_tab" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.controls.controls.ControlsPanel._jog_tab">
+<span class="sig-name descname"><span class="pre">_jog_tab</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.stream.jog_tab.html#scarajectory.infrastructure.gui.stream.jog_tab.JogTab" title="scarajectory.infrastructure.gui.stream.jog_tab.JogTab"><span class="pre">JogTab</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel._jog_tab" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.controls.controls.ControlsPanel._notebook">
+<span class="sig-name descname"><span class="pre">_notebook</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Notebook</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel._notebook" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.controls.controls.ControlsPanel._on_tab_changed">
+<span class="sig-name descname"><span class="pre">_on_tab_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Event</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/controls/controls.html#ControlsPanel._on_tab_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel._on_tab_changed" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.controls.controls.ControlsPanel._preview_tab">
+<span class="sig-name descname"><span class="pre">_preview_tab</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.editor.preview_tab.html#scarajectory.infrastructure.gui.editor.preview_tab.PreviewTab" title="scarajectory.infrastructure.gui.editor.preview_tab.PreviewTab"><span class="pre">PreviewTab</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel._preview_tab" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.controls.controls.ControlsPanel._streamer_tab">
+<span class="sig-name descname"><span class="pre">_streamer_tab</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.stream.streamer_tab.html#scarajectory.infrastructure.gui.stream.streamer_tab.StreamerTab" title="scarajectory.infrastructure.gui.stream.streamer_tab.StreamerTab"><span class="pre">StreamerTab</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel._streamer_tab" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.controls.controls.ControlsPanel._validation_tab">
+<span class="sig-name descname"><span class="pre">_validation_tab</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.editor.validation_tab.html#scarajectory.infrastructure.gui.editor.validation_tab.ValidationTab" title="scarajectory.infrastructure.gui.editor.validation_tab.ValidationTab"><span class="pre">ValidationTab</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel._validation_tab" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.controls.controls.ControlsPanel.append_log">
 <span class="sig-name descname"><span class="pre">append_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_outgoing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/controls/controls.html#ControlsPanel.append_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel.append_log" title="Link to this definition">¶</a></dt>
-<dd><p>Appends message to streamer terminal log console.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>text</strong> – Message string.</p></li>
-<li><p><strong>is_outgoing</strong> – True if transmitted command.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Exceptions<span class="colon">:</span></dt>
-<dd class="field-even"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.controls.controls.ControlsPanel.mount_tabs">
+<span class="sig-name descname"><span class="pre">mount_tabs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dsl_editor_tab</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.html#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab" title="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab"><span class="pre">DslEditorTab</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">streamer_tab</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.stream.streamer_tab.html#scarajectory.infrastructure.gui.stream.streamer_tab.StreamerTab" title="scarajectory.infrastructure.gui.stream.streamer_tab.StreamerTab"><span class="pre">StreamerTab</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_tab</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.editor.validation_tab.html#scarajectory.infrastructure.gui.editor.validation_tab.ValidationTab" title="scarajectory.infrastructure.gui.editor.validation_tab.ValidationTab"><span class="pre">ValidationTab</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">jog_tab</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.stream.jog_tab.html#scarajectory.infrastructure.gui.stream.jog_tab.JogTab" title="scarajectory.infrastructure.gui.stream.jog_tab.JogTab"><span class="pre">JogTab</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">preview_tab</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.editor.preview_tab.html#scarajectory.infrastructure.gui.editor.preview_tab.PreviewTab" title="scarajectory.infrastructure.gui.editor.preview_tab.PreviewTab"><span class="pre">PreviewTab</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/controls/controls.html#ControlsPanel.mount_tabs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel.mount_tabs" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.controls.controls.ControlsPanel.notebook">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">notebook</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Notebook</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel.notebook" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.controls.controls.ControlsPanel.refresh_ports">
 <span class="sig-name descname"><span class="pre">refresh_ports</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/controls/controls.html#ControlsPanel.refresh_ports"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel.refresh_ports" title="Link to this definition">¶</a></dt>
-<dd><p>Scans and updates available serial ports.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.controls.controls.ControlsPanel.update_progress">
-<span class="sig-name descname"><span class="pre">update_progress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.communication.stream_progress.html#scarajectory.core.model.communication.stream_progress.StreamProgress" title="scarajectory.core.model.communication.stream_progress.StreamProgress"><span class="pre">StreamProgress</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/controls/controls.html#ControlsPanel.update_progress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel.update_progress" title="Link to this definition">¶</a></dt>
-<dd><p>Updates streamer progress bar and metrics.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>progress</strong> – StreamProgress model.</p>
-</dd>
-<dt class="field-even">Exceptions<span class="colon">:</span></dt>
-<dd class="field-even"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
+<span class="sig-name descname"><span class="pre">update_progress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.communication.stream.stream_progress.html#scarajectory.core.model.communication.stream.stream_progress.StreamProgress" title="scarajectory.core.model.communication.stream.stream_progress.StreamProgress"><span class="pre">StreamProgress</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/controls/controls.html#ControlsPanel.update_progress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel.update_progress" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -155,7 +173,16 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <ul>
 <li><a class="reference internal" href="#">scarajectory.infrastructure.gui.controls.controls module</a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel"><code class="docutils literal notranslate"><span class="pre">ControlsPanel</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel._dsl_editor_tab"><code class="docutils literal notranslate"><span class="pre">ControlsPanel._dsl_editor_tab</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel._jog_tab"><code class="docutils literal notranslate"><span class="pre">ControlsPanel._jog_tab</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel._notebook"><code class="docutils literal notranslate"><span class="pre">ControlsPanel._notebook</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel._on_tab_changed"><code class="docutils literal notranslate"><span class="pre">ControlsPanel._on_tab_changed()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel._preview_tab"><code class="docutils literal notranslate"><span class="pre">ControlsPanel._preview_tab</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel._streamer_tab"><code class="docutils literal notranslate"><span class="pre">ControlsPanel._streamer_tab</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel._validation_tab"><code class="docutils literal notranslate"><span class="pre">ControlsPanel._validation_tab</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel.append_log"><code class="docutils literal notranslate"><span class="pre">ControlsPanel.append_log()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel.mount_tabs"><code class="docutils literal notranslate"><span class="pre">ControlsPanel.mount_tabs()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel.notebook"><code class="docutils literal notranslate"><span class="pre">ControlsPanel.notebook</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel.refresh_ports"><code class="docutils literal notranslate"><span class="pre">ControlsPanel.refresh_ports()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.controls.controls.ControlsPanel.update_progress"><code class="docutils literal notranslate"><span class="pre">ControlsPanel.update_progress()</span></code></a></li>
 </ul>
@@ -172,8 +199,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.gui.controls.icontrols_panel.html"
-                          title="next chapter">scarajectory.infrastructure.gui.controls.icontrols_panel module</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.controls.controls_panel_factory.html"
+                          title="next chapter">scarajectory.infrastructure.gui.controls.controls_panel_factory module</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -206,7 +233,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.gui.controls.icontrols_panel.html" title="scarajectory.infrastructure.gui.controls.icontrols_panel module"
+          <a href="scarajectory.infrastructure.gui.controls.controls_panel_factory.html" title="scarajectory.infrastructure.gui.controls.controls_panel_factory module"
              >next</a> |</li>
         <li class="right" >
           <a href="scarajectory.infrastructure.gui.controls.html" title="scarajectory.infrastructure.gui.controls package"

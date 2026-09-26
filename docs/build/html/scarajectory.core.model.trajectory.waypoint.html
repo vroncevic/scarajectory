@@ -65,14 +65,14 @@ See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
 </dd>
-<dt>Info</dt><dd><p>Defines Waypoint data model representing a single 4-DOF motion target point.</p>
+<dt>Info</dt><dd><p>Defines pure Waypoint data model representing a single 4-DOF motion target point.</p>
 </dd>
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="scarajectory.core.model.trajectory.waypoint.Waypoint">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.core.model.trajectory.waypoint.</span></span><span class="sig-name descname"><span class="pre">Waypoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">40.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/core/model/trajectory/waypoint.html#Waypoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.trajectory.waypoint.Waypoint" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.core.model.trajectory.waypoint.</span></span><span class="sig-name descname"><span class="pre">Waypoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/core/model/trajectory/waypoint.html#Waypoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.trajectory.waypoint.Waypoint" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Immutable waypoint entity representing target coordinates, tool orientation and speed.</p>
+<p>Pure immutable waypoint entity representing target coordinates, tool orientation and speed.</p>
 <p>It defines:</p>
 <blockquote>
 <div><dl class="field-list">
@@ -87,54 +87,12 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <div class="line">command - Optional raw protocol command string associated with point.</div>
 </div>
 </dd>
-<dt class="field-even">methods<span class="colon">:</span></dt>
-<dd class="field-even"><div class="line-block">
-<div class="line">radial_distance - Calculates planar radial distance from base.</div>
-<div class="line">distance_to - Calculates 3D Euclidean distance to another waypoint.</div>
-<div class="line">to_dict - Serializes point to dictionary for JSON persistence.</div>
-<div class="line">from_dict - Deserializes waypoint from dictionary.</div>
-</div>
-</dd>
 </dl>
 </div></blockquote>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="scarajectory.core.model.trajectory.waypoint.Waypoint.command">
 <span class="sig-name descname"><span class="pre">command</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#scarajectory.core.model.trajectory.waypoint.Waypoint.command" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.core.model.trajectory.waypoint.Waypoint.distance_to">
-<span class="sig-name descname"><span class="pre">distance_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#scarajectory.core.model.trajectory.waypoint.Waypoint" title="scarajectory.core.model.trajectory.waypoint.Waypoint"><span class="pre">Waypoint</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/scarajectory/core/model/trajectory/waypoint.html#Waypoint.distance_to"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.trajectory.waypoint.Waypoint.distance_to" title="Link to this definition">¶</a></dt>
-<dd><p>Calculates 3D Euclidean distance to another waypoint.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>other</strong> – Target waypoint.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>3D distance in mm.</p>
-</dd>
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.core.model.trajectory.waypoint.Waypoint.from_dict">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#scarajectory.core.model.trajectory.waypoint.Waypoint" title="scarajectory.core.model.trajectory.waypoint.Waypoint"><span class="pre">Waypoint</span></a></span></span><a class="reference internal" href="_modules/scarajectory/core/model/trajectory/waypoint.html#Waypoint.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.trajectory.waypoint.Waypoint.from_dict" title="Link to this definition">¶</a></dt>
-<dd><p>Deserializes waypoint from dictionary.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>data</strong> – Input dictionary.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Waypoint instance.</p>
-</dd>
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="scarajectory.core.model.trajectory.waypoint.Waypoint.name">
@@ -146,38 +104,10 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <span class="sig-name descname"><span class="pre">phi</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#scarajectory.core.model.trajectory.waypoint.Waypoint.phi" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py property">
-<dt class="sig sig-object py" id="scarajectory.core.model.trajectory.waypoint.Waypoint.radial_distance">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">radial_distance</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#scarajectory.core.model.trajectory.waypoint.Waypoint.radial_distance" title="Link to this definition">¶</a></dt>
-<dd><p>Calculates planar radial distance from base r = sqrt(x^2 + y^2).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Radial distance in mm.</p>
-</dd>
-<dt class="field-even">Exceptions<span class="colon">:</span></dt>
-<dd class="field-even"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="scarajectory.core.model.trajectory.waypoint.Waypoint.speed">
 <span class="sig-name descname"><span class="pre">speed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#scarajectory.core.model.trajectory.waypoint.Waypoint.speed" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.core.model.trajectory.waypoint.Waypoint.to_dict">
-<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/scarajectory/core/model/trajectory/waypoint.html#Waypoint.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.model.trajectory.waypoint.Waypoint.to_dict" title="Link to this definition">¶</a></dt>
-<dd><p>Serializes point to dictionary for JSON persistence.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Dictionary representation.</p>
-</dd>
-<dt class="field-even">Exceptions<span class="colon">:</span></dt>
-<dd class="field-even"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="scarajectory.core.model.trajectory.waypoint.Waypoint.x">
@@ -211,13 +141,9 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <li><a class="reference internal" href="#">scarajectory.core.model.trajectory.waypoint module</a><ul>
 <li><a class="reference internal" href="#scarajectory.core.model.trajectory.waypoint.Waypoint"><code class="docutils literal notranslate"><span class="pre">Waypoint</span></code></a><ul>
 <li><a class="reference internal" href="#scarajectory.core.model.trajectory.waypoint.Waypoint.command"><code class="docutils literal notranslate"><span class="pre">Waypoint.command</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.trajectory.waypoint.Waypoint.distance_to"><code class="docutils literal notranslate"><span class="pre">Waypoint.distance_to()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.trajectory.waypoint.Waypoint.from_dict"><code class="docutils literal notranslate"><span class="pre">Waypoint.from_dict()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.core.model.trajectory.waypoint.Waypoint.name"><code class="docutils literal notranslate"><span class="pre">Waypoint.name</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.core.model.trajectory.waypoint.Waypoint.phi"><code class="docutils literal notranslate"><span class="pre">Waypoint.phi</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.trajectory.waypoint.Waypoint.radial_distance"><code class="docutils literal notranslate"><span class="pre">Waypoint.radial_distance</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.core.model.trajectory.waypoint.Waypoint.speed"><code class="docutils literal notranslate"><span class="pre">Waypoint.speed</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.model.trajectory.waypoint.Waypoint.to_dict"><code class="docutils literal notranslate"><span class="pre">Waypoint.to_dict()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.core.model.trajectory.waypoint.Waypoint.x"><code class="docutils literal notranslate"><span class="pre">Waypoint.x</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.core.model.trajectory.waypoint.Waypoint.y"><code class="docutils literal notranslate"><span class="pre">Waypoint.y</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.core.model.trajectory.waypoint.Waypoint.z"><code class="docutils literal notranslate"><span class="pre">Waypoint.z</span></code></a></li>

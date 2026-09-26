@@ -61,8 +61,7 @@
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.scara_diagnostic</span> <span class="kn">import</span> <span class="n">ScaraDiagnostic</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.kinematics.scara_bounds</span> <span class="kn">import</span> <span class="n">ScaraBounds</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.diagnostic</span> <span class="kn">import</span> <span class="n">Diagnostic</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
@@ -90,17 +89,11 @@
 
 <div class="viewcode-block" id="IScaraDslValidator.validate_script">
 <a class="viewcode-back" href="../../../../../scarajectory.core.service.dsl.iscara_dsl_validator.html#scarajectory.core.service.dsl.iscara_dsl_validator.IScaraDslValidator.validate_script">[docs]</a>
-    <span class="k">def</span> <span class="nf">validate_script</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">bounds</span><span class="p">:</span> <span class="n">ScaraBounds</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+    <span class="k">def</span> <span class="nf">validate_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Validates syntax, static analysis rules, and kinematics of a DSL script.</span>
 
 <span class="sd">            :param source: Raw .scara script text.</span>
-<span class="sd">            :param bounds: Optional robot kinematic boundary constraints.</span>
 <span class="sd">            :return: Tuple of (is_valid, messages_list).</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span></div>
@@ -108,16 +101,12 @@
 
 <div class="viewcode-block" id="IScaraDslValidator.lint_script">
 <a class="viewcode-back" href="../../../../../scarajectory.core.service.dsl.iscara_dsl_validator.html#scarajectory.core.service.dsl.iscara_dsl_validator.IScaraDslValidator.lint_script">[docs]</a>
-    <span class="k">def</span> <span class="nf">lint_script</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ScaraDiagnostic</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">lint_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Diagnostic</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Performs static analysis checks on a DSL script string.</span>
 
 <span class="sd">            :param source: Raw .scara script text.</span>
-<span class="sd">            :return: Tuple of ScaraDiagnostic findings.</span>
+<span class="sd">            :return: Tuple of Diagnostic findings.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span></div>
 </div>

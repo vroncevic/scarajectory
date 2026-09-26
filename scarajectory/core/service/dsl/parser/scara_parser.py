@@ -23,33 +23,19 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 
-from scarajectory.core.model.dsl.ast.iscara_instruction import IScaraInstruction
-from scarajectory.core.model.dsl.ast.iscara_program import IScaraProgram
-from scarajectory.core.model.dsl.ast.scara_program import ScaraProgram
-from scarajectory.core.model.dsl.token.scara_token import ScaraToken
-from scarajectory.core.model.dsl.token.scara_token_type import ScaraTokenType
+from scarajectory.core.model.dsl.ast.instruction import Instruction
+from scarajectory.core.model.dsl.ast.program import Program
+from scarajectory.core.model.dsl.token.token import Token
+from scarajectory.core.model.dsl.token.token_type import TokenType
+from scarajectory.core.service.dsl.ast.iprogram_factory import IProgramFactory
 from scarajectory.core.service.dsl.lexer.iscara_lexer import IScaraLexer
 from scarajectory.core.service.dsl.parser.icommand_parser import ICommandParser
-from scarajectory.core.service.dsl.parser.commands.approach_retract_parser import ApproachRetractParser
-from scarajectory.core.service.dsl.parser.commands.arc_command_parser import ArcCommandParser
-from scarajectory.core.service.dsl.parser.commands.config_command_parser import ConfigCommandParser
-from scarajectory.core.service.dsl.parser.commands.flow_command_parser import FlowCommandParser
-from scarajectory.core.service.dsl.parser.commands.frame_command_parser import FrameCommandParser
-from scarajectory.core.service.dsl.parser.commands.jog_command_parser import JogCommandParser
-from scarajectory.core.service.dsl.parser.commands.jump_command_parser import JumpCommandParser
-from scarajectory.core.service.dsl.parser.commands.motion_command_parser import MotionCommandParser
-from scarajectory.core.service.dsl.parser.commands.pallet_command_parser import PalletCommandParser
-from scarajectory.core.service.dsl.parser.commands.probe_command_parser import ProbeCommandParser
-from scarajectory.core.service.dsl.parser.commands.tool_command_parser import ToolCommandParser
-from scarajectory.core.service.dsl.parser.commands.tool_orient_command_parser import ToolOrientCommandParser
-from scarajectory.core.service.dsl.parser.commands.zone_command_parser import ZoneCommandParser
-from scarajectory.core.service.dsl.lexer.scara_lexer import ScaraLexer
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.3'
+__version__ = '1.0.4'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -57,7 +43,7 @@ __status__ = 'Updated'
 
 class ScaraParser:
     '''
-        Orchestrator parser coordinating modular command handlers into a ScaraProgram AST.
+        Orchestrator parser coordinating modular command handlers into a Program AST.
 
         It defines:
 
@@ -65,68 +51,54 @@ class ScaraParser:
                 | _lexer - Injected IScaraLexer tokenizer instance.
                 | _handlers - Tuple of registered ICommandParser handlers.
             :methods:
-                | __init__ - Initializes ScaraParser with optional lexer and command handlers.
-                | parse - Parses raw DSL source string into an IScaraProgram AST.
-                | parse_tokens - Parses a sequence of lexical tokens into an IScaraProgram AST.
+                | __init__ - Initializes ScaraParser with injected lexer and command handlers.
+                | parse - Parses raw DSL source string into a Program AST.
+                | parse_tokens - Parses a sequence of lexical tokens into a Program AST.
     '''
 
     def __init__(
         self,
         *,
-        lexer: IScaraLexer | None = None,
-        handlers: Sequence[ICommandParser] | None = None,
+        lexer: IScaraLexer,
+        handlers: Sequence[ICommandParser],
+        program_factory: IProgramFactory,
     ) -> None:
         '''
             Initializes ScaraParser constructor with injected components.
 
-            :param lexer: Optional injected IScaraLexer component.
-            :param handlers: Optional sequence of custom ICommandParser handlers.
+            :param lexer: Injected IScaraLexer component.
+            :param handlers: Sequence of custom ICommandParser handlers.
+            :param program_factory: Injected IProgramFactory component.
             :exceptions: None.
         '''
-        self._lexer: IScaraLexer = lexer if lexer is not None else ScaraLexer()
-        if handlers is not None:
-            self._handlers: tuple[ICommandParser, ...] = tuple(handlers)
-        else:
-            self._handlers = (
-                MotionCommandParser(),
-                JumpCommandParser(),
-                ArcCommandParser(),
-                ApproachRetractParser(),
-                ConfigCommandParser(),
-                PalletCommandParser(),
-                FrameCommandParser(),
-                ToolCommandParser(),
-                FlowCommandParser(),
-                JogCommandParser(),
-                ProbeCommandParser(),
-                ZoneCommandParser(),
-                ToolOrientCommandParser(),
-            )
+        self._lexer: IScaraLexer = lexer
+        self._program_factory: IProgramFactory = program_factory
+        self._handlers: tuple[ICommandParser, ...] = tuple(handlers)
 
-    def parse(self, *, source: str) -> IScaraProgram:
+    def parse(self, *, source: str) -> Program:
         '''
             Parses raw SCARA DSL code string into an immutable AST program representation.
 
             :param source: Raw source code text.
-            :return: IScaraProgram instance.
+            :return: Program instance.
             :exceptions: ValueError on syntactic parse error.
         '''
-        tokens: tuple[ScaraToken, ...] = self._lexer.tokenize(source=source)
+        tokens: tuple[Token, ...] = self._lexer.tokenize(source=source)
         return self.parse_tokens(tokens=tokens)
 
-    def parse_tokens(self, *, tokens: Sequence[ScaraToken]) -> IScaraProgram:
+    def parse_tokens(self, *, tokens: Sequence[Token]) -> Program:
         '''
             Parses a sequence of lexical tokens into an immutable AST program representation.
 
-            :param tokens: Sequence of ScaraToken instances.
-            :return: IScaraProgram instance.
+            :param tokens: Sequence of Token instances.
+            :return: Program instance.
             :exceptions: ValueError on syntactic parse error.
         '''
-        instructions: list[IScaraInstruction] = []
-        current_line_tokens: list[ScaraToken] = []
+        instructions: list[Instruction] = []
+        current_line_tokens: list[Token] = []
 
         for token in tokens:
-            if token.token_type in (ScaraTokenType.NEWLINE, ScaraTokenType.EOF):
+            if token.token_type in (TokenType.NEWLINE, TokenType.EOF):
                 if current_line_tokens:
                     inst = self._parse_instruction_line(
                         tokens=tuple(current_line_tokens)
@@ -137,16 +109,16 @@ class ScaraParser:
             else:
                 current_line_tokens.append(token)
 
-        return ScaraProgram.from_instructions(instructions)
+        return self._program_factory.create(instructions=instructions)
 
     def _parse_instruction_line(
-        self, *, tokens: tuple[ScaraToken, ...]
-    ) -> IScaraInstruction | None:
+        self, *, tokens: tuple[Token, ...]
+    ) -> Instruction | None:
         '''
             Delegates statement tokens to registered command handlers.
 
             :param tokens: Statement token tuple.
-            :return: IScaraInstruction node or None.
+            :return: Instruction node or None.
             :exceptions: ValueError if no registered handler recognizes the command.
         '''
         if not tokens:

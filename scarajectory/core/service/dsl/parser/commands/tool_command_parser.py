@@ -21,10 +21,9 @@ Info
 
 from __future__ import annotations
 
-from scarajectory.core.model.dsl.ast.iscara_instruction import IScaraInstruction
-from scarajectory.core.model.dsl.ast.scara_command_type import ScaraCommandType
-from scarajectory.core.model.dsl.ast.scara_instruction import ScaraInstruction
-from scarajectory.core.model.dsl.token.scara_token import ScaraToken
+from scarajectory.core.model.dsl.ast.command_type import CommandType
+from scarajectory.core.model.dsl.ast.instruction import Instruction
+from scarajectory.core.model.dsl.token.token import Token
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -46,7 +45,7 @@ class ToolCommandParser:
                 | None.
             :methods:
                 | can_parse - Checks whether command is TOOL, PUMP, or VALVE.
-                | parse - Parses tool actuator statement tokens into ScaraInstruction.
+                | parse - Parses tool actuator statement tokens into Instruction.
     '''
 
     def can_parse(self, *, command_name: str) -> bool:
@@ -61,20 +60,21 @@ class ToolCommandParser:
     def parse(
         self,
         *,
-        tokens: tuple[ScaraToken, ...],
+        tokens: tuple[Token, ...],
         line_num: int,
         raw_text: str,
-    ) -> IScaraInstruction:
+    ) -> Instruction:
         '''
-            Parses tool statement into ScaraInstruction.
+            Parses tool statement into Instruction.
 
             :param tokens: Statement token tuple.
             :param line_num: Line number in source code.
             :param raw_text: Original statement text.
-            :return: IScaraInstruction node.
+            :return: Instruction node.
             :exceptions: ValueError on missing or invalid binary state.
         '''
         cmd = tokens[0].value.upper()
+
         if len(tokens) < 2:
             raise ValueError(
                 f'Missing state argument for {cmd} at line {line_num}'
@@ -82,6 +82,7 @@ class ToolCommandParser:
 
         state = tokens[1].value.upper()
         valid_states = ('UP', 'DOWN') if cmd == 'TOOL' else ('ON', 'OFF')
+
         if state not in valid_states:
             raise ValueError(
                 f'Invalid state {state!r} for {cmd} at line {line_num}. Must be one of {valid_states}'
@@ -89,13 +90,13 @@ class ToolCommandParser:
 
         match cmd:
             case 'TOOL':
-                cmd_type = ScaraCommandType.TOOL
+                cmd_type = CommandType.TOOL
             case 'PUMP':
-                cmd_type = ScaraCommandType.PUMP
+                cmd_type = CommandType.PUMP
             case _:
-                cmd_type = ScaraCommandType.VALVE
+                cmd_type = CommandType.VALVE
 
-        return ScaraInstruction(
+        return Instruction(
             command_type=cmd_type,
             line_number=line_num,
             raw_text=raw_text,

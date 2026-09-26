@@ -5,3 +5,4 @@ scarajectory.core.service.dsl.linter.rules.motion\_lint\_rule module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

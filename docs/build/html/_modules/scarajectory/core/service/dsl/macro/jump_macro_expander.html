@@ -59,9 +59,8 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.iscara_instruction</span> <span class="kn">import</span> <span class="n">IScaraInstruction</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.scara_command_type</span> <span class="kn">import</span> <span class="n">ScaraCommandType</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.scara_instruction</span> <span class="kn">import</span> <span class="n">ScaraInstruction</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.command_type</span> <span class="kn">import</span> <span class="n">CommandType</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.instruction</span> <span class="kn">import</span> <span class="n">Instruction</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.compiler.scara_compiler_context</span> <span class="kn">import</span> <span class="n">ScaraCompilerContext</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
@@ -91,14 +90,14 @@
 
 <div class="viewcode-block" id="JumpMacroExpander.can_expand">
 <a class="viewcode-back" href="../../../../../../scarajectory.core.service.dsl.macro.jump_macro_expander.html#scarajectory.core.service.dsl.macro.jump_macro_expander.JumpMacroExpander.can_expand">[docs]</a>
-    <span class="k">def</span> <span class="nf">can_expand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">instruction</span><span class="p">:</span> <span class="n">IScaraInstruction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">can_expand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">instruction</span><span class="p">:</span> <span class="n">Instruction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Checks whether this expander handles JUMP instructions.</span>
 
 <span class="sd">            :param instruction: Instruction node to check.</span>
 <span class="sd">            :return: True if instruction is JUMP, False otherwise.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">instruction</span><span class="o">.</span><span class="n">command_type</span> <span class="o">==</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">JUMP</span></div>
+        <span class="k">return</span> <span class="n">instruction</span><span class="o">.</span><span class="n">command_type</span> <span class="o">==</span> <span class="n">CommandType</span><span class="o">.</span><span class="n">JUMP</span></div>
 
 
 <div class="viewcode-block" id="JumpMacroExpander.expand">
@@ -106,9 +105,9 @@
     <span class="k">def</span> <span class="nf">expand</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">instruction</span><span class="p">:</span> <span class="n">IScaraInstruction</span><span class="p">,</span>
+        <span class="n">instruction</span><span class="p">:</span> <span class="n">Instruction</span><span class="p">,</span>
         <span class="n">context</span><span class="p">:</span> <span class="n">ScaraCompilerContext</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">IScaraInstruction</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Instruction</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Expands JUMP into 3-phase 3D clearance motion.</span>
 
@@ -127,8 +126,8 @@
         <span class="n">clearance_z</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">current_z</span><span class="p">,</span> <span class="n">target_z</span><span class="p">)</span> <span class="o">+</span> <span class="n">arch_height</span>
         <span class="n">line_num</span> <span class="o">=</span> <span class="n">instruction</span><span class="o">.</span><span class="n">line_number</span>
 
-        <span class="n">lift_inst</span> <span class="o">=</span> <span class="n">ScaraInstruction</span><span class="p">(</span>
-            <span class="n">command_type</span><span class="o">=</span><span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">MOVE_L</span><span class="p">,</span>
+        <span class="n">lift_inst</span> <span class="o">=</span> <span class="n">Instruction</span><span class="p">(</span>
+            <span class="n">command_type</span><span class="o">=</span><span class="n">CommandType</span><span class="o">.</span><span class="n">MOVE_L</span><span class="p">,</span>
             <span class="n">line_number</span><span class="o">=</span><span class="n">line_num</span><span class="p">,</span>
             <span class="n">raw_text</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;# JUMP phase 1 (Lift): Z=</span><span class="si">{</span><span class="n">clearance_z</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
             <span class="n">parameters</span><span class="o">=</span><span class="p">{</span>
@@ -140,8 +139,8 @@
             <span class="p">},</span>
         <span class="p">)</span>
 
-        <span class="n">transit_inst</span> <span class="o">=</span> <span class="n">ScaraInstruction</span><span class="p">(</span>
-            <span class="n">command_type</span><span class="o">=</span><span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">MOVE_J</span><span class="p">,</span>
+        <span class="n">transit_inst</span> <span class="o">=</span> <span class="n">Instruction</span><span class="p">(</span>
+            <span class="n">command_type</span><span class="o">=</span><span class="n">CommandType</span><span class="o">.</span><span class="n">MOVE_J</span><span class="p">,</span>
             <span class="n">line_number</span><span class="o">=</span><span class="n">line_num</span><span class="p">,</span>
             <span class="n">raw_text</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;# JUMP phase 2 (Transit): X=</span><span class="si">{</span><span class="n">target_x</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> Y=</span><span class="si">{</span><span class="n">target_y</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
             <span class="n">parameters</span><span class="o">=</span><span class="p">{</span>
@@ -153,8 +152,8 @@
             <span class="p">},</span>
         <span class="p">)</span>
 
-        <span class="n">descend_inst</span> <span class="o">=</span> <span class="n">ScaraInstruction</span><span class="p">(</span>
-            <span class="n">command_type</span><span class="o">=</span><span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">MOVE_L</span><span class="p">,</span>
+        <span class="n">descend_inst</span> <span class="o">=</span> <span class="n">Instruction</span><span class="p">(</span>
+            <span class="n">command_type</span><span class="o">=</span><span class="n">CommandType</span><span class="o">.</span><span class="n">MOVE_L</span><span class="p">,</span>
             <span class="n">line_number</span><span class="o">=</span><span class="n">line_num</span><span class="p">,</span>
             <span class="n">raw_text</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;# JUMP phase 3 (Descent): Z=</span><span class="si">{</span><span class="n">target_z</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
             <span class="n">parameters</span><span class="o">=</span><span class="p">{</span>

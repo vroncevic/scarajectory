@@ -29,9 +29,14 @@ pkg_dir = str(Path(__file__).resolve().parent.parent)
 if pkg_dir not in path:
     path.insert(0, pkg_dir)
 
-from scarajectory.core.model.trajectory.trajectory_plan import TrajectoryPlan
+from scarajectory.core.service.trajectory.plan.trajectory_plan import TrajectoryPlan
+from scarajectory.core.service.trajectory.plan.trajectory_plan_factory import TrajectoryPlanFactory
 from scarajectory.core.model.trajectory.waypoint import Waypoint
-from scarajectory.core.service.dsl.scara_dsl_service import ScaraDslService
+from scarajectory.core.service.dsl.iscara_dsl_service import IScaraDslService
+from scarajectory.core.service.dsl.scara_dsl_service_factory import ScaraDslServiceFactory
+from scarajectory.core.service.kinematics.kinematics_service_factory import KinematicsServiceFactory
+from scarajectory.core.service.trajectory.validation.trajectory_validator_factory import TrajectoryValidatorFactory
+from scarajectory.infrastructure.settings.config_loader_factory import ScaraConfigLoaderFactory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -50,6 +55,7 @@ class TestScaraDslService(TestCase):
         It defines:
 
             :methods:
+                | setUp - Initializes test fixtures.
                 | test_compile_script_success - Verifies compiling valid SCARA script.
                 | test_validate_script - Verifies script validation returning diagnostics.
                 | test_export_plan - Verifies round-trip plan export to SCARA DSL code.
@@ -57,11 +63,30 @@ class TestScaraDslService(TestCase):
                 | test_lint_script - Verifies diagnostic reporting through lint_script facade.
     '''
 
+    def setUp(self) -> None:
+        '''
+            Initializes test fixtures.
+
+            :exceptions: None.
+        '''
+        loader = ScaraConfigLoaderFactory.create()
+        bounds = loader.load_bounds()
+        kinematics = KinematicsServiceFactory.create(bounds=bounds)
+        validator = TrajectoryValidatorFactory.create(
+            kinematics=kinematics,
+        )
+        transmission = loader.load_transmission()
+        self.service: IScaraDslService = ScaraDslServiceFactory.create(
+            validator=validator,
+            kinematics=kinematics,
+            transmission=transmission,
+        )
+
     def test_compile_script_success(self) -> None:
         '''
             Verifies compiling valid SCARA script into populated TrajectoryPlan.
         '''
-        service = ScaraDslService()
+        service = self.service
         code = (
             'CONFIG ELBOW RIGHT\n'
             'SPEED RAPID 100.0\n'
@@ -78,7 +103,7 @@ class TestScaraDslService(TestCase):
         '''
             Verifies validation diagnostics for valid and invalid scripts.
         '''
-        service = ScaraDslService()
+        service = self.service
         valid_code = 'MOVE_J X=150.0 Y=50.0 Z=20.0\n'
         is_valid, msgs = service.validate_script(source=valid_code)
         self.assertTrue(is_valid)
@@ -94,10 +119,10 @@ class TestScaraDslService(TestCase):
         '''
             Verifies exporting a TrajectoryPlan into SCARA DSL source text.
         '''
-        service = ScaraDslService()
-        plan = TrajectoryPlan()
-        plan.add_point(Waypoint(x=150.0, y=50.0, z=10.0, phi=0.0, speed=30.0, name='P1'))
-        plan.add_point(Waypoint(x=180.0, y=60.0, z=10.0, phi=15.0, speed=40.0, name='P2'))
+        service = self.service
+        plan = TrajectoryPlanFactory.create()
+        plan.add_point(Waypoint(x=150.0, y=50.0, z=10.0, phi=0.0, speed=30.0, name='P1', command=''))
+        plan.add_point(Waypoint(x=180.0, y=60.0, z=10.0, phi=15.0, speed=40.0, name='P2', command=''))
 
         exported = service.export_plan(plan=plan)
         self.assertIn('MOVE_J X=150.00 Y=50.00', exported)
@@ -109,7 +134,7 @@ class TestScaraDslService(TestCase):
         '''
             Verifies compiling a pick and place script containing tool and wait instructions.
         '''
-        service = ScaraDslService()
+        service = self.service
         code = (
             'MOVE_J X=150.0 Y=50.0 Z=20.0\n'
             'WAIT 200\n'
@@ -133,7 +158,7 @@ class TestScaraDslService(TestCase):
         '''
             Verifies diagnostic reporting through lint_script facade.
         '''
-        service = ScaraDslService()
+        service = self.service
         code = (
             'HOME\n'
             'PUMP ON\n'
@@ -146,7 +171,7 @@ class TestScaraDslService(TestCase):
         '''
             Verifies compiling ENABLE and DISABLE commands into action waypoints.
         '''
-        service = ScaraDslService()
+        service = self.service
         code = (
             'ENABLE\n'
             'HOME\n'

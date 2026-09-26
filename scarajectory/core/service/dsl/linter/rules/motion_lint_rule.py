@@ -21,15 +21,11 @@ Info
 
 from __future__ import annotations
 
-from scarajectory.core.model.dsl.ast.iscara_instruction import IScaraInstruction
-from scarajectory.core.model.dsl.ast.scara_command_type import ScaraCommandType
-from scarajectory.core.model.dsl.diagnostic.scara_diagnostic import ScaraDiagnostic
-from scarajectory.core.model.dsl.diagnostic.scara_diagnostic_severity import (
-    ScaraDiagnosticSeverity,
-)
-from scarajectory.core.service.dsl.linter.scara_lint_context import (
-    ScaraLintContext,
-)
+from scarajectory.core.model.dsl.ast.command_type import CommandType
+from scarajectory.core.model.dsl.ast.instruction import Instruction
+from scarajectory.core.model.dsl.diagnostic.diagnostic import Diagnostic
+from scarajectory.core.model.dsl.diagnostic.diagnostic_severity import DiagnosticSeverity
+from scarajectory.core.service.dsl.linter.scara_lint_context import ScaraLintContext
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -53,23 +49,23 @@ class MotionLintRule:
                 | check - Analyzes motion instruction against current simulation context.
     '''
 
-    _MOTION_COMMANDS: frozenset[ScaraCommandType] = frozenset({
-        ScaraCommandType.MOVE_L,
-        ScaraCommandType.MOVE_J,
-        ScaraCommandType.ARC_CW,
-        ScaraCommandType.ARC_CCW,
-        ScaraCommandType.JUMP,
-        ScaraCommandType.APPROACH,
-        ScaraCommandType.RETRACT,
-        ScaraCommandType.MOVE_PALLET,
+    _MOTION_COMMANDS: frozenset[CommandType] = frozenset({
+        CommandType.MOVE_L,
+        CommandType.MOVE_J,
+        CommandType.ARC_CW,
+        CommandType.ARC_CCW,
+        CommandType.JUMP,
+        CommandType.APPROACH,
+        CommandType.RETRACT,
+        CommandType.MOVE_PALLET,
     })
 
     def check(
         self,
         *,
-        instruction: IScaraInstruction,
+        instruction: Instruction,
         context: ScaraLintContext,
-        diagnostics: list[ScaraDiagnostic],
+        diagnostics: list[Diagnostic],
     ) -> None:
         '''
             Evaluates motion calibration and duplicate move findings.
@@ -80,6 +76,7 @@ class MotionLintRule:
             :exceptions: None.
         '''
         cmd = instruction.command_type
+
         if cmd not in self._MOTION_COMMANDS:
             return
 
@@ -88,9 +85,9 @@ class MotionLintRule:
 
         if not context.is_homed and not context.motion_occurred:
             diagnostics.append(
-                ScaraDiagnostic(
+                Diagnostic(
                     code='UNCALIBRATED_MOTION',
-                    severity=ScaraDiagnosticSeverity.WARNING,
+                    severity=DiagnosticSeverity.WARNING,
                     message=(
                         'First motion instruction occurs before HOME or '
                         'SETPOS calibration. Machine coordinates unreferenced.'
@@ -100,7 +97,7 @@ class MotionLintRule:
                 )
             )
 
-        if cmd in (ScaraCommandType.MOVE_L, ScaraCommandType.MOVE_J):
+        if cmd in (CommandType.MOVE_L, CommandType.MOVE_J):
             x_val = params.get('X', params.get('x'))
             y_val = params.get('Y', params.get('y'))
             z_val = params.get('Z', params.get('z'))
@@ -112,11 +109,11 @@ class MotionLintRule:
                     float(z_val),
                     float(phi_val),
                 )
-                if context.last_coords is not None and coords == context.last_coords:
+                if context.last_coords and coords == context.last_coords:
                     diagnostics.append(
-                        ScaraDiagnostic(
+                        Diagnostic(
                             code='DUPLICATE_MOTION',
-                            severity=ScaraDiagnosticSeverity.INFO,
+                            severity=DiagnosticSeverity.INFO,
                             message=(
                                 f'Consecutive move to identical target coordinates '
                                 f'({coords[0]:.1f}, {coords[1]:.1f}, {coords[2]:.1f}, {coords[3]:.1f}).'
@@ -127,8 +124,8 @@ class MotionLintRule:
                     )
                 context.last_coords = coords
             else:
-                context.last_coords = None
+                context.last_coords = ()
         else:
-            context.last_coords = None
+            context.last_coords = ()
 
         context.motion_occurred = True

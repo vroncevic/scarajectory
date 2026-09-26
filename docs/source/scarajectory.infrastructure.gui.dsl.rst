@@ -11,6 +11,7 @@ Submodules
    scarajectory.infrastructure.gui.dsl.dsl_console_view
    scarajectory.infrastructure.gui.dsl.dsl_document_manager
    scarajectory.infrastructure.gui.dsl.dsl_editor_tab
+   scarajectory.infrastructure.gui.dsl.dsl_editor_tab_factory
    scarajectory.infrastructure.gui.dsl.dsl_editor_toolbar
    scarajectory.infrastructure.gui.dsl.dsl_example_catalog
    scarajectory.infrastructure.gui.dsl.dsl_syntax_highlighter
@@ -24,3 +25,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

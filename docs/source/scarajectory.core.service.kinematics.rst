@@ -9,6 +9,7 @@ Submodules
 
    scarajectory.core.service.kinematics.ikinematics_service
    scarajectory.core.service.kinematics.kinematics_service
+   scarajectory.core.service.kinematics.kinematics_service_factory
 
 Module contents
 ---------------
@@ -17,3 +18,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

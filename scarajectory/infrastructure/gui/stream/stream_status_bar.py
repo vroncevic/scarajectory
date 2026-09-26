@@ -24,7 +24,7 @@ from __future__ import annotations
 from tkinter import W, Widget, X
 from tkinter.ttk import Frame, Label, Progressbar
 
-from scarajectory.core.model.communication.stream_progress import StreamProgress
+from scarajectory.core.model.communication.stream.stream_progress import StreamProgress
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'

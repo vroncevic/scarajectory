@@ -18,6 +18,7 @@ Submodules
    scarajectory.core.service.dsl.linter.iscara_linter
    scarajectory.core.service.dsl.linter.scara_lint_context
    scarajectory.core.service.dsl.linter.scara_linter
+   scarajectory.core.service.dsl.linter.scara_linter_factory
 
 Module contents
 ---------------
@@ -26,3 +27,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

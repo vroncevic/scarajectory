@@ -5,3 +5,4 @@ scarajectory.infrastructure.gui.canvas.canvas\_mouse\_handler module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

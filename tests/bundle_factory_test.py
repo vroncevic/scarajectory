@@ -79,7 +79,7 @@ class TestBundleFactory(TestCase):
             SCARAjectoryBundleKeys.OPTION_Z_MIN: -10.0,
             SCARAjectoryBundleKeys.OPTION_Z_MAX: 90.0
         }
-        bundle = SCARAjectoryBundleFactory.create_bundle(options=options)
+        bundle = SCARAjectoryBundleFactory.create_bundle_with_options(options=options)
         self.assertIsNotNone(bundle)
         self.assertEqual(bundle.service.get_validator().bounds.l1, 160.0)
         self.assertEqual(bundle.service.get_validator().bounds.l2, 130.0)

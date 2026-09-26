@@ -23,7 +23,7 @@ from __future__ import annotations
 
 from typing import Final
 
-from scarajectory.core.model.communication.stream_progress import StreamProgress
+from scarajectory.core.model.communication.stream.stream_progress import StreamProgress
 from scarajectory.infrastructure.gui.stream.port_connection_panel import PortConnectionPanel
 from scarajectory.infrastructure.gui.stream.stream_status_bar import StreamStatusBar
 

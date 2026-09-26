@@ -70,7 +70,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.</span></span><span class="sig-name descname"><span class="pre">CanvasMouseHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.trajectory.itrajectory_plan.html#scarajectory.core.model.trajectory.itrajectory_plan.ITrajectoryPlan" title="scarajectory.core.model.trajectory.itrajectory_plan.ITrajectoryPlan"><span class="pre">ITrajectoryPlan</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">vp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.model.viewport_transform.html#scarajectory.infrastructure.gui.model.viewport_transform.ViewportTransform" title="scarajectory.infrastructure.gui.model.viewport_transform.ViewportTransform"><span class="pre">ViewportTransform</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.model.canvas_interaction_state.html#scarajectory.infrastructure.gui.model.canvas_interaction_state.CanvasInteractionState" title="scarajectory.infrastructure.gui.model.canvas_interaction_state.CanvasInteractionState"><span class="pre">CanvasInteractionState</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas/canvas_mouse_handler.html#CanvasMouseHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.</span></span><span class="sig-name descname"><span class="pre">CanvasMouseHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.plan.itrajectory_plan.html#scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan" title="scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan"><span class="pre">ITrajectoryPlan</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">vp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.model.viewport_transform.html#scarajectory.infrastructure.gui.model.viewport_transform.ViewportTransform" title="scarajectory.infrastructure.gui.model.viewport_transform.ViewportTransform"><span class="pre">ViewportTransform</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.model.canvas_interaction_state.html#scarajectory.infrastructure.gui.model.canvas_interaction_state.CanvasInteractionState" title="scarajectory.infrastructure.gui.model.canvas_interaction_state.CanvasInteractionState"><span class="pre">CanvasInteractionState</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">waypoint_factory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.discretization.iwaypoint_factory.html#scarajectory.core.service.trajectory.discretization.iwaypoint_factory.IWaypointFactory" title="scarajectory.core.service.trajectory.discretization.iwaypoint_factory.IWaypointFactory"><span class="pre">IWaypointFactory</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discretizer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.discretization.ishape_discretizer.html#scarajectory.core.service.trajectory.discretization.ishape_discretizer.IShapeDiscretizer" title="scarajectory.core.service.trajectory.discretization.ishape_discretizer.IShapeDiscretizer"><span class="pre">IShapeDiscretizer</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas/canvas_mouse_handler.html#CanvasMouseHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Handles mouse press, drag, release, and wheel interaction for CAD vector drawing.</p>
 <p>It defines:</p>
@@ -90,9 +90,16 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dt class="field-even">methods<span class="colon">:</span></dt>
 <dd class="field-even"><div class="line-block">
 <div class="line">__init__ - Initializes handler with injected plan, viewport, and interaction state.</div>
+<div class="line">create_waypoint_at - Builds a Waypoint via WaypointFactory at given world coordinates.</div>
 <div class="line">handle_mouse_down - Processes mouse button press for tool interaction or panning.</div>
 <div class="line">handle_mouse_drag - Processes mouse motion for active tool or viewport panning.</div>
+<div class="line">handle_drag_select - Updates dragged waypoint position during select tool drag.</div>
+<div class="line">handle_drag_freehand - Samples and appends waypoints along freehand motion path.</div>
 <div class="line">handle_mouse_up - Processes mouse button release and commits shape insertions.</div>
+<div class="line">commit_point - Commits a single waypoint to the trajectory plan.</div>
+<div class="line">commit_line - Discretizes and commits straight line segment to plan.</div>
+<div class="line">commit_circle - Discretizes and commits circular trajectory to plan.</div>
+<div class="line">commit_rectangle - Discretizes and commits rectangular perimeter to plan.</div>
 <div class="line">format_cursor_status - Computes world coordinates and zoom percentage for cursor status.</div>
 </div>
 </dd>
@@ -118,6 +125,120 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <span class="sig-name descname"><span class="pre">SELECT_HIT_RADIUS_PX</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">12.0</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.SELECT_HIT_RADIUS_PX" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler._plan">
+<span class="sig-name descname"><span class="pre">_plan</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.trajectory.plan.itrajectory_plan.html#scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan" title="scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan"><span class="pre">ITrajectoryPlan</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler._plan" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler._state">
+<span class="sig-name descname"><span class="pre">_state</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.model.canvas_interaction_state.html#scarajectory.infrastructure.gui.model.canvas_interaction_state.CanvasInteractionState" title="scarajectory.infrastructure.gui.model.canvas_interaction_state.CanvasInteractionState"><span class="pre">CanvasInteractionState</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler._state" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler._vp">
+<span class="sig-name descname"><span class="pre">_vp</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.model.viewport_transform.html#scarajectory.infrastructure.gui.model.viewport_transform.ViewportTransform" title="scarajectory.infrastructure.gui.model.viewport_transform.ViewportTransform"><span class="pre">ViewportTransform</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler._vp" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.commit_circle">
+<span class="sig-name descname"><span class="pre">commit_circle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.model.canvas_settings.html#scarajectory.infrastructure.gui.model.canvas_settings.CanvasSettings" title="scarajectory.infrastructure.gui.model.canvas_settings.CanvasSettings"><span class="pre">CanvasSettings</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas/canvas_mouse_handler.html#CanvasMouseHandler.commit_circle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.commit_circle" title="Link to this definition">¶</a></dt>
+<dd><p>Discretizes and commits circular trajectory to plan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x0</strong> – Center world X coordinate.</p></li>
+<li><p><strong>y0</strong> – Center world Y coordinate.</p></li>
+<li><p><strong>wx</strong> – Boundary world X coordinate.</p></li>
+<li><p><strong>wy</strong> – Boundary world Y coordinate.</p></li>
+<li><p><strong>settings</strong> – Active CanvasSettings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.commit_line">
+<span class="sig-name descname"><span class="pre">commit_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.model.canvas_settings.html#scarajectory.infrastructure.gui.model.canvas_settings.CanvasSettings" title="scarajectory.infrastructure.gui.model.canvas_settings.CanvasSettings"><span class="pre">CanvasSettings</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas/canvas_mouse_handler.html#CanvasMouseHandler.commit_line"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.commit_line" title="Link to this definition">¶</a></dt>
+<dd><p>Discretizes and commits straight line segment to plan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x0</strong> – Starting world X coordinate.</p></li>
+<li><p><strong>y0</strong> – Starting world Y coordinate.</p></li>
+<li><p><strong>wx</strong> – Ending world X coordinate.</p></li>
+<li><p><strong>wy</strong> – Ending world Y coordinate.</p></li>
+<li><p><strong>settings</strong> – Active CanvasSettings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.commit_point">
+<span class="sig-name descname"><span class="pre">commit_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.model.canvas_settings.html#scarajectory.infrastructure.gui.model.canvas_settings.CanvasSettings" title="scarajectory.infrastructure.gui.model.canvas_settings.CanvasSettings"><span class="pre">CanvasSettings</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas/canvas_mouse_handler.html#CanvasMouseHandler.commit_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.commit_point" title="Link to this definition">¶</a></dt>
+<dd><p>Commits single point to the trajectory plan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wx</strong> – World X coordinate.</p></li>
+<li><p><strong>wy</strong> – World Y coordinate.</p></li>
+<li><p><strong>settings</strong> – Active CanvasSettings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.commit_rectangle">
+<span class="sig-name descname"><span class="pre">commit_rectangle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.model.canvas_settings.html#scarajectory.infrastructure.gui.model.canvas_settings.CanvasSettings" title="scarajectory.infrastructure.gui.model.canvas_settings.CanvasSettings"><span class="pre">CanvasSettings</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas/canvas_mouse_handler.html#CanvasMouseHandler.commit_rectangle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.commit_rectangle" title="Link to this definition">¶</a></dt>
+<dd><p>Discretizes and commits rectangular perimeter to plan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x0</strong> – Starting corner world X coordinate.</p></li>
+<li><p><strong>y0</strong> – Starting corner world Y coordinate.</p></li>
+<li><p><strong>wx</strong> – Opposite corner world X coordinate.</p></li>
+<li><p><strong>wy</strong> – Opposite corner world Y coordinate.</p></li>
+<li><p><strong>settings</strong> – Active CanvasSettings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.create_waypoint_at">
+<span class="sig-name descname"><span class="pre">create_waypoint_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.model.canvas_settings.html#scarajectory.infrastructure.gui.model.canvas_settings.CanvasSettings" title="scarajectory.infrastructure.gui.model.canvas_settings.CanvasSettings"><span class="pre">CanvasSettings</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.core.model.trajectory.waypoint.html#scarajectory.core.model.trajectory.waypoint.Waypoint" title="scarajectory.core.model.trajectory.waypoint.Waypoint"><span class="pre">Waypoint</span></a></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas/canvas_mouse_handler.html#CanvasMouseHandler.create_waypoint_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.create_waypoint_at" title="Link to this definition">¶</a></dt>
+<dd><p>Builds a Waypoint via WaypointFactory at given world coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wx</strong> – World X coordinate.</p></li>
+<li><p><strong>wy</strong> – World Y coordinate.</p></li>
+<li><p><strong>settings</strong> – Active CanvasSettings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>New Waypoint instance.</p>
+</dd>
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.format_cursor_status">
 <span class="sig-name descname"><span class="pre">format_cursor_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas/canvas_mouse_handler.html#CanvasMouseHandler.format_cursor_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.format_cursor_status" title="Link to this definition">¶</a></dt>
@@ -132,6 +253,47 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Formatted status readout string.</p>
+</dd>
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.handle_drag_freehand">
+<span class="sig-name descname"><span class="pre">handle_drag_freehand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.model.canvas_settings.html#scarajectory.infrastructure.gui.model.canvas_settings.CanvasSettings" title="scarajectory.infrastructure.gui.model.canvas_settings.CanvasSettings"><span class="pre">CanvasSettings</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas/canvas_mouse_handler.html#CanvasMouseHandler.handle_drag_freehand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.handle_drag_freehand" title="Link to this definition">¶</a></dt>
+<dd><p>Samples and appends waypoints along freehand motion path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wx</strong> – World X coordinate.</p></li>
+<li><p><strong>wy</strong> – World Y coordinate.</p></li>
+<li><p><strong>settings</strong> – Active CanvasSettings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Always False (local redraw handled).</p>
+</dd>
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.handle_drag_select">
+<span class="sig-name descname"><span class="pre">handle_drag_select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas/canvas_mouse_handler.html#CanvasMouseHandler.handle_drag_select"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.handle_drag_select" title="Link to this definition">¶</a></dt>
+<dd><p>Updates dragged waypoint position during select tool drag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wx</strong> – World X coordinate.</p></li>
+<li><p><strong>wy</strong> – World Y coordinate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Always False (local redraw handled).</p>
 </dd>
 <dt class="field-odd">Exceptions<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None.</p>
@@ -222,7 +384,17 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.CIRCLE_MIN_RADIUS_MM"><code class="docutils literal notranslate"><span class="pre">CanvasMouseHandler.CIRCLE_MIN_RADIUS_MM</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.FREEHAND_MIN_DISTANCE_MM"><code class="docutils literal notranslate"><span class="pre">CanvasMouseHandler.FREEHAND_MIN_DISTANCE_MM</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.SELECT_HIT_RADIUS_PX"><code class="docutils literal notranslate"><span class="pre">CanvasMouseHandler.SELECT_HIT_RADIUS_PX</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler._plan"><code class="docutils literal notranslate"><span class="pre">CanvasMouseHandler._plan</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler._state"><code class="docutils literal notranslate"><span class="pre">CanvasMouseHandler._state</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler._vp"><code class="docutils literal notranslate"><span class="pre">CanvasMouseHandler._vp</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.commit_circle"><code class="docutils literal notranslate"><span class="pre">CanvasMouseHandler.commit_circle()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.commit_line"><code class="docutils literal notranslate"><span class="pre">CanvasMouseHandler.commit_line()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.commit_point"><code class="docutils literal notranslate"><span class="pre">CanvasMouseHandler.commit_point()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.commit_rectangle"><code class="docutils literal notranslate"><span class="pre">CanvasMouseHandler.commit_rectangle()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.create_waypoint_at"><code class="docutils literal notranslate"><span class="pre">CanvasMouseHandler.create_waypoint_at()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.format_cursor_status"><code class="docutils literal notranslate"><span class="pre">CanvasMouseHandler.format_cursor_status()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.handle_drag_freehand"><code class="docutils literal notranslate"><span class="pre">CanvasMouseHandler.handle_drag_freehand()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.handle_drag_select"><code class="docutils literal notranslate"><span class="pre">CanvasMouseHandler.handle_drag_select()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.handle_mouse_down"><code class="docutils literal notranslate"><span class="pre">CanvasMouseHandler.handle_mouse_down()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.handle_mouse_drag"><code class="docutils literal notranslate"><span class="pre">CanvasMouseHandler.handle_mouse_drag()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.canvas_mouse_handler.CanvasMouseHandler.handle_mouse_up"><code class="docutils literal notranslate"><span class="pre">CanvasMouseHandler.handle_mouse_up()</span></code></a></li>

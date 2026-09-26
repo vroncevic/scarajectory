@@ -59,29 +59,14 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">BooleanVar</span><span class="p">,</span>
-    <span class="n">LEFT</span><span class="p">,</span>
-    <span class="n">RIGHT</span><span class="p">,</span>
-    <span class="n">StringVar</span><span class="p">,</span>
-    <span class="n">VERTICAL</span><span class="p">,</span>
-    <span class="n">Widget</span><span class="p">,</span>
-    <span class="n">Y</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">tkinter.ttk</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">Button</span><span class="p">,</span>
-    <span class="n">Checkbutton</span><span class="p">,</span>
-    <span class="n">Frame</span><span class="p">,</span>
-    <span class="n">Label</span><span class="p">,</span>
-    <span class="n">Radiobutton</span><span class="p">,</span>
-    <span class="n">Separator</span><span class="p">,</span>
-    <span class="n">Spinbox</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">BooleanVar</span><span class="p">,</span> <span class="n">LEFT</span><span class="p">,</span> <span class="n">RIGHT</span><span class="p">,</span> <span class="n">StringVar</span><span class="p">,</span> <span class="n">VERTICAL</span><span class="p">,</span> <span class="n">Widget</span><span class="p">,</span> <span class="n">Y</span>
+<span class="kn">from</span> <span class="nn">tkinter.ttk</span> <span class="kn">import</span> <span class="n">Button</span><span class="p">,</span> <span class="n">Checkbutton</span><span class="p">,</span> <span class="n">Frame</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Radiobutton</span><span class="p">,</span> <span class="n">Separator</span><span class="p">,</span> <span class="n">Spinbox</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span>
 
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.kinematics.scara_bounds</span> <span class="kn">import</span> <span class="n">ScaraBounds</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.model.canvas_tool_mode</span> <span class="kn">import</span> <span class="n">CanvasToolMode</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.model.canvas_settings</span> <span class="kn">import</span> <span class="n">CanvasSettings</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.itrajectory_plan</span> <span class="kn">import</span> <span class="n">ITrajectoryPlan</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.itrajectory_plan</span> <span class="kn">import</span> <span class="n">ITrajectoryPlan</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.canvas.icanvas</span> <span class="kn">import</span> <span class="n">ICanvas</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
@@ -105,6 +90,9 @@
 <span class="sd">            :attributes:</span>
 <span class="sd">                | _canvas - Active CAD canvas interface.</span>
 <span class="sd">                | _plan - Active trajectory plan domain model.</span>
+<span class="sd">                | _r_min - Minimum reach distance from origin in mm.</span>
+<span class="sd">                | _r_max - Maximum reach distance from origin in mm.</span>
+<span class="sd">                | _settings - Active canvas creation parameters.</span>
 <span class="sd">                | _tool_var - Active CAD tool mode variable.</span>
 <span class="sd">                | _spin_z - Default waypoint Z elevation spinbox.</span>
 <span class="sd">                | _spin_speed - Default waypoint feedrate spinbox.</span>
@@ -112,12 +100,17 @@
 <span class="sd">                | _lbl_cursor - Dynamic cursor coordinate and zoom readout label.</span>
 <span class="sd">            :methods:</span>
 <span class="sd">                | __init__ - Initializes toolbar widgets.</span>
+<span class="sd">                | build_layout - Constructs CAD tools, zoom buttons, parameter inputs and cursor monitor.</span>
+<span class="sd">                | on_defaults_changed - Applies updated defaults from toolbar to canvas.</span>
 <span class="sd">                | set_deadzone - Sets deadzone enforcement checkbox state.</span>
 <span class="sd">                | get_cursor_label - Returns cursor info label widget.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="n">_canvas</span><span class="p">:</span> <span class="n">ICanvas</span>
     <span class="n">_plan</span><span class="p">:</span> <span class="n">ITrajectoryPlan</span>
+    <span class="n">_r_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">_r_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">_settings</span><span class="p">:</span> <span class="n">CanvasSettings</span>
     <span class="n">_tool_var</span><span class="p">:</span> <span class="n">StringVar</span>
     <span class="n">_spin_z</span><span class="p">:</span> <span class="n">Spinbox</span>
     <span class="n">_spin_speed</span><span class="p">:</span> <span class="n">Spinbox</span>
@@ -129,7 +122,11 @@
         <span class="n">parent</span><span class="p">:</span> <span class="n">Widget</span><span class="p">,</span>
         <span class="n">canvas</span><span class="p">:</span> <span class="n">ICanvas</span><span class="p">,</span>
         <span class="n">plan</span><span class="p">:</span> <span class="n">ITrajectoryPlan</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">object</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">r_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">r_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">settings</span><span class="p">:</span> <span class="n">CanvasSettings</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Initializes toolbar widgets.</span>
@@ -137,14 +134,22 @@
 <span class="sd">            :param parent: Parent container widget.</span>
 <span class="sd">            :param canvas: ICanvas interface instance.</span>
 <span class="sd">            :param plan: ITrajectoryPlan instance.</span>
+<span class="sd">            :param r_min: Optional minimum workspace radius in mm.</span>
+<span class="sd">            :param r_max: Optional maximum workspace radius in mm.</span>
+<span class="sd">            :param settings: Optional CanvasSettings instance.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ICanvas</span><span class="p">]</span> <span class="o">=</span> <span class="n">canvas</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ITrajectoryPlan</span><span class="p">]</span> <span class="o">=</span> <span class="n">plan</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_build_layout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_r_min</span> <span class="o">=</span> <span class="n">r_min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_r_max</span> <span class="o">=</span> <span class="n">r_max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">settings</span> <span class="k">if</span> <span class="n">settings</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">CanvasSettings</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">build_layout</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_build_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Toolbar.build_layout">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.toolbar.toolbar.html#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar.build_layout">[docs]</a>
+    <span class="k">def</span> <span class="nf">build_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Constructs CAD tools, zoom buttons, parameter inputs and cursor monitor.</span>
 
@@ -179,24 +184,29 @@
         <span class="n">Separator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="n">VERTICAL</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">Y</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
         <span class="n">Label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Z (mm):&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_spin_z</span> <span class="o">=</span> <span class="n">Spinbox</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">increment</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_spin_z</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;20.0&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_spin_z</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_settings</span><span class="o">.</span><span class="n">default_z</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_spin_z</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
         <span class="n">Label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Speed (mm/s):&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_spin_speed</span> <span class="o">=</span> <span class="n">Spinbox</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">increment</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_spin_speed</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;40.0&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_spin_speed</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_settings</span><span class="o">.</span><span class="n">default_speed</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_spin_speed</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_spin_z</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;FocusOut&gt;&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_defaults_changed</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_spin_speed</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;FocusOut&gt;&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_defaults_changed</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_spin_z</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;FocusOut&gt;&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_defaults_changed</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_spin_speed</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;FocusOut&gt;&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_defaults_changed</span><span class="p">())</span>
 
         <span class="n">Separator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="n">VERTICAL</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">Y</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_deadzone_var</span> <span class="o">=</span> <span class="n">BooleanVar</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_deadzone_var</span> <span class="o">=</span> <span class="n">BooleanVar</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_settings</span><span class="o">.</span><span class="n">enforce_deadzone</span><span class="p">)</span>
+        <span class="n">reach_text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;Enforce Reach Limits (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_r_min</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_r_max</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">mm)&#39;</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_r_min</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_r_max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="s1">&#39;Enforce Reach Limits&#39;</span>
+        <span class="p">)</span>
         <span class="n">Checkbutton</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
-            <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Enforce Reach Limits (30-270mm)&#39;</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="n">reach_text</span><span class="p">,</span>
             <span class="n">variable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_deadzone_var</span><span class="p">,</span>
-            <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_on_defaults_changed</span>
+            <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">on_defaults_changed</span>
         <span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 
         <span class="n">Separator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="n">VERTICAL</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">Y</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
@@ -209,9 +219,12 @@
             <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;DejaVu Sans Mono&#39;</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_lbl_cursor</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">RIGHT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">set_hover_label</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lbl_cursor</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">set_hover_label</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lbl_cursor</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_on_defaults_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Toolbar.on_defaults_changed">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.toolbar.toolbar.html#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar.on_defaults_changed">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_defaults_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Applies updated defaults from toolbar to canvas.</span>
 
@@ -223,7 +236,8 @@
             <span class="n">enforce</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deadzone_var</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">update_settings</span><span class="p">(</span><span class="n">CanvasSettings</span><span class="p">(</span><span class="n">default_z</span><span class="o">=</span><span class="n">dz</span><span class="p">,</span> <span class="n">default_speed</span><span class="o">=</span><span class="n">dsp</span><span class="p">,</span> <span class="n">enforce_deadzone</span><span class="o">=</span><span class="n">enforce</span><span class="p">))</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="k">pass</span>
+            <span class="k">pass</span></div>
+
 
 <div class="viewcode-block" id="Toolbar.set_deadzone">
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.toolbar.toolbar.html#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar.set_deadzone">[docs]</a>
@@ -235,7 +249,7 @@
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_deadzone_var</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">enabled</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_on_defaults_changed</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_defaults_changed</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="Toolbar.get_cursor_label">

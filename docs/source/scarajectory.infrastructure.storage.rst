@@ -8,6 +8,8 @@ Submodules
    :maxdepth: 4
 
    scarajectory.infrastructure.storage.plan_storage_service
+   scarajectory.infrastructure.storage.plan_storage_service_factory
+   scarajectory.infrastructure.storage.trajectory_serializer
 
 Module contents
 ---------------
@@ -16,3 +18,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

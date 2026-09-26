@@ -61,29 +61,11 @@
 
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Sequence</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.iscara_program</span> <span class="kn">import</span> <span class="n">IScaraProgram</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.scara_diagnostic</span> <span class="kn">import</span> <span class="n">ScaraDiagnostic</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.scara_diagnostic_severity</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">ScaraDiagnosticSeverity</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.linter.rules.iscara_lint_rule</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">IScaraLintRule</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.linter.rules.motion_lint_rule</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">MotionLintRule</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.linter.rules.pneumatic_lint_rule</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">PneumaticLintRule</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.linter.rules.state_lint_rule</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">StateLintRule</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.linter.rules.timing_lint_rule</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">TimingLintRule</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.linter.scara_lint_context</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">ScaraLintContext</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.program</span> <span class="kn">import</span> <span class="n">Program</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.diagnostic</span> <span class="kn">import</span> <span class="n">Diagnostic</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.diagnostic_severity</span> <span class="kn">import</span> <span class="n">DiagnosticSeverity</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.linter.rules.iscara_lint_rule</span> <span class="kn">import</span> <span class="n">IScaraLintRule</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.linter.scara_lint_context</span> <span class="kn">import</span> <span class="n">ScaraLintContext</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
@@ -106,61 +88,47 @@
 <span class="sd">            :attributes:</span>
 <span class="sd">                | _rules - Sequence of registered IScaraLintRule components.</span>
 <span class="sd">            :methods:</span>
-<span class="sd">                | __init__ - Initializes ScaraLinter with optional custom lint rules.</span>
-<span class="sd">                | lint - Performs static analysis and returns tuple of ScaraDiagnostic findings.</span>
+<span class="sd">                | __init__ - Initializes ScaraLinter with injected lint rules.</span>
+<span class="sd">                | lint - Performs static analysis and returns tuple of Diagnostic findings.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">rules</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">IScaraLintRule</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">rules</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">IScaraLintRule</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Initializes ScaraLinter with injected or default lint rules.</span>
+<span class="sd">            Initializes ScaraLinter with injected lint rules.</span>
 
-<span class="sd">            :param rules: Optional custom sequence of IScaraLintRule components.</span>
+<span class="sd">            :param rules: Sequence of IScaraLintRule components.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="n">rules</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_rules</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">IScaraLintRule</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">rules</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_rules</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">StateLintRule</span><span class="p">(),</span>
-                <span class="n">MotionLintRule</span><span class="p">(),</span>
-                <span class="n">PneumaticLintRule</span><span class="p">(),</span>
-                <span class="n">TimingLintRule</span><span class="p">(),</span>
-            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rules</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">IScaraLintRule</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">rules</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ScaraLinter.lint">
 <a class="viewcode-back" href="../../../../../../scarajectory.core.service.dsl.linter.scara_linter.html#scarajectory.core.service.dsl.linter.scara_linter.ScaraLinter.lint">[docs]</a>
-    <span class="k">def</span> <span class="nf">lint</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">program</span><span class="p">:</span> <span class="n">IScaraProgram</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ScaraDiagnostic</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">lint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Diagnostic</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Performs static analysis checks on a SCARA DSL AST program.</span>
 
-<span class="sd">            :param program: Parsed IScaraProgram AST root.</span>
-<span class="sd">            :return: Tuple of ScaraDiagnostic findings.</span>
+<span class="sd">            :param program: Parsed Program AST root.</span>
+<span class="sd">            :return: Tuple of Diagnostic findings.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">diagnostics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ScaraDiagnostic</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">diagnostics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Diagnostic</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">instructions</span> <span class="o">=</span> <span class="n">program</span><span class="o">.</span><span class="n">instructions</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">instructions</span><span class="p">:</span>
             <span class="n">diagnostics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">ScaraDiagnostic</span><span class="p">(</span>
+                <span class="n">Diagnostic</span><span class="p">(</span>
                     <span class="n">code</span><span class="o">=</span><span class="s1">&#39;EMPTY_PROGRAM&#39;</span><span class="p">,</span>
-                    <span class="n">severity</span><span class="o">=</span><span class="n">ScaraDiagnosticSeverity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span>
+                    <span class="n">severity</span><span class="o">=</span><span class="n">DiagnosticSeverity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span>
                     <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Program contains no executable instructions.&#39;</span><span class="p">,</span>
                     <span class="n">line</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                     <span class="n">command</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="p">)</span>
+
             <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">diagnostics</span><span class="p">)</span>
 
         <span class="n">context</span> <span class="o">=</span> <span class="n">ScaraLintContext</span><span class="p">()</span>
+
         <span class="k">for</span> <span class="n">inst</span> <span class="ow">in</span> <span class="n">instructions</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rules</span><span class="p">:</span>
                 <span class="n">rule</span><span class="o">.</span><span class="n">check</span><span class="p">(</span>

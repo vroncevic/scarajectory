@@ -62,8 +62,8 @@
 <span class="kn">from</span> <span class="nn">re</span> <span class="kn">import</span> <span class="nb">compile</span> <span class="k">as</span> <span class="n">re_compile</span><span class="p">,</span> <span class="n">Pattern</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">ClassVar</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.token.scara_token</span> <span class="kn">import</span> <span class="n">ScaraToken</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.token.scara_token_type</span> <span class="kn">import</span> <span class="n">ScaraTokenType</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.token.token</span> <span class="kn">import</span> <span class="n">Token</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.token.token_type</span> <span class="kn">import</span> <span class="n">TokenType</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
@@ -104,15 +104,15 @@
 
 <div class="viewcode-block" id="ScaraLexer.tokenize">
 <a class="viewcode-back" href="../../../../../../scarajectory.core.service.dsl.lexer.scara_lexer.html#scarajectory.core.service.dsl.lexer.scara_lexer.ScaraLexer.tokenize">[docs]</a>
-    <span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ScaraToken</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Token</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Tokenizes source text into a tuple of ScaraToken instances.</span>
+<span class="sd">            Tokenizes source text into a tuple of Token instances.</span>
 
 <span class="sd">            :param source: Raw source code string.</span>
-<span class="sd">            :return: Immutable tuple of ScaraToken tokens.</span>
+<span class="sd">            :return: Immutable tuple of Token tokens.</span>
 <span class="sd">            :exceptions: ValueError if an illegal/unrecognized character is encountered.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">tokens</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ScaraToken</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">tokens</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Token</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">lines</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">line_idx</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
@@ -131,25 +131,25 @@
                         <span class="sa">f</span><span class="s1">&#39;Syntax error: Unexpected character </span><span class="si">{</span><span class="n">val</span><span class="si">!r}</span><span class="s1"> at line </span><span class="si">{</span><span class="n">line_idx</span><span class="si">}</span><span class="s1">, column </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1">&#39;</span>
                     <span class="p">)</span>
 
-                <span class="n">token_type</span> <span class="o">=</span> <span class="n">ScaraTokenType</span><span class="o">.</span><span class="n">IDENTIFIER</span>
+                <span class="n">token_type</span> <span class="o">=</span> <span class="n">TokenType</span><span class="o">.</span><span class="n">IDENTIFIER</span>
                 <span class="k">match</span> <span class="n">kind</span><span class="p">:</span>
                     <span class="k">case</span> <span class="s1">&#39;NUMBER&#39;</span><span class="p">:</span>
-                        <span class="n">token_type</span> <span class="o">=</span> <span class="n">ScaraTokenType</span><span class="o">.</span><span class="n">NUMBER</span>
+                        <span class="n">token_type</span> <span class="o">=</span> <span class="n">TokenType</span><span class="o">.</span><span class="n">NUMBER</span>
                     <span class="k">case</span> <span class="s1">&#39;STRING&#39;</span><span class="p">:</span>
-                        <span class="n">token_type</span> <span class="o">=</span> <span class="n">ScaraTokenType</span><span class="o">.</span><span class="n">STRING</span>
+                        <span class="n">token_type</span> <span class="o">=</span> <span class="n">TokenType</span><span class="o">.</span><span class="n">STRING</span>
                     <span class="k">case</span> <span class="s1">&#39;EQUALS&#39;</span><span class="p">:</span>
-                        <span class="n">token_type</span> <span class="o">=</span> <span class="n">ScaraTokenType</span><span class="o">.</span><span class="n">EQUALS</span>
+                        <span class="n">token_type</span> <span class="o">=</span> <span class="n">TokenType</span><span class="o">.</span><span class="n">EQUALS</span>
                     <span class="k">case</span> <span class="s1">&#39;COMMA&#39;</span><span class="p">:</span>
-                        <span class="n">token_type</span> <span class="o">=</span> <span class="n">ScaraTokenType</span><span class="o">.</span><span class="n">COMMA</span>
+                        <span class="n">token_type</span> <span class="o">=</span> <span class="n">TokenType</span><span class="o">.</span><span class="n">COMMA</span>
                     <span class="k">case</span> <span class="s1">&#39;LPAREN&#39;</span><span class="p">:</span>
-                        <span class="n">token_type</span> <span class="o">=</span> <span class="n">ScaraTokenType</span><span class="o">.</span><span class="n">LPAREN</span>
+                        <span class="n">token_type</span> <span class="o">=</span> <span class="n">TokenType</span><span class="o">.</span><span class="n">LPAREN</span>
                     <span class="k">case</span> <span class="s1">&#39;RPAREN&#39;</span><span class="p">:</span>
-                        <span class="n">token_type</span> <span class="o">=</span> <span class="n">ScaraTokenType</span><span class="o">.</span><span class="n">RPAREN</span>
+                        <span class="n">token_type</span> <span class="o">=</span> <span class="n">TokenType</span><span class="o">.</span><span class="n">RPAREN</span>
                     <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
-                        <span class="n">token_type</span> <span class="o">=</span> <span class="n">ScaraTokenType</span><span class="o">.</span><span class="n">IDENTIFIER</span>
+                        <span class="n">token_type</span> <span class="o">=</span> <span class="n">TokenType</span><span class="o">.</span><span class="n">IDENTIFIER</span>
 
                 <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="n">ScaraToken</span><span class="p">(</span>
+                    <span class="n">Token</span><span class="p">(</span>
                         <span class="n">token_type</span><span class="o">=</span><span class="n">token_type</span><span class="p">,</span>
                         <span class="n">value</span><span class="o">=</span><span class="n">val</span><span class="p">,</span>
                         <span class="n">line</span><span class="o">=</span><span class="n">line_idx</span><span class="p">,</span>
@@ -160,8 +160,8 @@
 
             <span class="k">if</span> <span class="n">line_has_tokens</span><span class="p">:</span>
                 <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="n">ScaraToken</span><span class="p">(</span>
-                        <span class="n">token_type</span><span class="o">=</span><span class="n">ScaraTokenType</span><span class="o">.</span><span class="n">NEWLINE</span><span class="p">,</span>
+                    <span class="n">Token</span><span class="p">(</span>
+                        <span class="n">token_type</span><span class="o">=</span><span class="n">TokenType</span><span class="o">.</span><span class="n">NEWLINE</span><span class="p">,</span>
                         <span class="n">value</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
                         <span class="n">line</span><span class="o">=</span><span class="n">line_idx</span><span class="p">,</span>
                         <span class="n">column</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
@@ -169,13 +169,14 @@
                 <span class="p">)</span>
 
         <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="n">ScaraToken</span><span class="p">(</span>
-                <span class="n">token_type</span><span class="o">=</span><span class="n">ScaraTokenType</span><span class="o">.</span><span class="n">EOF</span><span class="p">,</span>
+            <span class="n">Token</span><span class="p">(</span>
+                <span class="n">token_type</span><span class="o">=</span><span class="n">TokenType</span><span class="o">.</span><span class="n">EOF</span><span class="p">,</span>
                 <span class="n">value</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
                 <span class="n">line</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
                 <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span>
+
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span></div>
 </div>
 

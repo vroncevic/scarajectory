@@ -5,3 +5,4 @@ scarajectory.infrastructure.gui.editor.waypoint\_editor module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

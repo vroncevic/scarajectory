@@ -1,0 +1,8 @@
+scarajectory.core.service.trajectory.plan.itrajectory\_observer module
+======================================================================
+
+.. automodule:: scarajectory.core.service.trajectory.plan.itrajectory_observer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

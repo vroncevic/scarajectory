@@ -21,20 +21,12 @@ Info
 
 from __future__ import annotations
 
-from tkinter import (
-    BOTH,
-    END,
-    Event,
-    LEFT,
-    RIGHT,
-    VERTICAL,
-    Widget,
-    Y,
-)
+from math import hypot
+from tkinter import BOTH, END, Event, LEFT, RIGHT, VERTICAL, Widget, Y
 from tkinter.ttk import Frame, Scrollbar, Treeview
 from typing import Final
 
-from scarajectory.core.model.trajectory.itrajectory_plan import ITrajectoryPlan
+from scarajectory.core.service.trajectory.plan.itrajectory_plan import ITrajectoryPlan
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -132,7 +124,7 @@ class TrajectoryTable(Frame):
             self._tree.delete(item)
 
         for i, pt in enumerate(self._plan.waypoints):
-            r: float = pt.radial_distance
+            r: float = hypot(pt.x, pt.y)
             item_id: str = self._tree.insert(
                 '', END,
                 values=(

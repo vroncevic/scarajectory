@@ -15,7 +15,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="scarajectory.infrastructure.communication.serial_device_preferences module" href="scarajectory.infrastructure.communication.serial_device_preferences.html" />
+    <link rel="next" title="scarajectory.infrastructure.communication.serial_port_scanner module" href="scarajectory.infrastructure.communication.serial_port_scanner.html" />
     <link rel="prev" title="scarajectory.infrastructure.communication.transport.tcp_transport module" href="scarajectory.infrastructure.communication.transport.tcp_transport.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -28,7 +28,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.communication.serial_device_preferences.html" title="scarajectory.infrastructure.communication.serial_device_preferences module"
+          <a href="scarajectory.infrastructure.communication.serial_port_scanner.html" title="scarajectory.infrastructure.communication.serial_port_scanner module"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="scarajectory.infrastructure.communication.transport.tcp_transport.html" title="scarajectory.infrastructure.communication.transport.tcp_transport module"
@@ -86,7 +86,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </div></blockquote>
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.transport_factory.TransportFactory.create_default_transport">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_default_transport</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.itransport.html#scarajectory.infrastructure.communication.transport.itransport.ITransport" title="scarajectory.infrastructure.communication.transport.itransport.ITransport"><span class="pre">ITransport</span></a></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/transport_factory.html#TransportFactory.create_default_transport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.transport_factory.TransportFactory.create_default_transport" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_default_transport</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.itransport.html#scarajectory.infrastructure.communication.transport.itransport.ITransport" title="scarajectory.infrastructure.communication.transport.itransport.ITransport"><span class="pre">ITransport</span></a></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/transport_factory.html#TransportFactory.create_default_transport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.transport_factory.TransportFactory.create_default_transport" title="Link to this definition">¶</a></dt>
 <dd><p>Instantiates default serial transport.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -97,7 +97,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.transport_factory.TransportFactory.create_transport">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">endpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.itransport.html#scarajectory.infrastructure.communication.transport.itransport.ITransport" title="scarajectory.infrastructure.communication.transport.itransport.ITransport"><span class="pre">ITransport</span></a></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/transport_factory.html#TransportFactory.create_transport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.transport_factory.TransportFactory.create_transport" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_transport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">endpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.itransport.html#scarajectory.infrastructure.communication.transport.itransport.ITransport" title="scarajectory.infrastructure.communication.transport.itransport.ITransport"><span class="pre">ITransport</span></a></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/transport_factory.html#TransportFactory.create_transport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.transport_factory.TransportFactory.create_transport" title="Link to this definition">¶</a></dt>
 <dd><p>Instantiates transport matching target endpoint identifier.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -141,8 +141,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.communication.serial_device_preferences.html"
-                          title="next chapter">scarajectory.infrastructure.communication.serial_device_preferences module</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.communication.serial_port_scanner.html"
+                          title="next chapter">scarajectory.infrastructure.communication.serial_port_scanner module</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -175,7 +175,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.communication.serial_device_preferences.html" title="scarajectory.infrastructure.communication.serial_device_preferences module"
+          <a href="scarajectory.infrastructure.communication.serial_port_scanner.html" title="scarajectory.infrastructure.communication.serial_port_scanner module"
              >next</a> |</li>
         <li class="right" >
           <a href="scarajectory.infrastructure.communication.transport.tcp_transport.html" title="scarajectory.infrastructure.communication.transport.tcp_transport module"

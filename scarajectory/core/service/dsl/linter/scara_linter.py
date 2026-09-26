@@ -23,29 +23,11 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 
-from scarajectory.core.model.dsl.ast.iscara_program import IScaraProgram
-from scarajectory.core.model.dsl.diagnostic.scara_diagnostic import ScaraDiagnostic
-from scarajectory.core.model.dsl.diagnostic.scara_diagnostic_severity import (
-    ScaraDiagnosticSeverity,
-)
-from scarajectory.core.service.dsl.linter.rules.iscara_lint_rule import (
-    IScaraLintRule,
-)
-from scarajectory.core.service.dsl.linter.rules.motion_lint_rule import (
-    MotionLintRule,
-)
-from scarajectory.core.service.dsl.linter.rules.pneumatic_lint_rule import (
-    PneumaticLintRule,
-)
-from scarajectory.core.service.dsl.linter.rules.state_lint_rule import (
-    StateLintRule,
-)
-from scarajectory.core.service.dsl.linter.rules.timing_lint_rule import (
-    TimingLintRule,
-)
-from scarajectory.core.service.dsl.linter.scara_lint_context import (
-    ScaraLintContext,
-)
+from scarajectory.core.model.dsl.ast.program import Program
+from scarajectory.core.model.dsl.diagnostic.diagnostic import Diagnostic
+from scarajectory.core.model.dsl.diagnostic.diagnostic_severity import DiagnosticSeverity
+from scarajectory.core.service.dsl.linter.rules.iscara_lint_rule import IScaraLintRule
+from scarajectory.core.service.dsl.linter.scara_lint_context import ScaraLintContext
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -66,59 +48,45 @@ class ScaraLinter:
             :attributes:
                 | _rules - Sequence of registered IScaraLintRule components.
             :methods:
-                | __init__ - Initializes ScaraLinter with optional custom lint rules.
-                | lint - Performs static analysis and returns tuple of ScaraDiagnostic findings.
+                | __init__ - Initializes ScaraLinter with injected lint rules.
+                | lint - Performs static analysis and returns tuple of Diagnostic findings.
     '''
 
-    def __init__(
-        self,
-        *,
-        rules: Sequence[IScaraLintRule] | None = None,
-    ) -> None:
+    def __init__(self, *, rules: Sequence[IScaraLintRule]) -> None:
         '''
-            Initializes ScaraLinter with injected or default lint rules.
+            Initializes ScaraLinter with injected lint rules.
 
-            :param rules: Optional custom sequence of IScaraLintRule components.
+            :param rules: Sequence of IScaraLintRule components.
             :exceptions: None.
         '''
-        if rules is not None:
-            self._rules: tuple[IScaraLintRule, ...] = tuple(rules)
-        else:
-            self._rules = (
-                StateLintRule(),
-                MotionLintRule(),
-                PneumaticLintRule(),
-                TimingLintRule(),
-            )
+        self._rules: tuple[IScaraLintRule, ...] = tuple(rules)
 
-    def lint(
-        self,
-        *,
-        program: IScaraProgram,
-    ) -> tuple[ScaraDiagnostic, ...]:
+    def lint(self, *, program: Program) -> tuple[Diagnostic, ...]:
         '''
             Performs static analysis checks on a SCARA DSL AST program.
 
-            :param program: Parsed IScaraProgram AST root.
-            :return: Tuple of ScaraDiagnostic findings.
+            :param program: Parsed Program AST root.
+            :return: Tuple of Diagnostic findings.
             :exceptions: None.
         '''
-        diagnostics: list[ScaraDiagnostic] = []
+        diagnostics: list[Diagnostic] = []
         instructions = program.instructions
 
         if not instructions:
             diagnostics.append(
-                ScaraDiagnostic(
+                Diagnostic(
                     code='EMPTY_PROGRAM',
-                    severity=ScaraDiagnosticSeverity.ERROR,
+                    severity=DiagnosticSeverity.ERROR,
                     message='Program contains no executable instructions.',
                     line=1,
                     command='',
                 )
             )
+
             return tuple(diagnostics)
 
         context = ScaraLintContext()
+
         for inst in instructions:
             for rule in self._rules:
                 rule.check(

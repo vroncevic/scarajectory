@@ -25,12 +25,12 @@ from tkinter import Canvas, Widget
 from tkinter.ttk import Label
 from typing import ClassVar, Final
 
-from scarajectory.core.model.trajectory.itrajectory_plan import ITrajectoryPlan
+from scarajectory.core.service.trajectory.plan.itrajectory_plan import ITrajectoryPlan
 from scarajectory.infrastructure.gui.model.canvas_settings import CanvasSettings
 from scarajectory.infrastructure.gui.model.canvas_tool_mode import CanvasToolMode
 from scarajectory.infrastructure.gui.model.canvas_interaction_state import CanvasInteractionState
 from scarajectory.infrastructure.gui.model.viewport_transform import ViewportTransform
-from scarajectory.core.service.trajectory.itrajectory_validator import ITrajectoryValidator
+from scarajectory.core.service.trajectory.validation.itrajectory_validator import ITrajectoryValidator
 from scarajectory.infrastructure.gui.canvas.canvas_renderer import CanvasRenderer
 from scarajectory.infrastructure.gui.canvas.canvas_mouse_handler import CanvasMouseHandler
 from scarajectory.infrastructure.gui.canvas.canvas_event_binder import CanvasEventBinder
@@ -52,7 +52,6 @@ class TrajectoryCanvas(Canvas):
         It defines:
 
             :attributes:
-                | R_MIN_MM - Fallback minimum radius deadzone boundary in mm.
                 | SELECT_HIT_RADIUS_PX - Hit detection pixel radius for selecting waypoints.
                 | FREEHAND_MIN_DISTANCE_MM - Minimum distance threshold in mm for freehand point sampling.
                 | CIRCLE_MIN_RADIUS_MM - Minimum radius threshold in mm for inserting circle shapes.
@@ -80,7 +79,6 @@ class TrajectoryCanvas(Canvas):
                 | redraw - Clears and redraws entire vector scene.
     '''
 
-    R_MIN_MM: ClassVar[float] = 86.1
     SELECT_HIT_RADIUS_PX: ClassVar[float] = 12.0
     FREEHAND_MIN_DISTANCE_MM: ClassVar[float] = 5.0
     CIRCLE_MIN_RADIUS_MM: ClassVar[float] = 5.0
@@ -101,6 +99,8 @@ class TrajectoryCanvas(Canvas):
         plan: ITrajectoryPlan,
         validator: ITrajectoryValidator,
         settings: CanvasSettings = CanvasSettings(),
+        discretizer: IShapeDiscretizer | None = None,
+        waypoint_factory: IWaypointFactory | None = None,
         **kwargs: object
     ) -> None:
         '''
@@ -125,7 +125,11 @@ class TrajectoryCanvas(Canvas):
         self._vp = ViewportTransform()
         self._state = CanvasInteractionState()
         self._mouse_handler: Final[CanvasMouseHandler] = CanvasMouseHandler(
-            self._plan, self._vp, self._state
+            self._plan,
+            self._vp,
+            self._state,
+            waypoint_factory=waypoint_factory,
+            discretizer=discretizer,
         )
         self._event_binder = CanvasEventBinder(self, self._mouse_handler)
         self._hover_label = None

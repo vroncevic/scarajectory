@@ -19,6 +19,8 @@ Info
     Communication transport implementations (Serial, TCP/IP).
 '''
 
+from __future__ import annotations
+
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']

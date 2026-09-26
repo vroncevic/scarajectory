@@ -23,10 +23,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from scarajectory.core.model.dsl.ast.iscara_instruction import IScaraInstruction
-from scarajectory.core.model.dsl.ast.scara_command_type import ScaraCommandType
-from scarajectory.core.model.dsl.ast.scara_instruction import ScaraInstruction
-from scarajectory.core.model.dsl.token.scara_token import ScaraToken
+from scarajectory.core.model.dsl.ast.command_type import CommandType
+from scarajectory.core.model.dsl.ast.instruction import Instruction
+from scarajectory.core.model.dsl.token.token import Token
 from scarajectory.core.service.dsl.parser.parameter_extractor import ParameterExtractor
 
 __author__ = 'Vladimir Roncevic'
@@ -49,7 +48,7 @@ class ToolOrientCommandParser:
                 | None.
             :methods:
                 | can_parse - Checks whether command is TOOL_ORIENT.
-                | parse - Parses tool orient statement tokens into ScaraInstruction.
+                | parse - Parses tool orient statement tokens into Instruction.
     '''
 
     def can_parse(self, *, command_name: str) -> bool:
@@ -64,17 +63,17 @@ class ToolOrientCommandParser:
     def parse(
         self,
         *,
-        tokens: tuple[ScaraToken, ...],
+        tokens: tuple[Token, ...],
         line_num: int,
         raw_text: str,
-    ) -> IScaraInstruction:
+    ) -> Instruction:
         '''
-            Parses tool orient statement into ScaraInstruction.
+            Parses tool orient statement into Instruction.
 
             :param tokens: Statement token tuple.
             :param line_num: Line number in source code.
             :param raw_text: Original statement text.
-            :return: IScaraInstruction node.
+            :return: Instruction node.
             :exceptions: ValueError on missing orientation mode.
         '''
         if len(tokens) < 2:
@@ -85,11 +84,12 @@ class ToolOrientCommandParser:
         mode = tokens[1].value.upper()
         sub_params = ParameterExtractor.extract_key_values(tokens=tokens[2:])
         params: dict[str, Any] = {'mode': mode}
+
         if 'PHI' in sub_params:
             params['phi'] = sub_params['PHI']
 
-        return ScaraInstruction(
-            command_type=ScaraCommandType.TOOL_ORIENT,
+        return Instruction(
+            command_type=CommandType.TOOL_ORIENT,
             line_number=line_num,
             raw_text=raw_text,
             parameters=params,

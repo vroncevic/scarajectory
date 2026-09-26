@@ -33,6 +33,7 @@ if pkg_dir not in path:
 from scarajectory.core.model.kinematics.scara_bounds import ScaraBounds
 from scarajectory.core.service.kinematics.ikinematics_service import IKinematicsService
 from scarajectory.core.service.kinematics.kinematics_service import KinematicsService
+from scarajectory.infrastructure.settings.config_loader_factory import ScaraConfigLoaderFactory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -65,16 +66,18 @@ class KinematicsServiceTestCase(TestCase):
         '''
             Sets up standard SCARA geometry bounds and initializes KinematicsService.
         '''
-        self.bounds = ScaraBounds(
-            l1=150.0,
-            l2=120.0,
-            z_min=0.0,
-            z_max=50.0,
-            j1_min_rad=radians(-150.0),
-            j1_max_rad=radians(150.0),
-            j2_min_rad=radians(-145.0),
-            j2_max_rad=radians(145.0),
-            singularity_theta2_min_rad=radians(5.0)
+        self.bounds = ScaraConfigLoaderFactory.create().load_bounds_with_options(
+            options={
+                'l1': 150.0,
+                'l2': 120.0,
+                'z_min': 0.0,
+                'z_max': 50.0,
+                'j1_min_rad': radians(-150.0),
+                'j1_max_rad': radians(150.0),
+                'j2_min_rad': radians(-145.0),
+                'j2_max_rad': radians(145.0),
+                'singularity_theta2_min_rad': radians(5.0),
+            }
         )
         self.service = KinematicsService(bounds=self.bounds)
 

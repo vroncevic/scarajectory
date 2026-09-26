@@ -25,8 +25,8 @@ from tkinter import DoubleVar, END, LEFT, Widget, X
 from tkinter.ttk import Button, Entry, Frame, Label, Radiobutton
 from typing import Final
 
-from scarajectory.core.service.communication.irobot_controller import IRobotController
-from scarajectory.core.service.communication.itrajectory_streamer import ITrajectoryStreamer
+from scarajectory.core.service.communication.controller.irobot_controller import IRobotController
+from scarajectory.core.service.communication.stream.itrajectory_streamer import ITrajectoryStreamer
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -80,7 +80,7 @@ class JogTab(Frame):
         self._robot_controller = (
             robot_controller
             if robot_controller is not None
-            else getattr(streamer, 'get_robot_controller', lambda: None)()
+            else streamer.get_robot_controller()
         )
         self._step_var = DoubleVar(value=10.0)
         self._build_layout()

@@ -23,8 +23,7 @@ from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
-from scarajectory.core.model.dsl.diagnostic.scara_diagnostic import ScaraDiagnostic
-from scarajectory.core.model.kinematics.scara_bounds import ScaraBounds
+from scarajectory.core.model.dsl.diagnostic.diagnostic import Diagnostic
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -48,30 +47,20 @@ class IScaraDslValidator(Protocol):
                 | lint_script - Performs static analysis checks on DSL script string.
     '''
 
-    def validate_script(
-        self,
-        *,
-        source: str,
-        bounds: ScaraBounds | None = None,
-    ) -> tuple[bool, list[str]]:
+    def validate_script(self, *, source: str) -> tuple[bool, list[str]]:
         '''
             Validates syntax, static analysis rules, and kinematics of a DSL script.
 
             :param source: Raw .scara script text.
-            :param bounds: Optional robot kinematic boundary constraints.
             :return: Tuple of (is_valid, messages_list).
             :exceptions: None.
         '''
 
-    def lint_script(
-        self,
-        *,
-        source: str,
-    ) -> tuple[ScaraDiagnostic, ...]:
+    def lint_script(self, *, source: str) -> tuple[Diagnostic, ...]:
         '''
             Performs static analysis checks on a DSL script string.
 
             :param source: Raw .scara script text.
-            :return: Tuple of ScaraDiagnostic findings.
+            :return: Tuple of Diagnostic findings.
             :exceptions: None.
         '''

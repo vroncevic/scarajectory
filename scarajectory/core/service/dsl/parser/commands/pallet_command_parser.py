@@ -21,10 +21,9 @@ Info
 
 from __future__ import annotations
 
-from scarajectory.core.model.dsl.ast.iscara_instruction import IScaraInstruction
-from scarajectory.core.model.dsl.ast.scara_command_type import ScaraCommandType
-from scarajectory.core.model.dsl.ast.scara_instruction import ScaraInstruction
-from scarajectory.core.model.dsl.token.scara_token import ScaraToken
+from scarajectory.core.model.dsl.ast.command_type import CommandType
+from scarajectory.core.model.dsl.ast.instruction import Instruction
+from scarajectory.core.model.dsl.token.token import Token
 from scarajectory.core.service.dsl.parser.parameter_extractor import ParameterExtractor
 
 __author__ = 'Vladimir Roncevic'
@@ -47,7 +46,7 @@ class PalletCommandParser:
                 | None.
             :methods:
                 | can_parse - Checks whether command is PALLET_DEF or MOVE_PALLET.
-                | parse - Parses pallet statement tokens into ScaraInstruction.
+                | parse - Parses pallet statement tokens into Instruction.
     '''
 
     def can_parse(self, *, command_name: str) -> bool:
@@ -62,20 +61,21 @@ class PalletCommandParser:
     def parse(
         self,
         *,
-        tokens: tuple[ScaraToken, ...],
+        tokens: tuple[Token, ...],
         line_num: int,
         raw_text: str,
-    ) -> IScaraInstruction:
+    ) -> Instruction:
         '''
-            Parses pallet statement into ScaraInstruction.
+            Parses pallet statement into Instruction.
 
             :param tokens: Statement token tuple.
             :param line_num: Line number in source code.
             :param raw_text: Original statement text.
-            :return: IScaraInstruction node.
+            :return: Instruction node.
             :exceptions: ValueError on missing pallet name argument.
         '''
         cmd = tokens[0].value.upper()
+
         if len(tokens) < 2:
             raise ValueError(
                 f'Missing pallet name for {cmd} at line {line_num}'
@@ -86,11 +86,12 @@ class PalletCommandParser:
         params['name'] = pallet_name
 
         cmd_type = (
-            ScaraCommandType.PALLET_DEF
+            CommandType.PALLET_DEF
             if cmd == 'PALLET_DEF'
-            else ScaraCommandType.MOVE_PALLET
+            else CommandType.MOVE_PALLET
         )
-        return ScaraInstruction(
+
+        return Instruction(
             command_type=cmd_type,
             line_number=line_num,
             raw_text=raw_text,

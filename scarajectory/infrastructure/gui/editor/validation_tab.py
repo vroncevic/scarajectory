@@ -25,9 +25,9 @@ from tkinter import BOTH, END, LEFT, X, Text, Widget
 from tkinter.ttk import Button, Frame
 from typing import Final
 
-from scarajectory.core.model.trajectory.itrajectory_plan import ITrajectoryPlan
-from scarajectory.core.service.trajectory.itrajectory_validator import ITrajectoryValidator
-from scarajectory.core.service.trajectory.iplan_validation_service import IPlanValidationService
+from scarajectory.core.service.trajectory.plan.itrajectory_plan import ITrajectoryPlan
+from scarajectory.core.service.trajectory.validation.itrajectory_validator import ITrajectoryValidator
+from scarajectory.core.service.trajectory.contract.iplan_validation_service import IPlanValidationService
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'

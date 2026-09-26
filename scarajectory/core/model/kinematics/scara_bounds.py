@@ -60,20 +60,20 @@ class ScaraBounds:
                 | deadzone_r_min - Inner deadzone radius due to folded elbow in mm.
     '''
 
-    l1: float = 150.0
-    l2: float = 120.0
-    z_min: float = 0.0
-    z_max: float = 100.0
-    min_speed: float = 1.0
-    max_speed: float = 250.0
-    default_speed: float = 50.0
-    default_accel: float = 300.0
-    max_accel: float = 2000.0
-    j1_min_rad: float = -2.617994
-    j1_max_rad: float = 2.617994
-    j2_min_rad: float = -2.530727
-    j2_max_rad: float = 2.530727
-    singularity_outer_margin_mm: float = 3.0
-    singularity_inner_margin_mm: float = 3.0
-    singularity_theta2_min_rad: float = 0.087266
-    deadzone_r_min: float = 86.08
+    l1: float
+    l2: float
+    z_min: float
+    z_max: float
+    min_speed: float
+    max_speed: float
+    default_speed: float
+    default_accel: float
+    max_accel: float
+    j1_min_rad: float
+    j1_max_rad: float
+    j2_min_rad: float
+    j2_max_rad: float
+    singularity_outer_margin_mm: float
+    singularity_inner_margin_mm: float
+    singularity_theta2_min_rad: float
+    deadzone_r_min: float

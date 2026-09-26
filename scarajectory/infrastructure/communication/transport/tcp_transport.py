@@ -21,16 +21,10 @@ Info
 
 from __future__ import annotations
 
-from socket import (
-    AF_INET,
-    SHUT_RDWR,
-    SOCK_STREAM,
-    socket as Socket,
-    timeout as SocketTimeout,
-)
+from socket import AF_INET, SHUT_RDWR, SOCK_STREAM, socket as Socket, timeout as SocketTimeout
 from collections.abc import Callable
 
-from scarajectory.core.model.communication.stream_config import StreamConfig
+from scarajectory.core.model.communication.stream.stream_config import StreamConfig
 from scarajectory.infrastructure.communication.transport.base_transport import BaseTransport
 
 __author__ = 'Vladimir Roncevic'

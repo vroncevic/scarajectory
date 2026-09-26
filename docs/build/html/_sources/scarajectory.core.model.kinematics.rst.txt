@@ -8,6 +8,7 @@ Submodules
    :maxdepth: 4
 
    scarajectory.core.model.kinematics.scara_bounds
+   scarajectory.core.model.kinematics.transmission_parameters
 
 Module contents
 ---------------
@@ -16,3 +17,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

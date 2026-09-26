@@ -5,3 +5,4 @@ scarajectory.infrastructure.gui.canvas.icanvas module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

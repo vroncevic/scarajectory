@@ -61,33 +61,19 @@
 
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Sequence</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.iscara_instruction</span> <span class="kn">import</span> <span class="n">IScaraInstruction</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.iscara_program</span> <span class="kn">import</span> <span class="n">IScaraProgram</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.scara_program</span> <span class="kn">import</span> <span class="n">ScaraProgram</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.token.scara_token</span> <span class="kn">import</span> <span class="n">ScaraToken</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.token.scara_token_type</span> <span class="kn">import</span> <span class="n">ScaraTokenType</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.instruction</span> <span class="kn">import</span> <span class="n">Instruction</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.program</span> <span class="kn">import</span> <span class="n">Program</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.token.token</span> <span class="kn">import</span> <span class="n">Token</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.token.token_type</span> <span class="kn">import</span> <span class="n">TokenType</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.ast.iprogram_factory</span> <span class="kn">import</span> <span class="n">IProgramFactory</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.lexer.iscara_lexer</span> <span class="kn">import</span> <span class="n">IScaraLexer</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.parser.icommand_parser</span> <span class="kn">import</span> <span class="n">ICommandParser</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.parser.commands.approach_retract_parser</span> <span class="kn">import</span> <span class="n">ApproachRetractParser</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.parser.commands.arc_command_parser</span> <span class="kn">import</span> <span class="n">ArcCommandParser</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.parser.commands.config_command_parser</span> <span class="kn">import</span> <span class="n">ConfigCommandParser</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.parser.commands.flow_command_parser</span> <span class="kn">import</span> <span class="n">FlowCommandParser</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.parser.commands.frame_command_parser</span> <span class="kn">import</span> <span class="n">FrameCommandParser</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.parser.commands.jog_command_parser</span> <span class="kn">import</span> <span class="n">JogCommandParser</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.parser.commands.jump_command_parser</span> <span class="kn">import</span> <span class="n">JumpCommandParser</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.parser.commands.motion_command_parser</span> <span class="kn">import</span> <span class="n">MotionCommandParser</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.parser.commands.pallet_command_parser</span> <span class="kn">import</span> <span class="n">PalletCommandParser</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.parser.commands.probe_command_parser</span> <span class="kn">import</span> <span class="n">ProbeCommandParser</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.parser.commands.tool_command_parser</span> <span class="kn">import</span> <span class="n">ToolCommandParser</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.parser.commands.tool_orient_command_parser</span> <span class="kn">import</span> <span class="n">ToolOrientCommandParser</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.parser.commands.zone_command_parser</span> <span class="kn">import</span> <span class="n">ZoneCommandParser</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.lexer.scara_lexer</span> <span class="kn">import</span> <span class="n">ScaraLexer</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -97,7 +83,7 @@
 <a class="viewcode-back" href="../../../../../../scarajectory.core.service.dsl.parser.scara_parser.html#scarajectory.core.service.dsl.parser.scara_parser.ScaraParser">[docs]</a>
 <span class="k">class</span> <span class="nc">ScaraParser</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Orchestrator parser coordinating modular command handlers into a ScaraProgram AST.</span>
+<span class="sd">        Orchestrator parser coordinating modular command handlers into a Program AST.</span>
 
 <span class="sd">        It defines:</span>
 
@@ -105,73 +91,59 @@
 <span class="sd">                | _lexer - Injected IScaraLexer tokenizer instance.</span>
 <span class="sd">                | _handlers - Tuple of registered ICommandParser handlers.</span>
 <span class="sd">            :methods:</span>
-<span class="sd">                | __init__ - Initializes ScaraParser with optional lexer and command handlers.</span>
-<span class="sd">                | parse - Parses raw DSL source string into an IScaraProgram AST.</span>
-<span class="sd">                | parse_tokens - Parses a sequence of lexical tokens into an IScaraProgram AST.</span>
+<span class="sd">                | __init__ - Initializes ScaraParser with injected lexer and command handlers.</span>
+<span class="sd">                | parse - Parses raw DSL source string into a Program AST.</span>
+<span class="sd">                | parse_tokens - Parses a sequence of lexical tokens into a Program AST.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">lexer</span><span class="p">:</span> <span class="n">IScaraLexer</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">handlers</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">ICommandParser</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">lexer</span><span class="p">:</span> <span class="n">IScaraLexer</span><span class="p">,</span>
+        <span class="n">handlers</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">ICommandParser</span><span class="p">],</span>
+        <span class="n">program_factory</span><span class="p">:</span> <span class="n">IProgramFactory</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Initializes ScaraParser constructor with injected components.</span>
 
-<span class="sd">            :param lexer: Optional injected IScaraLexer component.</span>
-<span class="sd">            :param handlers: Optional sequence of custom ICommandParser handlers.</span>
+<span class="sd">            :param lexer: Injected IScaraLexer component.</span>
+<span class="sd">            :param handlers: Sequence of custom ICommandParser handlers.</span>
+<span class="sd">            :param program_factory: Injected IProgramFactory component.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_lexer</span><span class="p">:</span> <span class="n">IScaraLexer</span> <span class="o">=</span> <span class="n">lexer</span> <span class="k">if</span> <span class="n">lexer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">ScaraLexer</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">handlers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ICommandParser</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">handlers</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">MotionCommandParser</span><span class="p">(),</span>
-                <span class="n">JumpCommandParser</span><span class="p">(),</span>
-                <span class="n">ArcCommandParser</span><span class="p">(),</span>
-                <span class="n">ApproachRetractParser</span><span class="p">(),</span>
-                <span class="n">ConfigCommandParser</span><span class="p">(),</span>
-                <span class="n">PalletCommandParser</span><span class="p">(),</span>
-                <span class="n">FrameCommandParser</span><span class="p">(),</span>
-                <span class="n">ToolCommandParser</span><span class="p">(),</span>
-                <span class="n">FlowCommandParser</span><span class="p">(),</span>
-                <span class="n">JogCommandParser</span><span class="p">(),</span>
-                <span class="n">ProbeCommandParser</span><span class="p">(),</span>
-                <span class="n">ZoneCommandParser</span><span class="p">(),</span>
-                <span class="n">ToolOrientCommandParser</span><span class="p">(),</span>
-            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lexer</span><span class="p">:</span> <span class="n">IScaraLexer</span> <span class="o">=</span> <span class="n">lexer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_program_factory</span><span class="p">:</span> <span class="n">IProgramFactory</span> <span class="o">=</span> <span class="n">program_factory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_handlers</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ICommandParser</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">handlers</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ScaraParser.parse">
 <a class="viewcode-back" href="../../../../../../scarajectory.core.service.dsl.parser.scara_parser.html#scarajectory.core.service.dsl.parser.scara_parser.ScaraParser.parse">[docs]</a>
-    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IScaraProgram</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Program</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Parses raw SCARA DSL code string into an immutable AST program representation.</span>
 
 <span class="sd">            :param source: Raw source code text.</span>
-<span class="sd">            :return: IScaraProgram instance.</span>
+<span class="sd">            :return: Program instance.</span>
 <span class="sd">            :exceptions: ValueError on syntactic parse error.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">tokens</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ScaraToken</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lexer</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
+        <span class="n">tokens</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Token</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lexer</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_tokens</span><span class="p">(</span><span class="n">tokens</span><span class="o">=</span><span class="n">tokens</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ScaraParser.parse_tokens">
 <a class="viewcode-back" href="../../../../../../scarajectory.core.service.dsl.parser.scara_parser.html#scarajectory.core.service.dsl.parser.scara_parser.ScaraParser.parse_tokens">[docs]</a>
-    <span class="k">def</span> <span class="nf">parse_tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tokens</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">ScaraToken</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">IScaraProgram</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">parse_tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tokens</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Token</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Program</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Parses a sequence of lexical tokens into an immutable AST program representation.</span>
 
-<span class="sd">            :param tokens: Sequence of ScaraToken instances.</span>
-<span class="sd">            :return: IScaraProgram instance.</span>
+<span class="sd">            :param tokens: Sequence of Token instances.</span>
+<span class="sd">            :return: Program instance.</span>
 <span class="sd">            :exceptions: ValueError on syntactic parse error.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">instructions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">IScaraInstruction</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">current_line_tokens</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ScaraToken</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">instructions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Instruction</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">current_line_tokens</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Token</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">token_type</span> <span class="ow">in</span> <span class="p">(</span><span class="n">ScaraTokenType</span><span class="o">.</span><span class="n">NEWLINE</span><span class="p">,</span> <span class="n">ScaraTokenType</span><span class="o">.</span><span class="n">EOF</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">token_type</span> <span class="ow">in</span> <span class="p">(</span><span class="n">TokenType</span><span class="o">.</span><span class="n">NEWLINE</span><span class="p">,</span> <span class="n">TokenType</span><span class="o">.</span><span class="n">EOF</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">current_line_tokens</span><span class="p">:</span>
                     <span class="n">inst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_instruction_line</span><span class="p">(</span>
                         <span class="n">tokens</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">current_line_tokens</span><span class="p">)</span>
@@ -182,17 +154,17 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">current_line_tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">ScaraProgram</span><span class="o">.</span><span class="n">from_instructions</span><span class="p">(</span><span class="n">instructions</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_program_factory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">instructions</span><span class="o">=</span><span class="n">instructions</span><span class="p">)</span></div>
 
 
     <span class="k">def</span> <span class="nf">_parse_instruction_line</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tokens</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ScaraToken</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IScaraInstruction</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tokens</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Token</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Instruction</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Delegates statement tokens to registered command handlers.</span>
 
 <span class="sd">            :param tokens: Statement token tuple.</span>
-<span class="sd">            :return: IScaraInstruction node or None.</span>
+<span class="sd">            :return: Instruction node or None.</span>
 <span class="sd">            :exceptions: ValueError if no registered handler recognizes the command.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">tokens</span><span class="p">:</span>

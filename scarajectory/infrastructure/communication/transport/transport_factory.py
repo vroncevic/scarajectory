@@ -46,8 +46,8 @@ class TransportFactory:
                 | create_default_transport - Instantiates default serial transport.
     '''
 
-    @staticmethod
-    def create_transport(endpoint: str) -> ITransport:
+    @classmethod
+    def create_transport(cls, endpoint: str) -> ITransport:
         '''
             Instantiates transport matching target endpoint identifier.
 
@@ -58,8 +58,8 @@ class TransportFactory:
             return TcpTransport()
         return SerialTransport()
 
-    @staticmethod
-    def create_default_transport() -> ITransport:
+    @classmethod
+    def create_default_transport(cls, ) -> ITransport:
         '''
             Instantiates default serial transport.
 

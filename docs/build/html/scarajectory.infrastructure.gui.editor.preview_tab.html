@@ -15,7 +15,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="scarajectory.infrastructure.gui.editor.table module" href="scarajectory.infrastructure.gui.editor.table.html" />
+    <link rel="next" title="scarajectory.infrastructure.gui.editor.preview_tab_factory module" href="scarajectory.infrastructure.gui.editor.preview_tab_factory.html" />
     <link rel="prev" title="scarajectory.infrastructure.gui.editor.itable module" href="scarajectory.infrastructure.gui.editor.itable.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -28,7 +28,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.gui.editor.table.html" title="scarajectory.infrastructure.gui.editor.table module"
+          <a href="scarajectory.infrastructure.gui.editor.preview_tab_factory.html" title="scarajectory.infrastructure.gui.editor.preview_tab_factory module"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="scarajectory.infrastructure.gui.editor.itable.html" title="scarajectory.infrastructure.gui.editor.itable module"
@@ -70,7 +70,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.editor.preview_tab.PreviewTab">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.gui.editor.preview_tab.</span></span><span class="sig-name descname"><span class="pre">PreviewTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.trajectory.itrajectory_plan.html#scarajectory.core.model.trajectory.itrajectory_plan.ITrajectoryPlan" title="scarajectory.core.model.trajectory.itrajectory_plan.ITrajectoryPlan"><span class="pre">ITrajectoryPlan</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/editor/preview_tab.html#PreviewTab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.editor.preview_tab.PreviewTab" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.gui.editor.preview_tab.</span></span><span class="sig-name descname"><span class="pre">PreviewTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.plan.itrajectory_plan.html#scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan" title="scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan"><span class="pre">ITrajectoryPlan</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/editor/preview_tab.html#PreviewTab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.editor.preview_tab.PreviewTab" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></p>
 <p>ASCII trajectory stream generator and microcontroller program preview tab.</p>
 <p>It defines:</p>
@@ -90,6 +90,27 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd>
 </dl>
 </div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.editor.preview_tab.PreviewTab._plan">
+<span class="sig-name descname"><span class="pre">_plan</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.trajectory.plan.itrajectory_plan.html#scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan" title="scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan"><span class="pre">ITrajectoryPlan</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.editor.preview_tab.PreviewTab._plan" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.editor.preview_tab.PreviewTab._txt_preview">
+<span class="sig-name descname"><span class="pre">_txt_preview</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Text</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.editor.preview_tab.PreviewTab._txt_preview" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.editor.preview_tab.PreviewTab.build_layout">
+<span class="sig-name descname"><span class="pre">build_layout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/editor/preview_tab.html#PreviewTab.build_layout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.editor.preview_tab.PreviewTab.build_layout" title="Link to this definition">¶</a></dt>
+<dd><p>Constructs generate button and output text area.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.editor.preview_tab.PreviewTab.generate_preview">
 <span class="sig-name descname"><span class="pre">generate_preview</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/editor/preview_tab.html#PreviewTab.generate_preview"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.editor.preview_tab.PreviewTab.generate_preview" title="Link to this definition">¶</a></dt>
@@ -117,6 +138,9 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <ul>
 <li><a class="reference internal" href="#">scarajectory.infrastructure.gui.editor.preview_tab module</a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.preview_tab.PreviewTab"><code class="docutils literal notranslate"><span class="pre">PreviewTab</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.preview_tab.PreviewTab._plan"><code class="docutils literal notranslate"><span class="pre">PreviewTab._plan</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.preview_tab.PreviewTab._txt_preview"><code class="docutils literal notranslate"><span class="pre">PreviewTab._txt_preview</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.preview_tab.PreviewTab.build_layout"><code class="docutils literal notranslate"><span class="pre">PreviewTab.build_layout()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.preview_tab.PreviewTab.generate_preview"><code class="docutils literal notranslate"><span class="pre">PreviewTab.generate_preview()</span></code></a></li>
 </ul>
 </li>
@@ -132,8 +156,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.gui.editor.table.html"
-                          title="next chapter">scarajectory.infrastructure.gui.editor.table module</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.editor.preview_tab_factory.html"
+                          title="next chapter">scarajectory.infrastructure.gui.editor.preview_tab_factory module</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -166,7 +190,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.gui.editor.table.html" title="scarajectory.infrastructure.gui.editor.table module"
+          <a href="scarajectory.infrastructure.gui.editor.preview_tab_factory.html" title="scarajectory.infrastructure.gui.editor.preview_tab_factory module"
              >next</a> |</li>
         <li class="right" >
           <a href="scarajectory.infrastructure.gui.editor.itable.html" title="scarajectory.infrastructure.gui.editor.itable module"

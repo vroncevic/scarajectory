@@ -1,16 +1,17 @@
 scarajectory.core.model.communication package
 =============================================
 
-Submodules
-----------
+Subpackages
+-----------
 
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.core.model.communication.stream_config
-   scarajectory.core.model.communication.stream_progress
-   scarajectory.core.model.communication.stream_session
-   scarajectory.core.model.communication.stream_state
+   scarajectory.core.model.communication.event
+   scarajectory.core.model.communication.preferences
+   scarajectory.core.model.communication.protocol
+   scarajectory.core.model.communication.stream
+   scarajectory.core.model.communication.telemetry
 
 Module contents
 ---------------
@@ -19,3 +20,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

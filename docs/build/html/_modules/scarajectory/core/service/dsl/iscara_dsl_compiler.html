@@ -61,8 +61,7 @@
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.kinematics.scara_bounds</span> <span class="kn">import</span> <span class="n">ScaraBounds</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.trajectory_plan</span> <span class="kn">import</span> <span class="n">TrajectoryPlan</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.trajectory_plan</span> <span class="kn">import</span> <span class="n">TrajectoryPlan</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
@@ -89,17 +88,11 @@
 
 <div class="viewcode-block" id="IScaraDslCompiler.compile_script">
 <a class="viewcode-back" href="../../../../../scarajectory.core.service.dsl.iscara_dsl_compiler.html#scarajectory.core.service.dsl.iscara_dsl_compiler.IScaraDslCompiler.compile_script">[docs]</a>
-    <span class="k">def</span> <span class="nf">compile_script</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">bounds</span><span class="p">:</span> <span class="n">ScaraBounds</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryPlan</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">compile_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryPlan</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Compiles DSL source code into an executable and validated TrajectoryPlan.</span>
 
 <span class="sd">            :param source: Raw .scara script text.</span>
-<span class="sd">            :param bounds: Optional robot kinematic boundary constraints.</span>
 <span class="sd">            :return: Validated TrajectoryPlan instance.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span></div>

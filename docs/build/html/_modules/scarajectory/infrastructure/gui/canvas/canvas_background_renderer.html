@@ -62,7 +62,7 @@
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">asin</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">degrees</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">radians</span><span class="p">,</span> <span class="n">sin</span>
 <span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">Canvas</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.itrajectory_validator</span> <span class="kn">import</span> <span class="n">ITrajectoryValidator</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.validation.itrajectory_validator</span> <span class="kn">import</span> <span class="n">ITrajectoryValidator</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.model.viewport_transform</span> <span class="kn">import</span> <span class="n">ViewportTransform</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
@@ -85,6 +85,10 @@
 
 <span class="sd">            :methods:</span>
 <span class="sd">                | draw_background - Renders polar grid rays, concentric circles, Cartesian axes, and workspace limits.</span>
+<span class="sd">                | draw_polar_grid - Draws polar rays, concentric distance rings, and Cartesian axis lines.</span>
+<span class="sd">                | draw_boundary_circles - Renders outer reach and inner deadzone boundary rings.</span>
+<span class="sd">                | draw_j1_limit_crescent - Draws unreachable rear boundary polygon caused by joint 1 limits.</span>
+<span class="sd">                | draw_annotations - Renders coordinate markers, center base indicator, and text labels.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
 <div class="viewcode-block" id="CanvasBackgroundRenderer.draw_background">
@@ -94,35 +98,56 @@
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">canvas</span><span class="p">:</span> <span class="n">Canvas</span><span class="p">,</span>
         <span class="n">vp</span><span class="p">:</span> <span class="n">ViewportTransform</span><span class="p">,</span>
-        <span class="n">r_min_or_validator</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">ITrajectoryValidator</span>
+        <span class="n">validator</span><span class="p">:</span> <span class="n">ITrajectoryValidator</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Renders polar rays, concentric distance rings, axes and reach limits.</span>
 
 <span class="sd">            :param canvas: Target Tkinter canvas widget.</span>
 <span class="sd">            :param vp: ViewportTransform instance.</span>
-<span class="sd">            :param r_min_or_validator: Minimum deadzone radius float or ITrajectoryValidator instance.</span>
+<span class="sd">            :param validator: ITrajectoryValidator instance.</span>
+<span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">w</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">winfo_width</span><span class="p">()</span>
         <span class="n">h</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">winfo_height</span><span class="p">()</span>
         <span class="n">center</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">vp</span><span class="o">.</span><span class="n">world_to_screen</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">r_min_or_validator</span><span class="p">,</span> <span class="s1">&#39;r_min&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">r_min_or_validator</span><span class="p">,</span> <span class="s1">&#39;bounds&#39;</span><span class="p">):</span>
-            <span class="n">r_min_mm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">r_min_or_validator</span><span class="o">.</span><span class="n">r_min</span>
-            <span class="n">r_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">r_min_or_validator</span><span class="o">.</span><span class="n">r_max</span>
-            <span class="n">l1</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">r_min_or_validator</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">l1</span>
-            <span class="n">l2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">r_min_or_validator</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">l2</span>
-            <span class="n">j1_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">r_min_or_validator</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">j1_max_rad</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">r_min_mm</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">r_min_or_validator</span><span class="p">)</span>
-            <span class="n">r_max</span> <span class="o">=</span> <span class="n">ViewportTransform</span><span class="o">.</span><span class="n">R_MAX_MM</span>
-            <span class="n">l1</span> <span class="o">=</span> <span class="mf">150.0</span>
-            <span class="n">l2</span> <span class="o">=</span> <span class="mf">120.0</span>
-            <span class="n">j1_max</span> <span class="o">=</span> <span class="n">radians</span><span class="p">(</span><span class="mf">150.0</span><span class="p">)</span>
+        <span class="n">r_min_mm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">r_min</span>
+        <span class="n">r_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">r_max</span>
+        <span class="n">l1</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">l1</span>
+        <span class="n">l2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">l2</span>
+        <span class="n">j1_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">j1_max_rad</span>
 
+        <span class="bp">cls</span><span class="o">.</span><span class="n">draw_polar_grid</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="n">vp</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">r_max</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">draw_boundary_circles</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="n">vp</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">r_min_mm</span><span class="p">,</span> <span class="n">r_max</span><span class="p">)</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">draw_j1_limit_crescent</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="n">vp</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">r_max</span><span class="p">,</span> <span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">,</span> <span class="n">j1_max</span><span class="p">)</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">draw_annotations</span><span class="p">(</span><span class="n">canvas</span><span class="p">,</span> <span class="n">vp</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">r_min_mm</span><span class="p">,</span> <span class="n">r_max</span><span class="p">,</span> <span class="n">j1_max</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CanvasBackgroundRenderer.draw_polar_grid">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.canvas.canvas_background_renderer.html#scarajectory.infrastructure.gui.canvas.canvas_background_renderer.CanvasBackgroundRenderer.draw_polar_grid">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">draw_polar_grid</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">canvas</span><span class="p">:</span> <span class="n">Canvas</span><span class="p">,</span>
+        <span class="n">vp</span><span class="p">:</span> <span class="n">ViewportTransform</span><span class="p">,</span>
+        <span class="n">center</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">r_max</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">w</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">h</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Draws polar rays, concentric distance rings, and Cartesian axis lines.</span>
+
+<span class="sd">            :param canvas: Target Tkinter canvas widget.</span>
+<span class="sd">            :param vp: ViewportTransform instance.</span>
+<span class="sd">            :param center: Screen coordinates of workspace center.</span>
+<span class="sd">            :param r_max: Maximum reach radius in mm.</span>
+<span class="sd">            :param w: Canvas pixel width.</span>
+<span class="sd">            :param h: Canvas pixel height.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">rmax_px</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">r_max</span> <span class="o">*</span> <span class="n">vp</span><span class="o">.</span><span class="n">scale</span>
-        <span class="n">rmin_px</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">r_min_mm</span> <span class="o">*</span> <span class="n">vp</span><span class="o">.</span><span class="n">scale</span>
-
         <span class="k">for</span> <span class="n">deg</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">210</span><span class="p">,</span> <span class="mi">240</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">330</span><span class="p">):</span>
             <span class="n">canvas</span><span class="o">.</span><span class="n">create_line</span><span class="p">(</span>
                 <span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
@@ -145,8 +170,32 @@
         <span class="n">canvas</span><span class="o">.</span><span class="n">create_line</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">w</span><span class="p">,</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;#3e4451&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">canvas</span><span class="o">.</span><span class="n">create_line</span><span class="p">(</span><span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">h</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;#3e4451&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">canvas</span><span class="o">.</span><span class="n">create_text</span><span class="p">(</span><span class="n">w</span> <span class="o">-</span> <span class="mi">15</span><span class="p">,</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">10</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;+X&#39;</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;#61afef&#39;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;DejaVu Sans&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;bold&#39;</span><span class="p">))</span>
-        <span class="n">canvas</span><span class="o">.</span><span class="n">create_text</span><span class="p">(</span><span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;+Y&#39;</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;#61afef&#39;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;DejaVu Sans&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;bold&#39;</span><span class="p">))</span>
+        <span class="n">canvas</span><span class="o">.</span><span class="n">create_text</span><span class="p">(</span><span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;+Y&#39;</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;#61afef&#39;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;DejaVu Sans&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;bold&#39;</span><span class="p">))</span></div>
 
+
+<div class="viewcode-block" id="CanvasBackgroundRenderer.draw_boundary_circles">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.canvas.canvas_background_renderer.html#scarajectory.infrastructure.gui.canvas.canvas_background_renderer.CanvasBackgroundRenderer.draw_boundary_circles">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">draw_boundary_circles</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">canvas</span><span class="p">:</span> <span class="n">Canvas</span><span class="p">,</span>
+        <span class="n">vp</span><span class="p">:</span> <span class="n">ViewportTransform</span><span class="p">,</span>
+        <span class="n">center</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">r_min_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">r_max</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Renders outer reach and inner deadzone boundary rings.</span>
+
+<span class="sd">            :param canvas: Target Tkinter canvas widget.</span>
+<span class="sd">            :param vp: ViewportTransform instance.</span>
+<span class="sd">            :param center: Screen coordinates of workspace center.</span>
+<span class="sd">            :param r_min_mm: Minimum deadzone radius in mm.</span>
+<span class="sd">            :param r_max: Maximum reach radius in mm.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">rmax_px</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">r_max</span> <span class="o">*</span> <span class="n">vp</span><span class="o">.</span><span class="n">scale</span>
+        <span class="n">rmin_px</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">r_min_mm</span> <span class="o">*</span> <span class="n">vp</span><span class="o">.</span><span class="n">scale</span>
         <span class="n">canvas</span><span class="o">.</span><span class="n">create_oval</span><span class="p">(</span>
             <span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">rmax_px</span><span class="p">,</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">rmax_px</span><span class="p">,</span>
             <span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">rmax_px</span><span class="p">,</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">rmax_px</span><span class="p">,</span>
@@ -157,23 +206,45 @@
             <span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">rmin_px</span><span class="p">,</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">rmin_px</span><span class="p">,</span>
             <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;#e06c75&#39;</span><span class="p">,</span> <span class="n">stipple</span><span class="o">=</span><span class="s1">&#39;gray25&#39;</span><span class="p">,</span>
             <span class="n">outline</span><span class="o">=</span><span class="s1">&#39;#e06c75&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dash</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
-        <span class="c1"># Rear unreachable boundary crescent (Shoulder J1 angle limit +/- j1_max)</span>
+
+<div class="viewcode-block" id="CanvasBackgroundRenderer.draw_j1_limit_crescent">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.canvas.canvas_background_renderer.html#scarajectory.infrastructure.gui.canvas.canvas_background_renderer.CanvasBackgroundRenderer.draw_j1_limit_crescent">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">draw_j1_limit_crescent</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">canvas</span><span class="p">:</span> <span class="n">Canvas</span><span class="p">,</span>
+        <span class="n">vp</span><span class="p">:</span> <span class="n">ViewportTransform</span><span class="p">,</span>
+        <span class="n">w</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">h</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">r_max</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">l1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">l2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">j1_max</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Draws unreachable rear boundary polygon caused by joint 1 limits.</span>
+
+<span class="sd">            :param canvas: Target Tkinter canvas widget.</span>
+<span class="sd">            :param vp: ViewportTransform instance.</span>
+<span class="sd">            :param w: Canvas pixel width.</span>
+<span class="sd">            :param h: Canvas pixel height.</span>
+<span class="sd">            :param r_max: Maximum reach radius in mm.</span>
+<span class="sd">            :param l1: First link length in mm.</span>
+<span class="sd">            :param l2: Second link length in mm.</span>
+<span class="sd">            :param j1_max: Maximum J1 angle in radians.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">poly_pts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="c1"># 1. Outer circle arc from j1_max to (2*pi - j1_max)</span>
         <span class="n">steps_arc</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">24</span>
         <span class="n">start_ang</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">j1_max</span>
         <span class="n">end_ang</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">-</span> <span class="n">j1_max</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps_arc</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
             <span class="n">ang</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">start_ang</span> <span class="o">+</span> <span class="p">(</span><span class="n">end_ang</span> <span class="o">-</span> <span class="n">start_ang</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="n">steps_arc</span><span class="p">)</span>
-            <span class="n">wx</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">r_max</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">ang</span><span class="p">)</span>
-            <span class="n">wy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">r_max</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">ang</span><span class="p">)</span>
-            <span class="n">sx</span><span class="p">,</span> <span class="n">sy</span> <span class="o">=</span> <span class="n">vp</span><span class="o">.</span><span class="n">world_to_screen</span><span class="p">(</span><span class="n">wx</span><span class="p">,</span> <span class="n">wy</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+            <span class="n">sx</span><span class="p">,</span> <span class="n">sy</span> <span class="o">=</span> <span class="n">vp</span><span class="o">.</span><span class="n">world_to_screen</span><span class="p">(</span><span class="n">r_max</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">ang</span><span class="p">),</span> <span class="n">r_max</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">ang</span><span class="p">),</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
             <span class="n">poly_pts</span><span class="o">.</span><span class="n">extend</span><span class="p">((</span><span class="n">sx</span><span class="p">,</span> <span class="n">sy</span><span class="p">))</span>
 
-        <span class="c1"># 2. Lower boundary curve: theta1 = -j1_max, theta2 from 0 to theta2_cross</span>
         <span class="n">sin_target</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="n">l1</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">j1_max</span><span class="p">))</span> <span class="o">/</span> <span class="n">l2</span><span class="p">)</span>
         <span class="n">theta2_cross</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">pi</span> <span class="o">-</span> <span class="n">asin</span><span class="p">(</span><span class="n">sin_target</span><span class="p">)</span> <span class="o">-</span> <span class="n">j1_max</span>
         <span class="n">elbow_neg_x</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">l1</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="o">-</span><span class="n">j1_max</span><span class="p">)</span>
@@ -187,7 +258,6 @@
             <span class="n">sx</span><span class="p">,</span> <span class="n">sy</span> <span class="o">=</span> <span class="n">vp</span><span class="o">.</span><span class="n">world_to_screen</span><span class="p">(</span><span class="n">wx</span><span class="p">,</span> <span class="n">wy</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
             <span class="n">poly_pts</span><span class="o">.</span><span class="n">extend</span><span class="p">((</span><span class="n">sx</span><span class="p">,</span> <span class="n">sy</span><span class="p">))</span>
 
-        <span class="c1"># 3. Upper boundary curve: theta1 = +j1_max, theta2 from theta2_cross down to 0</span>
         <span class="n">elbow_pos_x</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">l1</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">j1_max</span><span class="p">)</span>
         <span class="n">elbow_pos_y</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">l1</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">j1_max</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps_curve</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
@@ -202,8 +272,38 @@
             <span class="o">*</span><span class="n">poly_pts</span><span class="p">,</span>
             <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;#e06c75&#39;</span><span class="p">,</span> <span class="n">stipple</span><span class="o">=</span><span class="s1">&#39;gray25&#39;</span><span class="p">,</span>
             <span class="n">outline</span><span class="o">=</span><span class="s1">&#39;#e06c75&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dash</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="CanvasBackgroundRenderer.draw_annotations">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.canvas.canvas_background_renderer.html#scarajectory.infrastructure.gui.canvas.canvas_background_renderer.CanvasBackgroundRenderer.draw_annotations">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">draw_annotations</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">canvas</span><span class="p">:</span> <span class="n">Canvas</span><span class="p">,</span>
+        <span class="n">vp</span><span class="p">:</span> <span class="n">ViewportTransform</span><span class="p">,</span>
+        <span class="n">center</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">r_min_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">r_max</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">j1_max</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">w</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">h</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Renders coordinate markers, center base indicator, and text labels.</span>
+
+<span class="sd">            :param canvas: Target Tkinter canvas widget.</span>
+<span class="sd">            :param vp: ViewportTransform instance.</span>
+<span class="sd">            :param center: Screen coordinates of workspace center.</span>
+<span class="sd">            :param r_min_mm: Minimum deadzone radius in mm.</span>
+<span class="sd">            :param r_max: Maximum reach radius in mm.</span>
+<span class="sd">            :param j1_max: Maximum J1 angle in radians.</span>
+<span class="sd">            :param w: Canvas pixel width.</span>
+<span class="sd">            :param h: Canvas pixel height.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">rmax_px</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">r_max</span> <span class="o">*</span> <span class="n">vp</span><span class="o">.</span><span class="n">scale</span>
+        <span class="n">rmin_px</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">r_min_mm</span> <span class="o">*</span> <span class="n">vp</span><span class="o">.</span><span class="n">scale</span>
         <span class="n">canvas</span><span class="o">.</span><span class="n">create_text</span><span class="p">(</span>
             <span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">rmax_px</span> <span class="o">-</span> <span class="mi">40</span><span class="p">,</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">rmax_px</span> <span class="o">+</span> <span class="mi">12</span><span class="p">,</span>
             <span class="n">text</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;R_MAX (</span><span class="si">{</span><span class="n">r_max</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">mm)&#39;</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;#61afef&#39;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;DejaVu Sans&#39;</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
@@ -218,7 +318,6 @@
             <span class="n">lbl_x</span><span class="p">,</span> <span class="n">lbl_y</span><span class="p">,</span>
             <span class="n">text</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;J1 LIMIT</span><span class="se">\n</span><span class="s1">(±</span><span class="si">{</span><span class="n">j1_deg</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">°)&#39;</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;#e06c75&#39;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;DejaVu Sans&#39;</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">justify</span><span class="o">=</span><span class="s1">&#39;center&#39;</span>
         <span class="p">)</span>
-
         <span class="n">canvas</span><span class="o">.</span><span class="n">create_oval</span><span class="p">(</span><span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">5</span><span class="p">,</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">5</span><span class="p">,</span> <span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;#61afef&#39;</span><span class="p">,</span> <span class="n">outline</span><span class="o">=</span><span class="s1">&#39;#ffffff&#39;</span><span class="p">)</span>
         <span class="n">canvas</span><span class="o">.</span><span class="n">create_text</span><span class="p">(</span><span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">8</span><span class="p">,</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">8</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;(0,0) BASE&#39;</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s1">&#39;#61afef&#39;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;DejaVu Sans&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;bold&#39;</span><span class="p">),</span> <span class="n">anchor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span></div>
 </div>

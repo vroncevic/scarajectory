@@ -88,8 +88,8 @@
 
 <div class="viewcode-block" id="TransportFactory.create_transport">
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.transport.transport_factory.html#scarajectory.infrastructure.communication.transport.transport_factory.TransportFactory.create_transport">[docs]</a>
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">create_transport</span><span class="p">(</span><span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ITransport</span><span class="p">:</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">create_transport</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ITransport</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Instantiates transport matching target endpoint identifier.</span>
 
@@ -103,8 +103,8 @@
 
 <div class="viewcode-block" id="TransportFactory.create_default_transport">
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.transport.transport_factory.html#scarajectory.infrastructure.communication.transport.transport_factory.TransportFactory.create_default_transport">[docs]</a>
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">create_default_transport</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">ITransport</span><span class="p">:</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">create_default_transport</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ITransport</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Instantiates default serial transport.</span>
 

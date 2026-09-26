@@ -25,11 +25,8 @@ from tkinter import BOTH, END, LEFT, X, Text, Widget
 from tkinter.ttk import Button, Frame
 from typing import Final
 
-from scarajectory.core.model.trajectory.trajectory_metrics import TrajectoryMetrics
-from scarajectory.core.model.trajectory.itrajectory_plan import ITrajectoryPlan
-from scarajectory.infrastructure.communication.protocol.motion_command_formatter import (
-    MotionCommandFormatter
-)
+from scaralang.core.service.dsl.exporter.scara_plan_exporter_factory import ScaraPlanExporterFactory
+from scarajectory.core.service.trajectory.plan.itrajectory_plan import ITrajectoryPlan
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -68,9 +65,9 @@ class PreviewTab(Frame):
         '''
         super().__init__(parent, padding=6, **kwargs)
         self._plan: Final[ITrajectoryPlan] = plan
-        self._build_layout()
+        self.build_layout()
 
-    def _build_layout(self) -> None:
+    def build_layout(self) -> None:
         '''
             Constructs generate button and output text area.
 
@@ -85,12 +82,11 @@ class PreviewTab(Frame):
 
     def generate_preview(self) -> None:
         '''
-            Generates and renders ASCII trajectory packet block.
+            Generates and renders SCARA DSL trajectory program.
 
             :exceptions: None.
         '''
-        waypoints = self._plan.waypoints
-        dist: float = TrajectoryMetrics.calculate_distance(waypoints)
-        ascii_prog: str = MotionCommandFormatter.format_program(waypoints, dist)
+        exporter = ScaraPlanExporterFactory.create()
+        scara_prog: str = exporter.export_plan(plan=self._plan)
         self._txt_preview.delete('1.0', END)
-        self._txt_preview.insert(END, ascii_prog)
+        self._txt_preview.insert(END, scara_prog)

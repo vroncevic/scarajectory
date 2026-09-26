@@ -23,9 +23,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from scarajectory.core.model.dsl.ast.iscara_instruction import IScaraInstruction
-from scarajectory.core.model.dsl.ast.scara_command_type import ScaraCommandType
-from scarajectory.core.model.dsl.ast.scara_instruction import ScaraInstruction
+from scarajectory.core.model.dsl.ast.command_type import CommandType
+from scarajectory.core.model.dsl.ast.instruction import Instruction
 from scarajectory.core.service.dsl.compiler.scara_compiler_context import ScaraCompilerContext
 
 __author__ = 'Vladimir Roncevic'
@@ -51,7 +50,7 @@ class PalletMacroExpander:
                 | expand - Registers pallet metadata or translates MOVE_PALLET into Cartesian motion.
     '''
 
-    def can_expand(self, *, instruction: IScaraInstruction) -> bool:
+    def can_expand(self, *, instruction: Instruction) -> bool:
         '''
             Checks whether this expander handles pallet instructions.
 
@@ -59,16 +58,16 @@ class PalletMacroExpander:
             :return: True if PALLET_DEF or MOVE_PALLET, False otherwise.
         '''
         return instruction.command_type in (
-            ScaraCommandType.PALLET_DEF,
-            ScaraCommandType.MOVE_PALLET,
+            CommandType.PALLET_DEF,
+            CommandType.MOVE_PALLET,
         )
 
     def expand(
         self,
         *,
-        instruction: IScaraInstruction,
+        instruction: Instruction,
         context: ScaraCompilerContext,
-    ) -> tuple[IScaraInstruction, ...]:
+    ) -> tuple[Instruction, ...]:
         '''
             Processes PALLET_DEF or calculates cell coordinate for MOVE_PALLET.
 
@@ -80,7 +79,7 @@ class PalletMacroExpander:
         params = instruction.parameters
         line_num = instruction.line_number
 
-        if instruction.command_type == ScaraCommandType.PALLET_DEF:
+        if instruction.command_type == CommandType.PALLET_DEF:
             name: str = str(params.get('name', 'DEFAULT')).upper()
             pallet_info: dict[str, Any] = {
                 'rows': int(params.get('ROWS', 1)),
@@ -91,9 +90,11 @@ class PalletMacroExpander:
                 'start_y': float(params.get('START_Y', context.current_y)),
             }
             context.pallets[name] = pallet_info
+
             return ()
 
         name = str(params.get('name', 'DEFAULT')).upper()
+
         if name not in context.pallets:
             raise KeyError(
                 f'Error at line {line_num}: Pallet {name!r} is not defined before MOVE_PALLET'
@@ -114,8 +115,8 @@ class PalletMacroExpander:
         context.current_y = global_y
         context.current_z = target_z
 
-        move_inst = ScaraInstruction(
-            command_type=ScaraCommandType.MOVE_L,
+        move_inst = Instruction(
+            command_type=CommandType.MOVE_L,
             line_number=line_num,
             raw_text=f'# MOVE_PALLET: {name}[{index}] -> X={global_x:.2f} Y={global_y:.2f} Z={target_z:.2f}',
             parameters={
@@ -126,4 +127,5 @@ class PalletMacroExpander:
                 'SPEED': context.current_speed,
             },
         )
+
         return (move_inst,)

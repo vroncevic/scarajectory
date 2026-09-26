@@ -21,9 +21,7 @@ Info
 
 from __future__ import annotations
 
-from scarajectory.core.model.trajectory.itrajectory_read_only import (
-    ITrajectoryReadOnly,
-)
+from scarajectory.core.service.trajectory.plan.itrajectory_read_only import ITrajectoryReadOnly
 from scarajectory.core.model.trajectory.waypoint import Waypoint
 
 __author__ = 'Vladimir Roncevic'
@@ -55,6 +53,7 @@ class ScaraPlanExporter:
             :exceptions: None.
         '''
         waypoints: tuple[Waypoint, ...] = plan.waypoints
+
         if not waypoints:
             return '# SCARAjectory DSL Program\n# Empty trajectory plan\n'
 
@@ -71,14 +70,12 @@ class ScaraPlanExporter:
             '',
         ]
 
-        # First waypoint is typically approached via rapid PTP move
         first: Waypoint = waypoints[0]
         first_comment = f'  # {first.name}' if first.name else ''
         lines.append(
             f'MOVE_J X={first.x:.2f} Y={first.y:.2f} Z={first.z:.2f} PHI={first.phi:.2f}{first_comment}'
         )
 
-        # Subsequent waypoints use linear moves
         for pt in waypoints[1:]:
             comment = f'  # {pt.name}' if pt.name else ''
             lines.append(
@@ -86,4 +83,5 @@ class ScaraPlanExporter:
             )
 
         lines.append('')
+
         return '\n'.join(lines)

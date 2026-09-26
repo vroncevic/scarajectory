@@ -21,12 +21,11 @@ Info
 
 from __future__ import annotations
 
-from scarajectory.core.model.dsl.ast.iscara_instruction import IScaraInstruction
-from scarajectory.core.model.dsl.ast.scara_command_type import ScaraCommandType
-from scarajectory.core.model.dsl.diagnostic.scara_diagnostic import ScaraDiagnostic
-from scarajectory.core.service.dsl.linter.scara_lint_context import (
-    ScaraLintContext,
-)
+from scarajectory.core.model.dsl.ast.command_type import CommandType
+from scarajectory.core.model.dsl.ast.instruction import Instruction
+from scarajectory.core.model.dsl.diagnostic.diagnostic import Diagnostic
+from scarajectory.core.model.dsl.diagnostic.diagnostic_severity import DiagnosticSeverity
+from scarajectory.core.service.dsl.linter.scara_lint_context import ScaraLintContext
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -51,9 +50,9 @@ class StateLintRule:
     def check(
         self,
         *,
-        instruction: IScaraInstruction,
+        instruction: Instruction,
         context: ScaraLintContext,
-        diagnostics: list[ScaraDiagnostic],
+        diagnostics: list[Diagnostic],
     ) -> None:
         '''
             Evaluates homing and zone configuration instructions, updating context.
@@ -67,11 +66,39 @@ class StateLintRule:
         params = instruction.parameters
 
         match cmd:
-            case ScaraCommandType.HOME:
+            case CommandType.HOME:
                 context.is_homed = True
-                context.last_coords = None
-            case ScaraCommandType.ZONE:
-                context.zone_mode = str(params.get('mode', 'FINE')).upper()
-                context.zone_radius = float(params.get('radius', 0.0))
+                context.last_coords = ()
+            case CommandType.ZONE:
+                raw_mode = str(params.get('mode', 'FINE')).upper()
+                radius = float(params.get('radius', 0.0))
+                if raw_mode not in ('FINE', 'BLEND'):
+                    diagnostics.append(
+                        Diagnostic(
+                            code='INVALID_ZONE_MODE',
+                            severity=DiagnosticSeverity.WARNING,
+                            message=(
+                                f"Unknown zone mode '{raw_mode}'. "
+                                "Expected 'FINE' or 'BLEND'."
+                            ),
+                            line=instruction.line_number,
+                            command='ZONE',
+                        )
+                    )
+                if radius < 0.0:
+                    diagnostics.append(
+                        Diagnostic(
+                            code='INVALID_ZONE_RADIUS',
+                            severity=DiagnosticSeverity.WARNING,
+                            message=(
+                                f'Zone radius {radius:.1f} is negative. '
+                                'Expected non-negative radius.'
+                            ),
+                            line=instruction.line_number,
+                            command='ZONE',
+                        )
+                    )
+                context.zone_mode = raw_mode
+                context.zone_radius = radius
             case _:
                 pass

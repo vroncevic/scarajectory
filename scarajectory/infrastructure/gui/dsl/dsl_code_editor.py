@@ -21,9 +21,7 @@ Info
 
 from __future__ import annotations
 
-from tkinter import (
-    BOTH, END, Event, Misc, RIGHT, VERTICAL, Widget, Y, Text,
-)
+from tkinter import BOTH, END, Event, Misc, RIGHT, VERTICAL, Widget, Y, Text
 from tkinter.ttk import Frame, Scrollbar
 from typing import Final
 

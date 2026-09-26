@@ -89,20 +89,20 @@ class StudioCommandDefinition:
             ),
             OptionData(
                 name='--dead-zone',
-                help_text='Enable or disable kinematic dead zone enforcement',
-                action=None,
-                default='enable',
+                help_text='Enable kinematic dead zone enforcement',
+                action='store_true',
+                default=False,
                 required=False,
-                choices=['enable', 'disable'],
+                choices=None,
                 nargs=None
             ),
             OptionData(
                 name='--verbose',
-                help_text='Enable or disable verbose output',
-                action=None,
-                default='disable',
+                help_text='Enable verbose logging output',
+                action='store_true',
+                default=False,
                 required=False,
-                choices=['enable', 'disable'],
+                choices=None,
                 nargs=None
             )
         ]

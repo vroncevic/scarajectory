@@ -5,3 +5,4 @@ scarajectory.infrastructure.gui.canvas.canvas\_background\_renderer module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

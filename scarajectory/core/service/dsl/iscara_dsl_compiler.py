@@ -23,8 +23,7 @@ from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
-from scarajectory.core.model.kinematics.scara_bounds import ScaraBounds
-from scarajectory.core.model.trajectory.trajectory_plan import TrajectoryPlan
+from scarajectory.core.service.trajectory.plan.trajectory_plan import TrajectoryPlan
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -47,17 +46,11 @@ class IScaraDslCompiler(Protocol):
                 | compile_script - Compiles DSL source code into executable TrajectoryPlan.
     '''
 
-    def compile_script(
-        self,
-        *,
-        source: str,
-        bounds: ScaraBounds | None = None,
-    ) -> TrajectoryPlan:
+    def compile_script(self, *, source: str) -> TrajectoryPlan:
         '''
             Compiles DSL source code into an executable and validated TrajectoryPlan.
 
             :param source: Raw .scara script text.
-            :param bounds: Optional robot kinematic boundary constraints.
             :return: Validated TrajectoryPlan instance.
             :exceptions: None.
         '''

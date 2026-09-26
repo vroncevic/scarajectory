@@ -31,8 +31,9 @@ from ats_utilities.context.bundle import ContextBundle
 from ats_utilities.context.factory import ContextBundleFactory
 
 from scarajectory.core.model.trajectory.waypoint import Waypoint
-from scarajectory.core.model.trajectory.itrajectory_plan import ITrajectoryPlan
-from scarajectory.core.model.trajectory.trajectory_serializer import TrajectorySerializer
+from scarajectory.core.service.trajectory.plan.itrajectory_plan import ITrajectoryPlan
+from scarajectory.core.model.dsl.binary.program import Program
+from scarajectory.infrastructure.storage.trajectory_serializer import TrajectorySerializer
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -46,7 +47,7 @@ __status__ = 'Updated'
 
 class PlanStorageService:
     '''
-        Infrastructure storage adapter handling JSON trajectory persistence and text file I/O operations.
+        Infrastructure storage adapter handling JSON trajectory persistence and text/binary file I/O operations.
         Integrates ats_utilities Loader and Storer for JSON configuration management.
 
         It defines:
@@ -59,6 +60,8 @@ class PlanStorageService:
                 | load_plan - Loads and deserializes waypoints from JSON file path using ATS Loader.
                 | save_text_file - Writes string content to file path using UTF-8 encoding.
                 | load_text_file - Reads string content from file path using UTF-8 encoding.
+                | save_binary_program - Writes compiled binary program payload to destination file path.
+                | load_binary_file - Reads binary file content from destination file path.
     '''
 
     _context: ContextBundle
@@ -138,4 +141,29 @@ class PlanStorageService:
         target_path: Path = Path(filepath).resolve()
 
         with open(target_path, 'r', encoding='utf-8') as file_handle:
+            return file_handle.read()
+
+    def save_binary_program(self, program: Program, filepath: str) -> None:
+        '''
+            Writes compiled binary program payload to destination file path.
+
+            :param program: Program instance.
+            :param filepath: Destination file path.
+        '''
+        target_path: Path = Path(filepath).resolve()
+        target_path.parent.mkdir(parents=True, exist_ok=True)
+
+        with open(target_path, 'wb') as file_handle:
+            file_handle.write(program.raw_bytes)
+
+    def load_binary_file(self, filepath: str) -> bytes:
+        '''
+            Reads binary file content from file path.
+
+            :param filepath: Source file path.
+            :return: File bytes content.
+        '''
+        target_path: Path = Path(filepath).resolve()
+
+        with open(target_path, 'rb') as file_handle:
             return file_handle.read()

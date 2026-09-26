@@ -21,15 +21,11 @@ Info
 
 from __future__ import annotations
 
-from scarajectory.core.model.dsl.ast.iscara_instruction import IScaraInstruction
-from scarajectory.core.model.dsl.ast.scara_command_type import ScaraCommandType
-from scarajectory.core.model.dsl.diagnostic.scara_diagnostic import ScaraDiagnostic
-from scarajectory.core.model.dsl.diagnostic.scara_diagnostic_severity import (
-    ScaraDiagnosticSeverity,
-)
-from scarajectory.core.service.dsl.linter.scara_lint_context import (
-    ScaraLintContext,
-)
+from scarajectory.core.model.dsl.ast.command_type import CommandType
+from scarajectory.core.model.dsl.ast.instruction import Instruction
+from scarajectory.core.model.dsl.diagnostic.diagnostic import Diagnostic
+from scarajectory.core.model.dsl.diagnostic.diagnostic_severity import DiagnosticSeverity
+from scarajectory.core.service.dsl.linter.scara_lint_context import ScaraLintContext
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -54,9 +50,9 @@ class TimingLintRule:
     def check(
         self,
         *,
-        instruction: IScaraInstruction,
+        instruction: Instruction,
         context: ScaraLintContext,
-        diagnostics: list[ScaraDiagnostic],
+        diagnostics: list[Diagnostic],
     ) -> None:
         '''
             Evaluates WAIT_MS instructions, reporting non-positive delays and blend flyby conflicts.
@@ -66,7 +62,7 @@ class TimingLintRule:
             :param diagnostics: Accumulator list of diagnostic findings.
             :exceptions: None.
         '''
-        if instruction.command_type != ScaraCommandType.WAIT_MS:
+        if instruction.command_type != CommandType.WAIT_MS:
             return
 
         line = instruction.line_number
@@ -75,9 +71,9 @@ class TimingLintRule:
 
         if delay_ms <= 0.0:
             diagnostics.append(
-                ScaraDiagnostic(
+                Diagnostic(
                     code='DEAD_WAIT',
-                    severity=ScaraDiagnosticSeverity.INFO,
+                    severity=DiagnosticSeverity.INFO,
                     message=(
                         f'Dwell delay WAIT_MS {delay_ms:.0f} is '
                         f'non-positive and produces no pause.'
@@ -89,13 +85,13 @@ class TimingLintRule:
 
         if context.zone_mode != 'FINE' and context.zone_radius > 0.0:
             diagnostics.append(
-                ScaraDiagnostic(
+                Diagnostic(
                     code='TOOL_IN_FLYBY',
-                    severity=ScaraDiagnosticSeverity.WARNING,
+                    severity=DiagnosticSeverity.WARNING,
                     message='Dwell pause WAIT_MS issued during active continuous blend zone.',
                     line=line,
                     command='WAIT_MS',
                 )
             )
 
-        context.last_coords = None
+        context.last_coords = ()

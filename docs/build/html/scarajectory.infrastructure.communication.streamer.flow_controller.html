@@ -15,8 +15,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="scarajectory.infrastructure.communication.streamer.robot_controller module" href="scarajectory.infrastructure.communication.streamer.robot_controller.html" />
-    <link rel="prev" title="scarajectory.infrastructure.communication.streamer package" href="scarajectory.infrastructure.communication.streamer.html" /> 
+    <link rel="next" title="scarajectory.infrastructure.communication.streamer.flow_controller_factory module" href="scarajectory.infrastructure.communication.streamer.flow_controller_factory.html" />
+    <link rel="prev" title="scarajectory.infrastructure.communication.streamer.binary_stream_execution_worker_factory module" href="scarajectory.infrastructure.communication.streamer.binary_stream_execution_worker_factory.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -28,10 +28,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.communication.streamer.robot_controller.html" title="scarajectory.infrastructure.communication.streamer.robot_controller module"
+          <a href="scarajectory.infrastructure.communication.streamer.flow_controller_factory.html" title="scarajectory.infrastructure.communication.streamer.flow_controller_factory module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.communication.streamer.html" title="scarajectory.infrastructure.communication.streamer package"
+          <a href="scarajectory.infrastructure.communication.streamer.binary_stream_execution_worker_factory.html" title="scarajectory.infrastructure.communication.streamer.binary_stream_execution_worker_factory module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
@@ -70,7 +70,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.flow_controller.FlowController">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.communication.streamer.flow_controller.</span></span><span class="sig-name descname"><span class="pre">FlowController</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">capacity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/flow_controller.html#FlowController"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.communication.streamer.flow_controller.</span></span><span class="sig-name descname"><span class="pre">FlowController</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">capacity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parser</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.communication.protocol.iprotocol_parser.html#scarajectory.core.service.communication.protocol.iprotocol_parser.IProtocolParser" title="scarajectory.core.service.communication.protocol.iprotocol_parser.IProtocolParser"><span class="pre">IProtocolParser</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/flow_controller.html#FlowController"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Manages sliding window queue pacing, buffer occupancy, and command synchronization barriers.</p>
 <p>It defines:</p>
@@ -80,18 +80,21 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dd class="field-odd"><div class="line-block">
 <div class="line">DEFAULT_QUEUE_CAPACITY - Default capacity of microcontroller ring buffer.</div>
 <div class="line">capacity - Maximum allowed queue depth before throttling.</div>
+<div class="line">_parser - Protocol parser decoding firmware response packets.</div>
 <div class="line">_barrier_event - Thread synchronization barrier for synchronous commands.</div>
 </div>
 </dd>
 <dt class="field-even">methods<span class="colon">:</span></dt>
 <dd class="field-even"><div class="line-block">
-<div class="line">__init__ - Initializes flow controller with specified queue capacity.</div>
+<div class="line">__init__ - Initializes flow controller with specified queue capacity and parser.</div>
 <div class="line">reset - Clears flow control state and unlocks barrier.</div>
 <div class="line">set_barrier - Locks barrier event until confirmation is received.</div>
 <div class="line">clear_barrier - Unlocks barrier event.</div>
 <div class="line">is_barrier_clear - Checks whether synchronization barrier is cleared.</div>
 <div class="line">can_send - Checks whether next packet or command is permitted to be transmitted.</div>
 <div class="line">process_response - Processes response line from firmware and updates session.</div>
+<div class="line">handle_binary_ack - Updates queue depth from firmware ACK free slot count.</div>
+<div class="line">handle_binary_move_event - Updates progress from firmware move event.</div>
 </div>
 </dd>
 </dl>
@@ -101,9 +104,19 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <span class="sig-name descname"><span class="pre">DEFAULT_QUEUE_CAPACITY</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">16</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.DEFAULT_QUEUE_CAPACITY" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.flow_controller.FlowController._barrier_event">
+<span class="sig-name descname"><span class="pre">_barrier_event</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">Event</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController._barrier_event" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.flow_controller.FlowController._parser">
+<span class="sig-name descname"><span class="pre">_parser</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.service.communication.protocol.iprotocol_parser.html#scarajectory.core.service.communication.protocol.iprotocol_parser.IProtocolParser" title="scarajectory.core.service.communication.protocol.iprotocol_parser.IProtocolParser"><span class="pre">IProtocolParser</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController._parser" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.can_send">
-<span class="sig-name descname"><span class="pre">can_send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.communication.stream_session.html#scarajectory.core.model.communication.stream_session.StreamSession" title="scarajectory.core.model.communication.stream_session.StreamSession"><span class="pre">StreamSession</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_command</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/flow_controller.html#FlowController.can_send"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.can_send" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">can_send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.communication.stream.stream_session.html#scarajectory.core.model.communication.stream.stream_session.StreamSession" title="scarajectory.core.model.communication.stream.stream_session.StreamSession"><span class="pre">StreamSession</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_command</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/flow_controller.html#FlowController.can_send"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.can_send" title="Link to this definition">¶</a></dt>
 <dd><p>Checks whether next packet or command is permitted to be transmitted.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -130,6 +143,34 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.handle_binary_ack">
+<span class="sig-name descname"><span class="pre">handle_binary_ack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.communication.stream.stream_session.html#scarajectory.core.model.communication.stream.stream_session.StreamSession" title="scarajectory.core.model.communication.stream.stream_session.StreamSession"><span class="pre">StreamSession</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">free_slots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/flow_controller.html#FlowController.handle_binary_ack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.handle_binary_ack" title="Link to this definition">¶</a></dt>
+<dd><p>Updates queue depth from firmware ACK free slot count.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> – Active StreamSession instance.</p></li>
+<li><p><strong>free_slots</strong> – Number of free ring-buffer slots reported by MCU.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.handle_binary_move_event">
+<span class="sig-name descname"><span class="pre">handle_binary_move_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.communication.stream.stream_session.html#scarajectory.core.model.communication.stream.stream_session.StreamSession" title="scarajectory.core.model.communication.stream.stream_session.StreamSession"><span class="pre">StreamSession</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/flow_controller.html#FlowController.handle_binary_move_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.handle_binary_move_event" title="Link to this definition">¶</a></dt>
+<dd><p>Updates progress from firmware move event.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> – Active StreamSession instance.</p></li>
+<li><p><strong>event_type</strong> – 1=START, 2=DONE, 3=FAILED.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.is_barrier_clear">
 <span class="sig-name descname"><span class="pre">is_barrier_clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/flow_controller.html#FlowController.is_barrier_clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.is_barrier_clear" title="Link to this definition">¶</a></dt>
 <dd><p>Checks whether synchronization barrier is cleared.</p>
@@ -142,7 +183,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.process_response">
-<span class="sig-name descname"><span class="pre">process_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.communication.stream_session.html#scarajectory.core.model.communication.stream_session.StreamSession" title="scarajectory.core.model.communication.stream_session.StreamSession"><span class="pre">StreamSession</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/flow_controller.html#FlowController.process_response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.process_response" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">process_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.communication.stream.stream_session.html#scarajectory.core.model.communication.stream.stream_session.StreamSession" title="scarajectory.core.model.communication.stream.stream_session.StreamSession"><span class="pre">StreamSession</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/streamer/flow_controller.html#FlowController.process_response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.process_response" title="Link to this definition">¶</a></dt>
 <dd><p>Processes response line from firmware and updates session queue depth.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -186,9 +227,13 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <li><a class="reference internal" href="#">scarajectory.infrastructure.communication.streamer.flow_controller module</a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController"><code class="docutils literal notranslate"><span class="pre">FlowController</span></code></a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.DEFAULT_QUEUE_CAPACITY"><code class="docutils literal notranslate"><span class="pre">FlowController.DEFAULT_QUEUE_CAPACITY</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController._barrier_event"><code class="docutils literal notranslate"><span class="pre">FlowController._barrier_event</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController._parser"><code class="docutils literal notranslate"><span class="pre">FlowController._parser</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.can_send"><code class="docutils literal notranslate"><span class="pre">FlowController.can_send()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.capacity"><code class="docutils literal notranslate"><span class="pre">FlowController.capacity</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.clear_barrier"><code class="docutils literal notranslate"><span class="pre">FlowController.clear_barrier()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.handle_binary_ack"><code class="docutils literal notranslate"><span class="pre">FlowController.handle_binary_ack()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.handle_binary_move_event"><code class="docutils literal notranslate"><span class="pre">FlowController.handle_binary_move_event()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.is_barrier_clear"><code class="docutils literal notranslate"><span class="pre">FlowController.is_barrier_clear()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.process_response"><code class="docutils literal notranslate"><span class="pre">FlowController.process_response()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.streamer.flow_controller.FlowController.reset"><code class="docutils literal notranslate"><span class="pre">FlowController.reset()</span></code></a></li>
@@ -202,13 +247,13 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.communication.streamer.html"
-                          title="previous chapter">scarajectory.infrastructure.communication.streamer package</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.communication.streamer.binary_stream_execution_worker_factory.html"
+                          title="previous chapter">scarajectory.infrastructure.communication.streamer.binary_stream_execution_worker_factory module</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.communication.streamer.robot_controller.html"
-                          title="next chapter">scarajectory.infrastructure.communication.streamer.robot_controller module</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.communication.streamer.flow_controller_factory.html"
+                          title="next chapter">scarajectory.infrastructure.communication.streamer.flow_controller_factory module</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -241,10 +286,10 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.communication.streamer.robot_controller.html" title="scarajectory.infrastructure.communication.streamer.robot_controller module"
+          <a href="scarajectory.infrastructure.communication.streamer.flow_controller_factory.html" title="scarajectory.infrastructure.communication.streamer.flow_controller_factory module"
              >next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.communication.streamer.html" title="scarajectory.infrastructure.communication.streamer package"
+          <a href="scarajectory.infrastructure.communication.streamer.binary_stream_execution_worker_factory.html" title="scarajectory.infrastructure.communication.streamer.binary_stream_execution_worker_factory module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>

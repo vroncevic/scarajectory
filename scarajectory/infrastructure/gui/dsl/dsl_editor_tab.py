@@ -25,32 +25,16 @@ from tkinter import BOTH, Widget, X
 from tkinter.ttk import Frame
 from typing import Final
 
-from scarajectory.core.model.trajectory.itrajectory_plan import ITrajectoryPlan
-from scarajectory.core.service.dsl.iscara_dsl_service import IScaraDslService
-from scarajectory.core.service.dsl.scara_dsl_service import ScaraDslService
-from scarajectory.core.service.trajectory.iplan_storage_service import (
-    IPlanStorageService,
-)
-from scarajectory.core.service.trajectory.itrajectory_validator import (
-    ITrajectoryValidator,
-)
+from scarajectory.core.service.trajectory.plan.itrajectory_plan import ITrajectoryPlan
+from scaralang.core.service.dsl.iscara_dsl_service import IScaraDslService
+from scarajectory.core.service.trajectory.contract.iplan_storage_service import IPlanStorageService
 from scarajectory.infrastructure.gui.dsl.dsl_code_editor import DslCodeEditor
 from scarajectory.infrastructure.gui.dsl.dsl_console_view import DslConsoleView
-from scarajectory.infrastructure.gui.dsl.dsl_document_manager import (
-    DslDocumentManager,
-)
-from scarajectory.infrastructure.gui.dsl.dsl_editor_toolbar import (
-    DslEditorToolbar,
-)
-from scarajectory.infrastructure.gui.dsl.dsl_example_catalog import (
-    DslExampleCatalog,
-)
-from scarajectory.infrastructure.gui.dsl.emulator_launcher import (
-    EmulatorLauncher,
-)
-from scarajectory.infrastructure.gui.dsl.iemulator_launcher import (
-    IEmulatorLauncher,
-)
+from scarajectory.infrastructure.gui.dsl.dsl_document_manager import DslDocumentManager
+from scarajectory.infrastructure.gui.dsl.dsl_editor_toolbar import DslEditorToolbar
+from scarajectory.infrastructure.gui.dsl.dsl_example_catalog import DslExampleCatalog
+from scarajectory.infrastructure.gui.dsl.emulator_launcher import EmulatorLauncher
+from scarajectory.infrastructure.gui.dsl.iemulator_launcher import IEmulatorLauncher
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -79,12 +63,15 @@ class DslEditorTab(Frame):
                 | _console - Diagnostic console view subcomponent.
             :methods:
                 | __init__ - Initializes the editor tab layout and mounts subcomponents.
+                | build_layout - Constructs action toolbar, code editor, and status console.
+                | load_initial_content - Loads exported plan or demonstration script into editor.
                 | compile_to_plan - Compiles editor code and updates the active plan.
                 | validate_code - Validates editor code syntax and kinematics without mutating plan.
                 | export_plan_to_editor - Serializes current plan into the editor text.
                 | preview_in_scaraemu - Launches SCARAEmu visualizer with active script.
                 | open_file - Opens a .scara file into the editor.
                 | save_file - Saves editor contents to a .scara file.
+                | on_example_selected - Loads the selected example script from disk.
                 | load_example - Inserts standard demonstration SCARA script.
     '''
 
@@ -102,8 +89,7 @@ class DslEditorTab(Frame):
         parent: Widget,
         *,
         plan: ITrajectoryPlan,
-        validator: ITrajectoryValidator | None = None,
-        dsl_service: IScaraDslService | None = None,
+        dsl_service: IScaraDslService,
         storage: IPlanStorageService | None = None,
         launcher: IEmulatorLauncher | None = None,
         catalog: DslExampleCatalog | None = None,
@@ -115,8 +101,7 @@ class DslEditorTab(Frame):
 
             :param parent: Parent container widget.
             :param plan: Active ITrajectoryPlan instance.
-            :param validator: Optional ITrajectoryValidator instance.
-            :param dsl_service: Optional IScaraDslService instance.
+            :param dsl_service: Required IScaraDslService instance.
             :param storage: Optional IPlanStorageService instance.
             :param launcher: Optional IEmulatorLauncher instance.
             :param catalog: Optional DslExampleCatalog instance.
@@ -125,11 +110,7 @@ class DslEditorTab(Frame):
         '''
         super().__init__(parent, padding=4, **kwargs)
         self._plan = plan
-        self._dsl_service = (
-            dsl_service
-            if dsl_service is not None
-            else ScaraDslService(validator=validator)
-        )
+        self._dsl_service = dsl_service
         self._launcher = (
             launcher
             if launcher is not None
@@ -146,10 +127,10 @@ class DslEditorTab(Frame):
             else DslDocumentManager(storage=storage)
         )
 
-        self._build_layout()
-        self._load_initial_content()
+        self.build_layout()
+        self.load_initial_content()
 
-    def _build_layout(self) -> None:
+    def build_layout(self) -> None:
         '''
             Constructs action toolbar, code editor, and status console.
 
@@ -163,7 +144,7 @@ class DslEditorTab(Frame):
             on_preview=self.preview_in_scaraemu,
             on_open=self.open_file,
             on_save=self.save_file,
-            on_example_selected=self._on_example_selected,
+            on_example_selected=self.on_example_selected,
         )
         self._toolbar.pack(fill=X)
 
@@ -177,7 +158,7 @@ class DslEditorTab(Frame):
         self._console = DslConsoleView(self)
         self._console.pack(fill=X, pady=(4, 0))
 
-    def _load_initial_content(self) -> None:
+    def load_initial_content(self) -> None:
         '''
             Loads either the exported active plan or the demonstration script into the editor.
 
@@ -186,7 +167,7 @@ class DslEditorTab(Frame):
         if self._plan.count > 0:
             self.export_plan_to_editor()
         elif self._toolbar.get_selected_example():
-            self._on_example_selected(self._toolbar.get_selected_example())
+            self.on_example_selected(self._toolbar.get_selected_example())
         else:
             self.load_example()
 
@@ -280,7 +261,7 @@ class DslEditorTab(Frame):
         if filepath is not None:
             self._console.log(f'ℹ️ Saved file: {filepath}', is_error=False)
 
-    def _on_example_selected(self, selected: str | None = None) -> None:
+    def on_example_selected(self, selected: str | None = None) -> None:
         '''
             Loads the selected example script from disk into the editor.
 

@@ -31,15 +31,11 @@ pkg_dir: str = dirname(dirname(abspath(__file__)))
 if pkg_dir not in path:
     path.insert(0, pkg_dir)
 
-from scarajectory.core.model.communication.stream_session import StreamSession
-from scarajectory.core.model.communication.stream_state import StreamState
-from scarajectory.core.model.trajectory.waypoint import Waypoint
-from scarajectory.infrastructure.communication.streamer.flow_controller import (
-    FlowController,
-)
-from scarajectory.infrastructure.communication.streamer.stream_execution_worker import (
-    StreamExecutionWorker,
-)
+from scarajectory.core.model.communication.stream.stream_state import StreamState
+from scarajectory.core.service.communication.stream.session_factory import SessionFactory
+from scarajectory.core.service.trajectory.discretization.waypoint_factory import WaypointFactory
+from scarajectory.infrastructure.communication.streamer.flow_controller_factory import FlowControllerFactory
+from scarajectory.infrastructure.communication.streamer.stream_execution_worker_factory import StreamExecutionWorkerFactory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -60,13 +56,13 @@ class TestStreamExecutionWorker(TestCase):
         '''
             Prepares mocked callbacks and worker instance for testing.
         '''
-        self._flow_controller = FlowController()
+        self._flow_controller = FlowControllerFactory.create()
         self._sent_commands: list[str] = []
         self._progress_notifications: list[str] = []
         self._log_messages: list[tuple[str, bool]] = []
         self._state_changes: list[StreamState] = []
 
-        self._worker = StreamExecutionWorker(
+        self._worker = StreamExecutionWorkerFactory.create(
             flow_controller=self._flow_controller,
             send_command=self._mock_send_command,
             notify_progress=self._mock_notify_progress,
@@ -114,8 +110,8 @@ class TestStreamExecutionWorker(TestCase):
         '''
             Verifies normal response line updates flow controller and notifies progress.
         '''
-        session = StreamSession(
-            waypoints=[Waypoint(x=10.0, y=20.0, z=5.0, phi=0.0)],
+        session = SessionFactory.create(
+            waypoints=[WaypointFactory.create(x=10.0, y=20.0, z=5.0, phi=0.0, speed=40.0)],
             sent_count=1,
             remote_queue_depth=1,
         )
@@ -130,8 +126,8 @@ class TestStreamExecutionWorker(TestCase):
         '''
             Verifies fatal error triggers worker stop and transitions state to STOPPED.
         '''
-        session = StreamSession(
-            waypoints=[Waypoint(x=10.0, y=20.0, z=5.0, phi=0.0)],
+        session = SessionFactory.create(
+            waypoints=[WaypointFactory.create(x=10.0, y=20.0, z=5.0, phi=0.0, speed=40.0)],
             sent_count=1,
             remote_queue_depth=1,
         )
@@ -145,10 +141,10 @@ class TestStreamExecutionWorker(TestCase):
         '''
             Verifies starting execution loop in background thread and cleanly stopping it.
         '''
-        session = StreamSession(
+        session = SessionFactory.create(
             waypoints=[
-                Waypoint(x=10.0, y=20.0, z=5.0, phi=0.0),
-                Waypoint(x=20.0, y=30.0, z=5.0, phi=0.0),
+                WaypointFactory.create(x=10.0, y=20.0, z=5.0, phi=0.0, speed=40.0),
+                WaypointFactory.create(x=20.0, y=30.0, z=5.0, phi=0.0, speed=40.0),
             ],
             sent_count=0,
             start_time=time(),

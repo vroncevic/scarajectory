@@ -21,10 +21,11 @@ Info
 
 from __future__ import annotations
 
-from scarajectory.core.model.dsl.ast.iscara_instruction import IScaraInstruction
-from scarajectory.core.model.dsl.ast.scara_command_type import ScaraCommandType
-from scarajectory.core.model.dsl.ast.scara_instruction import ScaraInstruction
-from scarajectory.core.model.dsl.token.scara_token import ScaraToken
+from scarajectory.core.model.dsl.ast.command_type import CommandType
+from scarajectory.core.model.dsl.ast.instruction import Instruction
+from scarajectory.core.model.dsl.token.token import Token
+from scarajectory.core.service.dsl.ast.iinstruction_factory import IInstructionFactory
+from scarajectory.core.service.dsl.ast.instruction_factory import InstructionFactory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -43,11 +44,22 @@ class FlowCommandParser:
         It defines:
 
             :attributes:
-                | None.
+                | _instruction_factory - Injected IInstructionFactory instance.
             :methods:
+                | __init__ - Initializes FlowCommandParser with injected factory.
                 | can_parse - Checks whether command is WAIT_MS, SYNC, HOLD, PAUSE, RESUME, or ESTOP.
-                | parse - Parses flow control statement tokens into ScaraInstruction.
+                | parse - Parses flow control statement tokens into Instruction.
     '''
+
+    _instruction_factory: IInstructionFactory
+
+    def __init__(self, *, instruction_factory: IInstructionFactory = InstructionFactory()) -> None:
+        '''
+            Initializes FlowCommandParser constructor.
+
+            :param instruction_factory: Injected IInstructionFactory instance.
+        '''
+        self._instruction_factory = instruction_factory
 
     def can_parse(self, *, command_name: str) -> bool:
         '''
@@ -71,20 +83,21 @@ class FlowCommandParser:
     def parse(
         self,
         *,
-        tokens: tuple[ScaraToken, ...],
+        tokens: tuple[Token, ...],
         line_num: int,
         raw_text: str,
-    ) -> IScaraInstruction:
+    ) -> Instruction:
         '''
-            Parses flow control statement into ScaraInstruction.
+            Parses flow control statement into Instruction.
 
             :param tokens: Statement token tuple.
             :param line_num: Line number in source code.
             :param raw_text: Original statement text.
-            :return: IScaraInstruction node.
+            :return: Instruction node.
             :exceptions: ValueError on missing WAIT/WAIT_MS delay argument.
         '''
         cmd = tokens[0].value.upper()
+
         match cmd:
             case 'WAIT' | 'WAIT_MS':
                 if len(tokens) < 2:
@@ -92,45 +105,53 @@ class FlowCommandParser:
                         f'Missing millisecond argument for {cmd} at line {line_num}'
                     )
                 ms_val = float(tokens[1].value)
-                return ScaraInstruction(
-                    command_type=ScaraCommandType.WAIT_MS,
+
+                return self._instruction_factory.create(
+                    command_type=CommandType.WAIT_MS,
                     line_number=line_num,
                     raw_text=raw_text,
                     parameters={'ms': ms_val},
                 )
             case 'SYNC':
-                return ScaraInstruction(
-                    command_type=ScaraCommandType.SYNC,
+                return self._instruction_factory.create(
+                    command_type=CommandType.SYNC,
                     line_number=line_num,
                     raw_text=raw_text,
+                    parameters={},
                 )
             case 'HOLD' | 'PAUSE':
-                return ScaraInstruction(
-                    command_type=ScaraCommandType.HOLD,
+                return self._instruction_factory.create(
+                    command_type=CommandType.HOLD,
                     line_number=line_num,
                     raw_text=raw_text,
+                    parameters={},
                 )
             case 'RESUME':
-                return ScaraInstruction(
-                    command_type=ScaraCommandType.RESUME,
+                return self._instruction_factory.create(
+                    command_type=CommandType.RESUME,
                     line_number=line_num,
                     raw_text=raw_text,
+                    parameters={},
                 )
             case 'ENABLE':
-                return ScaraInstruction(
-                    command_type=ScaraCommandType.ENABLE,
+                return self._instruction_factory.create(
+                    command_type=CommandType.ENABLE,
                     line_number=line_num,
                     raw_text=raw_text,
+                    parameters={},
                 )
             case 'DISABLE':
-                return ScaraInstruction(
-                    command_type=ScaraCommandType.DISABLE,
+                return self._instruction_factory.create(
+                    command_type=CommandType.DISABLE,
                     line_number=line_num,
                     raw_text=raw_text,
+                    parameters={},
                 )
             case _:
-                return ScaraInstruction(
-                    command_type=ScaraCommandType.ESTOP,
+                return self._instruction_factory.create(
+                    command_type=CommandType.ESTOP,
                     line_number=line_num,
                     raw_text=raw_text,
+                    parameters={},
                 )
+

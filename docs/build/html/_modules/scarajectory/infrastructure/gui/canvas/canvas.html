@@ -63,12 +63,12 @@
 <span class="kn">from</span> <span class="nn">tkinter.ttk</span> <span class="kn">import</span> <span class="n">Label</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">ClassVar</span><span class="p">,</span> <span class="n">Final</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.itrajectory_plan</span> <span class="kn">import</span> <span class="n">ITrajectoryPlan</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.itrajectory_plan</span> <span class="kn">import</span> <span class="n">ITrajectoryPlan</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.model.canvas_settings</span> <span class="kn">import</span> <span class="n">CanvasSettings</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.model.canvas_tool_mode</span> <span class="kn">import</span> <span class="n">CanvasToolMode</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.model.canvas_interaction_state</span> <span class="kn">import</span> <span class="n">CanvasInteractionState</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.model.viewport_transform</span> <span class="kn">import</span> <span class="n">ViewportTransform</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.itrajectory_validator</span> <span class="kn">import</span> <span class="n">ITrajectoryValidator</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.validation.itrajectory_validator</span> <span class="kn">import</span> <span class="n">ITrajectoryValidator</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.canvas.canvas_renderer</span> <span class="kn">import</span> <span class="n">CanvasRenderer</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.canvas.canvas_mouse_handler</span> <span class="kn">import</span> <span class="n">CanvasMouseHandler</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.canvas.canvas_event_binder</span> <span class="kn">import</span> <span class="n">CanvasEventBinder</span>
@@ -92,7 +92,6 @@
 <span class="sd">        It defines:</span>
 
 <span class="sd">            :attributes:</span>
-<span class="sd">                | R_MIN_MM - Fallback minimum radius deadzone boundary in mm.</span>
 <span class="sd">                | SELECT_HIT_RADIUS_PX - Hit detection pixel radius for selecting waypoints.</span>
 <span class="sd">                | FREEHAND_MIN_DISTANCE_MM - Minimum distance threshold in mm for freehand point sampling.</span>
 <span class="sd">                | CIRCLE_MIN_RADIUS_MM - Minimum radius threshold in mm for inserting circle shapes.</span>
@@ -120,7 +119,6 @@
 <span class="sd">                | redraw - Clears and redraws entire vector scene.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="n">R_MIN_MM</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">86.1</span>
     <span class="n">SELECT_HIT_RADIUS_PX</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">12.0</span>
     <span class="n">FREEHAND_MIN_DISTANCE_MM</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">5.0</span>
     <span class="n">CIRCLE_MIN_RADIUS_MM</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">5.0</span>
@@ -141,6 +139,8 @@
         <span class="n">plan</span><span class="p">:</span> <span class="n">ITrajectoryPlan</span><span class="p">,</span>
         <span class="n">validator</span><span class="p">:</span> <span class="n">ITrajectoryValidator</span><span class="p">,</span>
         <span class="n">settings</span><span class="p">:</span> <span class="n">CanvasSettings</span> <span class="o">=</span> <span class="n">CanvasSettings</span><span class="p">(),</span>
+        <span class="n">discretizer</span><span class="p">:</span> <span class="n">IShapeDiscretizer</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">waypoint_factory</span><span class="p">:</span> <span class="n">IWaypointFactory</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">object</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
@@ -165,7 +165,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_vp</span> <span class="o">=</span> <span class="n">ViewportTransform</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="n">CanvasInteractionState</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mouse_handler</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">CanvasMouseHandler</span><span class="p">]</span> <span class="o">=</span> <span class="n">CanvasMouseHandler</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_vp</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">,</span>
+            <span class="n">waypoint_factory</span><span class="o">=</span><span class="n">waypoint_factory</span><span class="p">,</span>
+            <span class="n">discretizer</span><span class="o">=</span><span class="n">discretizer</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_event_binder</span> <span class="o">=</span> <span class="n">CanvasEventBinder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mouse_handler</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_hover_label</span> <span class="o">=</span> <span class="kc">None</span>

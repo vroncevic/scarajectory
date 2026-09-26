@@ -5,3 +5,4 @@ scarajectory.infrastructure.gui.controls.icontrols\_panel module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

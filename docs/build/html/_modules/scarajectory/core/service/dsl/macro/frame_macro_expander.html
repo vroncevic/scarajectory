@@ -59,9 +59,8 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.iscara_instruction</span> <span class="kn">import</span> <span class="n">IScaraInstruction</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.scara_command_type</span> <span class="kn">import</span> <span class="n">ScaraCommandType</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.scara_instruction</span> <span class="kn">import</span> <span class="n">ScaraInstruction</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.command_type</span> <span class="kn">import</span> <span class="n">CommandType</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.instruction</span> <span class="kn">import</span> <span class="n">Instruction</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.compiler.scara_compiler_context</span> <span class="kn">import</span> <span class="n">ScaraCompilerContext</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
@@ -91,7 +90,7 @@
 
 <div class="viewcode-block" id="FrameMacroExpander.can_expand">
 <a class="viewcode-back" href="../../../../../../scarajectory.core.service.dsl.macro.frame_macro_expander.html#scarajectory.core.service.dsl.macro.frame_macro_expander.FrameMacroExpander.can_expand">[docs]</a>
-    <span class="k">def</span> <span class="nf">can_expand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">instruction</span><span class="p">:</span> <span class="n">IScaraInstruction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">can_expand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">instruction</span><span class="p">:</span> <span class="n">Instruction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Checks whether this expander handles frame setup commands.</span>
 
@@ -99,8 +98,8 @@
 <span class="sd">            :return: True if FRAME_SET or FRAME_RESET, False otherwise.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="n">instruction</span><span class="o">.</span><span class="n">command_type</span> <span class="ow">in</span> <span class="p">(</span>
-            <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">FRAME_SET</span><span class="p">,</span>
-            <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">FRAME_RESET</span><span class="p">,</span>
+            <span class="n">CommandType</span><span class="o">.</span><span class="n">FRAME_SET</span><span class="p">,</span>
+            <span class="n">CommandType</span><span class="o">.</span><span class="n">FRAME_RESET</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 
@@ -109,9 +108,9 @@
     <span class="k">def</span> <span class="nf">expand</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">instruction</span><span class="p">:</span> <span class="n">IScaraInstruction</span><span class="p">,</span>
+        <span class="n">instruction</span><span class="p">:</span> <span class="n">Instruction</span><span class="p">,</span>
         <span class="n">context</span><span class="p">:</span> <span class="n">ScaraCompilerContext</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">IScaraInstruction</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Instruction</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Updates compiler context frame transformation parameters.</span>
 
@@ -119,7 +118,7 @@
 <span class="sd">            :param context: Active compiler context.</span>
 <span class="sd">            :return: Tuple containing empty or informational comment instruction.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="n">instruction</span><span class="o">.</span><span class="n">command_type</span> <span class="o">==</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">FRAME_RESET</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">instruction</span><span class="o">.</span><span class="n">command_type</span> <span class="o">==</span> <span class="n">CommandType</span><span class="o">.</span><span class="n">FRAME_RESET</span><span class="p">:</span>
             <span class="n">context</span><span class="o">.</span><span class="n">frame_x</span> <span class="o">=</span> <span class="mf">0.0</span>
             <span class="n">context</span><span class="o">.</span><span class="n">frame_y</span> <span class="o">=</span> <span class="mf">0.0</span>
             <span class="n">context</span><span class="o">.</span><span class="n">frame_angle_deg</span> <span class="o">=</span> <span class="mf">0.0</span>

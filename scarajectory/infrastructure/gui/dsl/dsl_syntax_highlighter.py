@@ -24,7 +24,7 @@ from __future__ import annotations
 from re import compile as re_compile, Pattern
 from tkinter import END, Text
 
-from scarajectory.core.model.dsl.ast.scara_command_type import ScaraCommandType
+from scarajectory.core.model.dsl.ast.command_type import CommandType
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -55,7 +55,7 @@ class DslSyntaxHighlighter:
     '''
 
     _commands: frozenset[str] = frozenset(
-        {cmd.value.split()[0] for cmd in ScaraCommandType}
+        {cmd.value.split()[0] for cmd in CommandType}
         | {'CONFIG', 'ENABLE', 'DISABLE', 'SPLINE_BEGIN', 'SPLINE_END', 'POINT'}
     )
 

@@ -21,9 +21,8 @@ Info
 
 from __future__ import annotations
 
-from scarajectory.core.model.dsl.ast.iscara_instruction import IScaraInstruction
-from scarajectory.core.model.dsl.ast.scara_command_type import ScaraCommandType
-from scarajectory.core.model.dsl.ast.scara_instruction import ScaraInstruction
+from scarajectory.core.model.dsl.ast.command_type import CommandType
+from scarajectory.core.model.dsl.ast.instruction import Instruction
 from scarajectory.core.service.dsl.compiler.scara_compiler_context import ScaraCompilerContext
 
 __author__ = 'Vladimir Roncevic'
@@ -49,7 +48,7 @@ class FrameMacroExpander:
                 | expand - Updates active frame in compiler context and emits marker comment.
     '''
 
-    def can_expand(self, *, instruction: IScaraInstruction) -> bool:
+    def can_expand(self, *, instruction: Instruction) -> bool:
         '''
             Checks whether this expander handles frame setup commands.
 
@@ -57,16 +56,16 @@ class FrameMacroExpander:
             :return: True if FRAME_SET or FRAME_RESET, False otherwise.
         '''
         return instruction.command_type in (
-            ScaraCommandType.FRAME_SET,
-            ScaraCommandType.FRAME_RESET,
+            CommandType.FRAME_SET,
+            CommandType.FRAME_RESET,
         )
 
     def expand(
         self,
         *,
-        instruction: IScaraInstruction,
+        instruction: Instruction,
         context: ScaraCompilerContext,
-    ) -> tuple[IScaraInstruction, ...]:
+    ) -> tuple[Instruction, ...]:
         '''
             Updates compiler context frame transformation parameters.
 
@@ -74,7 +73,7 @@ class FrameMacroExpander:
             :param context: Active compiler context.
             :return: Tuple containing empty or informational comment instruction.
         '''
-        if instruction.command_type == ScaraCommandType.FRAME_RESET:
+        if instruction.command_type == CommandType.FRAME_RESET:
             context.frame_x = 0.0
             context.frame_y = 0.0
             context.frame_angle_deg = 0.0

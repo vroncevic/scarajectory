@@ -23,7 +23,7 @@ from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
-from scarajectory.core.model.dsl.token.scara_token import ScaraToken
+from scarajectory.core.model.dsl.token.token import Token
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -48,10 +48,10 @@ class IScaraLexer(Protocol):
                 | tokenize - Tokenizes raw source code into an immutable tuple of lexical tokens.
     '''
 
-    def tokenize(self, *, source: str) -> tuple[ScaraToken, ...]:
+    def tokenize(self, *, source: str) -> tuple[Token, ...]:
         '''
-            Tokenizes source text into a tuple of ScaraToken instances.
+            Tokenizes source text into a tuple of Token instances.
 
             :param source: Raw source code string.
-            :return: Immutable tuple of ScaraToken tokens.
+            :return: Immutable tuple of Token tokens.
         '''

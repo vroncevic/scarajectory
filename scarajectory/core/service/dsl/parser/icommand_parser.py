@@ -23,8 +23,8 @@ from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
-from scarajectory.core.model.dsl.ast.iscara_instruction import IScaraInstruction
-from scarajectory.core.model.dsl.token.scara_token import ScaraToken
+from scarajectory.core.model.dsl.ast.instruction import Instruction
+from scarajectory.core.model.dsl.token.token import Token
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -47,7 +47,7 @@ class ICommandParser(Protocol):
                 | None.
             :methods:
                 | can_parse - Checks whether handler can parse the given command name.
-                | parse - Parses tokens for statement into an IScaraInstruction node.
+                | parse - Parses tokens for statement into a Instruction node.
     '''
 
     def can_parse(self, *, command_name: str) -> bool:
@@ -61,15 +61,15 @@ class ICommandParser(Protocol):
     def parse(
         self,
         *,
-        tokens: tuple[ScaraToken, ...],
+        tokens: tuple[Token, ...],
         line_num: int,
         raw_text: str,
-    ) -> IScaraInstruction:
+    ) -> Instruction:
         '''
-            Parses a statement token slice into a structured IScaraInstruction AST node.
+            Parses a statement token slice into a structured Instruction AST node.
 
             :param tokens: Statement token tuple including command keyword.
             :param line_num: 1-indexed source line number.
             :param raw_text: Original raw line string.
-            :return: IScaraInstruction AST node.
+            :return: Instruction AST node.
         '''

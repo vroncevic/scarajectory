@@ -15,7 +15,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="scarajectory.core.model.dsl.ast.iscara_instruction module" href="scarajectory.core.model.dsl.ast.iscara_instruction.html" />
+    <link rel="next" title="scarajectory.core.model.dsl.ast.command_type module" href="scarajectory.core.model.dsl.ast.command_type.html" />
     <link rel="prev" title="scarajectory.core.model.dsl package" href="scarajectory.core.model.dsl.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -28,7 +28,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.core.model.dsl.ast.iscara_instruction.html" title="scarajectory.core.model.dsl.ast.iscara_instruction module"
+          <a href="scarajectory.core.model.dsl.ast.command_type.html" title="scarajectory.core.model.dsl.ast.command_type module"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="scarajectory.core.model.dsl.html" title="scarajectory.core.model.dsl package"
@@ -54,83 +54,58 @@
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="scarajectory.core.model.dsl.ast.iscara_instruction.html">scarajectory.core.model.dsl.ast.iscara_instruction module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="scarajectory.core.model.dsl.ast.iscara_instruction.html#scarajectory.core.model.dsl.ast.iscara_instruction.IScaraInstruction"><code class="docutils literal notranslate"><span class="pre">IScaraInstruction</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.iscara_instruction.html#scarajectory.core.model.dsl.ast.iscara_instruction.IScaraInstruction.command_type"><code class="docutils literal notranslate"><span class="pre">IScaraInstruction.command_type</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.iscara_instruction.html#scarajectory.core.model.dsl.ast.iscara_instruction.IScaraInstruction.line_number"><code class="docutils literal notranslate"><span class="pre">IScaraInstruction.line_number</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.iscara_instruction.html#scarajectory.core.model.dsl.ast.iscara_instruction.IScaraInstruction.parameters"><code class="docutils literal notranslate"><span class="pre">IScaraInstruction.parameters</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.iscara_instruction.html#scarajectory.core.model.dsl.ast.iscara_instruction.IScaraInstruction.raw_text"><code class="docutils literal notranslate"><span class="pre">IScaraInstruction.raw_text</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.iscara_instruction.html#scarajectory.core.model.dsl.ast.iscara_instruction.IScaraInstruction.to_dict"><code class="docutils literal notranslate"><span class="pre">IScaraInstruction.to_dict()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html">scarajectory.core.model.dsl.ast.command_type module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType"><code class="docutils literal notranslate"><span class="pre">CommandType</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.ACCEL"><code class="docutils literal notranslate"><span class="pre">CommandType.ACCEL</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.APPROACH"><code class="docutils literal notranslate"><span class="pre">CommandType.APPROACH</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.ARC_CCW"><code class="docutils literal notranslate"><span class="pre">CommandType.ARC_CCW</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.ARC_CW"><code class="docutils literal notranslate"><span class="pre">CommandType.ARC_CW</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.CONFIG_ELBOW"><code class="docutils literal notranslate"><span class="pre">CommandType.CONFIG_ELBOW</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.DISABLE"><code class="docutils literal notranslate"><span class="pre">CommandType.DISABLE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.ENABLE"><code class="docutils literal notranslate"><span class="pre">CommandType.ENABLE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.ESTOP"><code class="docutils literal notranslate"><span class="pre">CommandType.ESTOP</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.FRAME_RESET"><code class="docutils literal notranslate"><span class="pre">CommandType.FRAME_RESET</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.FRAME_SET"><code class="docutils literal notranslate"><span class="pre">CommandType.FRAME_SET</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.HOLD"><code class="docutils literal notranslate"><span class="pre">CommandType.HOLD</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.HOME"><code class="docutils literal notranslate"><span class="pre">CommandType.HOME</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.JOG_AXIS"><code class="docutils literal notranslate"><span class="pre">CommandType.JOG_AXIS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.JOG_JOINT"><code class="docutils literal notranslate"><span class="pre">CommandType.JOG_JOINT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.JUMP"><code class="docutils literal notranslate"><span class="pre">CommandType.JUMP</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.MOVE_J"><code class="docutils literal notranslate"><span class="pre">CommandType.MOVE_J</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.MOVE_L"><code class="docutils literal notranslate"><span class="pre">CommandType.MOVE_L</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.MOVE_PALLET"><code class="docutils literal notranslate"><span class="pre">CommandType.MOVE_PALLET</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.OVERRIDE"><code class="docutils literal notranslate"><span class="pre">CommandType.OVERRIDE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.PALLET_DEF"><code class="docutils literal notranslate"><span class="pre">CommandType.PALLET_DEF</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.PROBE"><code class="docutils literal notranslate"><span class="pre">CommandType.PROBE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.PUMP"><code class="docutils literal notranslate"><span class="pre">CommandType.PUMP</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.RESUME"><code class="docutils literal notranslate"><span class="pre">CommandType.RESUME</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.RETRACT"><code class="docutils literal notranslate"><span class="pre">CommandType.RETRACT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.SPEED"><code class="docutils literal notranslate"><span class="pre">CommandType.SPEED</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.SPLINE"><code class="docutils literal notranslate"><span class="pre">CommandType.SPLINE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.SYNC"><code class="docutils literal notranslate"><span class="pre">CommandType.SYNC</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.TOOL"><code class="docutils literal notranslate"><span class="pre">CommandType.TOOL</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.TOOL_ORIENT"><code class="docutils literal notranslate"><span class="pre">CommandType.TOOL_ORIENT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.VALVE"><code class="docutils literal notranslate"><span class="pre">CommandType.VALVE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.WAIT"><code class="docutils literal notranslate"><span class="pre">CommandType.WAIT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.WAIT_MS"><code class="docutils literal notranslate"><span class="pre">CommandType.WAIT_MS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.command_type.html#scarajectory.core.model.dsl.ast.command_type.CommandType.ZONE"><code class="docutils literal notranslate"><span class="pre">CommandType.ZONE</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="scarajectory.core.model.dsl.ast.iscara_program.html">scarajectory.core.model.dsl.ast.iscara_program module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="scarajectory.core.model.dsl.ast.iscara_program.html#scarajectory.core.model.dsl.ast.iscara_program.IScaraProgram"><code class="docutils literal notranslate"><span class="pre">IScaraProgram</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.iscara_program.html#scarajectory.core.model.dsl.ast.iscara_program.IScaraProgram.instruction_count"><code class="docutils literal notranslate"><span class="pre">IScaraProgram.instruction_count</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.iscara_program.html#scarajectory.core.model.dsl.ast.iscara_program.IScaraProgram.instructions"><code class="docutils literal notranslate"><span class="pre">IScaraProgram.instructions</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.iscara_program.html#scarajectory.core.model.dsl.ast.iscara_program.IScaraProgram.to_dict"><code class="docutils literal notranslate"><span class="pre">IScaraProgram.to_dict()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.iscara_program.html#scarajectory.core.model.dsl.ast.iscara_program.IScaraProgram.to_text"><code class="docutils literal notranslate"><span class="pre">IScaraProgram.to_text()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="scarajectory.core.model.dsl.ast.instruction.html">scarajectory.core.model.dsl.ast.instruction module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.core.model.dsl.ast.instruction.html#scarajectory.core.model.dsl.ast.instruction.Instruction"><code class="docutils literal notranslate"><span class="pre">Instruction</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.instruction.html#scarajectory.core.model.dsl.ast.instruction.Instruction.command_type"><code class="docutils literal notranslate"><span class="pre">Instruction.command_type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.instruction.html#scarajectory.core.model.dsl.ast.instruction.Instruction.line_number"><code class="docutils literal notranslate"><span class="pre">Instruction.line_number</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.instruction.html#scarajectory.core.model.dsl.ast.instruction.Instruction.parameters"><code class="docutils literal notranslate"><span class="pre">Instruction.parameters</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.instruction.html#scarajectory.core.model.dsl.ast.instruction.Instruction.raw_text"><code class="docutils literal notranslate"><span class="pre">Instruction.raw_text</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html">scarajectory.core.model.dsl.ast.scara_command_type module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.ACCEL"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.ACCEL</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.APPROACH"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.APPROACH</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.ARC_CCW"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.ARC_CCW</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.ARC_CW"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.ARC_CW</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.CONFIG_ELBOW"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.CONFIG_ELBOW</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.DISABLE"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.DISABLE</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.ENABLE"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.ENABLE</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.ESTOP"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.ESTOP</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.FRAME_RESET"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.FRAME_RESET</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.FRAME_SET"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.FRAME_SET</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.HOLD"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.HOLD</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.HOME"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.HOME</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.JOG_AXIS"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.JOG_AXIS</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.JOG_JOINT"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.JOG_JOINT</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.JUMP"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.JUMP</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.MOVE_J"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.MOVE_J</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.MOVE_L"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.MOVE_L</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.MOVE_PALLET"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.MOVE_PALLET</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.OVERRIDE"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.OVERRIDE</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.PALLET_DEF"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.PALLET_DEF</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.PROBE"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.PROBE</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.PUMP"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.PUMP</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.RESUME"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.RESUME</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.RETRACT"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.RETRACT</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.SPEED"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.SPEED</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.SPLINE"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.SPLINE</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.SYNC"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.SYNC</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.TOOL"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.TOOL</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.TOOL_ORIENT"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.TOOL_ORIENT</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.VALVE"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.VALVE</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.WAIT_MS"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.WAIT_MS</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_command_type.html#scarajectory.core.model.dsl.ast.scara_command_type.ScaraCommandType.ZONE"><code class="docutils literal notranslate"><span class="pre">ScaraCommandType.ZONE</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_instruction.html">scarajectory.core.model.dsl.ast.scara_instruction module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_instruction.html#scarajectory.core.model.dsl.ast.scara_instruction.ScaraInstruction"><code class="docutils literal notranslate"><span class="pre">ScaraInstruction</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_instruction.html#scarajectory.core.model.dsl.ast.scara_instruction.ScaraInstruction.command_type"><code class="docutils literal notranslate"><span class="pre">ScaraInstruction.command_type</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_instruction.html#scarajectory.core.model.dsl.ast.scara_instruction.ScaraInstruction.line_number"><code class="docutils literal notranslate"><span class="pre">ScaraInstruction.line_number</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_instruction.html#scarajectory.core.model.dsl.ast.scara_instruction.ScaraInstruction.parameters"><code class="docutils literal notranslate"><span class="pre">ScaraInstruction.parameters</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_instruction.html#scarajectory.core.model.dsl.ast.scara_instruction.ScaraInstruction.raw_text"><code class="docutils literal notranslate"><span class="pre">ScaraInstruction.raw_text</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_instruction.html#scarajectory.core.model.dsl.ast.scara_instruction.ScaraInstruction.to_dict"><code class="docutils literal notranslate"><span class="pre">ScaraInstruction.to_dict()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_program.html">scarajectory.core.model.dsl.ast.scara_program module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_program.html#scarajectory.core.model.dsl.ast.scara_program.ScaraProgram"><code class="docutils literal notranslate"><span class="pre">ScaraProgram</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_program.html#scarajectory.core.model.dsl.ast.scara_program.ScaraProgram.from_instructions"><code class="docutils literal notranslate"><span class="pre">ScaraProgram.from_instructions()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_program.html#scarajectory.core.model.dsl.ast.scara_program.ScaraProgram.instruction_count"><code class="docutils literal notranslate"><span class="pre">ScaraProgram.instruction_count</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_program.html#scarajectory.core.model.dsl.ast.scara_program.ScaraProgram.instructions"><code class="docutils literal notranslate"><span class="pre">ScaraProgram.instructions</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_program.html#scarajectory.core.model.dsl.ast.scara_program.ScaraProgram.to_dict"><code class="docutils literal notranslate"><span class="pre">ScaraProgram.to_dict()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.scara_program.html#scarajectory.core.model.dsl.ast.scara_program.ScaraProgram.to_text"><code class="docutils literal notranslate"><span class="pre">ScaraProgram.to_text()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="scarajectory.core.model.dsl.ast.program.html">scarajectory.core.model.dsl.ast.program module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.core.model.dsl.ast.program.html#scarajectory.core.model.dsl.ast.program.Program"><code class="docutils literal notranslate"><span class="pre">Program</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.model.dsl.ast.program.html#scarajectory.core.model.dsl.ast.program.Program.instructions"><code class="docutils literal notranslate"><span class="pre">Program.instructions</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -186,8 +161,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="scarajectory.core.model.dsl.ast.iscara_instruction.html"
-                          title="next chapter">scarajectory.core.model.dsl.ast.iscara_instruction module</a></p>
+    <p class="topless"><a href="scarajectory.core.model.dsl.ast.command_type.html"
+                          title="next chapter">scarajectory.core.model.dsl.ast.command_type module</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -220,7 +195,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.core.model.dsl.ast.iscara_instruction.html" title="scarajectory.core.model.dsl.ast.iscara_instruction module"
+          <a href="scarajectory.core.model.dsl.ast.command_type.html" title="scarajectory.core.model.dsl.ast.command_type module"
              >next</a> |</li>
         <li class="right" >
           <a href="scarajectory.core.model.dsl.html" title="scarajectory.core.model.dsl package"

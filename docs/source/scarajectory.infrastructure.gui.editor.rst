@@ -9,6 +9,7 @@ Submodules
 
    scarajectory.infrastructure.gui.editor.itable
    scarajectory.infrastructure.gui.editor.preview_tab
+   scarajectory.infrastructure.gui.editor.preview_tab_factory
    scarajectory.infrastructure.gui.editor.table
    scarajectory.infrastructure.gui.editor.validation_tab
    scarajectory.infrastructure.gui.editor.waypoint_editor
@@ -20,3 +21,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

@@ -21,15 +21,11 @@ Info
 
 from __future__ import annotations
 
-from scarajectory.core.model.dsl.ast.iscara_instruction import IScaraInstruction
-from scarajectory.core.model.dsl.ast.scara_command_type import ScaraCommandType
-from scarajectory.core.model.dsl.diagnostic.scara_diagnostic import ScaraDiagnostic
-from scarajectory.core.model.dsl.diagnostic.scara_diagnostic_severity import (
-    ScaraDiagnosticSeverity,
-)
-from scarajectory.core.service.dsl.linter.scara_lint_context import (
-    ScaraLintContext,
-)
+from scarajectory.core.model.dsl.ast.command_type import CommandType
+from scarajectory.core.model.dsl.ast.instruction import Instruction
+from scarajectory.core.model.dsl.diagnostic.diagnostic import Diagnostic
+from scarajectory.core.model.dsl.diagnostic.diagnostic_severity import DiagnosticSeverity
+from scarajectory.core.service.dsl.linter.scara_lint_context import ScaraLintContext
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -54,9 +50,9 @@ class PneumaticLintRule:
     def check(
         self,
         *,
-        instruction: IScaraInstruction,
+        instruction: Instruction,
         context: ScaraLintContext,
-        diagnostics: list[ScaraDiagnostic],
+        diagnostics: list[Diagnostic],
     ) -> None:
         '''
             Evaluates pneumatic instructions, appending findings and updating context.
@@ -67,19 +63,19 @@ class PneumaticLintRule:
             :exceptions: None.
         '''
         cmd = instruction.command_type
-        if cmd not in (ScaraCommandType.PUMP, ScaraCommandType.VALVE):
+        if cmd not in (CommandType.PUMP, CommandType.VALVE):
             return
 
         line = instruction.line_number
         params = instruction.parameters
-        is_pump = cmd == ScaraCommandType.PUMP
+        is_pump = cmd == CommandType.PUMP
         target_state = str(params.get('state', 'OFF')).upper() == 'ON'
 
         if context.zone_mode != 'FINE' and context.zone_radius > 0.0:
             diagnostics.append(
-                ScaraDiagnostic(
+                Diagnostic(
                     code='TOOL_IN_FLYBY',
-                    severity=ScaraDiagnosticSeverity.WARNING,
+                    severity=DiagnosticSeverity.WARNING,
                     message=(
                         f'Tool action {cmd.value} issued during '
                         f'active continuous blend zone.'
@@ -92,9 +88,9 @@ class PneumaticLintRule:
         if is_pump:
             if target_state and context.pump_on:
                 diagnostics.append(
-                    ScaraDiagnostic(
+                    Diagnostic(
                         code='REDUNDANT_TOOL_CMD',
-                        severity=ScaraDiagnosticSeverity.WARNING,
+                        severity=DiagnosticSeverity.WARNING,
                         message='PUMP is already ON. Redundant actuation command.',
                         line=line,
                         command='PUMP',
@@ -102,9 +98,9 @@ class PneumaticLintRule:
                 )
             elif not target_state and not context.pump_on:
                 diagnostics.append(
-                    ScaraDiagnostic(
+                    Diagnostic(
                         code='REDUNDANT_TOOL_CMD',
-                        severity=ScaraDiagnosticSeverity.WARNING,
+                        severity=DiagnosticSeverity.WARNING,
                         message='PUMP is already OFF. Redundant actuation command.',
                         line=line,
                         command='PUMP',
@@ -112,9 +108,9 @@ class PneumaticLintRule:
                 )
             if target_state and context.valve_on:
                 diagnostics.append(
-                    ScaraDiagnostic(
+                    Diagnostic(
                         code='PNEUMATIC_CONFLICT',
-                        severity=ScaraDiagnosticSeverity.ERROR,
+                        severity=DiagnosticSeverity.ERROR,
                         message=(
                             'Cannot turn PUMP ON while blow-off VALVE is active. '
                             'Pneumatic contention detected.'
@@ -127,9 +123,9 @@ class PneumaticLintRule:
         else:
             if target_state and context.valve_on:
                 diagnostics.append(
-                    ScaraDiagnostic(
+                    Diagnostic(
                         code='REDUNDANT_TOOL_CMD',
-                        severity=ScaraDiagnosticSeverity.WARNING,
+                        severity=DiagnosticSeverity.WARNING,
                         message='VALVE is already ON. Redundant actuation command.',
                         line=line,
                         command='VALVE',
@@ -137,9 +133,9 @@ class PneumaticLintRule:
                 )
             elif not target_state and not context.valve_on:
                 diagnostics.append(
-                    ScaraDiagnostic(
+                    Diagnostic(
                         code='REDUNDANT_TOOL_CMD',
-                        severity=ScaraDiagnosticSeverity.WARNING,
+                        severity=DiagnosticSeverity.WARNING,
                         message='VALVE is already OFF. Redundant actuation command.',
                         line=line,
                         command='VALVE',
@@ -147,9 +143,9 @@ class PneumaticLintRule:
                 )
             if target_state and context.pump_on:
                 diagnostics.append(
-                    ScaraDiagnostic(
+                    Diagnostic(
                         code='PNEUMATIC_CONFLICT',
-                        severity=ScaraDiagnosticSeverity.ERROR,
+                        severity=DiagnosticSeverity.ERROR,
                         message=(
                             'Cannot turn blow-off VALVE ON while vacuum PUMP is active. '
                             'Pneumatic contention detected.'

@@ -19,6 +19,7 @@ Submodules
    scarajectory.core.service.dsl.parser.iscara_parser
    scarajectory.core.service.dsl.parser.parameter_extractor
    scarajectory.core.service.dsl.parser.scara_parser
+   scarajectory.core.service.dsl.parser.scara_parser_factory
 
 Module contents
 ---------------
@@ -27,3 +28,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

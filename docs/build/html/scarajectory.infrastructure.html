@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="scarajectory.infrastructure.cli package" href="scarajectory.infrastructure.cli.html" />
-    <link rel="prev" title="scarajectory.core.service.iservice module" href="scarajectory.core.service.iservice.html" /> 
+    <link rel="prev" title="scarajectory.core.service.service_factory module" href="scarajectory.core.service.service_factory.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -31,7 +31,7 @@
           <a href="scarajectory.infrastructure.cli.html" title="scarajectory.infrastructure.cli package"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.core.service.iservice.html" title="scarajectory.core.service.iservice module"
+          <a href="scarajectory.core.service.service_factory.html" title="scarajectory.core.service.service_factory module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
@@ -103,13 +103,18 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.communication.html">scarajectory.infrastructure.communication package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.communication.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.controller.html">scarajectory.infrastructure.communication.controller package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.communication.controller.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.communication.controller.html#module-scarajectory.infrastructure.communication.controller">Module contents</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.preferences.html">scarajectory.infrastructure.communication.preferences package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.communication.preferences.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.communication.preferences.html#module-scarajectory.infrastructure.communication.preferences">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.html">scarajectory.infrastructure.communication.protocol package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.html#subpackages">Subpackages</a></li>
 <li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.communication.protocol.html#module-scarajectory.infrastructure.communication.protocol">Module contents</a></li>
 </ul>
 </li>
@@ -126,10 +131,6 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.communication.html#submodules">Submodules</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.serial_device_preferences.html">scarajectory.infrastructure.communication.serial_device_preferences module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.communication.serial_device_preferences.html#scarajectory.infrastructure.communication.serial_device_preferences.SerialDevicePreferences"><code class="docutils literal notranslate"><span class="pre">SerialDevicePreferences</span></code></a></li>
-</ul>
-</li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.serial_port_scanner.html">scarajectory.infrastructure.communication.serial_port_scanner module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.communication.serial_port_scanner.html#scarajectory.infrastructure.communication.serial_port_scanner.SerialPortScanner"><code class="docutils literal notranslate"><span class="pre">SerialPortScanner</span></code></a></li>
 </ul>
@@ -197,6 +198,10 @@
 <li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.gui.gui_event_mediator.html#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator"><code class="docutils literal notranslate"><span class="pre">GuiEventMediator</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.gui.gui_factory.html">scarajectory.infrastructure.gui.gui_factory module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.gui.gui_factory.html#scarajectory.infrastructure.gui.gui_factory.ScarajectoryGUIFactory"><code class="docutils literal notranslate"><span class="pre">ScarajectoryGUIFactory</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.gui.igui.html">scarajectory.infrastructure.gui.igui module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.gui.igui.html#scarajectory.infrastructure.gui.igui.IGUI"><code class="docutils literal notranslate"><span class="pre">IGUI</span></code></a></li>
 </ul>
@@ -206,10 +211,33 @@
 <li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.gui.html#module-scarajectory.infrastructure.gui">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.settings.html">scarajectory.infrastructure.settings package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.settings.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.settings.config_loader.html">scarajectory.infrastructure.settings.config_loader module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.settings.config_loader.html#scarajectory.infrastructure.settings.config_loader.ScaraConfigLoader"><code class="docutils literal notranslate"><span class="pre">ScaraConfigLoader</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.settings.config_loader_factory.html">scarajectory.infrastructure.settings.config_loader_factory module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.settings.config_loader_factory.html#scarajectory.infrastructure.settings.config_loader_factory.ScaraConfigLoaderFactory"><code class="docutils literal notranslate"><span class="pre">ScaraConfigLoaderFactory</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.settings.html#module-scarajectory.infrastructure.settings">Module contents</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.storage.html">scarajectory.infrastructure.storage package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.storage.html#submodules">Submodules</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.storage.plan_storage_service.html">scarajectory.infrastructure.storage.plan_storage_service module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.storage.plan_storage_service.html#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService"><code class="docutils literal notranslate"><span class="pre">PlanStorageService</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.storage.plan_storage_service_factory.html">scarajectory.infrastructure.storage.plan_storage_service_factory module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.storage.plan_storage_service_factory.html#scarajectory.infrastructure.storage.plan_storage_service_factory.PlanStorageServiceFactory"><code class="docutils literal notranslate"><span class="pre">PlanStorageServiceFactory</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.storage.trajectory_serializer.html">scarajectory.infrastructure.storage.trajectory_serializer module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="scarajectory.infrastructure.storage.trajectory_serializer.html#scarajectory.infrastructure.storage.trajectory_serializer.TrajectorySerializer"><code class="docutils literal notranslate"><span class="pre">TrajectorySerializer</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -263,8 +291,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.core.service.iservice.html"
-                          title="previous chapter">scarajectory.core.service.iservice module</a></p>
+    <p class="topless"><a href="scarajectory.core.service.service_factory.html"
+                          title="previous chapter">scarajectory.core.service.service_factory module</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -305,7 +333,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="scarajectory.infrastructure.cli.html" title="scarajectory.infrastructure.cli package"
              >next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.core.service.iservice.html" title="scarajectory.core.service.iservice module"
+          <a href="scarajectory.core.service.service_factory.html" title="scarajectory.core.service.service_factory module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>

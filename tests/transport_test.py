@@ -16,7 +16,7 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Unit tests for SerialTransport, TcpTransport, TransportFactory, FlowController, TrajectoryStreamer, and ConnectionPreferencesRepository.
+    Unit tests for SerialTransport, TcpTransport, TransportFactory, FlowController, TrajectoryStreamer, and ConnectionRepository.
 '''
 
 from __future__ import annotations
@@ -31,15 +31,22 @@ pkg_dir = dirname(dirname(abspath(__file__)))
 if pkg_dir not in path:
     path.insert(0, pkg_dir)
 
-from scarajectory.core.model.communication.stream_session import StreamSession
-from scarajectory.core.service.communication.irobot_controller import IRobotController
-from scarajectory.core.service.communication.itrajectory_streamer import ITrajectoryStreamer
-from scarajectory.infrastructure.communication.preferences.connection_preferences_repository import (
-    ConnectionPreferencesRepository
-)
-from scarajectory.infrastructure.communication.streamer.flow_controller import FlowController
-from scarajectory.infrastructure.communication.streamer.robot_controller import RobotController
-from scarajectory.infrastructure.communication.streamer.trajectory_streamer import TrajectoryStreamer
+from ats_utilities.context.factory import ContextBundleFactory
+
+from scarajectory.core.service.communication.stream.session_factory import SessionFactory
+from scarajectory.core.service.communication.controller.irobot_controller import IRobotController
+from scarajectory.core.service.communication.stream.itrajectory_streamer import ITrajectoryStreamer
+from scarajectory.core.model.communication.preferences.connection_preference import ConnectionPreference
+from scarajectory.core.service.communication.preferences.connection_preference_factory import ConnectionPreferenceFactory
+from scarajectory.infrastructure.communication.preferences.connection_repository import ConnectionRepository
+from scarajectory.infrastructure.communication.preferences.connection_repository_factory import ConnectionRepositoryFactory
+from scarajectory.infrastructure.communication.streamer.flow_controller_factory import FlowControllerFactory
+from scarajectory.infrastructure.communication.controller.robot_controller_factory import RobotControllerFactory
+from scarajectory.core.model.communication.stream.stream_state import StreamState
+from scarajectory.core.model.communication.stream.stream_progress import StreamProgress
+from scarajectory.infrastructure.communication.streamer.stream_state_machine import StreamStateMachine
+from scarajectory.infrastructure.communication.streamer.stream_observer_dispatcher import StreamObserverDispatcher
+from scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory import TrajectoryStreamerFactory
 from scarajectory.infrastructure.communication.transport.serial_transport import SerialTransport
 from scarajectory.infrastructure.communication.transport.tcp_transport import TcpTransport
 from scarajectory.infrastructure.communication.transport.transport_factory import TransportFactory
@@ -68,7 +75,7 @@ class TestTransport(TestCase):
                 | test_streamer_lifecycle - Tests SerialStreamer creation and control flags.
                 | test_streamer_structural_subtyping - Tests TrajectoryStreamer implements protocols.
                 | test_streamer_semantic_commands - Tests semantic robot command dispatching.
-                | test_connection_preferences_repository - Tests storing and loading connection preferences.
+                | test_connection_repository - Tests storing and loading connection preferences.
     '''
 
     def test_serial_transport_initial_state(self) -> None:
@@ -114,8 +121,8 @@ class TestTransport(TestCase):
 
             :exceptions: None.
         '''
-        fc = FlowController(capacity=16)
-        session = StreamSession()
+        fc = FlowControllerFactory.create(capacity=16)
+        session = SessionFactory.create()
         self.assertTrue(fc.can_send(session))
 
         session.remote_queue_depth = 16
@@ -137,7 +144,7 @@ class TestTransport(TestCase):
             :exceptions: None.
         '''
         transport = SerialTransport()
-        streamer = TrajectoryStreamer(transport)
+        streamer = TrajectoryStreamerFactory.create(transport=transport)
         self.assertFalse(streamer.is_connected())
 
         streamer.pause_streaming()
@@ -151,7 +158,7 @@ class TestTransport(TestCase):
             :exceptions: None.
         '''
         transport = SerialTransport()
-        streamer = TrajectoryStreamer(transport)
+        streamer = TrajectoryStreamerFactory.create(transport=transport)
 
         self.assertIsInstance(streamer, ITrajectoryStreamer)
         self.assertIsInstance(streamer.get_robot_controller(), IRobotController)
@@ -163,7 +170,7 @@ class TestTransport(TestCase):
             :exceptions: None.
         '''
         transport = SerialTransport()
-        streamer = TrajectoryStreamer(transport)
+        streamer = TrajectoryStreamerFactory.create(transport=transport)
         ctrl = streamer.get_robot_controller()
 
         self.assertFalse(ctrl.home())
@@ -183,8 +190,8 @@ class TestTransport(TestCase):
             :exceptions: None.
         '''
         transport = SerialTransport()
-        streamer = TrajectoryStreamer(transport)
-        controller = RobotController(streamer)
+        streamer = TrajectoryStreamerFactory.create(transport=transport)
+        controller = RobotControllerFactory.create(streamer)
 
         self.assertIsInstance(controller, IRobotController)
         self.assertFalse(controller.is_connected())
@@ -199,7 +206,7 @@ class TestTransport(TestCase):
         self.assertFalse(controller.query_status())
         self.assertFalse(controller.query_position())
 
-    def test_connection_preferences_repository(self) -> None:
+    def test_connection_repository(self) -> None:
         '''
             Tests persistence and retrieval of connection preferences.
 
@@ -207,22 +214,95 @@ class TestTransport(TestCase):
         '''
         with TemporaryDirectory() as tmp_dir:
             config_file = Path(tmp_dir) / 'serial_device.json'
-            repo = ConnectionPreferencesRepository(config_file)
+            context_bundle = ContextBundleFactory.create_bundle()
+            repo = ConnectionRepositoryFactory.create(context_bundle=context_bundle)
+            repo._config_file = config_file
 
-            port, baud = repo.load_preference()
-            self.assertIsNone(port)
-            self.assertIsNone(baud)
+            self.assertFalse(repo.has_preference())
+            pref = repo.load_preference()
+            self.assertEqual(pref.port, ConnectionPreferenceFactory.DEFAULT_PORT)
+            self.assertEqual(pref.baud, ConnectionPreferenceFactory.DEFAULT_BAUD)
 
-            saved = repo.save_preference('/dev/ttyUSB0', 115200)
+            saved = repo.save_preference(
+                ConnectionPreferenceFactory.create(port='/dev/ttyUSB0', baud=115200)
+            )
             self.assertTrue(saved)
+            self.assertTrue(repo.has_preference())
 
-            loaded_port, loaded_baud = repo.load_preference()
-            self.assertEqual(loaded_port, '/dev/ttyUSB0')
-            self.assertEqual(loaded_baud, 115200)
+            loaded_pref = repo.load_preference()
+            self.assertEqual(loaded_pref.port, '/dev/ttyUSB0')
+            self.assertEqual(loaded_pref.baud, 115200)
 
             # Test invalid port rejection
-            self.assertFalse(repo.save_preference('', 115200))
-            self.assertFalse(repo.save_preference('Virtual / None', 115200))
+            self.assertFalse(
+                repo.save_preference(
+                    ConnectionPreferenceFactory.create(port='', baud=115200)
+                )
+            )
+            self.assertFalse(
+                repo.save_preference(
+                    ConnectionPreferenceFactory.create(port='Virtual / None', baud=115200)
+                )
+            )
+
+            # Test updating preference directly on repository
+            self.assertTrue(
+                repo.save_preference(
+                    ConnectionPreferenceFactory.create(port='/dev/ttyUSB1', baud=9600)
+                )
+            )
+            pref2 = repo.load_preference()
+            self.assertEqual(pref2.port, '/dev/ttyUSB1')
+            self.assertEqual(pref2.baud, 9600)
+
+    def test_stream_state_machine(self) -> None:
+        '''
+            Tests StreamStateMachine transitions and active queries.
+        '''
+        sm = StreamStateMachine()
+        self.assertEqual(sm.state, StreamState.IDLE)
+        self.assertFalse(sm.is_active())
+
+        self.assertTrue(sm.transition_to(StreamState.STREAMING))
+        self.assertEqual(sm.state, StreamState.STREAMING)
+        self.assertTrue(sm.is_active())
+
+        self.assertFalse(sm.transition_to(StreamState.STREAMING))
+
+        self.assertTrue(sm.transition_to(StreamState.PAUSED))
+        self.assertTrue(sm.is_active())
+
+        sm.reset()
+        self.assertEqual(sm.state, StreamState.IDLE)
+        self.assertFalse(sm.is_active())
+
+    def test_stream_observer_dispatcher(self) -> None:
+        '''
+            Tests StreamObserverDispatcher logging and progress calculation.
+        '''
+        class DummyObserver:
+            def __init__(self) -> None:
+                self.logs: list[str] = []
+                self.progresses: list[StreamProgress] = []
+
+            def on_stream_progress(self, progress: StreamProgress) -> None:
+                self.progresses.append(progress)
+
+            def on_serial_log(self, msg: str, is_outgoing: bool = False) -> None:
+                self.logs.append(msg)
+
+        observer = DummyObserver()
+        dispatcher = StreamObserverDispatcher(observer)
+        self.assertTrue(dispatcher.has_observer())
+
+        dispatcher.notify_log('Test message', is_outgoing=True)
+        self.assertEqual(len(observer.logs), 1)
+        self.assertEqual(observer.logs[0], 'Test message')
+
+        session = SessionFactory.create()
+        dispatcher.notify_progress(state=StreamState.IDLE, session=session)
+        self.assertEqual(len(observer.progresses), 1)
+        self.assertEqual(observer.progresses[0].percentage, 0.0)
 
 
 if __name__ == '__main__':

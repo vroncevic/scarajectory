@@ -21,9 +21,8 @@ Info
 
 from __future__ import annotations
 
-from scarajectory.core.model.dsl.ast.iscara_instruction import IScaraInstruction
-from scarajectory.core.model.dsl.ast.scara_command_type import ScaraCommandType
-from scarajectory.core.model.dsl.ast.scara_instruction import ScaraInstruction
+from scarajectory.core.model.dsl.ast.command_type import CommandType
+from scarajectory.core.model.dsl.ast.instruction import Instruction
 from scarajectory.core.service.dsl.compiler.scara_compiler_context import ScaraCompilerContext
 
 __author__ = 'Vladimir Roncevic'
@@ -49,21 +48,21 @@ class JumpMacroExpander:
                 | expand - Expands JUMP instruction into vertical lift, horizontal transit, and descent.
     '''
 
-    def can_expand(self, *, instruction: IScaraInstruction) -> bool:
+    def can_expand(self, *, instruction: Instruction) -> bool:
         '''
             Checks whether this expander handles JUMP instructions.
 
             :param instruction: Instruction node to check.
             :return: True if instruction is JUMP, False otherwise.
         '''
-        return instruction.command_type == ScaraCommandType.JUMP
+        return instruction.command_type == CommandType.JUMP
 
     def expand(
         self,
         *,
-        instruction: IScaraInstruction,
+        instruction: Instruction,
         context: ScaraCompilerContext,
-    ) -> tuple[IScaraInstruction, ...]:
+    ) -> tuple[Instruction, ...]:
         '''
             Expands JUMP into 3-phase 3D clearance motion.
 
@@ -82,8 +81,8 @@ class JumpMacroExpander:
         clearance_z = max(context.current_z, target_z) + arch_height
         line_num = instruction.line_number
 
-        lift_inst = ScaraInstruction(
-            command_type=ScaraCommandType.MOVE_L,
+        lift_inst = Instruction(
+            command_type=CommandType.MOVE_L,
             line_number=line_num,
             raw_text=f'# JUMP phase 1 (Lift): Z={clearance_z:.2f}',
             parameters={
@@ -95,8 +94,8 @@ class JumpMacroExpander:
             },
         )
 
-        transit_inst = ScaraInstruction(
-            command_type=ScaraCommandType.MOVE_J,
+        transit_inst = Instruction(
+            command_type=CommandType.MOVE_J,
             line_number=line_num,
             raw_text=f'# JUMP phase 2 (Transit): X={target_x:.2f} Y={target_y:.2f}',
             parameters={
@@ -108,8 +107,8 @@ class JumpMacroExpander:
             },
         )
 
-        descend_inst = ScaraInstruction(
-            command_type=ScaraCommandType.MOVE_L,
+        descend_inst = Instruction(
+            command_type=CommandType.MOVE_L,
             line_number=line_num,
             raw_text=f'# JUMP phase 3 (Descent): Z={target_z:.2f}',
             parameters={

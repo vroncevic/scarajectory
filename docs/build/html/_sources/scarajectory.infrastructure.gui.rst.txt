@@ -25,6 +25,7 @@ Submodules
 
    scarajectory.infrastructure.gui.engine
    scarajectory.infrastructure.gui.gui_event_mediator
+   scarajectory.infrastructure.gui.gui_factory
    scarajectory.infrastructure.gui.igui
 
 Module contents
@@ -34,3 +35,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

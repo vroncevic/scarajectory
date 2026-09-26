@@ -23,10 +23,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from scarajectory.core.model.dsl.ast.iscara_instruction import IScaraInstruction
-from scarajectory.core.model.dsl.ast.scara_command_type import ScaraCommandType
-from scarajectory.core.model.dsl.ast.scara_instruction import ScaraInstruction
-from scarajectory.core.model.dsl.token.scara_token import ScaraToken
+from scarajectory.core.model.dsl.ast.command_type import CommandType
+from scarajectory.core.model.dsl.ast.instruction import Instruction
+from scarajectory.core.model.dsl.token.token import Token
 from scarajectory.core.service.dsl.parser.parameter_extractor import ParameterExtractor
 
 __author__ = 'Vladimir Roncevic'
@@ -49,7 +48,7 @@ class ZoneCommandParser:
                 | None.
             :methods:
                 | can_parse - Checks whether command is ZONE.
-                | parse - Parses zone statement tokens into ScaraInstruction.
+                | parse - Parses zone statement tokens into Instruction.
     '''
 
     def can_parse(self, *, command_name: str) -> bool:
@@ -64,33 +63,35 @@ class ZoneCommandParser:
     def parse(
         self,
         *,
-        tokens: tuple[ScaraToken, ...],
+        tokens: tuple[Token, ...],
         line_num: int,
         raw_text: str,
-    ) -> IScaraInstruction:
+    ) -> Instruction:
         '''
-            Parses zone statement into ScaraInstruction.
+            Parses zone statement into Instruction.
 
             :param tokens: Statement token tuple.
             :param line_num: Line number in source code.
             :param raw_text: Original statement text.
-            :return: IScaraInstruction node.
+            :return: Instruction node.
             :exceptions: ValueError on invalid zone mode.
         '''
         if len(tokens) < 2:
             raise ValueError(
                 f'Invalid ZONE syntax at line {line_num}. Expected: ZONE FINE or ZONE BLEND R=<radius>'
             )
+
         mode = tokens[1].value.upper()
         params: dict[str, Any] = {'mode': mode}
+
         if mode == 'BLEND':
             sub_params = ParameterExtractor.extract_key_values(tokens=tokens[2:])
             params['radius'] = sub_params.get(
                 'R', sub_params.get('RADIUS', 5.0)
             )
 
-        return ScaraInstruction(
-            command_type=ScaraCommandType.ZONE,
+        return Instruction(
+            command_type=CommandType.ZONE,
             line_number=line_num,
             raw_text=raw_text,
             parameters=params,

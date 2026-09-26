@@ -5,3 +5,4 @@ scarajectory.core.service.kinematics.kinematics\_service module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

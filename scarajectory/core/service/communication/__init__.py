@@ -16,7 +16,7 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Core service ports and observer protocols for hardware communication and robot control.
+    Core communication application service components package initialization.
 '''
 
 from __future__ import annotations

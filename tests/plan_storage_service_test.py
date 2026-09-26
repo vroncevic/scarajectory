@@ -32,7 +32,8 @@ if pkg_dir not in path:
     path.insert(0, pkg_dir)
 
 from scarajectory.core.model.trajectory.waypoint import Waypoint
-from scarajectory.core.model.trajectory.trajectory_plan import TrajectoryPlan
+from scarajectory.core.service.trajectory.plan.trajectory_plan import TrajectoryPlan
+from scarajectory.core.service.trajectory.plan.trajectory_plan_factory import TrajectoryPlanFactory
 from scarajectory.infrastructure.storage.plan_storage_service import PlanStorageService
 
 __author__ = 'Vladimir Roncevic'
@@ -62,9 +63,9 @@ class TestPlanStorageService(TestCase):
             Tests roundtrip file storage and retrieval using ATS Storer and Loader.
         '''
         storage = PlanStorageService()
-        plan = TrajectoryPlan()
-        plan.add_point(Waypoint(x=50.0, y=60.0, z=20.0, phi=0.0, speed=30.0, name='P1'))
-        plan.add_point(Waypoint(x=70.0, y=80.0, z=20.0, phi=0.0, speed=30.0, name='P2'))
+        plan = TrajectoryPlanFactory.create()
+        plan.add_point(Waypoint(x=50.0, y=60.0, z=20.0, phi=0.0, speed=30.0, name='P1', command=''))
+        plan.add_point(Waypoint(x=70.0, y=80.0, z=20.0, phi=0.0, speed=30.0, name='P2', command=''))
 
         with NamedTemporaryFile(suffix='.json', delete=False) as tf:
             tmp_path = tf.name

@@ -5,3 +5,4 @@ scarajectory.core.service.iservice module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

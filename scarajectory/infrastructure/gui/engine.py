@@ -27,16 +27,18 @@ from tkinter.ttk import Frame, PanedWindow
 from typing import Final
 
 from scarajectory.infrastructure.gui.model.canvas_settings import CanvasSettings
-from scarajectory.core.model.communication.stream_progress import StreamProgress
+from scarajectory.core.model.communication.stream.stream_progress import StreamProgress
 from scarajectory.core.service.iservice import IService
+from scarajectory.infrastructure.communication.preferences.iconnection_repository import IConnectionRepository
 from scarajectory.infrastructure.gui.canvas.icanvas import ICanvas
 from scarajectory.infrastructure.gui.controls.icontrols_panel import IControlsPanel
 from scarajectory.infrastructure.gui.editor.itable import ITable
 from scarajectory.infrastructure.gui.canvas.canvas import TrajectoryCanvas
-from scarajectory.infrastructure.gui.controls.controls import ControlsPanel
+from scarajectory.infrastructure.gui.controls.controls_panel_factory import ControlsPanelFactory
 from scarajectory.infrastructure.gui.theme.theme import ThemeManager
 from scarajectory.infrastructure.gui.editor.waypoint_editor import WaypointEditor
 from scarajectory.infrastructure.gui.toolbar.toolbar import Toolbar
+from scarajectory.infrastructure.gui.toolbar.toolbar_factory import ToolbarFactory
 from scarajectory.infrastructure.gui.menu.menu_bar import AppMenuBar
 
 __author__ = 'Vladimir Roncevic'
@@ -78,21 +80,29 @@ class ScarajectoryGUI:
 
     _root: Tk
     _service: IService
+    _connection_repository: IConnectionRepository
     _canvas: ICanvas
     _table: ITable
     _controls: IControlsPanel
     _toolbar: Toolbar
     _menu_bar: AppMenuBar
 
-    def __init__(self, service: IService, root: Tk | None = None) -> None:
+    def __init__(
+        self,
+        service: IService,
+        connection_repository: IConnectionRepository,
+        root: Tk | None = None
+    ) -> None:
         '''
             Initializes GUI window and layout.
 
             :param service: IService core logic instance.
+            :param connection_repository: Injected IConnectionRepository instance.
             :param root: Optional root Tk window.
             :exceptions: None.
         '''
         self._service: Final[IService] = service
+        self._connection_repository: Final[IConnectionRepository] = connection_repository
         self._root: Final[Tk] = root if root is not None else Tk()
         self._root.title('SCARAjectory — Motion Trajectory Studio & Streamer')
         sw: int = self._root.winfo_screenwidth()
@@ -216,7 +226,12 @@ class ScarajectoryGUI:
 
             :exceptions: None.
         '''
-        settings = CanvasSettings(default_z=20.0, default_speed=40.0, enforce_deadzone=True)
+        bounds = self._service.get_validator().bounds
+        settings = CanvasSettings(
+            default_z=20.0,
+            default_speed=bounds.default_speed,
+            enforce_deadzone=True,
+        )
 
         main_paned = PanedWindow(self._root, orient=HORIZONTAL)
 
@@ -231,10 +246,13 @@ class ScarajectoryGUI:
         )
         self._canvas.pack(fill=BOTH, expand=True)
 
-        self._toolbar = Toolbar(
+        self._toolbar = ToolbarFactory.create(
             self._root,
             canvas=self._canvas,
-            plan=self._service.get_plan()
+            plan=self._service.get_plan(),
+            r_min=self._service.get_validator().r_min,
+            r_max=self._service.get_validator().r_max,
+            settings=settings,
         )
         self._toolbar.pack(side=TOP, fill=X)
         main_paned.pack(fill=BOTH, expand=True, padx=8, pady=4)
@@ -250,13 +268,14 @@ class ScarajectoryGUI:
 
         ctl_frame = Frame(right_paned)
         right_paned.add(ctl_frame, weight=1)
-        self._controls = ControlsPanel(
+        self._controls = ControlsPanelFactory.create(
             ctl_frame,
             plan=self._service.get_plan(),
             validator=self._service.get_validator(),
             streamer=self._service.get_streamer(),
             storage=self._service.get_storage(),
             dsl_service=self._service.get_dsl_service(),
-            service=self._service
+            service=self._service,
+            connection_repository=self._connection_repository
         )
         self._controls.pack(fill=BOTH, expand=True)

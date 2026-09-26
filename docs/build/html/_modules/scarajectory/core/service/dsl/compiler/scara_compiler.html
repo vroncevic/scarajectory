@@ -61,58 +61,19 @@
 
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Sequence</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.iscara_instruction</span> <span class="kn">import</span> <span class="n">IScaraInstruction</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.iscara_program</span> <span class="kn">import</span> <span class="n">IScaraProgram</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.scara_diagnostic</span> <span class="kn">import</span> <span class="n">ScaraDiagnostic</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.scara_diagnostic_severity</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">ScaraDiagnosticSeverity</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.kinematics.scara_bounds</span> <span class="kn">import</span> <span class="n">ScaraBounds</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.trajectory_plan</span> <span class="kn">import</span> <span class="n">TrajectoryPlan</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.instruction</span> <span class="kn">import</span> <span class="n">Instruction</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.program</span> <span class="kn">import</span> <span class="n">Program</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.diagnostic</span> <span class="kn">import</span> <span class="n">Diagnostic</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.diagnostic_severity</span> <span class="kn">import</span> <span class="n">DiagnosticSeverity</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.itrajectory_plan</span> <span class="kn">import</span> <span class="n">ITrajectoryPlan</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.itrajectory_plan_factory</span> <span class="kn">import</span> <span class="n">ITrajectoryPlanFactory</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.waypoint</span> <span class="kn">import</span> <span class="n">Waypoint</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.compiler.arc_interpolator</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">ArcInterpolator</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.compiler.control_command_compiler</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">ControlCommandCompiler</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.compiler.iarc_interpolator</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">IArcInterpolator</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.compiler.iprimitive_compiler</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">IPrimitiveCompiler</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.compiler.motion_command_compiler</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">MotionCommandCompiler</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.compiler.scara_compiler_context</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">ScaraCompilerContext</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.compiler.state_command_compiler</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">StateCommandCompiler</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.compiler.tool_command_compiler</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">ToolCommandCompiler</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.compiler.primitive.iprimitive_compiler</span> <span class="kn">import</span> <span class="n">IPrimitiveCompiler</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.compiler.scara_compiler_context</span> <span class="kn">import</span> <span class="n">ScaraCompilerContext</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.diagnostic.scara_diagnostic_formatter</span> <span class="kn">import</span> <span class="n">ScaraDiagnosticFormatter</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.linter.iscara_linter</span> <span class="kn">import</span> <span class="n">IScaraLinter</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.linter.scara_linter</span> <span class="kn">import</span> <span class="n">ScaraLinter</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.macro.frame_macro_expander</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">FrameMacroExpander</span><span class="p">,</span>
-<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.macro.imacro_expander</span> <span class="kn">import</span> <span class="n">IMacroExpander</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.macro.jump_macro_expander</span> <span class="kn">import</span> <span class="n">JumpMacroExpander</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.macro.pallet_macro_expander</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">PalletMacroExpander</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.macro.tangent_macro_expander</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">TangentMacroExpander</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.itrajectory_validator</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">ITrajectoryValidator</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.trajectory_validator</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">TrajectoryValidator</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.validation.itrajectory_validator</span> <span class="kn">import</span> <span class="n">ITrajectoryValidator</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
@@ -135,86 +96,51 @@
 <span class="sd">            :attributes:</span>
 <span class="sd">                | _macro_expanders - Tuple of registered IMacroExpander plugins.</span>
 <span class="sd">                | _validator - Kinematic reachability validator.</span>
-<span class="sd">                | _tangent_helper - Helper calculating heading angles.</span>
-<span class="sd">                | _arc_interpolator - Dedicated circular arc interpolator.</span>
 <span class="sd">                | _linter - Static analysis and safety linter.</span>
 <span class="sd">                | _primitive_compilers - Tuple of registered IPrimitiveCompiler components.</span>
 <span class="sd">            :methods:</span>
-<span class="sd">                | __init__ - Initializes compiler with optional custom expanders, validator, interpolator, linter, and compilers.</span>
-<span class="sd">                | compile - Compiles IScaraProgram into validated TrajectoryPlan.</span>
-<span class="sd">                | lint - Lints IScaraProgram and returns diagnostic findings.</span>
+<span class="sd">                | __init__ - Initializes compiler with injected collaborators.</span>
+<span class="sd">                | compile - Compiles Program into validated TrajectoryPlan.</span>
+<span class="sd">                | lint - Lints Program and returns diagnostic findings.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">macro_expanders</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">IMacroExpander</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">validator</span><span class="p">:</span> <span class="n">ITrajectoryValidator</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">arc_interpolator</span><span class="p">:</span> <span class="n">IArcInterpolator</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">linter</span><span class="p">:</span> <span class="n">IScaraLinter</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">primitive_compilers</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">IPrimitiveCompiler</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">validator</span><span class="p">:</span> <span class="n">ITrajectoryValidator</span><span class="p">,</span>
+        <span class="n">linter</span><span class="p">:</span> <span class="n">IScaraLinter</span><span class="p">,</span>
+        <span class="n">plan_factory</span><span class="p">:</span> <span class="n">ITrajectoryPlanFactory</span><span class="p">,</span>
+        <span class="n">macro_expanders</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">IMacroExpander</span><span class="p">],</span>
+        <span class="n">primitive_compilers</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">IPrimitiveCompiler</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Initializes ScaraCompiler with injected components.</span>
 
-<span class="sd">            :param macro_expanders: Optional custom sequence of IMacroExpander components.</span>
-<span class="sd">            :param validator: Optional ITrajectoryValidator instance.</span>
-<span class="sd">            :param arc_interpolator: Optional IArcInterpolator component.</span>
-<span class="sd">            :param linter: Optional IScaraLinter component.</span>
-<span class="sd">            :param primitive_compilers: Optional custom sequence of IPrimitiveCompiler components.</span>
+<span class="sd">            :param validator: Injected ITrajectoryValidator instance.</span>
+<span class="sd">            :param linter: Injected IScaraLinter component.</span>
+<span class="sd">            :param plan_factory: Injected ITrajectoryPlanFactory component.</span>
+<span class="sd">            :param macro_expanders: Sequence of IMacroExpander components.</span>
+<span class="sd">            :param primitive_compilers: Sequence of IPrimitiveCompiler components.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="n">macro_expanders</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_macro_expanders</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">IMacroExpander</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
-                <span class="n">macro_expanders</span>
-            <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_macro_expanders</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">JumpMacroExpander</span><span class="p">(),</span>
-                <span class="n">FrameMacroExpander</span><span class="p">(),</span>
-                <span class="n">PalletMacroExpander</span><span class="p">(),</span>
-                <span class="n">TangentMacroExpander</span><span class="p">(),</span>
-            <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_validator</span><span class="p">:</span> <span class="n">ITrajectoryValidator</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">validator</span> <span class="k">if</span> <span class="n">validator</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">TrajectoryValidator</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validator</span><span class="p">:</span> <span class="n">ITrajectoryValidator</span> <span class="o">=</span> <span class="n">validator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_linter</span><span class="p">:</span> <span class="n">IScaraLinter</span> <span class="o">=</span> <span class="n">linter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_plan_factory</span><span class="p">:</span> <span class="n">ITrajectoryPlanFactory</span> <span class="o">=</span> <span class="n">plan_factory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_macro_expanders</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">IMacroExpander</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="n">macro_expanders</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_tangent_helper</span><span class="p">:</span> <span class="n">TangentMacroExpander</span> <span class="o">=</span> <span class="n">TangentMacroExpander</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_arc_interpolator</span><span class="p">:</span> <span class="n">IArcInterpolator</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">arc_interpolator</span>
-            <span class="k">if</span> <span class="n">arc_interpolator</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="n">ArcInterpolator</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_primitive_compilers</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">IPrimitiveCompiler</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="n">primitive_compilers</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_linter</span><span class="p">:</span> <span class="n">IScaraLinter</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">linter</span> <span class="k">if</span> <span class="n">linter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">ScaraLinter</span><span class="p">()</span>
-        <span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">primitive_compilers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_primitive_compilers</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">IPrimitiveCompiler</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
-                <span class="n">primitive_compilers</span>
-            <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_primitive_compilers</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">StateCommandCompiler</span><span class="p">(),</span>
-                <span class="n">ToolCommandCompiler</span><span class="p">(),</span>
-                <span class="n">ControlCommandCompiler</span><span class="p">(),</span>
-                <span class="n">MotionCommandCompiler</span><span class="p">(</span>
-                    <span class="n">arc_interpolator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_arc_interpolator</span><span class="p">,</span>
-                    <span class="n">tangent_helper</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_tangent_helper</span><span class="p">,</span>
-                <span class="p">),</span>
-            <span class="p">)</span>
 
 <div class="viewcode-block" id="ScaraCompiler.lint">
 <a class="viewcode-back" href="../../../../../../scarajectory.core.service.dsl.compiler.scara_compiler.html#scarajectory.core.service.dsl.compiler.scara_compiler.ScaraCompiler.lint">[docs]</a>
-    <span class="k">def</span> <span class="nf">lint</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">program</span><span class="p">:</span> <span class="n">IScaraProgram</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ScaraDiagnostic</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">lint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Diagnostic</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Lints a SCARA DSL program and returns diagnostic warnings and errors.</span>
 
-<span class="sd">            :param program: Parsed IScaraProgram AST root.</span>
-<span class="sd">            :return: Tuple of ScaraDiagnostic findings.</span>
+<span class="sd">            :param program: Parsed Program AST root.</span>
+<span class="sd">            :return: Tuple of Diagnostic findings.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_linter</span><span class="o">.</span><span class="n">lint</span><span class="p">(</span><span class="n">program</span><span class="o">=</span><span class="n">program</span><span class="p">)</span></div>
@@ -222,27 +148,24 @@
 
 <div class="viewcode-block" id="ScaraCompiler.compile">
 <a class="viewcode-back" href="../../../../../../scarajectory.core.service.dsl.compiler.scara_compiler.html#scarajectory.core.service.dsl.compiler.scara_compiler.ScaraCompiler.compile">[docs]</a>
-    <span class="k">def</span> <span class="nf">compile</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">program</span><span class="p">:</span> <span class="n">IScaraProgram</span><span class="p">,</span>
-        <span class="n">bounds</span><span class="p">:</span> <span class="n">ScaraBounds</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryPlan</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">compile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ITrajectoryPlan</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Compiles a SCARA DSL program into an executable and validated TrajectoryPlan.</span>
+<span class="sd">            Compiles a SCARA DSL program into an executable and validated ITrajectoryPlan.</span>
 
-<span class="sd">            :param program: Parsed IScaraProgram AST root.</span>
-<span class="sd">            :param bounds: Optional kinematic boundary constraints.</span>
-<span class="sd">            :return: Validated TrajectoryPlan instance.</span>
+<span class="sd">            :param program: Parsed Program AST root.</span>
+<span class="sd">            :return: Validated ITrajectoryPlan instance.</span>
 <span class="sd">            :exceptions: ValueError if static analysis or kinematic validation fails.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">diagnostics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lint</span><span class="p">(</span><span class="n">program</span><span class="o">=</span><span class="n">program</span><span class="p">)</span>
         <span class="n">errors</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">diagnostics</span>
-            <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">severity</span> <span class="o">==</span> <span class="n">ScaraDiagnosticSeverity</span><span class="o">.</span><span class="n">ERROR</span>
+            <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">severity</span> <span class="o">==</span> <span class="n">DiagnosticSeverity</span><span class="o">.</span><span class="n">ERROR</span>
         <span class="p">]</span>
         <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
-            <span class="n">err_details</span> <span class="o">=</span> <span class="s1">&#39;; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">format_report</span><span class="p">()</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">errors</span><span class="p">)</span>
+            <span class="n">err_details</span> <span class="o">=</span> <span class="s1">&#39;; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">ScaraDiagnosticFormatter</span><span class="o">.</span><span class="n">format_report</span><span class="p">(</span><span class="n">diagnostic</span><span class="o">=</span><span class="n">d</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">errors</span>
+            <span class="p">)</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s1">&#39;Compilation aborted due to static analysis errors: </span><span class="si">{</span><span class="n">err_details</span><span class="si">}</span><span class="s1">&#39;</span>
             <span class="p">)</span>
@@ -271,16 +194,10 @@
                     <span class="n">waypoints</span><span class="o">=</span><span class="n">waypoints</span><span class="p">,</span>
                 <span class="p">)</span>
 
-        <span class="n">plan</span> <span class="o">=</span> <span class="n">TrajectoryPlan</span><span class="p">()</span>
+        <span class="n">plan</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plan_factory</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
         <span class="n">plan</span><span class="o">.</span><span class="n">set_waypoints</span><span class="p">(</span><span class="n">waypoints</span><span class="p">)</span>
 
-        <span class="n">active_bounds</span> <span class="o">=</span> <span class="n">bounds</span> <span class="k">if</span> <span class="n">bounds</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">ScaraBounds</span><span class="p">()</span>
-        <span class="n">validator</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">TrajectoryValidator</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="n">active_bounds</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">bounds</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validator</span>
-        <span class="p">)</span>
-        <span class="n">is_valid</span><span class="p">,</span> <span class="n">messages</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">validate_plan</span><span class="p">(</span><span class="n">plan</span><span class="o">=</span><span class="n">plan</span><span class="p">)</span>
+        <span class="n">is_valid</span><span class="p">,</span> <span class="n">messages</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validator</span><span class="o">.</span><span class="n">validate_plan</span><span class="p">(</span><span class="n">plan</span><span class="o">=</span><span class="n">plan</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">is_valid</span><span class="p">:</span>
             <span class="n">err_msg</span> <span class="o">=</span> <span class="s1">&#39;; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
@@ -294,7 +211,7 @@
     <span class="k">def</span> <span class="nf">_process_primitive</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">instruction</span><span class="p">:</span> <span class="n">IScaraInstruction</span><span class="p">,</span>
+        <span class="n">instruction</span><span class="p">:</span> <span class="n">Instruction</span><span class="p">,</span>
         <span class="n">context</span><span class="p">:</span> <span class="n">ScaraCompilerContext</span><span class="p">,</span>
         <span class="n">waypoints</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Waypoint</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>

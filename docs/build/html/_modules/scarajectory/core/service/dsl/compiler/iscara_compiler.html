@@ -61,10 +61,9 @@
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.iscara_program</span> <span class="kn">import</span> <span class="n">IScaraProgram</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.scara_diagnostic</span> <span class="kn">import</span> <span class="n">ScaraDiagnostic</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.itrajectory_plan</span> <span class="kn">import</span> <span class="n">ITrajectoryPlan</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.kinematics.scara_bounds</span> <span class="kn">import</span> <span class="n">ScaraBounds</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.program</span> <span class="kn">import</span> <span class="n">Program</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.diagnostic</span> <span class="kn">import</span> <span class="n">Diagnostic</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.itrajectory_plan</span> <span class="kn">import</span> <span class="n">ITrajectoryPlan</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
@@ -88,39 +87,29 @@
 <span class="sd">            :attributes:</span>
 <span class="sd">                | None.</span>
 <span class="sd">            :methods:</span>
-<span class="sd">                | compile - Compiles IScaraProgram into validated ITrajectoryPlan.</span>
-<span class="sd">                | lint - Lints IScaraProgram returning static analysis diagnostics.</span>
+<span class="sd">                | compile - Compiles Program into validated ITrajectoryPlan.</span>
+<span class="sd">                | lint - Lints Program returning static analysis diagnostics.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
 <div class="viewcode-block" id="IScaraCompiler.compile">
 <a class="viewcode-back" href="../../../../../../scarajectory.core.service.dsl.compiler.iscara_compiler.html#scarajectory.core.service.dsl.compiler.iscara_compiler.IScaraCompiler.compile">[docs]</a>
-    <span class="k">def</span> <span class="nf">compile</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">program</span><span class="p">:</span> <span class="n">IScaraProgram</span><span class="p">,</span>
-        <span class="n">bounds</span><span class="p">:</span> <span class="n">ScaraBounds</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ITrajectoryPlan</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">compile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ITrajectoryPlan</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Compiles a SCARA DSL program into an executable and validated ITrajectoryPlan.</span>
 
-<span class="sd">            :param program: Parsed IScaraProgram AST root.</span>
-<span class="sd">            :param bounds: Optional kinematic boundary constraints.</span>
+<span class="sd">            :param program: Parsed Program AST root.</span>
 <span class="sd">            :return: Validated ITrajectoryPlan instance.</span>
 <span class="sd">        &#39;&#39;&#39;</span></div>
 
 
 <div class="viewcode-block" id="IScaraCompiler.lint">
 <a class="viewcode-back" href="../../../../../../scarajectory.core.service.dsl.compiler.iscara_compiler.html#scarajectory.core.service.dsl.compiler.iscara_compiler.IScaraCompiler.lint">[docs]</a>
-    <span class="k">def</span> <span class="nf">lint</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">program</span><span class="p">:</span> <span class="n">IScaraProgram</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ScaraDiagnostic</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">lint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Diagnostic</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Lints a SCARA DSL program and returns diagnostic warnings and errors.</span>
 
-<span class="sd">            :param program: Parsed IScaraProgram AST root.</span>
-<span class="sd">            :return: Tuple of ScaraDiagnostic findings.</span>
+<span class="sd">            :param program: Parsed Program AST root.</span>
+<span class="sd">            :return: Tuple of Diagnostic findings.</span>
 <span class="sd">        &#39;&#39;&#39;</span></div>
 </div>
 

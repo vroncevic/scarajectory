@@ -5,3 +5,4 @@ scarajectory.infrastructure.gui.dsl.emulator\_launcher module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

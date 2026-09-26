@@ -81,7 +81,6 @@
 
 <span class="sd">            :attributes:</span>
 <span class="sd">                | DEFAULT_ZOOM - Default initial zoom factor.</span>
-<span class="sd">                | R_MAX_MM - Maximum robot reach in millimeters.</span>
 <span class="sd">                | ZOOM_IN_FACTOR - Scale multiplier for zoom in operation.</span>
 <span class="sd">                | ZOOM_OUT_FACTOR - Scale multiplier for zoom out operation.</span>
 <span class="sd">                | ZOOM_MIN - Minimum allowable zoom scale.</span>
@@ -102,7 +101,6 @@
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="n">DEFAULT_ZOOM</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.35</span>
-    <span class="n">R_MAX_MM</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">270.0</span>
     <span class="n">ZOOM_IN_FACTOR</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.25</span>
     <span class="n">ZOOM_OUT_FACTOR</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.8</span>
     <span class="n">ZOOM_MIN</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.3</span>
@@ -203,20 +201,18 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">width</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">height</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">r_max_mm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">r_max_mm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">270.0</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Adjusts scale and pan to fit robot reach boundary into window.</span>
 
 <span class="sd">            :param width: Canvas width in pixels.</span>
 <span class="sd">            :param height: Canvas height in pixels.</span>
-<span class="sd">            :param r_max_mm: Optional maximum robot reach in mm. Defaults to R_MAX_MM.</span>
+<span class="sd">            :param r_max_mm: Maximum robot reach in mm.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">reach</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">r_max_mm</span> <span class="k">if</span> <span class="n">r_max_mm</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">R_MAX_MM</span>
-
         <span class="k">if</span> <span class="n">width</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">MIN_CANVAS_DIMENSION</span> <span class="ow">and</span> <span class="n">height</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">MIN_CANVAS_DIMENSION</span><span class="p">:</span>
             <span class="n">min_dim</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="p">(</span><span class="n">min_dim</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">REACH_COVERAGE_RATIO</span><span class="p">)</span> <span class="o">/</span> <span class="n">reach</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="p">(</span><span class="n">min_dim</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">REACH_COVERAGE_RATIO</span><span class="p">)</span> <span class="o">/</span> <span class="n">r_max_mm</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">pan_x</span> <span class="o">=</span> <span class="mf">0.0</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">pan_y</span> <span class="o">=</span> <span class="mf">0.0</span></div>
 </div>

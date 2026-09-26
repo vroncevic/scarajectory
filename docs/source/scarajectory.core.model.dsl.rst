@@ -8,6 +8,7 @@ Subpackages
    :maxdepth: 4
 
    scarajectory.core.model.dsl.ast
+   scarajectory.core.model.dsl.binary
    scarajectory.core.model.dsl.diagnostic
    scarajectory.core.model.dsl.token
 
@@ -18,3 +19,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

@@ -59,10 +59,11 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.iscara_instruction</span> <span class="kn">import</span> <span class="n">IScaraInstruction</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.scara_command_type</span> <span class="kn">import</span> <span class="n">ScaraCommandType</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.scara_instruction</span> <span class="kn">import</span> <span class="n">ScaraInstruction</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.token.scara_token</span> <span class="kn">import</span> <span class="n">ScaraToken</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.command_type</span> <span class="kn">import</span> <span class="n">CommandType</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.instruction</span> <span class="kn">import</span> <span class="n">Instruction</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.token.token</span> <span class="kn">import</span> <span class="n">Token</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.ast.iinstruction_factory</span> <span class="kn">import</span> <span class="n">IInstructionFactory</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.ast.instruction_factory</span> <span class="kn">import</span> <span class="n">InstructionFactory</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.parser.parameter_extractor</span> <span class="kn">import</span> <span class="n">ParameterExtractor</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
@@ -84,11 +85,22 @@
 <span class="sd">        It defines:</span>
 
 <span class="sd">            :attributes:</span>
-<span class="sd">                | None.</span>
+<span class="sd">                | _instruction_factory - Injected IInstructionFactory instance.</span>
 <span class="sd">            :methods:</span>
+<span class="sd">                | __init__ - Initializes FrameCommandParser with injected factory.</span>
 <span class="sd">                | can_parse - Checks whether command is FRAME_SET or FRAME_RESET.</span>
-<span class="sd">                | parse - Parses frame statement tokens into ScaraInstruction.</span>
+<span class="sd">                | parse - Parses frame statement tokens into Instruction.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">_instruction_factory</span><span class="p">:</span> <span class="n">IInstructionFactory</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">instruction_factory</span><span class="p">:</span> <span class="n">IInstructionFactory</span> <span class="o">=</span> <span class="n">InstructionFactory</span><span class="p">())</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Initializes FrameCommandParser constructor.</span>
+
+<span class="sd">            :param instruction_factory: Injected IInstructionFactory instance.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_instruction_factory</span> <span class="o">=</span> <span class="n">instruction_factory</span>
 
 <div class="viewcode-block" id="FrameCommandParser.can_parse">
 <a class="viewcode-back" href="../../../../../../../scarajectory.core.service.dsl.parser.commands.frame_command_parser.html#scarajectory.core.service.dsl.parser.commands.frame_command_parser.FrameCommandParser.can_parse">[docs]</a>
@@ -109,29 +121,32 @@
     <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">tokens</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ScaraToken</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+        <span class="n">tokens</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Token</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
         <span class="n">line_num</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">raw_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IScaraInstruction</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Instruction</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Parses frame statement into ScaraInstruction.</span>
+<span class="sd">            Parses frame statement into Instruction.</span>
 
 <span class="sd">            :param tokens: Statement token tuple.</span>
 <span class="sd">            :param line_num: Line number in source code.</span>
 <span class="sd">            :param raw_text: Original statement text.</span>
-<span class="sd">            :return: IScaraInstruction node.</span>
+<span class="sd">            :return: Instruction node.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+
         <span class="k">if</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;FRAME_RESET&#39;</span><span class="p">,</span> <span class="s1">&#39;RESET_FRAME&#39;</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">ScaraInstruction</span><span class="p">(</span>
-                <span class="n">command_type</span><span class="o">=</span><span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">FRAME_RESET</span><span class="p">,</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instruction_factory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="n">command_type</span><span class="o">=</span><span class="n">CommandType</span><span class="o">.</span><span class="n">FRAME_RESET</span><span class="p">,</span>
                 <span class="n">line_number</span><span class="o">=</span><span class="n">line_num</span><span class="p">,</span>
                 <span class="n">raw_text</span><span class="o">=</span><span class="n">raw_text</span><span class="p">,</span>
+                <span class="n">parameters</span><span class="o">=</span><span class="p">{},</span>
             <span class="p">)</span>
 
         <span class="n">params</span> <span class="o">=</span> <span class="n">ParameterExtractor</span><span class="o">.</span><span class="n">extract_key_values</span><span class="p">(</span><span class="n">tokens</span><span class="o">=</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
-        <span class="k">return</span> <span class="n">ScaraInstruction</span><span class="p">(</span>
-            <span class="n">command_type</span><span class="o">=</span><span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">FRAME_SET</span><span class="p">,</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instruction_factory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">command_type</span><span class="o">=</span><span class="n">CommandType</span><span class="o">.</span><span class="n">FRAME_SET</span><span class="p">,</span>
             <span class="n">line_number</span><span class="o">=</span><span class="n">line_num</span><span class="p">,</span>
             <span class="n">raw_text</span><span class="o">=</span><span class="n">raw_text</span><span class="p">,</span>
             <span class="n">parameters</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>

@@ -5,3 +5,4 @@ scarajectory.infrastructure.gui.dsl.dsl\_example\_catalog module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

@@ -30,12 +30,8 @@ pkg_dir: str = dirname(dirname(abspath(__file__)))
 if pkg_dir not in path:
     path.insert(0, pkg_dir)
 
-from scarajectory.infrastructure.gui.dsl.emulator_launcher import (
-    EmulatorLauncher,
-)
-from scarajectory.infrastructure.gui.dsl.iemulator_launcher import (
-    IEmulatorLauncher,
-)
+from scarajectory.infrastructure.gui.dsl.emulator_launcher import EmulatorLauncher
+from scarajectory.infrastructure.gui.dsl.iemulator_launcher import IEmulatorLauncher
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'

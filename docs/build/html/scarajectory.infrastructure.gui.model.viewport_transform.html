@@ -79,7 +79,6 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dt class="field-odd">attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><div class="line-block">
 <div class="line">DEFAULT_ZOOM - Default initial zoom factor.</div>
-<div class="line">R_MAX_MM - Maximum robot reach in millimeters.</div>
 <div class="line">ZOOM_IN_FACTOR - Scale multiplier for zoom in operation.</div>
 <div class="line">ZOOM_OUT_FACTOR - Scale multiplier for zoom out operation.</div>
 <div class="line">ZOOM_MIN - Minimum allowable zoom scale.</div>
@@ -120,11 +119,6 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.model.viewport_transform.ViewportTransform.R_MAX_MM">
-<span class="sig-name descname"><span class="pre">R_MAX_MM</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">270.0</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.model.viewport_transform.ViewportTransform.R_MAX_MM" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.model.viewport_transform.ViewportTransform.ZOOM_IN_FACTOR">
 <span class="sig-name descname"><span class="pre">ZOOM_IN_FACTOR</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.25</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.model.viewport_transform.ViewportTransform.ZOOM_IN_FACTOR" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -146,14 +140,14 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.model.viewport_transform.ViewportTransform.fit_reach">
-<span class="sig-name descname"><span class="pre">fit_reach</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_max_mm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/model/viewport_transform.html#ViewportTransform.fit_reach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.model.viewport_transform.ViewportTransform.fit_reach" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">fit_reach</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_max_mm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">270.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/model/viewport_transform.html#ViewportTransform.fit_reach"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.model.viewport_transform.ViewportTransform.fit_reach" title="Link to this definition">¶</a></dt>
 <dd><p>Adjusts scale and pan to fit robot reach boundary into window.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>width</strong> – Canvas width in pixels.</p></li>
 <li><p><strong>height</strong> – Canvas height in pixels.</p></li>
-<li><p><strong>r_max_mm</strong> – Optional maximum robot reach in mm. Defaults to R_MAX_MM.</p></li>
+<li><p><strong>r_max_mm</strong> – Maximum robot reach in mm.</p></li>
 </ul>
 </dd>
 </dl>
@@ -270,7 +264,6 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.model.viewport_transform.ViewportTransform.DEFAULT_ZOOM"><code class="docutils literal notranslate"><span class="pre">ViewportTransform.DEFAULT_ZOOM</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.model.viewport_transform.ViewportTransform.MIN_CANVAS_DIMENSION"><code class="docutils literal notranslate"><span class="pre">ViewportTransform.MIN_CANVAS_DIMENSION</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.model.viewport_transform.ViewportTransform.REACH_COVERAGE_RATIO"><code class="docutils literal notranslate"><span class="pre">ViewportTransform.REACH_COVERAGE_RATIO</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.model.viewport_transform.ViewportTransform.R_MAX_MM"><code class="docutils literal notranslate"><span class="pre">ViewportTransform.R_MAX_MM</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.model.viewport_transform.ViewportTransform.ZOOM_IN_FACTOR"><code class="docutils literal notranslate"><span class="pre">ViewportTransform.ZOOM_IN_FACTOR</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.model.viewport_transform.ViewportTransform.ZOOM_MAX"><code class="docutils literal notranslate"><span class="pre">ViewportTransform.ZOOM_MAX</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.model.viewport_transform.ViewportTransform.ZOOM_MIN"><code class="docutils literal notranslate"><span class="pre">ViewportTransform.ZOOM_MIN</span></code></a></li>

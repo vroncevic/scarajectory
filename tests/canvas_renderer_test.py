@@ -30,10 +30,12 @@ if pkg_dir not in path:
     path.insert(0, pkg_dir)
 
 from scarajectory.core.model.kinematics.scara_bounds import ScaraBounds
-from scarajectory.core.model.trajectory.trajectory_plan import TrajectoryPlan
-from scarajectory.core.model.trajectory.waypoint import Waypoint
-from scarajectory.core.service.kinematics.kinematics_service import KinematicsService
-from scarajectory.core.service.trajectory.trajectory_validator import TrajectoryValidator
+from scarajectory.core.service.trajectory.plan.trajectory_plan import TrajectoryPlan
+from scarajectory.core.service.trajectory.plan.trajectory_plan_factory import TrajectoryPlanFactory
+from scarajectory.core.service.trajectory.discretization.waypoint_factory import WaypointFactory
+from scarajectory.core.service.kinematics.kinematics_service_factory import KinematicsServiceFactory
+from scarajectory.core.service.trajectory.validation.trajectory_validator_factory import TrajectoryValidatorFactory
+from scarajectory.infrastructure.settings.config_loader_factory import ScaraConfigLoaderFactory
 from scarajectory.infrastructure.gui.canvas.canvas_background_renderer import CanvasBackgroundRenderer
 from scarajectory.infrastructure.gui.canvas.canvas_preview_renderer import CanvasPreviewRenderer
 from scarajectory.infrastructure.gui.canvas.canvas_renderer import CanvasRenderer
@@ -114,10 +116,12 @@ class TestCanvasRenderer(TestCase):
         '''
         self.canvas = MockCanvas()
         self.vp = ViewportTransform()
-        self.bounds = ScaraBounds()
-        self.kinematics = KinematicsService(bounds=self.bounds)
-        self.validator = TrajectoryValidator(bounds=self.bounds, kinematics=self.kinematics)
-        self.plan = TrajectoryPlan()
+        self.bounds = ScaraConfigLoaderFactory.create().load_bounds()
+        self.kinematics = KinematicsServiceFactory.create(bounds=self.bounds)
+        self.validator = TrajectoryValidatorFactory.create(
+            kinematics=self.kinematics
+        )
+        self.plan = TrajectoryPlanFactory.create()
 
     def test_canvas_background_renderer(self) -> None:
         '''
@@ -138,8 +142,8 @@ class TestCanvasRenderer(TestCase):
 
             :exceptions: None.
         '''
-        self.plan.add_point(Waypoint(x=100.0, y=100.0, z=0.0, speed=50.0))
-        self.plan.add_point(Waypoint(x=150.0, y=120.0, z=0.0, speed=50.0))
+        self.plan.add_point(WaypointFactory.create(x=100.0, y=100.0, z=0.0, speed=50.0))
+        self.plan.add_point(WaypointFactory.create(x=150.0, y=120.0, z=0.0, speed=50.0))
         self.plan.set_selected_index(0)
 
         CanvasTrajectoryRenderer.draw_trajectory(self.canvas, self.vp, self.plan, self.validator)
@@ -171,7 +175,7 @@ class TestCanvasRenderer(TestCase):
 
             :exceptions: None.
         '''
-        self.plan.add_point(Waypoint(x=120.0, y=80.0, z=0.0, speed=50.0))
+        self.plan.add_point(WaypointFactory.create(x=120.0, y=80.0, z=0.0, speed=50.0))
         CanvasRenderer.draw_background(self.canvas, self.vp, self.validator)
         CanvasRenderer.draw_trajectory(self.canvas, self.vp, self.plan, self.validator)
         CanvasRenderer.draw_preview(

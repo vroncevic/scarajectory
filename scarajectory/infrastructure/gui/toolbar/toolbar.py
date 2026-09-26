@@ -21,29 +21,14 @@ Info
 
 from __future__ import annotations
 
-from tkinter import (
-    BooleanVar,
-    LEFT,
-    RIGHT,
-    StringVar,
-    VERTICAL,
-    Widget,
-    Y,
-)
-from tkinter.ttk import (
-    Button,
-    Checkbutton,
-    Frame,
-    Label,
-    Radiobutton,
-    Separator,
-    Spinbox,
-)
+from tkinter import BooleanVar, LEFT, RIGHT, StringVar, VERTICAL, Widget, Y
+from tkinter.ttk import Button, Checkbutton, Frame, Label, Radiobutton, Separator, Spinbox
 from typing import Final
 
+from scarajectory.core.model.kinematics.scara_bounds import ScaraBounds
 from scarajectory.infrastructure.gui.model.canvas_tool_mode import CanvasToolMode
 from scarajectory.infrastructure.gui.model.canvas_settings import CanvasSettings
-from scarajectory.core.model.trajectory.itrajectory_plan import ITrajectoryPlan
+from scarajectory.core.service.trajectory.plan.itrajectory_plan import ITrajectoryPlan
 from scarajectory.infrastructure.gui.canvas.icanvas import ICanvas
 
 __author__ = 'Vladimir Roncevic'
@@ -65,6 +50,9 @@ class Toolbar(Frame):
             :attributes:
                 | _canvas - Active CAD canvas interface.
                 | _plan - Active trajectory plan domain model.
+                | _r_min - Minimum reach distance from origin in mm.
+                | _r_max - Maximum reach distance from origin in mm.
+                | _settings - Active canvas creation parameters.
                 | _tool_var - Active CAD tool mode variable.
                 | _spin_z - Default waypoint Z elevation spinbox.
                 | _spin_speed - Default waypoint feedrate spinbox.
@@ -72,12 +60,17 @@ class Toolbar(Frame):
                 | _lbl_cursor - Dynamic cursor coordinate and zoom readout label.
             :methods:
                 | __init__ - Initializes toolbar widgets.
+                | build_layout - Constructs CAD tools, zoom buttons, parameter inputs and cursor monitor.
+                | on_defaults_changed - Applies updated defaults from toolbar to canvas.
                 | set_deadzone - Sets deadzone enforcement checkbox state.
                 | get_cursor_label - Returns cursor info label widget.
     '''
 
     _canvas: ICanvas
     _plan: ITrajectoryPlan
+    _r_min: float | None
+    _r_max: float | None
+    _settings: CanvasSettings
     _tool_var: StringVar
     _spin_z: Spinbox
     _spin_speed: Spinbox
@@ -89,7 +82,11 @@ class Toolbar(Frame):
         parent: Widget,
         canvas: ICanvas,
         plan: ITrajectoryPlan,
-        **kwargs: object
+        *,
+        r_min: float | None = None,
+        r_max: float | None = None,
+        settings: CanvasSettings | None = None,
+        **kwargs: object,
     ) -> None:
         '''
             Initializes toolbar widgets.
@@ -97,14 +94,20 @@ class Toolbar(Frame):
             :param parent: Parent container widget.
             :param canvas: ICanvas interface instance.
             :param plan: ITrajectoryPlan instance.
+            :param r_min: Optional minimum workspace radius in mm.
+            :param r_max: Optional maximum workspace radius in mm.
+            :param settings: Optional CanvasSettings instance.
             :exceptions: None.
         '''
         super().__init__(parent, padding=(8, 6), **kwargs)
         self._canvas: Final[ICanvas] = canvas
         self._plan: Final[ITrajectoryPlan] = plan
-        self._build_layout()
+        self._r_min = r_min
+        self._r_max = r_max
+        self._settings = settings if settings is not None else CanvasSettings()
+        self.build_layout()
 
-    def _build_layout(self) -> None:
+    def build_layout(self) -> None:
         '''
             Constructs CAD tools, zoom buttons, parameter inputs and cursor monitor.
 
@@ -139,24 +142,29 @@ class Toolbar(Frame):
         Separator(self, orient=VERTICAL).pack(side=LEFT, fill=Y, padx=8)
         Label(self, text='Z (mm):').pack(side=LEFT, padx=2)
         self._spin_z = Spinbox(self, from_=0.0, to=100.0, increment=5.0, width=5)
-        self._spin_z.set('20.0')
+        self._spin_z.set(f'{self._settings.default_z:.1f}')
         self._spin_z.pack(side=LEFT, padx=2)
 
         Label(self, text='Speed (mm/s):').pack(side=LEFT, padx=(6, 2))
         self._spin_speed = Spinbox(self, from_=5.0, to=100.0, increment=5.0, width=5)
-        self._spin_speed.set('40.0')
+        self._spin_speed.set(f'{self._settings.default_speed:.1f}')
         self._spin_speed.pack(side=LEFT, padx=2)
 
-        self._spin_z.bind('<FocusOut>', lambda e: self._on_defaults_changed())
-        self._spin_speed.bind('<FocusOut>', lambda e: self._on_defaults_changed())
+        self._spin_z.bind('<FocusOut>', lambda e: self.on_defaults_changed())
+        self._spin_speed.bind('<FocusOut>', lambda e: self.on_defaults_changed())
 
         Separator(self, orient=VERTICAL).pack(side=LEFT, fill=Y, padx=8)
-        self._deadzone_var = BooleanVar(value=True)
+        self._deadzone_var = BooleanVar(value=self._settings.enforce_deadzone)
+        reach_text: str = (
+            f'Enforce Reach Limits ({self._r_min:.0f}-{self._r_max:.0f}mm)'
+            if self._r_min is not None and self._r_max is not None
+            else 'Enforce Reach Limits'
+        )
         Checkbutton(
             self,
-            text='Enforce Reach Limits (30-270mm)',
+            text=reach_text,
             variable=self._deadzone_var,
-            command=self._on_defaults_changed
+            command=self.on_defaults_changed
         ).pack(side=LEFT, padx=3)
 
         Separator(self, orient=VERTICAL).pack(side=LEFT, fill=Y, padx=8)
@@ -171,7 +179,7 @@ class Toolbar(Frame):
         self._lbl_cursor.pack(side=RIGHT, padx=8)
         self._canvas.set_hover_label(self._lbl_cursor)
 
-    def _on_defaults_changed(self) -> None:
+    def on_defaults_changed(self) -> None:
         '''
             Applies updated defaults from toolbar to canvas.
 
@@ -193,7 +201,7 @@ class Toolbar(Frame):
             :exceptions: None.
         '''
         self._deadzone_var.set(enabled)
-        self._on_defaults_changed()
+        self.on_defaults_changed()
 
     def get_cursor_label(self) -> Label:
         '''

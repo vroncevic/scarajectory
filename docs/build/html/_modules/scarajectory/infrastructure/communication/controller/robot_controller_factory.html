@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>scarajectory.infrastructure.communication.controller.robot_controller_factory &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/classic.css?v=514cf933" />
+    
+    <script src="../../../../../_static/documentation_options.js?v=57319df4"></script>
+    <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.communication.controller.robot_controller_factory</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for scarajectory.infrastructure.communication.controller.robot_controller_factory</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Module</span>
+<span class="sd">    robot_controller_factory.py</span>
+<span class="sd">Copyright</span>
+<span class="sd">    Copyright (C) 2026 Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;</span>
+<span class="sd">    scarajectory is free software: you can redistribute it and/or modify it</span>
+<span class="sd">    under the terms of the GNU General Public License as published by the</span>
+<span class="sd">    Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">    (at your option) any later version.</span>
+<span class="sd">    scarajectory is distributed in the hope that it will be useful, but</span>
+<span class="sd">    WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
+<span class="sd">    See the GNU General Public License for more details.</span>
+<span class="sd">    You should have received a copy of the GNU General Public License along</span>
+<span class="sd">    with this program. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">Info</span>
+<span class="sd">    Factory service assembling RobotController composite hardware adapters.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.communication.protocol.protocol_mode</span> <span class="kn">import</span> <span class="n">ProtocolMode</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.communication.protocol.ibinary_frame_builder</span> <span class="kn">import</span> <span class="n">IBinaryFrameBuilder</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.communication.stream.iraw_channel</span> <span class="kn">import</span> <span class="n">IRawChannel</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.controller.jog_controller</span> <span class="kn">import</span> <span class="n">JogController</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.controller.jog_controller_factory</span> <span class="kn">import</span> <span class="n">JogControllerFactory</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.controller.motion_controller</span> <span class="kn">import</span> <span class="n">MotionController</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.controller.motion_controller_factory</span> <span class="kn">import</span> <span class="n">MotionControllerFactory</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.controller.query_controller</span> <span class="kn">import</span> <span class="n">QueryController</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.controller.query_controller_factory</span> <span class="kn">import</span> <span class="n">QueryControllerFactory</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.controller.robot_controller</span> <span class="kn">import</span> <span class="n">RobotController</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.controller.tool_controller</span> <span class="kn">import</span> <span class="n">ToolController</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.controller.tool_controller_factory</span> <span class="kn">import</span> <span class="n">ToolControllerFactory</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.protocol.binary.builder.binary_frame_builder_factory</span> <span class="kn">import</span> <span class="n">BinaryFrameBuilderFactory</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
+<span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
+
+
+<div class="viewcode-block" id="RobotControllerFactory">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.controller.robot_controller_factory.html#scarajectory.infrastructure.communication.controller.robot_controller_factory.RobotControllerFactory">[docs]</a>
+<span class="k">class</span> <span class="nc">RobotControllerFactory</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Factory providing assembly of RobotController composite adapters.</span>
+
+<span class="sd">        It defines:</span>
+
+<span class="sd">            :methods:</span>
+<span class="sd">                | create - Constructs RobotController facade with assembled sub-controllers.</span>
+<span class="sd">                | get_version - Returns factory version string.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="RobotControllerFactory.create">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.controller.robot_controller_factory.html#scarajectory.infrastructure.communication.controller.robot_controller_factory.RobotControllerFactory.create">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">raw_channel</span><span class="p">:</span> <span class="n">IRawChannel</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">protocol_mode</span><span class="p">:</span> <span class="n">ProtocolMode</span> <span class="o">=</span> <span class="n">ProtocolMode</span><span class="o">.</span><span class="n">ASCII</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RobotController</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Constructs and returns an assembled RobotController composite facade.</span>
+
+<span class="sd">            :param raw_channel: IRawChannel instance.</span>
+<span class="sd">            :param protocol_mode: Active ProtocolMode enum value.</span>
+<span class="sd">            :return: Configured RobotController facade instance.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">frame_builder</span><span class="p">:</span> <span class="n">IBinaryFrameBuilder</span> <span class="o">=</span> <span class="n">BinaryFrameBuilderFactory</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+        <span class="n">motion_ctrl</span><span class="p">:</span> <span class="n">MotionController</span> <span class="o">=</span> <span class="n">MotionControllerFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">raw_channel</span><span class="o">=</span><span class="n">raw_channel</span><span class="p">,</span>
+            <span class="n">frame_builder</span><span class="o">=</span><span class="n">frame_builder</span><span class="p">,</span>
+            <span class="n">protocol_mode</span><span class="o">=</span><span class="n">protocol_mode</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">jog_ctrl</span><span class="p">:</span> <span class="n">JogController</span> <span class="o">=</span> <span class="n">JogControllerFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">raw_channel</span><span class="o">=</span><span class="n">raw_channel</span><span class="p">,</span>
+            <span class="n">frame_builder</span><span class="o">=</span><span class="n">frame_builder</span><span class="p">,</span>
+            <span class="n">protocol_mode</span><span class="o">=</span><span class="n">protocol_mode</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">tool_ctrl</span><span class="p">:</span> <span class="n">ToolController</span> <span class="o">=</span> <span class="n">ToolControllerFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">raw_channel</span><span class="o">=</span><span class="n">raw_channel</span><span class="p">,</span>
+            <span class="n">frame_builder</span><span class="o">=</span><span class="n">frame_builder</span><span class="p">,</span>
+            <span class="n">protocol_mode</span><span class="o">=</span><span class="n">protocol_mode</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">query_ctrl</span><span class="p">:</span> <span class="n">QueryController</span> <span class="o">=</span> <span class="n">QueryControllerFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">raw_channel</span><span class="o">=</span><span class="n">raw_channel</span><span class="p">,</span>
+            <span class="n">frame_builder</span><span class="o">=</span><span class="n">frame_builder</span><span class="p">,</span>
+            <span class="n">protocol_mode</span><span class="o">=</span><span class="n">protocol_mode</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">RobotController</span><span class="p">(</span>
+            <span class="n">motion_controller</span><span class="o">=</span><span class="n">motion_ctrl</span><span class="p">,</span>
+            <span class="n">jog_controller</span><span class="o">=</span><span class="n">jog_ctrl</span><span class="p">,</span>
+            <span class="n">tool_controller</span><span class="o">=</span><span class="n">tool_ctrl</span><span class="p">,</span>
+            <span class="n">query_controller</span><span class="o">=</span><span class="n">query_ctrl</span><span class="p">,</span>
+            <span class="n">raw_channel</span><span class="o">=</span><span class="n">raw_channel</span><span class="p">,</span>
+            <span class="n">frame_builder</span><span class="o">=</span><span class="n">frame_builder</span><span class="p">,</span>
+            <span class="n">protocol_mode</span><span class="o">=</span><span class="n">protocol_mode</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RobotControllerFactory.get_version">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.controller.robot_controller_factory.html#scarajectory.infrastructure.communication.controller.robot_controller_factory.RobotControllerFactory.get_version">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_version</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Returns factory version string.</span>
+
+<span class="sd">            :return: Factory version string.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">__version__</span></div>
+</div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.communication.controller.robot_controller_factory</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

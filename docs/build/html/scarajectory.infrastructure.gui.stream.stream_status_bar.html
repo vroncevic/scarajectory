@@ -92,6 +92,27 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dl>
 </div></blockquote>
 <dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.stream.stream_status_bar.StreamStatusBar._create_widgets">
+<span class="sig-name descname"><span class="pre">_create_widgets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/stream/stream_status_bar.html#StreamStatusBar._create_widgets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.stream.stream_status_bar.StreamStatusBar._create_widgets" title="Link to this definition">¶</a></dt>
+<dd><p>Builds progress bar and summary label.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.stream.stream_status_bar.StreamStatusBar._lbl_status">
+<span class="sig-name descname"><span class="pre">_lbl_status</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Label</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.stream.stream_status_bar.StreamStatusBar._lbl_status" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.stream.stream_status_bar.StreamStatusBar._progress_bar">
+<span class="sig-name descname"><span class="pre">_progress_bar</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Progressbar</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.stream.stream_status_bar.StreamStatusBar._progress_bar" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.stream.stream_status_bar.StreamStatusBar.set_status_text">
 <span class="sig-name descname"><span class="pre">set_status_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/stream/stream_status_bar.html#StreamStatusBar.set_status_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.stream.stream_status_bar.StreamStatusBar.set_status_text" title="Link to this definition">¶</a></dt>
 <dd><p>Sets label text directly.</p>
@@ -107,7 +128,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.stream.stream_status_bar.StreamStatusBar.update_progress">
-<span class="sig-name descname"><span class="pre">update_progress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.communication.stream_progress.html#scarajectory.core.model.communication.stream_progress.StreamProgress" title="scarajectory.core.model.communication.stream_progress.StreamProgress"><span class="pre">StreamProgress</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/stream/stream_status_bar.html#StreamStatusBar.update_progress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.stream.stream_status_bar.StreamStatusBar.update_progress" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">update_progress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.communication.stream.stream_progress.html#scarajectory.core.model.communication.stream.stream_progress.StreamProgress" title="scarajectory.core.model.communication.stream.stream_progress.StreamProgress"><span class="pre">StreamProgress</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/stream/stream_status_bar.html#StreamStatusBar.update_progress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.stream.stream_status_bar.StreamStatusBar.update_progress" title="Link to this definition">¶</a></dt>
 <dd><p>Updates progress bar and formatted status text.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -135,6 +156,9 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <ul>
 <li><a class="reference internal" href="#">scarajectory.infrastructure.gui.stream.stream_status_bar module</a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.stream.stream_status_bar.StreamStatusBar"><code class="docutils literal notranslate"><span class="pre">StreamStatusBar</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.stream.stream_status_bar.StreamStatusBar._create_widgets"><code class="docutils literal notranslate"><span class="pre">StreamStatusBar._create_widgets()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.stream.stream_status_bar.StreamStatusBar._lbl_status"><code class="docutils literal notranslate"><span class="pre">StreamStatusBar._lbl_status</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.stream.stream_status_bar.StreamStatusBar._progress_bar"><code class="docutils literal notranslate"><span class="pre">StreamStatusBar._progress_bar</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.stream.stream_status_bar.StreamStatusBar.set_status_text"><code class="docutils literal notranslate"><span class="pre">StreamStatusBar.set_status_text()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.stream.stream_status_bar.StreamStatusBar.update_progress"><code class="docutils literal notranslate"><span class="pre">StreamStatusBar.update_progress()</span></code></a></li>
 </ul>

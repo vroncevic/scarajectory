@@ -5,3 +5,4 @@ scarajectory.infrastructure.cli.engine module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

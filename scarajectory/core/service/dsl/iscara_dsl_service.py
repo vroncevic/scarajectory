@@ -25,9 +25,7 @@ from typing import Protocol, runtime_checkable
 
 from scarajectory.core.service.dsl.iscara_dsl_compiler import IScaraDslCompiler
 from scarajectory.core.service.dsl.iscara_dsl_validator import IScaraDslValidator
-from scarajectory.core.service.dsl.iscara_plan_exporter_service import (
-    IScaraPlanExporterService,
-)
+from scarajectory.core.service.dsl.iscara_plan_exporter_service import IScaraPlanExporterService
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -40,12 +38,7 @@ __status__ = 'Updated'
 
 
 @runtime_checkable
-class IScaraDslService(
-    IScaraDslCompiler,
-    IScaraDslValidator,
-    IScaraPlanExporterService,
-    Protocol,
-):
+class IScaraDslService(IScaraDslCompiler, IScaraDslValidator, IScaraPlanExporterService, Protocol):
     '''
         High-level composite orchestration service protocol for SCARA DSL processing.
 

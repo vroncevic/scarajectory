@@ -9,6 +9,7 @@ Submodules
 
    scarajectory.core.service.dsl.lexer.iscara_lexer
    scarajectory.core.service.dsl.lexer.scara_lexer
+   scarajectory.core.service.dsl.lexer.scara_lexer_factory
 
 Module contents
 ---------------
@@ -17,3 +18,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

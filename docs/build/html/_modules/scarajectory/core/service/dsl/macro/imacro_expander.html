@@ -61,7 +61,7 @@
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.iscara_instruction</span> <span class="kn">import</span> <span class="n">IScaraInstruction</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.instruction</span> <span class="kn">import</span> <span class="n">Instruction</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.compiler.scara_compiler_context</span> <span class="kn">import</span> <span class="n">ScaraCompilerContext</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
@@ -92,7 +92,7 @@
 
 <div class="viewcode-block" id="IMacroExpander.can_expand">
 <a class="viewcode-back" href="../../../../../../scarajectory.core.service.dsl.macro.imacro_expander.html#scarajectory.core.service.dsl.macro.imacro_expander.IMacroExpander.can_expand">[docs]</a>
-    <span class="k">def</span> <span class="nf">can_expand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">instruction</span><span class="p">:</span> <span class="n">IScaraInstruction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">can_expand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">instruction</span><span class="p">:</span> <span class="n">Instruction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Checks whether this expander handles the given instruction type.</span>
 
@@ -106,15 +106,15 @@
     <span class="k">def</span> <span class="nf">expand</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">instruction</span><span class="p">:</span> <span class="n">IScaraInstruction</span><span class="p">,</span>
+        <span class="n">instruction</span><span class="p">:</span> <span class="n">Instruction</span><span class="p">,</span>
         <span class="n">context</span><span class="p">:</span> <span class="n">ScaraCompilerContext</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">IScaraInstruction</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Instruction</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Expands macro instruction into one or more primitive instructions.</span>
 
 <span class="sd">            :param instruction: Macro instruction to expand.</span>
 <span class="sd">            :param context: Stateful compilation context.</span>
-<span class="sd">            :return: Tuple of expanded primitive IScaraInstruction nodes.</span>
+<span class="sd">            :return: Tuple of expanded primitive Instruction nodes.</span>
 <span class="sd">        &#39;&#39;&#39;</span></div>
 </div>
 

@@ -60,9 +60,10 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Sequence</span>
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">cos</span><span class="p">,</span> <span class="n">hypot</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">sin</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">hypot</span>
 
 <span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.waypoint</span> <span class="kn">import</span> <span class="n">Waypoint</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.discretization.ishape_discretizer</span> <span class="kn">import</span> <span class="n">IShapeDiscretizer</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.model.canvas_settings</span> <span class="kn">import</span> <span class="n">CanvasSettings</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
@@ -98,7 +99,8 @@
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">p1</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
         <span class="n">p2</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
-        <span class="n">settings</span><span class="p">:</span> <span class="n">CanvasSettings</span>
+        <span class="n">settings</span><span class="p">:</span> <span class="n">CanvasSettings</span><span class="p">,</span>
+        <span class="n">discretizer</span><span class="p">:</span> <span class="n">IShapeDiscretizer</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Waypoint</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Generates start and end waypoints of straight linear segment.</span>
@@ -106,13 +108,16 @@
 <span class="sd">            :param p1: Start point (x, y) coordinate tuple in mm.</span>
 <span class="sd">            :param p2: End point (x, y) coordinate tuple in mm.</span>
 <span class="sd">            :param settings: Active CanvasSettings.</span>
+<span class="sd">            :param discretizer: Mandatory IShapeDiscretizer instance.</span>
 <span class="sd">            :return: List of Waypoint instances.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="p">[</span>
-            <span class="n">Waypoint</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">z</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_z</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_speed</span><span class="p">),</span>
-            <span class="n">Waypoint</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">z</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_z</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_speed</span><span class="p">)</span>
-        <span class="p">]</span></div>
+        <span class="k">return</span> <span class="n">discretizer</span><span class="o">.</span><span class="n">discretize_line</span><span class="p">(</span>
+            <span class="n">p1</span><span class="p">,</span>
+            <span class="n">p2</span><span class="p">,</span>
+            <span class="n">z</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_z</span><span class="p">,</span>
+            <span class="n">speed</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_speed</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="CanvasToolHandler.discretize_circle">
@@ -123,7 +128,8 @@
         <span class="n">center</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
         <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">steps</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">settings</span><span class="p">:</span> <span class="n">CanvasSettings</span>
+        <span class="n">settings</span><span class="p">:</span> <span class="n">CanvasSettings</span><span class="p">,</span>
+        <span class="n">discretizer</span><span class="p">:</span> <span class="n">IShapeDiscretizer</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Waypoint</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Generates circle perimeter waypoints.</span>
@@ -132,18 +138,17 @@
 <span class="sd">            :param radius: Circle radius in mm.</span>
 <span class="sd">            :param steps: Discretization step count.</span>
 <span class="sd">            :param settings: Active CanvasSettings.</span>
+<span class="sd">            :param discretizer: Mandatory IShapeDiscretizer instance.</span>
 <span class="sd">            :return: List of Waypoint instances.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">pts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Waypoint</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="n">steps</span><span class="p">)</span>
-            <span class="n">px</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
-            <span class="n">py</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
-            <span class="n">pts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Waypoint</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">px</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">py</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_z</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_speed</span><span class="p">))</span>
-
-        <span class="k">return</span> <span class="n">pts</span></div>
+        <span class="k">return</span> <span class="n">discretizer</span><span class="o">.</span><span class="n">discretize_circle</span><span class="p">(</span>
+            <span class="n">center</span><span class="p">,</span>
+            <span class="n">radius</span><span class="p">,</span>
+            <span class="n">steps</span><span class="p">,</span>
+            <span class="n">z</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_z</span><span class="p">,</span>
+            <span class="n">speed</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_speed</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="CanvasToolHandler.discretize_rectangle">
@@ -153,7 +158,8 @@
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">p1</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
         <span class="n">p2</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
-        <span class="n">settings</span><span class="p">:</span> <span class="n">CanvasSettings</span>
+        <span class="n">settings</span><span class="p">:</span> <span class="n">CanvasSettings</span><span class="p">,</span>
+        <span class="n">discretizer</span><span class="p">:</span> <span class="n">IShapeDiscretizer</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Waypoint</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Generates 4 corner waypoints of rectangle boundary with closing start waypoint.</span>
@@ -161,16 +167,16 @@
 <span class="sd">            :param p1: Initial corner (x, y) tuple in mm.</span>
 <span class="sd">            :param p2: Opposite corner (x, y) tuple in mm.</span>
 <span class="sd">            :param settings: Active CanvasSettings.</span>
+<span class="sd">            :param discretizer: Mandatory IShapeDiscretizer instance.</span>
 <span class="sd">            :return: List of Waypoint instances.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="p">[</span>
-            <span class="n">Waypoint</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">z</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_z</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_speed</span><span class="p">),</span>
-            <span class="n">Waypoint</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">z</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_z</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_speed</span><span class="p">),</span>
-            <span class="n">Waypoint</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">z</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_z</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_speed</span><span class="p">),</span>
-            <span class="n">Waypoint</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">z</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_z</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_speed</span><span class="p">),</span>
-            <span class="n">Waypoint</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">z</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_z</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_speed</span><span class="p">)</span>
-        <span class="p">]</span></div>
+        <span class="k">return</span> <span class="n">discretizer</span><span class="o">.</span><span class="n">discretize_rectangle</span><span class="p">(</span>
+            <span class="n">p1</span><span class="p">,</span>
+            <span class="n">p2</span><span class="p">,</span>
+            <span class="n">z</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_z</span><span class="p">,</span>
+            <span class="n">speed</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">default_speed</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="CanvasToolHandler.find_hit_index">

@@ -74,6 +74,21 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dd><p>Bases: <a class="reference internal" href="scarajectory.core.service.dsl.iscara_dsl_compiler.html#scarajectory.core.service.dsl.iscara_dsl_compiler.IScaraDslCompiler" title="scarajectory.core.service.dsl.iscara_dsl_compiler.IScaraDslCompiler"><code class="xref py py-class docutils literal notranslate"><span class="pre">IScaraDslCompiler</span></code></a>, <a class="reference internal" href="scarajectory.core.service.dsl.iscara_dsl_validator.html#scarajectory.core.service.dsl.iscara_dsl_validator.IScaraDslValidator" title="scarajectory.core.service.dsl.iscara_dsl_validator.IScaraDslValidator"><code class="xref py py-class docutils literal notranslate"><span class="pre">IScaraDslValidator</span></code></a>, <a class="reference internal" href="scarajectory.core.service.dsl.iscara_plan_exporter_service.html#scarajectory.core.service.dsl.iscara_plan_exporter_service.IScaraPlanExporterService" title="scarajectory.core.service.dsl.iscara_plan_exporter_service.IScaraPlanExporterService"><code class="xref py py-class docutils literal notranslate"><span class="pre">IScaraPlanExporterService</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></p>
 <p>High-level composite orchestration service protocol for SCARA DSL processing.</p>
 <p>Combines compilation, validation, linting, and trajectory plan export contracts.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.core.service.dsl.iscara_dsl_service.IScaraDslService._abc_impl">
+<span class="sig-name descname"><span class="pre">_abc_impl</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;_abc._abc_data</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#scarajectory.core.service.dsl.iscara_dsl_service.IScaraDslService._abc_impl" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.core.service.dsl.iscara_dsl_service.IScaraDslService._is_protocol">
+<span class="sig-name descname"><span class="pre">_is_protocol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#scarajectory.core.service.dsl.iscara_dsl_service.IScaraDslService._is_protocol" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.core.service.dsl.iscara_dsl_service.IScaraDslService._is_runtime_protocol">
+<span class="sig-name descname"><span class="pre">_is_runtime_protocol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#scarajectory.core.service.dsl.iscara_dsl_service.IScaraDslService._is_runtime_protocol" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </section>
@@ -89,7 +104,12 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <h3><a href="index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">scarajectory.core.service.dsl.iscara_dsl_service module</a><ul>
-<li><a class="reference internal" href="#scarajectory.core.service.dsl.iscara_dsl_service.IScaraDslService"><code class="docutils literal notranslate"><span class="pre">IScaraDslService</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.service.dsl.iscara_dsl_service.IScaraDslService"><code class="docutils literal notranslate"><span class="pre">IScaraDslService</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.core.service.dsl.iscara_dsl_service.IScaraDslService._abc_impl"><code class="docutils literal notranslate"><span class="pre">IScaraDslService._abc_impl</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.service.dsl.iscara_dsl_service.IScaraDslService._is_protocol"><code class="docutils literal notranslate"><span class="pre">IScaraDslService._is_protocol</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.service.dsl.iscara_dsl_service.IScaraDslService._is_runtime_protocol"><code class="docutils literal notranslate"><span class="pre">IScaraDslService._is_runtime_protocol</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

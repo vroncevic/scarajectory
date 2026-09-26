@@ -27,15 +27,11 @@ from threading import Event, Thread
 from time import sleep, time
 from typing import Final
 
-from scarajectory.core.model.communication.stream_session import StreamSession
-from scarajectory.core.model.communication.stream_state import StreamState
+from scarajectory.core.model.communication.stream.stream_session import StreamSession
+from scarajectory.core.model.communication.stream.stream_state import StreamState
 from scarajectory.core.model.trajectory.waypoint import Waypoint
-from scarajectory.infrastructure.communication.protocol.command_formatter import (
-    CommandFormatter,
-)
-from scarajectory.infrastructure.communication.streamer.flow_controller import (
-    FlowController,
-)
+from scarajectory.core.service.communication.protocol.icommand_formatter import ICommandFormatter
+from scarajectory.infrastructure.communication.streamer.flow_controller import FlowController
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -55,6 +51,10 @@ class StreamExecutionWorker:
 
             :attributes:
                 | _flow_controller - Microcontroller buffer flow controller.
+                | _formatter - Packet formatter encoding waypoints to commands.
+                | _send_delay - Loop pacing delay after transmitting packet in seconds.
+                | _throttle_delay - Delay when buffer queue is full in seconds.
+                | _poll_delay - Polling interval during pause or completion wait in seconds.
                 | _send_command - Callback for transmitting raw command packets over transport.
                 | _notify_progress - Callback for publishing updated streaming metrics.
                 | _notify_log - Callback for appending log messages to observers.
@@ -64,16 +64,21 @@ class StreamExecutionWorker:
                 | _pause_event - Event signaling transmission pause.
                 | _session - Active trajectory streaming session metrics.
             :methods:
-                | __init__ - Initializes worker with flow controller and communication callbacks.
+                | __init__ - Initializes worker with flow controller, formatter, and callbacks.
                 | start - Spawns background worker thread for given streaming session.
                 | pause - Signals transmission pause.
                 | resume - Resumes paused transmission loop.
                 | stop - Aborts transmission loop and cleans up synchronization events.
                 | is_running - Checks if background thread is active.
+                | run_loop - Background execution loop transmitting waypoints according to flow control.
                 | handle_incoming_line - Evaluates incoming microcontroller response string.
     '''
 
     _flow_controller: FlowController
+    _formatter: Final[ICommandFormatter]
+    _send_delay: Final[float]
+    _throttle_delay: Final[float]
+    _poll_delay: Final[float]
     _send_command: Callable[[str], bool]
     _notify_progress: Callable[[str], None]
     _notify_log: Callable[[str, bool], None]
@@ -87,22 +92,34 @@ class StreamExecutionWorker:
         self,
         *,
         flow_controller: FlowController,
+        formatter: ICommandFormatter,
         send_command: Callable[[str], bool],
         notify_progress: Callable[[str], None],
         notify_log: Callable[[str, bool], None],
         on_state_change: Callable[[StreamState], None],
+        send_delay: float = 0.01,
+        throttle_delay: float = 0.02,
+        poll_delay: float = 0.05,
     ) -> None:
         '''
             Initializes the streaming execution worker with callbacks and flow controller.
 
             :param flow_controller: FlowController managing microcontroller buffer queue.
+            :param formatter: ICommandFormatter instance encoding waypoints.
             :param send_command: Callable transmitting raw command string.
             :param notify_progress: Callable emitting progress notifications.
             :param notify_log: Callable logging communication messages.
             :param on_state_change: Callable updating streamer state enum.
+            :param send_delay: Pacing delay after transmit in seconds (default 0.01).
+            :param throttle_delay: Throttle backoff delay in seconds (default 0.02).
+            :param poll_delay: Polling interval in seconds (default 0.05).
             :exceptions: None.
         '''
         self._flow_controller = flow_controller
+        self._formatter = formatter
+        self._send_delay = send_delay
+        self._throttle_delay = throttle_delay
+        self._poll_delay = poll_delay
         self._send_command = send_command
         self._notify_progress = notify_progress
         self._notify_log = notify_log
@@ -122,7 +139,7 @@ class StreamExecutionWorker:
         self._session = session
         self._stop_event.clear()
         self._pause_event.clear()
-        self._worker_thread = Thread(target=self._run_loop, daemon=True)
+        self._worker_thread = Thread(target=self.run_loop, daemon=True)
         self._worker_thread.start()
 
     def pause(self) -> None:
@@ -160,9 +177,9 @@ class StreamExecutionWorker:
         '''
         return self._worker_thread is not None and self._worker_thread.is_alive()
 
-    def _run_loop(self) -> None:
+    def run_loop(self) -> None:
         '''
-            Internal background execution loop transmitting waypoints according to flow control.
+            Background execution loop transmitting waypoints according to flow control.
 
             :exceptions: None.
         '''
@@ -174,7 +191,7 @@ class StreamExecutionWorker:
 
         while not self._stop_event.is_set() and session.sent_count < len(session.waypoints):
             if self._pause_event.is_set():
-                sleep(0.05)
+                sleep(self._poll_delay)
                 continue
 
             pt: Waypoint = session.waypoints[session.sent_count]
@@ -184,7 +201,7 @@ class StreamExecutionWorker:
                 pkt: str = (
                     pt.command
                     if pt.command
-                    else CommandFormatter.format_move(pt)
+                    else self._formatter.format_move(pt)
                 )
                 if is_cmd:
                     flow.set_barrier()
@@ -194,15 +211,15 @@ class StreamExecutionWorker:
                 if not is_cmd:
                     session.remote_queue_depth += 1
                 self._notify_progress('')
-                sleep(0.01)
+                sleep(self._send_delay)
             else:
-                sleep(0.02)
+                sleep(self._throttle_delay)
 
         while (
             not self._stop_event.is_set()
             and (session.done_count + session.failed_count) < len(session.waypoints)
         ):
-            sleep(0.05)
+            sleep(self._poll_delay)
 
         if not self._stop_event.is_set():
             self._on_state_change(StreamState.COMPLETED)

@@ -23,14 +23,14 @@ from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
-from scarajectory.core.model.trajectory.itrajectory_plan import ITrajectoryPlan
-from scarajectory.core.service.trajectory.iplan_storage_service import IPlanStorageService
-from scarajectory.core.service.trajectory.itrajectory_validator import ITrajectoryValidator
-from scarajectory.core.service.communication.itrajectory_streamer import ITrajectoryStreamer
-from scarajectory.core.service.dsl.iscara_dsl_service import IScaraDslService
-from scarajectory.core.service.trajectory.iplan_command_service import IPlanCommandService
-from scarajectory.core.service.trajectory.iplan_persistence_service import IPlanPersistenceService
-from scarajectory.core.service.trajectory.iplan_validation_service import IPlanValidationService
+from scarajectory.core.service.trajectory.plan.itrajectory_plan import ITrajectoryPlan
+from scarajectory.core.service.trajectory.contract.iplan_storage_service import IPlanStorageService
+from scarajectory.core.service.trajectory.validation.itrajectory_validator import ITrajectoryValidator
+from scarajectory.core.service.communication.stream.itrajectory_streamer import ITrajectoryStreamer
+from scaralang.core.service.dsl.iscara_dsl_service import IScaraDslService
+from scarajectory.core.service.trajectory.contract.iplan_command_service import IPlanCommandService
+from scarajectory.core.service.trajectory.contract.iplan_persistence_service import IPlanPersistenceService
+from scarajectory.core.service.trajectory.contract.iplan_validation_service import IPlanValidationService
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -43,12 +43,7 @@ __status__ = 'Updated'
 
 
 @runtime_checkable
-class IService(
-    IPlanCommandService,
-    IPlanPersistenceService,
-    IPlanValidationService,
-    Protocol
-):
+class IService(IPlanCommandService, IPlanPersistenceService, IPlanValidationService, Protocol):
     '''
         Composite interface for orchestrating trajectory operations and services.
 

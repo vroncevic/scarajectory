@@ -24,8 +24,8 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import Protocol, runtime_checkable
 
-from scarajectory.core.model.dsl.ast.iscara_program import IScaraProgram
-from scarajectory.core.model.dsl.token.scara_token import ScaraToken
+from scarajectory.core.model.dsl.ast.program import Program
+from scarajectory.core.model.dsl.token.token import Token
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -47,22 +47,22 @@ class IScaraParser(Protocol):
             :attributes:
                 | None.
             :methods:
-                | parse - Parses raw DSL source string into an IScaraProgram AST.
-                | parse_tokens - Parses a sequence of lexical tokens into an IScaraProgram AST.
+                | parse - Parses raw DSL source string into a Program AST.
+                | parse_tokens - Parses a sequence of lexical tokens into a Program AST.
     '''
 
-    def parse(self, *, source: str) -> IScaraProgram:
+    def parse(self, *, source: str) -> Program:
         '''
             Parses raw SCARA DSL code string into an immutable AST program representation.
 
             :param source: Raw source code text.
-            :return: IScaraProgram instance.
+            :return: Program instance.
         '''
 
-    def parse_tokens(self, *, tokens: Sequence[ScaraToken]) -> IScaraProgram:
+    def parse_tokens(self, *, tokens: Sequence[Token]) -> Program:
         '''
             Parses a sequence of lexical tokens into an immutable AST program representation.
 
-            :param tokens: Sequence of ScaraToken instances.
-            :return: IScaraProgram instance.
+            :param tokens: Sequence of Token instances.
+            :return: Program instance.
         '''

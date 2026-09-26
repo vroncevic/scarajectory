@@ -22,8 +22,8 @@ Info
 from __future__ import annotations
 
 from collections.abc import Sequence
-from ats_utilities.exceptions import ATSValueError, ATSTypeError
 
+from ats_utilities.exceptions import ATSValueError, ATSTypeError
 from ats_utilities.option.imanager import IOptionManager
 from ats_utilities.validation.check_value import not_none
 from ats_utilities.validation.check_type import istype

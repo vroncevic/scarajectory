@@ -65,24 +65,25 @@ See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
 </dd>
-<dt>Info</dt><dd><p>Base communication transport handling thread lifecycle, synchronization, and line parsing.</p>
+<dt>Info</dt><dd><p>Thread-safe abstract base transport handling reader thread lifecycle and line buffering.</p>
 </dd>
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.base_transport.BaseTransport">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.communication.transport.base_transport.</span></span><span class="sig-name descname"><span class="pre">BaseTransport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">on_line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_log</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/base_transport.html#BaseTransport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.communication.transport.base_transport.</span></span><span class="sig-name descname"><span class="pre">BaseTransport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">on_line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_log</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_bytes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/base_transport.html#BaseTransport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Base transport coordinating thread-safe communication, background reading, and event logging.</p>
+<p>Thread-safe base communication transport managing background reader thread and callback dispatch.</p>
 <p>It defines:</p>
 <blockquote>
 <div><dl class="field-list">
 <dt class="field-odd">attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><div class="line-block">
-<div class="line">_lock - Mutex protecting write operations.</div>
+<div class="line">_lock - Mutex guarding concurrent write access to the communication channel.</div>
 <div class="line">_stop_event - Event signaling reader thread termination.</div>
-<div class="line">_reader_thread - Background RX polling thread.</div>
+<div class="line">_reader_thread - Thread handle running the background packet reading loop.</div>
 <div class="line">_on_line - Callback invoked when a complete line is received.</div>
 <div class="line">_on_log - Callback for communication logging.</div>
+<div class="line">_on_bytes - Callback for raw received byte chunks.</div>
 </div>
 </dd>
 <dt class="field-even">methods<span class="colon">:</span></dt>
@@ -93,13 +94,86 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <div class="line">connect_with_config - Opens channel and starts reader thread.</div>
 <div class="line">disconnect - Terminates reader thread and closes channel.</div>
 <div class="line">send_raw - Transmits command string over communication channel.</div>
+<div class="line">send_bytes - Transmits binary bytes over channel.</div>
+<div class="line">read_bytes - Reads raw byte chunk from channel.</div>
 </div>
 </dd>
 </dl>
 </div></blockquote>
 <dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._channel_is_open">
+<span class="sig-name descname"><span class="pre">_channel_is_open</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/base_transport.html#BaseTransport._channel_is_open"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._channel_is_open" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._channel_name">
+<span class="sig-name descname"><span class="pre">_channel_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/base_transport.html#BaseTransport._channel_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._channel_name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._close_channel">
+<span class="sig-name descname"><span class="pre">_close_channel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/base_transport.html#BaseTransport._close_channel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._close_channel" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._connected_log_message">
+<span class="sig-name descname"><span class="pre">_connected_log_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.communication.stream.stream_config.html#scarajectory.core.model.communication.stream.stream_config.StreamConfig" title="scarajectory.core.model.communication.stream.stream_config.StreamConfig"><span class="pre">StreamConfig</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/base_transport.html#BaseTransport._connected_log_message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._connected_log_message" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._lock">
+<span class="sig-name descname"><span class="pre">_lock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">allocate_lock</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._lock" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._on_bytes">
+<span class="sig-name descname"><span class="pre">_on_bytes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._on_bytes" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._on_line">
+<span class="sig-name descname"><span class="pre">_on_line</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._on_line" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._on_log">
+<span class="sig-name descname"><span class="pre">_on_log</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._on_log" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._open_channel">
+<span class="sig-name descname"><span class="pre">_open_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.communication.stream.stream_config.html#scarajectory.core.model.communication.stream.stream_config.StreamConfig" title="scarajectory.core.model.communication.stream.stream_config.StreamConfig"><span class="pre">StreamConfig</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/base_transport.html#BaseTransport._open_channel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._open_channel" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._read_bytes">
+<span class="sig-name descname"><span class="pre">_read_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/base_transport.html#BaseTransport._read_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._read_bytes" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._reader_loop">
+<span class="sig-name descname"><span class="pre">_reader_loop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/base_transport.html#BaseTransport._reader_loop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._reader_loop" title="Link to this definition">¶</a></dt>
+<dd><p>Background thread polling and assembling incoming newline-terminated lines.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._reader_thread">
+<span class="sig-name descname"><span class="pre">_reader_thread</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Thread</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._reader_thread" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._stop_event">
+<span class="sig-name descname"><span class="pre">_stop_event</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Final</span><span class="p"><span class="pre">[</span></span><span class="pre">Event</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._stop_event" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._write_bytes">
+<span class="sig-name descname"><span class="pre">_write_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/base_transport.html#BaseTransport._write_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._write_bytes" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.connect_with_config">
-<span class="sig-name descname"><span class="pre">connect_with_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.communication.stream_config.html#scarajectory.core.model.communication.stream_config.StreamConfig" title="scarajectory.core.model.communication.stream_config.StreamConfig"><span class="pre">StreamConfig</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/base_transport.html#BaseTransport.connect_with_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.connect_with_config" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">connect_with_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.communication.stream.stream_config.html#scarajectory.core.model.communication.stream.stream_config.StreamConfig" title="scarajectory.core.model.communication.stream.stream_config.StreamConfig"><span class="pre">StreamConfig</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/base_transport.html#BaseTransport.connect_with_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.connect_with_config" title="Link to this definition">¶</a></dt>
 <dd><p>Establishes communication session using configuration DTO.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -114,7 +188,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.disconnect">
 <span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/base_transport.html#BaseTransport.disconnect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.disconnect" title="Link to this definition">¶</a></dt>
-<dd><p>Terminates communication link and frees resources.</p>
+<dd><p>Terminates background reader thread and closes communication channel.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -129,28 +203,57 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.read_bytes">
+<span class="sig-name descname"><span class="pre">read_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/base_transport.html#BaseTransport.read_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.read_bytes" title="Link to this definition">¶</a></dt>
+<dd><p>Reads raw byte chunk from the channel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>size</strong> – Maximum bytes to read.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Read bytes buffer.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.send_bytes">
+<span class="sig-name descname"><span class="pre">send_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/base_transport.html#BaseTransport.send_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.send_bytes" title="Link to this definition">¶</a></dt>
+<dd><p>Transmits binary byte payload over channel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>payload</strong> – Binary byte payload to write.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if successfully transmitted, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.send_raw">
 <span class="sig-name descname"><span class="pre">send_raw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/base_transport.html#BaseTransport.send_raw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.send_raw" title="Link to this definition">¶</a></dt>
 <dd><p>Transmits command string over communication channel.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>cmd</strong> – Formatted command payload.</p>
+<dd class="field-odd"><p><strong>cmd</strong> – Formatted command string.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>True if transmission succeeded, False otherwise.</p>
+<dd class="field-even"><p>True if successfully sent, False otherwise.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.set_callbacks">
-<span class="sig-name descname"><span class="pre">set_callbacks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">on_line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_log</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/base_transport.html#BaseTransport.set_callbacks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.set_callbacks" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set_callbacks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">on_line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_log</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_bytes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/base_transport.html#BaseTransport.set_callbacks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.set_callbacks" title="Link to this definition">¶</a></dt>
 <dd><p>Registers packet reception and connection logging hooks.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>on_line</strong> – Optional line received callback.</p></li>
 <li><p><strong>on_log</strong> – Optional logging callback.</p></li>
+<li><p><strong>on_bytes</strong> – Optional raw bytes received callback.</p></li>
 </ul>
 </dd>
 </dl>
@@ -172,9 +275,25 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <ul>
 <li><a class="reference internal" href="#">scarajectory.infrastructure.communication.transport.base_transport module</a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport"><code class="docutils literal notranslate"><span class="pre">BaseTransport</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._channel_is_open"><code class="docutils literal notranslate"><span class="pre">BaseTransport._channel_is_open()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._channel_name"><code class="docutils literal notranslate"><span class="pre">BaseTransport._channel_name()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._close_channel"><code class="docutils literal notranslate"><span class="pre">BaseTransport._close_channel()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._connected_log_message"><code class="docutils literal notranslate"><span class="pre">BaseTransport._connected_log_message()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._lock"><code class="docutils literal notranslate"><span class="pre">BaseTransport._lock</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._on_bytes"><code class="docutils literal notranslate"><span class="pre">BaseTransport._on_bytes</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._on_line"><code class="docutils literal notranslate"><span class="pre">BaseTransport._on_line</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._on_log"><code class="docutils literal notranslate"><span class="pre">BaseTransport._on_log</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._open_channel"><code class="docutils literal notranslate"><span class="pre">BaseTransport._open_channel()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._read_bytes"><code class="docutils literal notranslate"><span class="pre">BaseTransport._read_bytes()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._reader_loop"><code class="docutils literal notranslate"><span class="pre">BaseTransport._reader_loop()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._reader_thread"><code class="docutils literal notranslate"><span class="pre">BaseTransport._reader_thread</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._stop_event"><code class="docutils literal notranslate"><span class="pre">BaseTransport._stop_event</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._write_bytes"><code class="docutils literal notranslate"><span class="pre">BaseTransport._write_bytes()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.connect_with_config"><code class="docutils literal notranslate"><span class="pre">BaseTransport.connect_with_config()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.disconnect"><code class="docutils literal notranslate"><span class="pre">BaseTransport.disconnect()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.is_connected"><code class="docutils literal notranslate"><span class="pre">BaseTransport.is_connected()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.read_bytes"><code class="docutils literal notranslate"><span class="pre">BaseTransport.read_bytes()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.send_bytes"><code class="docutils literal notranslate"><span class="pre">BaseTransport.send_bytes()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.send_raw"><code class="docutils literal notranslate"><span class="pre">BaseTransport.send_raw()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.set_callbacks"><code class="docutils literal notranslate"><span class="pre">BaseTransport.set_callbacks()</span></code></a></li>
 </ul>

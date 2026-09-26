@@ -5,3 +5,4 @@ scarajectory.infrastructure.gui.toolbar.itoolbar module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

@@ -9,6 +9,7 @@ Submodules
 
    scarajectory.infrastructure.gui.toolbar.itoolbar
    scarajectory.infrastructure.gui.toolbar.toolbar
+   scarajectory.infrastructure.gui.toolbar.toolbar_factory
 
 Module contents
 ---------------
@@ -17,3 +18,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

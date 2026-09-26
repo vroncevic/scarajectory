@@ -25,7 +25,6 @@ from math import atan2, cos, degrees, hypot, pi, sin, sqrt
 from typing import Final
 
 from scarajectory.core.model.kinematics.scara_bounds import ScaraBounds
-from scarajectory.core.service.kinematics.ikinematics_service import IKinematicsService
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -62,11 +61,11 @@ class KinematicsService:
     _r_min: float
     _r_max: float
 
-    def __init__(self, bounds: ScaraBounds = ScaraBounds()) -> None:
+    def __init__(self, bounds: ScaraBounds) -> None:
         '''
             Initializes kinematics service with robot bounds and computes reach radii.
 
-            :param bounds: ScaraBounds instance.
+            :param bounds: Injected ScaraBounds instance.
         '''
         self._bounds: Final[ScaraBounds] = bounds
         self._r_min: Final[float] = abs(bounds.l1 - bounds.l2)

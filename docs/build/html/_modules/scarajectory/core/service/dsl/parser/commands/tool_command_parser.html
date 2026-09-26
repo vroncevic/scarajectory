@@ -59,10 +59,9 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.iscara_instruction</span> <span class="kn">import</span> <span class="n">IScaraInstruction</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.scara_command_type</span> <span class="kn">import</span> <span class="n">ScaraCommandType</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.scara_instruction</span> <span class="kn">import</span> <span class="n">ScaraInstruction</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.token.scara_token</span> <span class="kn">import</span> <span class="n">ScaraToken</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.command_type</span> <span class="kn">import</span> <span class="n">CommandType</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.instruction</span> <span class="kn">import</span> <span class="n">Instruction</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.token.token</span> <span class="kn">import</span> <span class="n">Token</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
@@ -86,7 +85,7 @@
 <span class="sd">                | None.</span>
 <span class="sd">            :methods:</span>
 <span class="sd">                | can_parse - Checks whether command is TOOL, PUMP, or VALVE.</span>
-<span class="sd">                | parse - Parses tool actuator statement tokens into ScaraInstruction.</span>
+<span class="sd">                | parse - Parses tool actuator statement tokens into Instruction.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
 <div class="viewcode-block" id="ToolCommandParser.can_parse">
@@ -106,20 +105,21 @@
     <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">tokens</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ScaraToken</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+        <span class="n">tokens</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Token</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
         <span class="n">line_num</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">raw_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IScaraInstruction</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Instruction</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Parses tool statement into ScaraInstruction.</span>
+<span class="sd">            Parses tool statement into Instruction.</span>
 
 <span class="sd">            :param tokens: Statement token tuple.</span>
 <span class="sd">            :param line_num: Line number in source code.</span>
 <span class="sd">            :param raw_text: Original statement text.</span>
-<span class="sd">            :return: IScaraInstruction node.</span>
+<span class="sd">            :return: Instruction node.</span>
 <span class="sd">            :exceptions: ValueError on missing or invalid binary state.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s1">&#39;Missing state argument for </span><span class="si">{</span><span class="n">cmd</span><span class="si">}</span><span class="s1"> at line </span><span class="si">{</span><span class="n">line_num</span><span class="si">}</span><span class="s1">&#39;</span>
@@ -127,6 +127,7 @@
 
         <span class="n">state</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
         <span class="n">valid_states</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;UP&#39;</span><span class="p">,</span> <span class="s1">&#39;DOWN&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">cmd</span> <span class="o">==</span> <span class="s1">&#39;TOOL&#39;</span> <span class="k">else</span> <span class="p">(</span><span class="s1">&#39;ON&#39;</span><span class="p">,</span> <span class="s1">&#39;OFF&#39;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">state</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_states</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s1">&#39;Invalid state </span><span class="si">{</span><span class="n">state</span><span class="si">!r}</span><span class="s1"> for </span><span class="si">{</span><span class="n">cmd</span><span class="si">}</span><span class="s1"> at line </span><span class="si">{</span><span class="n">line_num</span><span class="si">}</span><span class="s1">. Must be one of </span><span class="si">{</span><span class="n">valid_states</span><span class="si">}</span><span class="s1">&#39;</span>
@@ -134,13 +135,13 @@
 
         <span class="k">match</span> <span class="n">cmd</span><span class="p">:</span>
             <span class="k">case</span> <span class="s1">&#39;TOOL&#39;</span><span class="p">:</span>
-                <span class="n">cmd_type</span> <span class="o">=</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">TOOL</span>
+                <span class="n">cmd_type</span> <span class="o">=</span> <span class="n">CommandType</span><span class="o">.</span><span class="n">TOOL</span>
             <span class="k">case</span> <span class="s1">&#39;PUMP&#39;</span><span class="p">:</span>
-                <span class="n">cmd_type</span> <span class="o">=</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">PUMP</span>
+                <span class="n">cmd_type</span> <span class="o">=</span> <span class="n">CommandType</span><span class="o">.</span><span class="n">PUMP</span>
             <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
-                <span class="n">cmd_type</span> <span class="o">=</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">VALVE</span>
+                <span class="n">cmd_type</span> <span class="o">=</span> <span class="n">CommandType</span><span class="o">.</span><span class="n">VALVE</span>
 
-        <span class="k">return</span> <span class="n">ScaraInstruction</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">Instruction</span><span class="p">(</span>
             <span class="n">command_type</span><span class="o">=</span><span class="n">cmd_type</span><span class="p">,</span>
             <span class="n">line_number</span><span class="o">=</span><span class="n">line_num</span><span class="p">,</span>
             <span class="n">raw_text</span><span class="o">=</span><span class="n">raw_text</span><span class="p">,</span>

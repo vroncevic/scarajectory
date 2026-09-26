@@ -21,10 +21,9 @@ Info
 
 from __future__ import annotations
 
-from scarajectory.core.model.dsl.ast.iscara_instruction import IScaraInstruction
-from scarajectory.core.model.dsl.ast.scara_command_type import ScaraCommandType
-from scarajectory.core.model.dsl.ast.scara_instruction import ScaraInstruction
-from scarajectory.core.model.dsl.token.scara_token import ScaraToken
+from scarajectory.core.model.dsl.ast.command_type import CommandType
+from scarajectory.core.model.dsl.ast.instruction import Instruction
+from scarajectory.core.model.dsl.token.token import Token
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -46,7 +45,7 @@ class ConfigCommandParser:
                 | None.
             :methods:
                 | can_parse - Checks whether command is CONFIG, SPEED, ACCEL, or OVERRIDE.
-                | parse - Parses configuration statement tokens into ScaraInstruction.
+                | parse - Parses configuration statement tokens into Instruction.
     '''
 
     def can_parse(self, *, command_name: str) -> bool:
@@ -61,17 +60,17 @@ class ConfigCommandParser:
     def parse(
         self,
         *,
-        tokens: tuple[ScaraToken, ...],
+        tokens: tuple[Token, ...],
         line_num: int,
         raw_text: str,
-    ) -> IScaraInstruction:
+    ) -> Instruction:
         '''
-            Parses configuration statement into ScaraInstruction.
+            Parses configuration statement into Instruction.
 
             :param tokens: Statement token tuple.
             :param line_num: Line number in source code.
             :param raw_text: Original statement text.
-            :return: IScaraInstruction node.
+            :return: Instruction node.
             :exceptions: ValueError on invalid parameter syntax.
         '''
         cmd = tokens[0].value.upper()
@@ -82,17 +81,20 @@ class ConfigCommandParser:
                         f'Invalid CONFIG syntax at line {line_num}. Expected: CONFIG ELBOW <LEFT|RIGHT>'
                     )
                 sub = tokens[1].value.upper()
+
                 if sub != 'ELBOW':
                     raise ValueError(
                         f'Unknown CONFIG property {sub!r} at line {line_num}'
                     )
                 val = tokens[2].value.upper()
+
                 if val not in ('LEFT', 'RIGHT'):
                     raise ValueError(
                         f'Invalid elbow configuration {val!r} at line {line_num}. Must be LEFT or RIGHT'
                     )
-                return ScaraInstruction(
-                    command_type=ScaraCommandType.CONFIG_ELBOW,
+
+                return Instruction(
+                    command_type=CommandType.CONFIG_ELBOW,
                     line_number=line_num,
                     raw_text=raw_text,
                     parameters={'elbow': val},
@@ -104,8 +106,9 @@ class ConfigCommandParser:
                     )
                 mode = tokens[1].value.upper()
                 val = float(tokens[2].value)
-                return ScaraInstruction(
-                    command_type=ScaraCommandType.SPEED,
+
+                return Instruction(
+                    command_type=CommandType.SPEED,
                     line_number=line_num,
                     raw_text=raw_text,
                     parameters={'mode': mode, 'speed': val},
@@ -115,8 +118,9 @@ class ConfigCommandParser:
                     raise ValueError(
                         f'Missing argument for ACCEL at line {line_num}'
                     )
-                return ScaraInstruction(
-                    command_type=ScaraCommandType.ACCEL,
+
+                return Instruction(
+                    command_type=CommandType.ACCEL,
                     line_number=line_num,
                     raw_text=raw_text,
                     parameters={'accel': float(tokens[1].value)},
@@ -126,8 +130,9 @@ class ConfigCommandParser:
                     raise ValueError(
                         f'Missing argument for OVERRIDE at line {line_num}'
                     )
-                return ScaraInstruction(
-                    command_type=ScaraCommandType.OVERRIDE,
+
+                return Instruction(
+                    command_type=CommandType.OVERRIDE,
                     line_number=line_num,
                     raw_text=raw_text,
                     parameters={'percent': float(tokens[1].value)},

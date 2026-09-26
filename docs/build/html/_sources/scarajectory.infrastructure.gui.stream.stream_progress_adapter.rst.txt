@@ -5,3 +5,4 @@ scarajectory.infrastructure.gui.stream.stream\_progress\_adapter module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

@@ -5,3 +5,4 @@ scarajectory.infrastructure.gui.stream.jog\_tab module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

@@ -23,10 +23,9 @@ from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
-from scarajectory.core.model.dsl.ast.iscara_program import IScaraProgram
-from scarajectory.core.model.dsl.diagnostic.scara_diagnostic import ScaraDiagnostic
-from scarajectory.core.model.trajectory.itrajectory_plan import ITrajectoryPlan
-from scarajectory.core.model.kinematics.scara_bounds import ScaraBounds
+from scarajectory.core.model.dsl.ast.program import Program
+from scarajectory.core.model.dsl.diagnostic.diagnostic import Diagnostic
+from scarajectory.core.service.trajectory.plan.itrajectory_plan import ITrajectoryPlan
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -48,32 +47,22 @@ class IScaraCompiler(Protocol):
             :attributes:
                 | None.
             :methods:
-                | compile - Compiles IScaraProgram into validated ITrajectoryPlan.
-                | lint - Lints IScaraProgram returning static analysis diagnostics.
+                | compile - Compiles Program into validated ITrajectoryPlan.
+                | lint - Lints Program returning static analysis diagnostics.
     '''
 
-    def compile(
-        self,
-        *,
-        program: IScaraProgram,
-        bounds: ScaraBounds | None = None,
-    ) -> ITrajectoryPlan:
+    def compile(self, *, program: Program) -> ITrajectoryPlan:
         '''
             Compiles a SCARA DSL program into an executable and validated ITrajectoryPlan.
 
-            :param program: Parsed IScaraProgram AST root.
-            :param bounds: Optional kinematic boundary constraints.
+            :param program: Parsed Program AST root.
             :return: Validated ITrajectoryPlan instance.
         '''
 
-    def lint(
-        self,
-        *,
-        program: IScaraProgram,
-    ) -> tuple[ScaraDiagnostic, ...]:
+    def lint(self, *, program: Program) -> tuple[Diagnostic, ...]:
         '''
             Lints a SCARA DSL program and returns diagnostic warnings and errors.
 
-            :param program: Parsed IScaraProgram AST root.
-            :return: Tuple of ScaraDiagnostic findings.
+            :param program: Parsed Program AST root.
+            :return: Tuple of Diagnostic findings.
         '''

@@ -30,9 +30,8 @@ if pkg_dir not in path:
     path.insert(0, pkg_dir)
 
 from scarajectory.core.model.trajectory.waypoint import Waypoint
-from scarajectory.infrastructure.communication.protocol.motion_command_formatter import (
-    MotionCommandFormatter
-)
+from scarajectory.infrastructure.storage.trajectory_serializer import TrajectorySerializer
+from scarajectory.infrastructure.communication.protocol.ascii.formatter.motion_command_formatter import MotionCommandFormatter
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -53,6 +52,8 @@ class TestWaypoint(TestCase):
             :methods:
                 | test_waypoint_creation - Tests instantiation and property access of Waypoint.
                 | test_waypoint_equality - Tests equality and string representation.
+                | test_waypoint_command_packet - Tests packet generation with raw command attribute.
+                | test_waypoint_dict_serialization - Tests dictionary serialization via TrajectorySerializer.
     '''
 
     def test_waypoint_creation(self) -> None:
@@ -61,14 +62,22 @@ class TestWaypoint(TestCase):
 
             :exceptions: None.
         '''
-        pt = Waypoint(x=100.5, y=50.2, z=15.0, phi=45.0, speed=35.0, name='P1')
+        pt = Waypoint(
+            x=100.5,
+            y=50.2,
+            z=15.0,
+            phi=45.0,
+            speed=35.0,
+            name='P1',
+            command=''
+        )
         self.assertEqual(pt.x, 100.5)
         self.assertEqual(pt.y, 50.2)
         self.assertEqual(pt.z, 15.0)
         self.assertEqual(pt.phi, 45.0)
         self.assertEqual(pt.speed, 35.0)
         self.assertEqual(pt.name, 'P1')
-
+        self.assertEqual(pt.command, '')
 
     def test_waypoint_equality(self) -> None:
         '''
@@ -76,9 +85,9 @@ class TestWaypoint(TestCase):
 
             :exceptions: None.
         '''
-        pt1 = Waypoint(x=10.0, y=20.0, z=30.0, phi=0.0, speed=50.0, name='A')
-        pt2 = Waypoint(x=10.0, y=20.0, z=30.0, phi=0.0, speed=50.0, name='A')
-        pt3 = Waypoint(x=10.0, y=20.0, z=30.0, phi=0.0, speed=50.0, name='B')
+        pt1 = Waypoint(x=10.0, y=20.0, z=30.0, phi=0.0, speed=50.0, name='A', command='')
+        pt2 = Waypoint(x=10.0, y=20.0, z=30.0, phi=0.0, speed=50.0, name='A', command='')
+        pt3 = Waypoint(x=10.0, y=20.0, z=30.0, phi=0.0, speed=50.0, name='B', command='')
         self.assertEqual(pt1, pt2)
         self.assertNotEqual(pt1, pt3)
 
@@ -86,13 +95,13 @@ class TestWaypoint(TestCase):
         '''
             Tests packet generation with and without raw command attribute via formatter.
         '''
-        pt_move = Waypoint(x=100.0, y=50.0, z=20.0, phi=0.0, speed=40.0)
+        pt_move = Waypoint(x=100.0, y=50.0, z=20.0, phi=0.0, speed=40.0, name='', command='')
         self.assertEqual(
             MotionCommandFormatter.format_move(pt_move),
             '<pt#100.00#50.00#20.00#0.00#40.0#end>'
         )
 
-        pt_cmd = Waypoint(x=100.0, y=50.0, z=20.0, command='<CMD:WAIT#500>')
+        pt_cmd = Waypoint(x=100.0, y=50.0, z=20.0, phi=0.0, speed=40.0, name='', command='<CMD:WAIT#500>')
         self.assertEqual(
             MotionCommandFormatter.format_move(pt_cmd),
             '<CMD:WAIT#500>'
@@ -100,12 +109,12 @@ class TestWaypoint(TestCase):
 
     def test_waypoint_dict_serialization(self) -> None:
         '''
-            Tests dictionary serialization and deserialization with command.
+            Tests dictionary serialization and deserialization via TrajectorySerializer.
         '''
         pt = Waypoint(x=150.0, y=60.0, z=10.0, phi=15.0, speed=30.0, name='WAIT', command='<CMD:PUMP#1>')
-        data = pt.to_dict()
+        data = TrajectorySerializer.serialize_waypoint(pt)
         self.assertEqual(data.get('command'), '<CMD:PUMP#1>')
-        restored = Waypoint.from_dict(data)
+        restored = TrajectorySerializer.deserialize_waypoint(data)
         self.assertEqual(restored.command, '<CMD:PUMP#1>')
         self.assertEqual(restored.x, 150.0)
 

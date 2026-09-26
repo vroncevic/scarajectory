@@ -65,15 +65,11 @@
 <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span><span class="p">,</span> <span class="n">time</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.communication.stream_session</span> <span class="kn">import</span> <span class="n">StreamSession</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.communication.stream_state</span> <span class="kn">import</span> <span class="n">StreamState</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.communication.stream.stream_session</span> <span class="kn">import</span> <span class="n">StreamSession</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.communication.stream.stream_state</span> <span class="kn">import</span> <span class="n">StreamState</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.waypoint</span> <span class="kn">import</span> <span class="n">Waypoint</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.protocol.command_formatter</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">CommandFormatter</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.streamer.flow_controller</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">FlowController</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.communication.protocol.icommand_formatter</span> <span class="kn">import</span> <span class="n">ICommandFormatter</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.streamer.flow_controller</span> <span class="kn">import</span> <span class="n">FlowController</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
@@ -95,6 +91,10 @@
 
 <span class="sd">            :attributes:</span>
 <span class="sd">                | _flow_controller - Microcontroller buffer flow controller.</span>
+<span class="sd">                | _formatter - Packet formatter encoding waypoints to commands.</span>
+<span class="sd">                | _send_delay - Loop pacing delay after transmitting packet in seconds.</span>
+<span class="sd">                | _throttle_delay - Delay when buffer queue is full in seconds.</span>
+<span class="sd">                | _poll_delay - Polling interval during pause or completion wait in seconds.</span>
 <span class="sd">                | _send_command - Callback for transmitting raw command packets over transport.</span>
 <span class="sd">                | _notify_progress - Callback for publishing updated streaming metrics.</span>
 <span class="sd">                | _notify_log - Callback for appending log messages to observers.</span>
@@ -104,16 +104,21 @@
 <span class="sd">                | _pause_event - Event signaling transmission pause.</span>
 <span class="sd">                | _session - Active trajectory streaming session metrics.</span>
 <span class="sd">            :methods:</span>
-<span class="sd">                | __init__ - Initializes worker with flow controller and communication callbacks.</span>
+<span class="sd">                | __init__ - Initializes worker with flow controller, formatter, and callbacks.</span>
 <span class="sd">                | start - Spawns background worker thread for given streaming session.</span>
 <span class="sd">                | pause - Signals transmission pause.</span>
 <span class="sd">                | resume - Resumes paused transmission loop.</span>
 <span class="sd">                | stop - Aborts transmission loop and cleans up synchronization events.</span>
 <span class="sd">                | is_running - Checks if background thread is active.</span>
+<span class="sd">                | run_loop - Background execution loop transmitting waypoints according to flow control.</span>
 <span class="sd">                | handle_incoming_line - Evaluates incoming microcontroller response string.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="n">_flow_controller</span><span class="p">:</span> <span class="n">FlowController</span>
+    <span class="n">_formatter</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ICommandFormatter</span><span class="p">]</span>
+    <span class="n">_send_delay</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
+    <span class="n">_throttle_delay</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
+    <span class="n">_poll_delay</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
     <span class="n">_send_command</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span>
     <span class="n">_notify_progress</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">_notify_log</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span>
@@ -127,22 +132,34 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">flow_controller</span><span class="p">:</span> <span class="n">FlowController</span><span class="p">,</span>
+        <span class="n">formatter</span><span class="p">:</span> <span class="n">ICommandFormatter</span><span class="p">,</span>
         <span class="n">send_command</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">bool</span><span class="p">],</span>
         <span class="n">notify_progress</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">],</span>
         <span class="n">notify_log</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">],</span> <span class="kc">None</span><span class="p">],</span>
         <span class="n">on_state_change</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">StreamState</span><span class="p">],</span> <span class="kc">None</span><span class="p">],</span>
+        <span class="n">send_delay</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
+        <span class="n">throttle_delay</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.02</span><span class="p">,</span>
+        <span class="n">poll_delay</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Initializes the streaming execution worker with callbacks and flow controller.</span>
 
 <span class="sd">            :param flow_controller: FlowController managing microcontroller buffer queue.</span>
+<span class="sd">            :param formatter: ICommandFormatter instance encoding waypoints.</span>
 <span class="sd">            :param send_command: Callable transmitting raw command string.</span>
 <span class="sd">            :param notify_progress: Callable emitting progress notifications.</span>
 <span class="sd">            :param notify_log: Callable logging communication messages.</span>
 <span class="sd">            :param on_state_change: Callable updating streamer state enum.</span>
+<span class="sd">            :param send_delay: Pacing delay after transmit in seconds (default 0.01).</span>
+<span class="sd">            :param throttle_delay: Throttle backoff delay in seconds (default 0.02).</span>
+<span class="sd">            :param poll_delay: Polling interval in seconds (default 0.05).</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_flow_controller</span> <span class="o">=</span> <span class="n">flow_controller</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_formatter</span> <span class="o">=</span> <span class="n">formatter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_send_delay</span> <span class="o">=</span> <span class="n">send_delay</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_throttle_delay</span> <span class="o">=</span> <span class="n">throttle_delay</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_poll_delay</span> <span class="o">=</span> <span class="n">poll_delay</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_send_command</span> <span class="o">=</span> <span class="n">send_command</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_notify_progress</span> <span class="o">=</span> <span class="n">notify_progress</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_notify_log</span> <span class="o">=</span> <span class="n">notify_log</span>
@@ -164,7 +181,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_session</span> <span class="o">=</span> <span class="n">session</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pause_event</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_worker_thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_run_loop</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_worker_thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">run_loop</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_worker_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
 
 
@@ -215,9 +232,11 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_worker_thread</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_worker_thread</span><span class="o">.</span><span class="n">is_alive</span><span class="p">()</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_run_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="StreamExecutionWorker.run_loop">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.streamer.stream_execution_worker.html#scarajectory.infrastructure.communication.streamer.stream_execution_worker.StreamExecutionWorker.run_loop">[docs]</a>
+    <span class="k">def</span> <span class="nf">run_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Internal background execution loop transmitting waypoints according to flow control.</span>
+<span class="sd">            Background execution loop transmitting waypoints according to flow control.</span>
 
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -229,7 +248,7 @@
 
         <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">()</span> <span class="ow">and</span> <span class="n">session</span><span class="o">.</span><span class="n">sent_count</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">waypoints</span><span class="p">):</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pause_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
-                <span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>
+                <span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_poll_delay</span><span class="p">)</span>
                 <span class="k">continue</span>
 
             <span class="n">pt</span><span class="p">:</span> <span class="n">Waypoint</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">waypoints</span><span class="p">[</span><span class="n">session</span><span class="o">.</span><span class="n">sent_count</span><span class="p">]</span>
@@ -239,7 +258,7 @@
                 <span class="n">pkt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="n">pt</span><span class="o">.</span><span class="n">command</span>
                     <span class="k">if</span> <span class="n">pt</span><span class="o">.</span><span class="n">command</span>
-                    <span class="k">else</span> <span class="n">CommandFormatter</span><span class="o">.</span><span class="n">format_move</span><span class="p">(</span><span class="n">pt</span><span class="p">)</span>
+                    <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_formatter</span><span class="o">.</span><span class="n">format_move</span><span class="p">(</span><span class="n">pt</span><span class="p">)</span>
                 <span class="p">)</span>
                 <span class="k">if</span> <span class="n">is_cmd</span><span class="p">:</span>
                     <span class="n">flow</span><span class="o">.</span><span class="n">set_barrier</span><span class="p">()</span>
@@ -249,15 +268,15 @@
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">is_cmd</span><span class="p">:</span>
                     <span class="n">session</span><span class="o">.</span><span class="n">remote_queue_depth</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_notify_progress</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-                <span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+                <span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_send_delay</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">sleep</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
+                <span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_throttle_delay</span><span class="p">)</span>
 
         <span class="k">while</span> <span class="p">(</span>
             <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">()</span>
             <span class="ow">and</span> <span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">done_count</span> <span class="o">+</span> <span class="n">session</span><span class="o">.</span><span class="n">failed_count</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">waypoints</span><span class="p">)</span>
         <span class="p">):</span>
-            <span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>
+            <span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_poll_delay</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_on_state_change</span><span class="p">(</span><span class="n">StreamState</span><span class="o">.</span><span class="n">COMPLETED</span><span class="p">)</span>
@@ -278,7 +297,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_notify_log</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s1">&#39;[HOST STATS]: Total Execution Time: </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> s&#39;</span><span class="p">,</span>
                 <span class="kc">False</span><span class="p">,</span>
-            <span class="p">)</span>
+            <span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="StreamExecutionWorker.handle_incoming_line">
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.streamer.stream_execution_worker.html#scarajectory.infrastructure.communication.streamer.stream_execution_worker.StreamExecutionWorker.handle_incoming_line">[docs]</a>

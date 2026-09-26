@@ -25,7 +25,7 @@ from collections.abc import Callable
 
 from serial import Serial, SerialException
 
-from scarajectory.core.model.communication.stream_config import StreamConfig
+from scarajectory.core.model.communication.stream.stream_config import StreamConfig
 from scarajectory.infrastructure.communication.transport.base_transport import BaseTransport
 
 __author__ = 'Vladimir Roncevic'

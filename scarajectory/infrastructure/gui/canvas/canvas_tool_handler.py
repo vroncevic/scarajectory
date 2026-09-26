@@ -22,9 +22,10 @@ Info
 from __future__ import annotations
 
 from collections.abc import Sequence
-from math import cos, hypot, pi, sin
+from math import hypot
 
 from scarajectory.core.model.trajectory.waypoint import Waypoint
+from scarajectory.core.service.trajectory.discretization.ishape_discretizer import IShapeDiscretizer
 from scarajectory.infrastructure.gui.model.canvas_settings import CanvasSettings
 
 __author__ = 'Vladimir Roncevic'
@@ -56,7 +57,8 @@ class CanvasToolHandler:
         cls,
         p1: tuple[float, float],
         p2: tuple[float, float],
-        settings: CanvasSettings
+        settings: CanvasSettings,
+        discretizer: IShapeDiscretizer,
     ) -> list[Waypoint]:
         '''
             Generates start and end waypoints of straight linear segment.
@@ -64,13 +66,16 @@ class CanvasToolHandler:
             :param p1: Start point (x, y) coordinate tuple in mm.
             :param p2: End point (x, y) coordinate tuple in mm.
             :param settings: Active CanvasSettings.
+            :param discretizer: Mandatory IShapeDiscretizer instance.
             :return: List of Waypoint instances.
             :exceptions: None.
         '''
-        return [
-            Waypoint(x=p1[0], y=p1[1], z=settings.default_z, phi=0.0, speed=settings.default_speed),
-            Waypoint(x=p2[0], y=p2[1], z=settings.default_z, phi=0.0, speed=settings.default_speed)
-        ]
+        return discretizer.discretize_line(
+            p1,
+            p2,
+            z=settings.default_z,
+            speed=settings.default_speed,
+        )
 
     @classmethod
     def discretize_circle(
@@ -78,7 +83,8 @@ class CanvasToolHandler:
         center: tuple[float, float],
         radius: float,
         steps: int,
-        settings: CanvasSettings
+        settings: CanvasSettings,
+        discretizer: IShapeDiscretizer,
     ) -> list[Waypoint]:
         '''
             Generates circle perimeter waypoints.
@@ -87,25 +93,25 @@ class CanvasToolHandler:
             :param radius: Circle radius in mm.
             :param steps: Discretization step count.
             :param settings: Active CanvasSettings.
+            :param discretizer: Mandatory IShapeDiscretizer instance.
             :return: List of Waypoint instances.
             :exceptions: None.
         '''
-        pts: list[Waypoint] = []
-
-        for i in range(steps + 1):
-            angle: float = 2.0 * pi * (i / steps)
-            px: float = center[0] + radius * cos(angle)
-            py: float = center[1] + radius * sin(angle)
-            pts.append(Waypoint(x=px, y=py, z=settings.default_z, phi=0.0, speed=settings.default_speed))
-
-        return pts
+        return discretizer.discretize_circle(
+            center,
+            radius,
+            steps,
+            z=settings.default_z,
+            speed=settings.default_speed,
+        )
 
     @classmethod
     def discretize_rectangle(
         cls,
         p1: tuple[float, float],
         p2: tuple[float, float],
-        settings: CanvasSettings
+        settings: CanvasSettings,
+        discretizer: IShapeDiscretizer,
     ) -> list[Waypoint]:
         '''
             Generates 4 corner waypoints of rectangle boundary with closing start waypoint.
@@ -113,16 +119,16 @@ class CanvasToolHandler:
             :param p1: Initial corner (x, y) tuple in mm.
             :param p2: Opposite corner (x, y) tuple in mm.
             :param settings: Active CanvasSettings.
+            :param discretizer: Mandatory IShapeDiscretizer instance.
             :return: List of Waypoint instances.
             :exceptions: None.
         '''
-        return [
-            Waypoint(x=p1[0], y=p1[1], z=settings.default_z, phi=0.0, speed=settings.default_speed),
-            Waypoint(x=p2[0], y=p1[1], z=settings.default_z, phi=0.0, speed=settings.default_speed),
-            Waypoint(x=p2[0], y=p2[1], z=settings.default_z, phi=0.0, speed=settings.default_speed),
-            Waypoint(x=p1[0], y=p2[1], z=settings.default_z, phi=0.0, speed=settings.default_speed),
-            Waypoint(x=p1[0], y=p1[1], z=settings.default_z, phi=0.0, speed=settings.default_speed)
-        ]
+        return discretizer.discretize_rectangle(
+            p1,
+            p2,
+            z=settings.default_z,
+            speed=settings.default_speed,
+        )
 
     @classmethod
     def find_hit_index(

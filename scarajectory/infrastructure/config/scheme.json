@@ -15,11 +15,19 @@
     "singularity_outer_margin_mm": "float",
     "singularity_inner_margin_mm": "float",
     "singularity_theta2_min_rad": "float",
+    "deadzone_r_min": "float",
     "home_offset_j1": "float",
     "home_offset_j2": "float",
     "homing_rate_hz": "float",
+    "steps_per_rev": "float",
+    "microstepping": "float",
     "gear_ratio_j1": "float",
     "gear_ratio_j2": "float",
     "gear_ratio_j4": "float",
-    "leadscrew_pitch_z": "float"
+    "leadscrew_pitch_z": "float",
+    "baudrate": "float",
+    "timeout": "float",
+    "default_feedrate_scale": "float",
+    "queue_capacity": "float",
+    "protocol_mode": "str"
 }

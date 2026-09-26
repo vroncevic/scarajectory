@@ -16,14 +16,12 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Defines Waypoint data model representing a single 4-DOF motion target point.
+    Defines pure Waypoint data model representing a single 4-DOF motion target point.
 '''
 
 from __future__ import annotations
 
-from math import hypot, sqrt
 from dataclasses import dataclass
-
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -38,7 +36,7 @@ __status__ = 'Updated'
 @dataclass(frozen=True, slots=True, kw_only=True)
 class Waypoint:
     '''
-        Immutable waypoint entity representing target coordinates, tool orientation and speed.
+        Pure immutable waypoint entity representing target coordinates, tool orientation and speed.
 
         It defines:
 
@@ -50,78 +48,12 @@ class Waypoint:
                 | speed - Motion feedrate speed in mm/s.
                 | name - Optional waypoint identifier.
                 | command - Optional raw protocol command string associated with point.
-            :methods:
-                | radial_distance - Calculates planar radial distance from base.
-                | distance_to - Calculates 3D Euclidean distance to another waypoint.
-                | to_dict - Serializes point to dictionary for JSON persistence.
-                | from_dict - Deserializes waypoint from dictionary.
     '''
 
     x: float
     y: float
-    z: float = 20.0
-    phi: float = 0.0
-    speed: float = 40.0
-    name: str = ''
-    command: str = ''
-
-
-    @property
-    def radial_distance(self) -> float:
-        '''
-            Calculates planar radial distance from base r = sqrt(x^2 + y^2).
-
-            :return: Radial distance in mm.
-            :exceptions: None.
-        '''
-        return hypot(self.x, self.y)
-
-    def distance_to(self, other: Waypoint) -> float:
-        '''
-            Calculates 3D Euclidean distance to another waypoint.
-
-            :param other: Target waypoint.
-            :return: 3D distance in mm.
-            :exceptions: None.
-        '''
-        dx: float = other.x - self.x
-        dy: float = other.y - self.y
-        dz: float = other.z - self.z
-
-        return sqrt(dx * dx + dy * dy + dz * dz)
-
-    def to_dict(self) -> dict[str, float | str]:
-        '''
-            Serializes point to dictionary for JSON persistence.
-
-            :return: Dictionary representation.
-            :exceptions: None.
-        '''
-        return {
-            'x': round(self.x, 3),
-            'y': round(self.y, 3),
-            'z': round(self.z, 3),
-            'phi': round(self.phi, 3),
-            'speed': round(self.speed, 2),
-            'name': self.name,
-            'command': self.command
-        }
-
-    @classmethod
-    def from_dict(cls, data: dict[str, float | str]) -> Waypoint:
-        '''
-            Deserializes waypoint from dictionary.
-
-            :param data: Input dictionary.
-            :return: Waypoint instance.
-            :exceptions: None.
-        '''
-        return cls(
-            x=float(data.get('x', 180.0)),
-            y=float(data.get('y', 0.0)),
-            z=float(data.get('z', 20.0)),
-            phi=float(data.get('phi', 0.0)),
-            speed=float(data.get('speed', 40.0)),
-            name=str(data.get('name', '')),
-            command=str(data.get('command', ''))
-        )
+    z: float
+    phi: float
+    speed: float
+    name: str
+    command: str

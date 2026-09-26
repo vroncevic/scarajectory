@@ -82,7 +82,7 @@ setup(
     platforms='POSIX',
     classifiers=PYP_CLASSIFIERS,
     packages=find_packages(exclude=['tests', 'tests.*', '*.*.pyc', '*.pyo']),
-    install_requires=['ats-utilities', 'pyserial'],
+    install_requires=['ats-utilities', 'pyserial', 'scaralang'],
     package_data={'scarajectory': find_package_data('scarajectory')},
     entry_points={
         'console_scripts': [

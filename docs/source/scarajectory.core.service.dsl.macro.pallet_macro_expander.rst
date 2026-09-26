@@ -5,3 +5,4 @@ scarajectory.core.service.dsl.macro.pallet\_macro\_expander module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

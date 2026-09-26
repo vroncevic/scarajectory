@@ -5,3 +5,4 @@ scarajectory.infrastructure.communication.streamer.stream\_execution\_worker mod
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

@@ -15,7 +15,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="scarajectory.infrastructure package" href="scarajectory.infrastructure.html" />
+    <link rel="next" title="scarajectory.core.service.service_factory module" href="scarajectory.core.service.service_factory.html" />
     <link rel="prev" title="scarajectory.core.service.engine module" href="scarajectory.core.service.engine.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -28,7 +28,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.html" title="scarajectory.infrastructure package"
+          <a href="scarajectory.core.service.service_factory.html" title="scarajectory.core.service.service_factory module"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="scarajectory.core.service.engine.html" title="scarajectory.core.service.engine module"
@@ -70,7 +70,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dl class="py class">
 <dt class="sig sig-object py" id="scarajectory.core.service.iservice.IService">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.core.service.iservice.</span></span><span class="sig-name descname"><span class="pre">IService</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/core/service/iservice.html#IService"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.iservice.IService" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="scarajectory.core.service.trajectory.iplan_command_service.html#scarajectory.core.service.trajectory.iplan_command_service.IPlanCommandService" title="scarajectory.core.service.trajectory.iplan_command_service.IPlanCommandService"><code class="xref py py-class docutils literal notranslate"><span class="pre">IPlanCommandService</span></code></a>, <a class="reference internal" href="scarajectory.core.service.trajectory.iplan_persistence_service.html#scarajectory.core.service.trajectory.iplan_persistence_service.IPlanPersistenceService" title="scarajectory.core.service.trajectory.iplan_persistence_service.IPlanPersistenceService"><code class="xref py py-class docutils literal notranslate"><span class="pre">IPlanPersistenceService</span></code></a>, <a class="reference internal" href="scarajectory.core.service.trajectory.iplan_validation_service.html#scarajectory.core.service.trajectory.iplan_validation_service.IPlanValidationService" title="scarajectory.core.service.trajectory.iplan_validation_service.IPlanValidationService"><code class="xref py py-class docutils literal notranslate"><span class="pre">IPlanValidationService</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="scarajectory.core.service.trajectory.contract.iplan_command_service.html#scarajectory.core.service.trajectory.contract.iplan_command_service.IPlanCommandService" title="scarajectory.core.service.trajectory.contract.iplan_command_service.IPlanCommandService"><code class="xref py py-class docutils literal notranslate"><span class="pre">IPlanCommandService</span></code></a>, <a class="reference internal" href="scarajectory.core.service.trajectory.contract.iplan_persistence_service.html#scarajectory.core.service.trajectory.contract.iplan_persistence_service.IPlanPersistenceService" title="scarajectory.core.service.trajectory.contract.iplan_persistence_service.IPlanPersistenceService"><code class="xref py py-class docutils literal notranslate"><span class="pre">IPlanPersistenceService</span></code></a>, <a class="reference internal" href="scarajectory.core.service.trajectory.contract.iplan_validation_service.html#scarajectory.core.service.trajectory.contract.iplan_validation_service.IPlanValidationService" title="scarajectory.core.service.trajectory.contract.iplan_validation_service.IPlanValidationService"><code class="xref py py-class docutils literal notranslate"><span class="pre">IPlanValidationService</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></p>
 <p>Composite interface for orchestrating trajectory operations and services.</p>
 <p>It defines:</p>
 <blockquote>
@@ -87,6 +87,21 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd>
 </dl>
 </div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.core.service.iservice.IService._abc_impl">
+<span class="sig-name descname"><span class="pre">_abc_impl</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;_abc._abc_data</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#scarajectory.core.service.iservice.IService._abc_impl" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.core.service.iservice.IService._is_protocol">
+<span class="sig-name descname"><span class="pre">_is_protocol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#scarajectory.core.service.iservice.IService._is_protocol" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.core.service.iservice.IService._is_runtime_protocol">
+<span class="sig-name descname"><span class="pre">_is_runtime_protocol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#scarajectory.core.service.iservice.IService._is_runtime_protocol" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.core.service.iservice.IService.get_dsl_service">
 <span class="sig-name descname"><span class="pre">get_dsl_service</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.core.service.dsl.iscara_dsl_service.html#scarajectory.core.service.dsl.iscara_dsl_service.IScaraDslService" title="scarajectory.core.service.dsl.iscara_dsl_service.IScaraDslService"><span class="pre">IScaraDslService</span></a></span></span><a class="reference internal" href="_modules/scarajectory/core/service/iservice.html#IService.get_dsl_service"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.iservice.IService.get_dsl_service" title="Link to this definition">¶</a></dt>
@@ -100,7 +115,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.core.service.iservice.IService.get_plan">
-<span class="sig-name descname"><span class="pre">get_plan</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.core.model.trajectory.itrajectory_plan.html#scarajectory.core.model.trajectory.itrajectory_plan.ITrajectoryPlan" title="scarajectory.core.model.trajectory.itrajectory_plan.ITrajectoryPlan"><span class="pre">ITrajectoryPlan</span></a></span></span><a class="reference internal" href="_modules/scarajectory/core/service/iservice.html#IService.get_plan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.iservice.IService.get_plan" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_plan</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.core.service.trajectory.plan.itrajectory_plan.html#scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan" title="scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan"><span class="pre">ITrajectoryPlan</span></a></span></span><a class="reference internal" href="_modules/scarajectory/core/service/iservice.html#IService.get_plan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.iservice.IService.get_plan" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the active ITrajectoryPlan.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -111,7 +126,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.core.service.iservice.IService.get_storage">
-<span class="sig-name descname"><span class="pre">get_storage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.core.service.trajectory.iplan_storage_service.html#scarajectory.core.service.trajectory.iplan_storage_service.IPlanStorageService" title="scarajectory.core.service.trajectory.iplan_storage_service.IPlanStorageService"><span class="pre">IPlanStorageService</span></a></span></span><a class="reference internal" href="_modules/scarajectory/core/service/iservice.html#IService.get_storage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.iservice.IService.get_storage" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_storage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.core.service.trajectory.contract.iplan_storage_service.html#scarajectory.core.service.trajectory.contract.iplan_storage_service.IPlanStorageService" title="scarajectory.core.service.trajectory.contract.iplan_storage_service.IPlanStorageService"><span class="pre">IPlanStorageService</span></a></span></span><a class="reference internal" href="_modules/scarajectory/core/service/iservice.html#IService.get_storage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.iservice.IService.get_storage" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the active IPlanStorageService.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -122,7 +137,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.core.service.iservice.IService.get_streamer">
-<span class="sig-name descname"><span class="pre">get_streamer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.core.service.communication.itrajectory_streamer.html#scarajectory.core.service.communication.itrajectory_streamer.ITrajectoryStreamer" title="scarajectory.core.service.communication.itrajectory_streamer.ITrajectoryStreamer"><span class="pre">ITrajectoryStreamer</span></a></span></span><a class="reference internal" href="_modules/scarajectory/core/service/iservice.html#IService.get_streamer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.iservice.IService.get_streamer" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_streamer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.core.service.communication.stream.itrajectory_streamer.html#scarajectory.core.service.communication.stream.itrajectory_streamer.ITrajectoryStreamer" title="scarajectory.core.service.communication.stream.itrajectory_streamer.ITrajectoryStreamer"><span class="pre">ITrajectoryStreamer</span></a></span></span><a class="reference internal" href="_modules/scarajectory/core/service/iservice.html#IService.get_streamer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.iservice.IService.get_streamer" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the active ITrajectoryStreamer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -133,7 +148,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.core.service.iservice.IService.get_validator">
-<span class="sig-name descname"><span class="pre">get_validator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.core.service.trajectory.itrajectory_validator.html#scarajectory.core.service.trajectory.itrajectory_validator.ITrajectoryValidator" title="scarajectory.core.service.trajectory.itrajectory_validator.ITrajectoryValidator"><span class="pre">ITrajectoryValidator</span></a></span></span><a class="reference internal" href="_modules/scarajectory/core/service/iservice.html#IService.get_validator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.iservice.IService.get_validator" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_validator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.core.service.trajectory.validation.itrajectory_validator.html#scarajectory.core.service.trajectory.validation.itrajectory_validator.ITrajectoryValidator" title="scarajectory.core.service.trajectory.validation.itrajectory_validator.ITrajectoryValidator"><span class="pre">ITrajectoryValidator</span></a></span></span><a class="reference internal" href="_modules/scarajectory/core/service/iservice.html#IService.get_validator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.iservice.IService.get_validator" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the active ITrajectoryValidator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -169,6 +184,9 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <ul>
 <li><a class="reference internal" href="#">scarajectory.core.service.iservice module</a><ul>
 <li><a class="reference internal" href="#scarajectory.core.service.iservice.IService"><code class="docutils literal notranslate"><span class="pre">IService</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.core.service.iservice.IService._abc_impl"><code class="docutils literal notranslate"><span class="pre">IService._abc_impl</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.service.iservice.IService._is_protocol"><code class="docutils literal notranslate"><span class="pre">IService._is_protocol</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.service.iservice.IService._is_runtime_protocol"><code class="docutils literal notranslate"><span class="pre">IService._is_runtime_protocol</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.core.service.iservice.IService.get_dsl_service"><code class="docutils literal notranslate"><span class="pre">IService.get_dsl_service()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.core.service.iservice.IService.get_plan"><code class="docutils literal notranslate"><span class="pre">IService.get_plan()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.core.service.iservice.IService.get_storage"><code class="docutils literal notranslate"><span class="pre">IService.get_storage()</span></code></a></li>
@@ -189,8 +207,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.html"
-                          title="next chapter">scarajectory.infrastructure package</a></p>
+    <p class="topless"><a href="scarajectory.core.service.service_factory.html"
+                          title="next chapter">scarajectory.core.service.service_factory module</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -223,7 +241,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.html" title="scarajectory.infrastructure package"
+          <a href="scarajectory.core.service.service_factory.html" title="scarajectory.core.service.service_factory module"
              >next</a> |</li>
         <li class="right" >
           <a href="scarajectory.core.service.engine.html" title="scarajectory.core.service.engine module"

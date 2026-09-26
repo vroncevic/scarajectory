@@ -7,8 +7,8 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.core.model.dsl.diagnostic.scara_diagnostic
-   scarajectory.core.model.dsl.diagnostic.scara_diagnostic_severity
+   scarajectory.core.model.dsl.diagnostic.diagnostic
+   scarajectory.core.model.dsl.diagnostic.diagnostic_severity
 
 Module contents
 ---------------
@@ -17,3 +17,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

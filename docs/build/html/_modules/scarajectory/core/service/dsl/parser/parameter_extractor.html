@@ -62,8 +62,8 @@
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Sequence</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.token.scara_token</span> <span class="kn">import</span> <span class="n">ScaraToken</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.token.scara_token_type</span> <span class="kn">import</span> <span class="n">ScaraTokenType</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.token.token</span> <span class="kn">import</span> <span class="n">Token</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.token.token_type</span> <span class="kn">import</span> <span class="n">TokenType</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
@@ -92,8 +92,8 @@
 
 <div class="viewcode-block" id="ParameterExtractor.extract_key_values">
 <a class="viewcode-back" href="../../../../../../scarajectory.core.service.dsl.parser.parameter_extractor.html#scarajectory.core.service.dsl.parser.parameter_extractor.ParameterExtractor.extract_key_values">[docs]</a>
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">extract_key_values</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">tokens</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">ScaraToken</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">extract_key_values</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tokens</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Token</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Extracts key-value pairs (e.g. X=150.0 Y=80.0) from a sequence of tokens.</span>
 
@@ -106,9 +106,10 @@
 
         <span class="k">while</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
             <span class="n">tok</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
             <span class="k">if</span> <span class="p">(</span>
                 <span class="n">idx</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">&lt;</span> <span class="n">n</span>
-                <span class="ow">and</span> <span class="n">tokens</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">token_type</span> <span class="o">==</span> <span class="n">ScaraTokenType</span><span class="o">.</span><span class="n">EQUALS</span>
+                <span class="ow">and</span> <span class="n">tokens</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">token_type</span> <span class="o">==</span> <span class="n">TokenType</span><span class="o">.</span><span class="n">EQUALS</span>
             <span class="p">):</span>
                 <span class="n">key</span> <span class="o">=</span> <span class="n">tok</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
                 <span class="n">val_tok</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
@@ -116,10 +117,11 @@
                 <span class="n">idx</span> <span class="o">+=</span> <span class="mi">3</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">key</span> <span class="o">=</span> <span class="n">tok</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+
                 <span class="k">if</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="ow">and</span> <span class="n">tokens</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">token_type</span> <span class="ow">in</span> <span class="p">(</span>
-                    <span class="n">ScaraTokenType</span><span class="o">.</span><span class="n">NUMBER</span><span class="p">,</span>
-                    <span class="n">ScaraTokenType</span><span class="o">.</span><span class="n">STRING</span><span class="p">,</span>
-                    <span class="n">ScaraTokenType</span><span class="o">.</span><span class="n">IDENTIFIER</span><span class="p">,</span>
+                    <span class="n">TokenType</span><span class="o">.</span><span class="n">NUMBER</span><span class="p">,</span>
+                    <span class="n">TokenType</span><span class="o">.</span><span class="n">STRING</span><span class="p">,</span>
+                    <span class="n">TokenType</span><span class="o">.</span><span class="n">IDENTIFIER</span><span class="p">,</span>
                 <span class="p">):</span>
                     <span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">ParameterExtractor</span><span class="o">.</span><span class="n">parse_token_value</span><span class="p">(</span>
                         <span class="n">token</span><span class="o">=</span><span class="n">tokens</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
@@ -128,23 +130,26 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="n">idx</span> <span class="o">+=</span> <span class="mi">1</span>
+
         <span class="k">return</span> <span class="n">params</span></div>
 
 
 <div class="viewcode-block" id="ParameterExtractor.parse_token_value">
 <a class="viewcode-back" href="../../../../../../scarajectory.core.service.dsl.parser.parameter_extractor.html#scarajectory.core.service.dsl.parser.parameter_extractor.ParameterExtractor.parse_token_value">[docs]</a>
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">parse_token_value</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="n">ScaraToken</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">parse_token_value</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="n">Token</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Converts token string literal to float, int or string.</span>
 
-<span class="sd">            :param token: ScaraToken instance.</span>
+<span class="sd">            :param token: Token instance.</span>
 <span class="sd">            :return: Float, int, or string literal.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">token_type</span> <span class="o">==</span> <span class="n">ScaraTokenType</span><span class="o">.</span><span class="n">NUMBER</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">token_type</span> <span class="o">==</span> <span class="n">TokenType</span><span class="o">.</span><span class="n">NUMBER</span><span class="p">:</span>
             <span class="k">if</span> <span class="s1">&#39;.&#39;</span> <span class="ow">in</span> <span class="n">token</span><span class="o">.</span><span class="n">value</span> <span class="ow">or</span> <span class="s1">&#39;e&#39;</span> <span class="ow">in</span> <span class="n">token</span><span class="o">.</span><span class="n">value</span> <span class="ow">or</span> <span class="s1">&#39;E&#39;</span> <span class="ow">in</span> <span class="n">token</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
                 <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
             <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">token</span><span class="o">.</span><span class="n">value</span></div>
 </div>
 

@@ -54,40 +54,22 @@
 <span class="sd">    You should have received a copy of the GNU General Public License along</span>
 <span class="sd">    with this program. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 <span class="sd">Info</span>
-<span class="sd">    High-level facade orchestrating SCARA DSL compilation, validation, linting, and plan serialization.</span>
+<span class="sd">    High-level facade orchestrating SCARA DSL compilation, validation, linting, and binary framing.</span>
 <span class="sd">&#39;&#39;&#39;</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.scara_diagnostic</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">ScaraDiagnostic</span><span class="p">,</span>
-    <span class="n">ScaraDiagnosticSeverity</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.itrajectory_read_only</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">ITrajectoryReadOnly</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.kinematics.scara_bounds</span> <span class="kn">import</span> <span class="n">ScaraBounds</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.trajectory_plan</span> <span class="kn">import</span> <span class="n">TrajectoryPlan</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.compiler.iscara_compiler</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">IScaraCompiler</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.compiler.scara_compiler</span> <span class="kn">import</span> <span class="n">ScaraCompiler</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.exporter.iscara_plan_exporter</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">IScaraPlanExporter</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.exporter.scara_plan_exporter</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">ScaraPlanExporter</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.binary.program</span> <span class="kn">import</span> <span class="n">Program</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.diagnostic</span> <span class="kn">import</span> <span class="n">Diagnostic</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.diagnostic_severity</span> <span class="kn">import</span> <span class="n">DiagnosticSeverity</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.diagnostic.scara_diagnostic_formatter</span> <span class="kn">import</span> <span class="n">ScaraDiagnosticFormatter</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.itrajectory_read_only</span> <span class="kn">import</span> <span class="n">ITrajectoryReadOnly</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.trajectory_plan</span> <span class="kn">import</span> <span class="n">TrajectoryPlan</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.binary.icompiler</span> <span class="kn">import</span> <span class="n">ICompiler</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.compiler.iscara_compiler</span> <span class="kn">import</span> <span class="n">IScaraCompiler</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.exporter.iscara_plan_exporter</span> <span class="kn">import</span> <span class="n">IScaraPlanExporter</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.lexer.iscara_lexer</span> <span class="kn">import</span> <span class="n">IScaraLexer</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.lexer.scara_lexer</span> <span class="kn">import</span> <span class="n">ScaraLexer</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.parser.iscara_parser</span> <span class="kn">import</span> <span class="n">IScaraParser</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.parser.scara_parser</span> <span class="kn">import</span> <span class="n">ScaraParser</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.itrajectory_validator</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">ITrajectoryValidator</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.trajectory_validator</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">TrajectoryValidator</span><span class="p">,</span>
-<span class="p">)</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
@@ -103,113 +85,111 @@
 <a class="viewcode-back" href="../../../../../scarajectory.core.service.dsl.scara_dsl_service.html#scarajectory.core.service.dsl.scara_dsl_service.ScaraDslService">[docs]</a>
 <span class="k">class</span> <span class="nc">ScaraDslService</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        High-level facade orchestrating SCARA DSL compilation, validation and serialization.</span>
+<span class="sd">        High-level facade orchestrating SCARA DSL compilation, validation and binary serialization.</span>
 
 <span class="sd">        It defines:</span>
 
 <span class="sd">            :attributes:</span>
-<span class="sd">                | _lexer - Dedicated lexical tokenizer.</span>
-<span class="sd">                | _parser - AST grammar parser orchestrator.</span>
-<span class="sd">                | _compiler - Macro expander, arc interpolator and validator.</span>
-<span class="sd">                | _exporter - TrajectoryPlan to .scara code serializer.</span>
+<span class="sd">                | _lexer - Dedicated lexical tokenizer protocol.</span>
+<span class="sd">                | _parser - AST grammar parser orchestrator protocol.</span>
+<span class="sd">                | _compiler - Macro expander and validator protocol.</span>
+<span class="sd">                | _exporter - TrajectoryPlan to .scara code serializer protocol.</span>
+<span class="sd">                | _binary_compiler - TrajectoryPlan to binary frame compiler protocol.</span>
 <span class="sd">            :methods:</span>
-<span class="sd">                | __init__ - Initializes DSL facade with injected or default components.</span>
+<span class="sd">                | __init__ - Initializes DSL facade with injected component protocols.</span>
 <span class="sd">                | compile_script - Compiles DSL source code into executable TrajectoryPlan.</span>
 <span class="sd">                | validate_script - Checks syntax, static analysis rules, and kinematics of DSL script.</span>
 <span class="sd">                | lint_script - Performs static analysis checks on DSL script string.</span>
 <span class="sd">                | export_plan - Serializes active TrajectoryPlan to DSL source text.</span>
+<span class="sd">                | compile_plan - Compiles TrajectoryPlan into Program package.</span>
+<span class="sd">                | compile_to_bytes - Compiles DSL code directly to raw UART wire byte stream.</span>
+<span class="sd">                | compile_to_binary - Compiles DSL source text into Program package.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">_lexer</span><span class="p">:</span> <span class="n">IScaraLexer</span>
+    <span class="n">_parser</span><span class="p">:</span> <span class="n">IScaraParser</span>
+    <span class="n">_compiler</span><span class="p">:</span> <span class="n">IScaraCompiler</span>
+    <span class="n">_exporter</span><span class="p">:</span> <span class="n">IScaraPlanExporter</span>
+    <span class="n">_binary_compiler</span><span class="p">:</span> <span class="n">ICompiler</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">lexer</span><span class="p">:</span> <span class="n">IScaraLexer</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">parser</span><span class="p">:</span> <span class="n">IScaraParser</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">compiler</span><span class="p">:</span> <span class="n">IScaraCompiler</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">exporter</span><span class="p">:</span> <span class="n">IScaraPlanExporter</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">validator</span><span class="p">:</span> <span class="n">ITrajectoryValidator</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">lexer</span><span class="p">:</span> <span class="n">IScaraLexer</span><span class="p">,</span>
+        <span class="n">parser</span><span class="p">:</span> <span class="n">IScaraParser</span><span class="p">,</span>
+        <span class="n">compiler</span><span class="p">:</span> <span class="n">IScaraCompiler</span><span class="p">,</span>
+        <span class="n">exporter</span><span class="p">:</span> <span class="n">IScaraPlanExporter</span><span class="p">,</span>
+        <span class="n">binary_compiler</span><span class="p">:</span> <span class="n">ICompiler</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Initializes ScaraDslService with optional injected dependencies.</span>
+<span class="sd">            Initializes ScaraDslService with injected component protocols.</span>
 
-<span class="sd">            :param lexer: Optional IScaraLexer instance.</span>
-<span class="sd">            :param parser: Optional IScaraParser instance.</span>
-<span class="sd">            :param compiler: Optional IScaraCompiler instance.</span>
-<span class="sd">            :param exporter: Optional IScaraPlanExporter instance.</span>
-<span class="sd">            :param validator: Optional ITrajectoryValidator instance.</span>
+<span class="sd">            :param lexer: Injected IScaraLexer protocol instance.</span>
+<span class="sd">            :param parser: Injected IScaraParser protocol instance.</span>
+<span class="sd">            :param compiler: Injected IScaraCompiler protocol instance.</span>
+<span class="sd">            :param exporter: Injected IScaraPlanExporter protocol instance.</span>
+<span class="sd">            :param binary_compiler: Injected ICompiler protocol instance.</span>
+<span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_lexer</span><span class="p">:</span> <span class="n">IScaraLexer</span> <span class="o">=</span> <span class="n">lexer</span> <span class="k">if</span> <span class="n">lexer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">ScaraLexer</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="p">:</span> <span class="n">IScaraParser</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">parser</span> <span class="k">if</span> <span class="n">parser</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">ScaraParser</span><span class="p">()</span>
-        <span class="p">)</span>
-        <span class="n">active_validator</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">validator</span> <span class="k">if</span> <span class="n">validator</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">TrajectoryValidator</span><span class="p">()</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_compiler</span><span class="p">:</span> <span class="n">IScaraCompiler</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">compiler</span>
-            <span class="k">if</span> <span class="n">compiler</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="n">ScaraCompiler</span><span class="p">(</span><span class="n">validator</span><span class="o">=</span><span class="n">active_validator</span><span class="p">)</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_exporter</span><span class="p">:</span> <span class="n">IScaraPlanExporter</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">exporter</span> <span class="k">if</span> <span class="n">exporter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">ScaraPlanExporter</span><span class="p">()</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lexer</span> <span class="o">=</span> <span class="n">lexer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span> <span class="o">=</span> <span class="n">parser</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_compiler</span> <span class="o">=</span> <span class="n">compiler</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_exporter</span> <span class="o">=</span> <span class="n">exporter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_binary_compiler</span> <span class="o">=</span> <span class="n">binary_compiler</span>
 
 <div class="viewcode-block" id="ScaraDslService.compile_script">
 <a class="viewcode-back" href="../../../../../scarajectory.core.service.dsl.scara_dsl_service.html#scarajectory.core.service.dsl.scara_dsl_service.ScaraDslService.compile_script">[docs]</a>
-    <span class="k">def</span> <span class="nf">compile_script</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">bounds</span><span class="p">:</span> <span class="n">ScaraBounds</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryPlan</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">compile_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryPlan</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Compiles DSL source code into an executable and validated TrajectoryPlan.</span>
 
 <span class="sd">            :param source: Raw .scara script text.</span>
-<span class="sd">            :param bounds: Optional robot kinematic boundary constraints.</span>
 <span class="sd">            :return: Validated TrajectoryPlan instance.</span>
+<span class="sd">            :exceptions: ValueError if syntax or static analysis errors occur.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lexer</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
         <span class="n">program</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">parse_tokens</span><span class="p">(</span><span class="n">tokens</span><span class="o">=</span><span class="n">tokens</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compiler</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">program</span><span class="o">=</span><span class="n">program</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="n">bounds</span><span class="p">)</span></div>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compiler</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">program</span><span class="o">=</span><span class="n">program</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ScaraDslService.validate_script">
 <a class="viewcode-back" href="../../../../../scarajectory.core.service.dsl.scara_dsl_service.html#scarajectory.core.service.dsl.scara_dsl_service.ScaraDslService.validate_script">[docs]</a>
-    <span class="k">def</span> <span class="nf">validate_script</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">bounds</span><span class="p">:</span> <span class="n">ScaraBounds</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+    <span class="k">def</span> <span class="nf">validate_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Validates syntax, static analysis rules, and kinematics of a DSL script.</span>
+<span class="sd">            Checks syntax, static analysis rules, and kinematics of a DSL script.</span>
 
 <span class="sd">            :param source: Raw .scara script text.</span>
-<span class="sd">            :param bounds: Optional robot kinematic boundary constraints.</span>
-<span class="sd">            :return: Tuple of (is_valid, messages_list).</span>
+<span class="sd">            :return: Tuple of (is_valid boolean, list of error message strings).</span>
+<span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">messages</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
         <span class="k">try</span><span class="p">:</span>
             <span class="n">tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lexer</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
             <span class="n">program</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">parse_tokens</span><span class="p">(</span><span class="n">tokens</span><span class="o">=</span><span class="n">tokens</span><span class="p">)</span>
             <span class="n">diagnostics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compiler</span><span class="o">.</span><span class="n">lint</span><span class="p">(</span><span class="n">program</span><span class="o">=</span><span class="n">program</span><span class="p">)</span>
 
             <span class="k">for</span> <span class="n">diag</span> <span class="ow">in</span> <span class="n">diagnostics</span><span class="p">:</span>
-                <span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">diag</span><span class="o">.</span><span class="n">format_report</span><span class="p">())</span>
+                <span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">ScaraDiagnosticFormatter</span><span class="o">.</span><span class="n">format_report</span><span class="p">(</span><span class="n">diagnostic</span><span class="o">=</span><span class="n">diag</span><span class="p">)</span>
+                <span class="p">)</span>
 
             <span class="n">has_errors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span>
-                <span class="n">d</span><span class="o">.</span><span class="n">severity</span> <span class="o">==</span> <span class="n">ScaraDiagnosticSeverity</span><span class="o">.</span><span class="n">ERROR</span>
+                <span class="n">d</span><span class="o">.</span><span class="n">severity</span> <span class="o">==</span> <span class="n">DiagnosticSeverity</span><span class="o">.</span><span class="n">ERROR</span>
                 <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">diagnostics</span>
             <span class="p">)</span>
+
             <span class="k">if</span> <span class="n">has_errors</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">messages</span>
 
-            <span class="n">plan</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compiler</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">program</span><span class="o">=</span><span class="n">program</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="n">bounds</span><span class="p">)</span>
+            <span class="n">plan</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compiler</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">program</span><span class="o">=</span><span class="n">program</span><span class="p">)</span>
             <span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s1">&#39;✅ Validation PASSED: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">program</span><span class="o">.</span><span class="n">instructions</span><span class="p">)</span><span class="si">}</span><span class="s1"> instructions, </span><span class="si">{</span><span class="n">plan</span><span class="o">.</span><span class="n">count</span><span class="si">}</span><span class="s1"> waypoints generated.&#39;</span>
             <span class="p">)</span>
+
             <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="n">messages</span>
+
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;❌ Validation failed: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">messages</span></div>
@@ -217,16 +197,13 @@
 
 <div class="viewcode-block" id="ScaraDslService.lint_script">
 <a class="viewcode-back" href="../../../../../scarajectory.core.service.dsl.scara_dsl_service.html#scarajectory.core.service.dsl.scara_dsl_service.ScaraDslService.lint_script">[docs]</a>
-    <span class="k">def</span> <span class="nf">lint_script</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ScaraDiagnostic</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">lint_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Diagnostic</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Performs static analysis checks on a DSL script string.</span>
 
 <span class="sd">            :param source: Raw .scara script text.</span>
-<span class="sd">            :return: Tuple of ScaraDiagnostic findings.</span>
+<span class="sd">            :return: Tuple of Diagnostic findings.</span>
+<span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lexer</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
@@ -234,12 +211,12 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compiler</span><span class="o">.</span><span class="n">lint</span><span class="p">(</span><span class="n">program</span><span class="o">=</span><span class="n">program</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">(</span>
-                <span class="n">ScaraDiagnostic</span><span class="p">(</span>
+                <span class="n">Diagnostic</span><span class="p">(</span>
                     <span class="n">code</span><span class="o">=</span><span class="s1">&#39;SYNTAX_ERROR&#39;</span><span class="p">,</span>
-                    <span class="n">severity</span><span class="o">=</span><span class="n">ScaraDiagnosticSeverity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span>
+                    <span class="n">severity</span><span class="o">=</span><span class="n">DiagnosticSeverity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span>
                     <span class="n">message</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">),</span>
                     <span class="n">line</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                    <span class="n">command</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+                    <span class="n">command</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
                 <span class="p">),</span>
             <span class="p">)</span></div>
 
@@ -252,8 +229,48 @@
 
 <span class="sd">            :param plan: Read-only trajectory plan instance to serialize.</span>
 <span class="sd">            :return: Formatted SCARA DSL script.</span>
+<span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exporter</span><span class="o">.</span><span class="n">export_plan</span><span class="p">(</span><span class="n">plan</span><span class="o">=</span><span class="n">plan</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ScaraDslService.compile_plan">
+<a class="viewcode-back" href="../../../../../scarajectory.core.service.dsl.scara_dsl_service.html#scarajectory.core.service.dsl.scara_dsl_service.ScaraDslService.compile_plan">[docs]</a>
+    <span class="k">def</span> <span class="nf">compile_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">plan</span><span class="p">:</span> <span class="n">TrajectoryPlan</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Program</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Compiles TrajectoryPlan into Program package.</span>
+
+<span class="sd">            :param plan: TrajectoryPlan instance.</span>
+<span class="sd">            :return: Program instance.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_binary_compiler</span><span class="o">.</span><span class="n">compile_plan</span><span class="p">(</span><span class="n">plan</span><span class="o">=</span><span class="n">plan</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ScaraDslService.compile_to_bytes">
+<a class="viewcode-back" href="../../../../../scarajectory.core.service.dsl.scara_dsl_service.html#scarajectory.core.service.dsl.scara_dsl_service.ScaraDslService.compile_to_bytes">[docs]</a>
+    <span class="k">def</span> <span class="nf">compile_to_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Compiles DSL code directly to raw UART wire byte stream.</span>
+
+<span class="sd">            :param source: Raw .scara DSL source text.</span>
+<span class="sd">            :return: Serialized wire byte stream.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_binary_compiler</span><span class="o">.</span><span class="n">compile_to_bytes</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ScaraDslService.compile_to_binary">
+<a class="viewcode-back" href="../../../../../scarajectory.core.service.dsl.scara_dsl_service.html#scarajectory.core.service.dsl.scara_dsl_service.ScaraDslService.compile_to_binary">[docs]</a>
+    <span class="k">def</span> <span class="nf">compile_to_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Program</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Compiles DSL source text into Program package.</span>
+
+<span class="sd">            :param source: Raw .scara DSL source text.</span>
+<span class="sd">            :return: Program instance.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_binary_compiler</span><span class="o">.</span><span class="n">compile_script</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

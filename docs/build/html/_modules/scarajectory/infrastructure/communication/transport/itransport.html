@@ -38,7 +38,7 @@
   <h1>Source code for scarajectory.infrastructure.communication.transport.itransport</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
 
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Module</span>
 <span class="sd">    itransport.py</span>
 <span class="sd">Copyright</span>
@@ -55,14 +55,14 @@
 <span class="sd">    with this program. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 <span class="sd">Info</span>
 <span class="sd">    Interface protocol defining low-level bidirectional communication transports.</span>
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Callable</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.communication.stream_config</span> <span class="kn">import</span> <span class="n">StreamConfig</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.communication.stream.stream_config</span> <span class="kn">import</span> <span class="n">StreamConfig</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
@@ -78,7 +78,7 @@
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.transport.itransport.html#scarajectory.infrastructure.communication.transport.itransport.ITransport">[docs]</a>
 <span class="nd">@runtime_checkable</span>
 <span class="k">class</span> <span class="nc">ITransport</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Structural interface protocol for physical robot communication transports.</span>
 
 <span class="sd">        It defines:</span>
@@ -89,16 +89,18 @@
 <span class="sd">                | connect_with_config - Establishes communication session using configuration DTO.</span>
 <span class="sd">                | disconnect - Terminates communication link and frees resources.</span>
 <span class="sd">                | send_raw - Transmits command string over communication channel.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">                | send_bytes - Transmits raw bytes over communication channel.</span>
+<span class="sd">                | read_bytes - Reads raw byte chunk from communication channel.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="ITransport.is_connected">
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.transport.itransport.html#scarajectory.infrastructure.communication.transport.itransport.ITransport.is_connected">[docs]</a>
     <span class="k">def</span> <span class="nf">is_connected</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Checks if communication link is active.</span>
 
 <span class="sd">            :return: True if connected, False otherwise.</span>
-<span class="sd">        &#39;&#39;&#39;</span></div>
+<span class="sd">        &quot;&quot;&quot;</span></div>
 
 
 <div class="viewcode-block" id="ITransport.set_callbacks">
@@ -106,44 +108,68 @@
     <span class="k">def</span> <span class="nf">set_callbacks</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">on_line</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">on_log</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">on_log</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">on_bytes</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">bytes</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Registers packet reception and connection logging hooks.</span>
 
 <span class="sd">            :param on_line: Optional line received callback.</span>
 <span class="sd">            :param on_log: Optional logging callback.</span>
-<span class="sd">        &#39;&#39;&#39;</span></div>
+<span class="sd">            :param on_bytes: Optional raw byte chunk received callback.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
 
 
 <div class="viewcode-block" id="ITransport.connect_with_config">
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.transport.itransport.html#scarajectory.infrastructure.communication.transport.itransport.ITransport.connect_with_config">[docs]</a>
     <span class="k">def</span> <span class="nf">connect_with_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">StreamConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Establishes communication session using configuration DTO.</span>
 
 <span class="sd">            :param config: StreamConfig parameter bundle.</span>
 <span class="sd">            :return: True if connected successfully, False otherwise.</span>
-<span class="sd">        &#39;&#39;&#39;</span></div>
+<span class="sd">        &quot;&quot;&quot;</span></div>
 
 
 <div class="viewcode-block" id="ITransport.disconnect">
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.transport.itransport.html#scarajectory.infrastructure.communication.transport.itransport.ITransport.disconnect">[docs]</a>
     <span class="k">def</span> <span class="nf">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Terminates communication link and frees resources.</span>
-<span class="sd">        &#39;&#39;&#39;</span></div>
+<span class="sd">        &quot;&quot;&quot;</span></div>
 
 
 <div class="viewcode-block" id="ITransport.send_raw">
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.transport.itransport.html#scarajectory.infrastructure.communication.transport.itransport.ITransport.send_raw">[docs]</a>
     <span class="k">def</span> <span class="nf">send_raw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Transmits command string over communication channel.</span>
 
 <span class="sd">            :param cmd: Formatted command payload.</span>
 <span class="sd">            :return: True if transmission succeeded, False otherwise.</span>
-<span class="sd">        &#39;&#39;&#39;</span></div>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="ITransport.send_bytes">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.transport.itransport.html#scarajectory.infrastructure.communication.transport.itransport.ITransport.send_bytes">[docs]</a>
+    <span class="k">def</span> <span class="nf">send_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payload</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Transmits raw bytes over communication channel.</span>
+
+<span class="sd">            :param payload: Binary byte payload.</span>
+<span class="sd">            :return: True if transmission succeeded, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="ITransport.read_bytes">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.transport.itransport.html#scarajectory.infrastructure.communication.transport.itransport.ITransport.read_bytes">[docs]</a>
+    <span class="k">def</span> <span class="nf">read_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Reads raw byte chunk from communication channel.</span>
+
+<span class="sd">            :param size: Maximum bytes to read.</span>
+<span class="sd">            :return: Received bytes.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
 </div>
 
 </pre></div>

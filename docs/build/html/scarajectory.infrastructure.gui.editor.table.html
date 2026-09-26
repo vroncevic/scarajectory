@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="scarajectory.infrastructure.gui.editor.validation_tab module" href="scarajectory.infrastructure.gui.editor.validation_tab.html" />
-    <link rel="prev" title="scarajectory.infrastructure.gui.editor.preview_tab module" href="scarajectory.infrastructure.gui.editor.preview_tab.html" /> 
+    <link rel="prev" title="scarajectory.infrastructure.gui.editor.preview_tab_factory module" href="scarajectory.infrastructure.gui.editor.preview_tab_factory.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -31,7 +31,7 @@
           <a href="scarajectory.infrastructure.gui.editor.validation_tab.html" title="scarajectory.infrastructure.gui.editor.validation_tab module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.gui.editor.preview_tab.html" title="scarajectory.infrastructure.gui.editor.preview_tab module"
+          <a href="scarajectory.infrastructure.gui.editor.preview_tab_factory.html" title="scarajectory.infrastructure.gui.editor.preview_tab_factory module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
@@ -70,7 +70,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.editor.table.TrajectoryTable">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.gui.editor.table.</span></span><span class="sig-name descname"><span class="pre">TrajectoryTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.trajectory.itrajectory_plan.html#scarajectory.core.model.trajectory.itrajectory_plan.ITrajectoryPlan" title="scarajectory.core.model.trajectory.itrajectory_plan.ITrajectoryPlan"><span class="pre">ITrajectoryPlan</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/editor/table.html#TrajectoryTable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.editor.table.TrajectoryTable" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.gui.editor.table.</span></span><span class="sig-name descname"><span class="pre">TrajectoryTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.plan.itrajectory_plan.html#scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan" title="scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan"><span class="pre">ITrajectoryPlan</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/editor/table.html#TrajectoryTable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.editor.table.TrajectoryTable" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></p>
 <p>Tabular display of waypoints with selection synchronization and inspection.</p>
 <p>It defines:</p>
@@ -93,6 +93,41 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd>
 </dl>
 </div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.editor.table.TrajectoryTable._create_widgets">
+<span class="sig-name descname"><span class="pre">_create_widgets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/editor/table.html#TrajectoryTable._create_widgets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.editor.table.TrajectoryTable._create_widgets" title="Link to this definition">¶</a></dt>
+<dd><p>Builds treeview table and scrollbars.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.editor.table.TrajectoryTable._on_tree_select">
+<span class="sig-name descname"><span class="pre">_on_tree_select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Event</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/editor/table.html#TrajectoryTable._on_tree_select"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.editor.table.TrajectoryTable._on_tree_select" title="Link to this definition">¶</a></dt>
+<dd><p>Handles row selection in table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>event</strong> – Tk event.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.editor.table.TrajectoryTable._plan">
+<span class="sig-name descname"><span class="pre">_plan</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.trajectory.plan.itrajectory_plan.html#scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan" title="scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan"><span class="pre">ITrajectoryPlan</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.editor.table.TrajectoryTable._plan" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.editor.table.TrajectoryTable._tree">
+<span class="sig-name descname"><span class="pre">_tree</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Treeview</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.editor.table.TrajectoryTable._tree" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.editor.table.TrajectoryTable.delete_selected">
 <span class="sig-name descname"><span class="pre">delete_selected</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/editor/table.html#TrajectoryTable.delete_selected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.editor.table.TrajectoryTable.delete_selected" title="Link to this definition">¶</a></dt>
@@ -156,6 +191,10 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <ul>
 <li><a class="reference internal" href="#">scarajectory.infrastructure.gui.editor.table module</a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.table.TrajectoryTable"><code class="docutils literal notranslate"><span class="pre">TrajectoryTable</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.table.TrajectoryTable._create_widgets"><code class="docutils literal notranslate"><span class="pre">TrajectoryTable._create_widgets()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.table.TrajectoryTable._on_tree_select"><code class="docutils literal notranslate"><span class="pre">TrajectoryTable._on_tree_select()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.table.TrajectoryTable._plan"><code class="docutils literal notranslate"><span class="pre">TrajectoryTable._plan</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.table.TrajectoryTable._tree"><code class="docutils literal notranslate"><span class="pre">TrajectoryTable._tree</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.table.TrajectoryTable.delete_selected"><code class="docutils literal notranslate"><span class="pre">TrajectoryTable.delete_selected()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.table.TrajectoryTable.on_point_selected"><code class="docutils literal notranslate"><span class="pre">TrajectoryTable.on_point_selected()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.table.TrajectoryTable.on_trajectory_updated"><code class="docutils literal notranslate"><span class="pre">TrajectoryTable.on_trajectory_updated()</span></code></a></li>
@@ -169,8 +208,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.gui.editor.preview_tab.html"
-                          title="previous chapter">scarajectory.infrastructure.gui.editor.preview_tab module</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.editor.preview_tab_factory.html"
+                          title="previous chapter">scarajectory.infrastructure.gui.editor.preview_tab_factory module</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -211,7 +250,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="scarajectory.infrastructure.gui.editor.validation_tab.html" title="scarajectory.infrastructure.gui.editor.validation_tab module"
              >next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.gui.editor.preview_tab.html" title="scarajectory.infrastructure.gui.editor.preview_tab module"
+          <a href="scarajectory.infrastructure.gui.editor.preview_tab_factory.html" title="scarajectory.infrastructure.gui.editor.preview_tab_factory module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>

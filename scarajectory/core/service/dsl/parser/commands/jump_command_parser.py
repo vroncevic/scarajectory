@@ -21,10 +21,9 @@ Info
 
 from __future__ import annotations
 
-from scarajectory.core.model.dsl.ast.iscara_instruction import IScaraInstruction
-from scarajectory.core.model.dsl.ast.scara_command_type import ScaraCommandType
-from scarajectory.core.model.dsl.ast.scara_instruction import ScaraInstruction
-from scarajectory.core.model.dsl.token.scara_token import ScaraToken
+from scarajectory.core.model.dsl.ast.command_type import CommandType
+from scarajectory.core.model.dsl.ast.instruction import Instruction
+from scarajectory.core.model.dsl.token.token import Token
 from scarajectory.core.service.dsl.parser.parameter_extractor import ParameterExtractor
 
 __author__ = 'Vladimir Roncevic'
@@ -47,7 +46,7 @@ class JumpCommandParser:
                 | None.
             :methods:
                 | can_parse - Checks whether command is JUMP.
-                | parse - Parses JUMP statement tokens into ScaraInstruction.
+                | parse - Parses JUMP statement tokens into Instruction.
     '''
 
     def can_parse(self, *, command_name: str) -> bool:
@@ -62,21 +61,22 @@ class JumpCommandParser:
     def parse(
         self,
         *,
-        tokens: tuple[ScaraToken, ...],
+        tokens: tuple[Token, ...],
         line_num: int,
         raw_text: str,
-    ) -> IScaraInstruction:
+    ) -> Instruction:
         '''
-            Parses JUMP statement into ScaraInstruction.
+            Parses JUMP statement into Instruction.
 
             :param tokens: Statement token tuple.
             :param line_num: Line number in source code.
             :param raw_text: Original statement text.
-            :return: IScaraInstruction node.
+            :return: Instruction node.
         '''
         params = ParameterExtractor.extract_key_values(tokens=tokens[1:])
-        return ScaraInstruction(
-            command_type=ScaraCommandType.JUMP,
+
+        return Instruction(
+            command_type=CommandType.JUMP,
             line_number=line_num,
             raw_text=raw_text,
             parameters=params,

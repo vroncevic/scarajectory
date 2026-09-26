@@ -88,6 +88,89 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd>
 </dl>
 </div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._channel_is_open">
+<span class="sig-name descname"><span class="pre">_channel_is_open</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/tcp_transport.html#TcpTransport._channel_is_open"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._channel_is_open" title="Link to this definition">¶</a></dt>
+<dd><p>Checks if TCP socket is connected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if socket is active.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._channel_name">
+<span class="sig-name descname"><span class="pre">_channel_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/tcp_transport.html#TcpTransport._channel_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._channel_name" title="Link to this definition">¶</a></dt>
+<dd><p>Returns descriptive name of TCP channel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Channel name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._close_channel">
+<span class="sig-name descname"><span class="pre">_close_channel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/tcp_transport.html#TcpTransport._close_channel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._close_channel" title="Link to this definition">¶</a></dt>
+<dd><p>Closes socket connection.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._connected_log_message">
+<span class="sig-name descname"><span class="pre">_connected_log_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.communication.stream.stream_config.html#scarajectory.core.model.communication.stream.stream_config.StreamConfig" title="scarajectory.core.model.communication.stream.stream_config.StreamConfig"><span class="pre">StreamConfig</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/tcp_transport.html#TcpTransport._connected_log_message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._connected_log_message" title="Link to this definition">¶</a></dt>
+<dd><p>Returns formatted log message upon establishing TCP connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> – StreamConfig parameters.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted connection message.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._open_channel">
+<span class="sig-name descname"><span class="pre">_open_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.communication.stream.stream_config.html#scarajectory.core.model.communication.stream.stream_config.StreamConfig" title="scarajectory.core.model.communication.stream.stream_config.StreamConfig"><span class="pre">StreamConfig</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/tcp_transport.html#TcpTransport._open_channel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._open_channel" title="Link to this definition">¶</a></dt>
+<dd><p>Connects TCP socket to target host:port.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> – StreamConfig parameters.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._read_bytes">
+<span class="sig-name descname"><span class="pre">_read_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/tcp_transport.html#TcpTransport._read_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._read_bytes" title="Link to this definition">¶</a></dt>
+<dd><p>Reads bytes from TCP socket.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>size</strong> – Maximum bytes to read.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Read byte payload.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._sock">
+<span class="sig-name descname"><span class="pre">_sock</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Socket</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._sock" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._write_bytes">
+<span class="sig-name descname"><span class="pre">_write_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/communication/transport/tcp_transport.html#TcpTransport._write_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._write_bytes" title="Link to this definition">¶</a></dt>
+<dd><p>Transmits byte payload over TCP socket.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>payload</strong> – Bytes to write.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -103,7 +186,17 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <h3><a href="index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">scarajectory.infrastructure.communication.transport.tcp_transport module</a><ul>
-<li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport"><code class="docutils literal notranslate"><span class="pre">TcpTransport</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport"><code class="docutils literal notranslate"><span class="pre">TcpTransport</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._channel_is_open"><code class="docutils literal notranslate"><span class="pre">TcpTransport._channel_is_open()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._channel_name"><code class="docutils literal notranslate"><span class="pre">TcpTransport._channel_name()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._close_channel"><code class="docutils literal notranslate"><span class="pre">TcpTransport._close_channel()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._connected_log_message"><code class="docutils literal notranslate"><span class="pre">TcpTransport._connected_log_message()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._open_channel"><code class="docutils literal notranslate"><span class="pre">TcpTransport._open_channel()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._read_bytes"><code class="docutils literal notranslate"><span class="pre">TcpTransport._read_bytes()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._sock"><code class="docutils literal notranslate"><span class="pre">TcpTransport._sock</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._write_bytes"><code class="docutils literal notranslate"><span class="pre">TcpTransport._write_bytes()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

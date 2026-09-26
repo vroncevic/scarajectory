@@ -24,8 +24,8 @@ from __future__ import annotations
 from re import compile as re_compile, Pattern
 from typing import ClassVar
 
-from scarajectory.core.model.dsl.token.scara_token import ScaraToken
-from scarajectory.core.model.dsl.token.scara_token_type import ScaraTokenType
+from scarajectory.core.model.dsl.token.token import Token
+from scarajectory.core.model.dsl.token.token_type import TokenType
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -62,15 +62,15 @@ class ScaraLexer:
         r'(?P<MISMATCH>.)'
     )
 
-    def tokenize(self, *, source: str) -> tuple[ScaraToken, ...]:
+    def tokenize(self, *, source: str) -> tuple[Token, ...]:
         '''
-            Tokenizes source text into a tuple of ScaraToken instances.
+            Tokenizes source text into a tuple of Token instances.
 
             :param source: Raw source code string.
-            :return: Immutable tuple of ScaraToken tokens.
+            :return: Immutable tuple of Token tokens.
             :exceptions: ValueError if an illegal/unrecognized character is encountered.
         '''
-        tokens: list[ScaraToken] = []
+        tokens: list[Token] = []
         lines: list[str] = source.splitlines()
 
         for line_idx, line in enumerate(lines, start=1):
@@ -89,25 +89,25 @@ class ScaraLexer:
                         f'Syntax error: Unexpected character {val!r} at line {line_idx}, column {col}'
                     )
 
-                token_type = ScaraTokenType.IDENTIFIER
+                token_type = TokenType.IDENTIFIER
                 match kind:
                     case 'NUMBER':
-                        token_type = ScaraTokenType.NUMBER
+                        token_type = TokenType.NUMBER
                     case 'STRING':
-                        token_type = ScaraTokenType.STRING
+                        token_type = TokenType.STRING
                     case 'EQUALS':
-                        token_type = ScaraTokenType.EQUALS
+                        token_type = TokenType.EQUALS
                     case 'COMMA':
-                        token_type = ScaraTokenType.COMMA
+                        token_type = TokenType.COMMA
                     case 'LPAREN':
-                        token_type = ScaraTokenType.LPAREN
+                        token_type = TokenType.LPAREN
                     case 'RPAREN':
-                        token_type = ScaraTokenType.RPAREN
+                        token_type = TokenType.RPAREN
                     case _:
-                        token_type = ScaraTokenType.IDENTIFIER
+                        token_type = TokenType.IDENTIFIER
 
                 tokens.append(
-                    ScaraToken(
+                    Token(
                         token_type=token_type,
                         value=val,
                         line=line_idx,
@@ -118,8 +118,8 @@ class ScaraLexer:
 
             if line_has_tokens:
                 tokens.append(
-                    ScaraToken(
-                        token_type=ScaraTokenType.NEWLINE,
+                    Token(
+                        token_type=TokenType.NEWLINE,
                         value='\n',
                         line=line_idx,
                         column=len(line) + 1,
@@ -127,11 +127,12 @@ class ScaraLexer:
                 )
 
         tokens.append(
-            ScaraToken(
-                token_type=ScaraTokenType.EOF,
+            Token(
+                token_type=TokenType.EOF,
                 value='',
                 line=len(lines) + 1,
                 column=1,
             )
         )
+
         return tuple(tokens)

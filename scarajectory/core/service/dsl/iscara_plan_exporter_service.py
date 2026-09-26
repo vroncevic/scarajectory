@@ -23,9 +23,7 @@ from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
-from scarajectory.core.model.trajectory.itrajectory_read_only import (
-    ITrajectoryReadOnly,
-)
+from scarajectory.core.service.trajectory.plan.itrajectory_read_only import ITrajectoryReadOnly
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'

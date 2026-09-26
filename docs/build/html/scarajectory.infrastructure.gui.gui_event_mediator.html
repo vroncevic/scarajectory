@@ -15,7 +15,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="scarajectory.infrastructure.gui.igui module" href="scarajectory.infrastructure.gui.igui.html" />
+    <link rel="next" title="scarajectory.infrastructure.gui.gui_factory module" href="scarajectory.infrastructure.gui.gui_factory.html" />
     <link rel="prev" title="scarajectory.infrastructure.gui.engine module" href="scarajectory.infrastructure.gui.engine.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -28,7 +28,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.gui.igui.html" title="scarajectory.infrastructure.gui.igui module"
+          <a href="scarajectory.infrastructure.gui.gui_factory.html" title="scarajectory.infrastructure.gui.gui_factory module"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="scarajectory.infrastructure.gui.engine.html" title="scarajectory.infrastructure.gui.engine module"
@@ -95,9 +95,19 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd>
 </dl>
 </div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator._observers">
+<span class="sig-name descname"><span class="pre">_observers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.service.trajectory.plan.itrajectory_observer.html#scarajectory.core.service.trajectory.plan.itrajectory_observer.ITrajectoryObserver" title="scarajectory.core.service.trajectory.plan.itrajectory_observer.ITrajectoryObserver"><span class="pre">ITrajectoryObserver</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator._observers" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator._selected_index">
+<span class="sig-name descname"><span class="pre">_selected_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator._selected_index" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.add_observer">
-<span class="sig-name descname"><span class="pre">add_observer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.itrajectory_observer.html#scarajectory.core.service.trajectory.itrajectory_observer.ITrajectoryObserver" title="scarajectory.core.service.trajectory.itrajectory_observer.ITrajectoryObserver"><span class="pre">ITrajectoryObserver</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/gui_event_mediator.html#GuiEventMediator.add_observer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.add_observer" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">add_observer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.plan.itrajectory_observer.html#scarajectory.core.service.trajectory.plan.itrajectory_observer.ITrajectoryObserver" title="scarajectory.core.service.trajectory.plan.itrajectory_observer.ITrajectoryObserver"><span class="pre">ITrajectoryObserver</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/gui_event_mediator.html#GuiEventMediator.add_observer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.add_observer" title="Link to this definition">¶</a></dt>
 <dd><p>Registers an observer for GUI events.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -147,7 +157,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.remove_observer">
-<span class="sig-name descname"><span class="pre">remove_observer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.itrajectory_observer.html#scarajectory.core.service.trajectory.itrajectory_observer.ITrajectoryObserver" title="scarajectory.core.service.trajectory.itrajectory_observer.ITrajectoryObserver"><span class="pre">ITrajectoryObserver</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/gui_event_mediator.html#GuiEventMediator.remove_observer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.remove_observer" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">remove_observer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.plan.itrajectory_observer.html#scarajectory.core.service.trajectory.plan.itrajectory_observer.ITrajectoryObserver" title="scarajectory.core.service.trajectory.plan.itrajectory_observer.ITrajectoryObserver"><span class="pre">ITrajectoryObserver</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/gui_event_mediator.html#GuiEventMediator.remove_observer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.remove_observer" title="Link to this definition">¶</a></dt>
 <dd><p>Unregisters an observer from GUI events.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -206,6 +216,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <ul>
 <li><a class="reference internal" href="#">scarajectory.infrastructure.gui.gui_event_mediator module</a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator"><code class="docutils literal notranslate"><span class="pre">GuiEventMediator</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator._observers"><code class="docutils literal notranslate"><span class="pre">GuiEventMediator._observers</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator._selected_index"><code class="docutils literal notranslate"><span class="pre">GuiEventMediator._selected_index</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.add_observer"><code class="docutils literal notranslate"><span class="pre">GuiEventMediator.add_observer()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.clear_selection"><code class="docutils literal notranslate"><span class="pre">GuiEventMediator.clear_selection()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.gui_event_mediator.GuiEventMediator.notify_point_selected"><code class="docutils literal notranslate"><span class="pre">GuiEventMediator.notify_point_selected()</span></code></a></li>
@@ -227,8 +239,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.gui.igui.html"
-                          title="next chapter">scarajectory.infrastructure.gui.igui module</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.gui_factory.html"
+                          title="next chapter">scarajectory.infrastructure.gui.gui_factory module</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -261,7 +273,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.gui.igui.html" title="scarajectory.infrastructure.gui.igui module"
+          <a href="scarajectory.infrastructure.gui.gui_factory.html" title="scarajectory.infrastructure.gui.gui_factory module"
              >next</a> |</li>
         <li class="right" >
           <a href="scarajectory.infrastructure.gui.engine.html" title="scarajectory.infrastructure.gui.engine module"

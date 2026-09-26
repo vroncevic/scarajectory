@@ -22,19 +22,7 @@ Info
 from __future__ import annotations
 
 from datetime import datetime
-from tkinter import (
-    BOTH,
-    END,
-    INSERT,
-    RIGHT,
-    SEL,
-    SEL_FIRST,
-    SEL_LAST,
-    TclError,
-    Text,
-    Widget,
-    X,
-)
+from tkinter import BOTH, END, INSERT, RIGHT, SEL, SEL_FIRST, SEL_LAST, TclError, Text, Widget, X
 from tkinter.ttk import Button, Frame, LabelFrame
 
 __author__ = 'Vladimir Roncevic'

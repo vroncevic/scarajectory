@@ -5,3 +5,4 @@ scarajectory.infrastructure.gui.editor.itable module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

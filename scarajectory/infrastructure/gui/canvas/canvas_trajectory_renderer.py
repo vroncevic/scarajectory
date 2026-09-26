@@ -24,9 +24,9 @@ from __future__ import annotations
 from tkinter import Canvas
 from typing import Sequence
 
-from scarajectory.core.model.trajectory.trajectory_plan import TrajectoryPlan
+from scarajectory.core.service.trajectory.plan.itrajectory_plan import ITrajectoryPlan
 from scarajectory.core.model.trajectory.waypoint import Waypoint
-from scarajectory.core.service.trajectory.itrajectory_validator import ITrajectoryValidator
+from scarajectory.core.service.trajectory.validation.itrajectory_validator import ITrajectoryValidator
 from scarajectory.infrastructure.gui.model.viewport_transform import ViewportTransform
 
 __author__ = 'Vladimir Roncevic'
@@ -86,7 +86,7 @@ class CanvasTrajectoryRenderer:
         cls,
         canvas: Canvas,
         vp: ViewportTransform,
-        plan: TrajectoryPlan,
+        plan: ITrajectoryPlan,
         validator: ITrajectoryValidator
     ) -> None:
         '''

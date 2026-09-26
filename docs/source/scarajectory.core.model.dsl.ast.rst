@@ -7,11 +7,9 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.core.model.dsl.ast.iscara_instruction
-   scarajectory.core.model.dsl.ast.iscara_program
-   scarajectory.core.model.dsl.ast.scara_command_type
-   scarajectory.core.model.dsl.ast.scara_instruction
-   scarajectory.core.model.dsl.ast.scara_program
+   scarajectory.core.model.dsl.ast.command_type
+   scarajectory.core.model.dsl.ast.instruction
+   scarajectory.core.model.dsl.ast.program
 
 Module contents
 ---------------
@@ -20,3 +18,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

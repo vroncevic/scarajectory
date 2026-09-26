@@ -8,6 +8,7 @@ Submodules
    :maxdepth: 4
 
    scarajectory.infrastructure.gui.controls.controls
+   scarajectory.infrastructure.gui.controls.controls_panel_factory
    scarajectory.infrastructure.gui.controls.icontrols_panel
 
 Module contents
@@ -17,3 +18,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

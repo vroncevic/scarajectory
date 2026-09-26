@@ -21,30 +21,38 @@ Info
 
 from __future__ import annotations
 
-from os.path import abspath, dirname, exists, join
-from math import cos, sqrt
-from typing import Any
+from os.path import abspath, dirname, join
 
-from ats_utilities.base.setup.factory import BaseBundleFactory
 from ats_utilities.base.setup.bundle import BaseBundle
+from ats_utilities.base.setup.factory import BaseBundleFactory
 from ats_utilities.base.setup.options import BaseBundleOptions
 from ats_utilities.context.bundle import ContextBundle
 from ats_utilities.context.factory import ContextBundleFactory
-from ats_utilities.config_io.loader.engine import Loader
-from ats_utilities.config_io.setup.factory import ConfigIOBundleFactory
-from ats_utilities.config_io.setup.options import ConfigIOBundleOptions
-from ats_utilities.config_io.setup.keys import ConfigIOBundleKeys
 
+from scarajectory.infrastructure.settings.config_loader_factory import ScaraConfigLoaderFactory
+from scarajectory.core.service.config.iscara_config_loader import IScaraConfigLoader
 from scarajectory.core.model.kinematics.scara_bounds import ScaraBounds
-from scarajectory.core.model.trajectory.trajectory_plan import TrajectoryPlan
-from scarajectory.core.service.kinematics.kinematics_service import KinematicsService
-from scarajectory.core.service.trajectory.trajectory_validator import TrajectoryValidator
+from scarajectory.core.model.kinematics.transmission_parameters import TransmissionParameters
+from scarajectory.core.service.trajectory.plan.trajectory_plan import TrajectoryPlan
+from scarajectory.core.service.trajectory.plan.trajectory_plan_factory import TrajectoryPlanFactory
+from scarajectory.core.service.kinematics.ikinematics_service import IKinematicsService
+from scarajectory.core.service.kinematics.kinematics_service_factory import KinematicsServiceFactory
+from scarajectory.core.service.trajectory.validation.itrajectory_validator import ITrajectoryValidator
+from scarajectory.core.service.trajectory.validation.trajectory_validator_factory import TrajectoryValidatorFactory
+from scarajectory.infrastructure.communication.preferences.connection_repository import ConnectionRepository
+from scarajectory.infrastructure.communication.preferences.connection_repository_factory import ConnectionRepositoryFactory
 from scarajectory.infrastructure.storage.plan_storage_service import PlanStorageService
-from scarajectory.core.service.dsl.scara_dsl_service import ScaraDslService
+from scarajectory.infrastructure.storage.plan_storage_service_factory import PlanStorageServiceFactory
+from scaralang.core.service.dsl.iscara_dsl_service import IScaraDslService
+from scaralang.core.service.dsl.scara_dsl_service_factory import ScaraDslServiceFactory
 from scarajectory.core.service.engine import Service
-from scarajectory.infrastructure.communication.transport.serial_transport import SerialTransport
-from scarajectory.infrastructure.communication.streamer.trajectory_streamer import TrajectoryStreamer
+from scarajectory.core.service.service_factory import ServiceFactory
+from scarajectory.infrastructure.communication.transport.itransport import ITransport
+from scarajectory.infrastructure.communication.transport.transport_factory import TransportFactory
+from scarajectory.core.service.communication.stream.itrajectory_streamer import ITrajectoryStreamer
+from scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory import TrajectoryStreamerFactory
 from scarajectory.infrastructure.gui.engine import ScarajectoryGUI
+from scarajectory.infrastructure.gui.gui_factory import ScarajectoryGUIFactory
 from scarajectory.infrastructure.cli.engine import CLI
 from scarajectory.infrastructure.cli.setup.bundle import CLIBundle
 from scarajectory.infrastructure.cli.setup.options import CLIBundleOptions
@@ -77,7 +85,7 @@ class SCARAjectoryBundleFactory:
                 | _geometry_config_file - Path to default robot geometry config file.
                 | _geometry_scheme_file - Path to robot geometry validation scheme.
             :methods:
-                | _resolve_bounds - Resolves and constructs ScaraBounds from JSON config and options.
+                | resolve_bounds - Resolves and constructs ScaraBounds from JSON config and options.
                 | create_bundle - Creates the scarajectory bundle with optional pre-configured options.
                 | get_version - Returns the factory version.
     '''
@@ -86,176 +94,122 @@ class SCARAjectoryBundleFactory:
         dirname(dirname(abspath(__file__))),
         'infrastructure', 'config', 'scarajectory.cfg'
     )
-    _geometry_config_file: str = 'scarajectory/infrastructure/config/scara_geometry.json'
-    _geometry_scheme_file: str = 'scarajectory/infrastructure/config/scheme.json'
+    _geometry_config_file: str = join(
+        dirname(dirname(abspath(__file__))),
+        'infrastructure', 'config', 'scara_geometry.json'
+    )
+    _geometry_scheme_file: str = join(
+        dirname(dirname(abspath(__file__))),
+        'infrastructure', 'config', 'scheme.json'
+    )
 
     @classmethod
-    def _resolve_bounds(cls, options: SCARAjectoryBundleOptions | None = None) -> ScaraBounds:
+    def resolve_bounds(cls) -> ScaraBounds:
         '''
-            Resolves and constructs ScaraBounds from JSON configuration and options.
+            Resolves and constructs ScaraBounds from JSON configuration.
 
-            :param options: Optional bundle configuration options.
             :return: ScaraBounds domain model.
             :exceptions: None.
         '''
-        config_path: str = cls._geometry_config_file
-        if options and SCARAjectoryBundleKeys.OPTION_ROBOT_CONFIG in options:
-            config_path = str(options[SCARAjectoryBundleKeys.OPTION_ROBOT_CONFIG])
+        loader: IScaraConfigLoader = ScaraConfigLoaderFactory.create()
 
-        config_data: dict[str, Any] = {}
-
-        if exists(config_path) and exists(cls._geometry_scheme_file):
-            try:
-                context: ContextBundle = ContextBundleFactory.create_bundle()
-                scheme_bundle = ConfigIOBundleFactory.create_bundle(
-                    ConfigIOBundleOptions({
-                        ConfigIOBundleKeys.OPTION_FILE_PATH: cls._geometry_scheme_file,
-                        ConfigIOBundleKeys.OPTION_CONTEXT_BUNDLE: context
-                    })
-                )
-                scheme = Loader(scheme_bundle).load_configuration()
-
-                config_bundle = ConfigIOBundleFactory.create_bundle(
-                    ConfigIOBundleOptions({
-                        ConfigIOBundleKeys.OPTION_FILE_PATH: config_path,
-                        ConfigIOBundleKeys.OPTION_SCHEME: scheme,
-                        ConfigIOBundleKeys.OPTION_CONTEXT_BUNDLE: context
-                    })
-                )
-                config_data = Loader(config_bundle).load_configuration()
-
-            except Exception:
-                config_data = {}
-
-        l1: float = (
-            float(options[SCARAjectoryBundleKeys.OPTION_L1])
-            if options and SCARAjectoryBundleKeys.OPTION_L1 in options
-            else float(config_data.get('l1', 150.0))
-        )
-        l2: float = (
-            float(options[SCARAjectoryBundleKeys.OPTION_L2])
-            if options and SCARAjectoryBundleKeys.OPTION_L2 in options
-            else float(config_data.get('l2', 120.0))
-        )
-        z_min: float = (
-            float(options[SCARAjectoryBundleKeys.OPTION_Z_MIN])
-            if options and SCARAjectoryBundleKeys.OPTION_Z_MIN in options
-            else float(config_data.get('z_min', 0.0))
-        )
-        z_max: float = (
-            float(options[SCARAjectoryBundleKeys.OPTION_Z_MAX])
-            if options and SCARAjectoryBundleKeys.OPTION_Z_MAX in options
-            else float(config_data.get('z_max', 100.0))
-        )
-        min_speed: float = (
-            float(options[SCARAjectoryBundleKeys.OPTION_MIN_SPEED])
-            if options and SCARAjectoryBundleKeys.OPTION_MIN_SPEED in options
-            else float(config_data.get('min_speed', 1.0))
-        )
-        max_speed: float = (
-            float(options[SCARAjectoryBundleKeys.OPTION_MAX_SPEED])
-            if options and SCARAjectoryBundleKeys.OPTION_MAX_SPEED in options
-            else float(config_data.get('max_speed', 100.0))
-        )
-
-        default_speed: float = float(config_data.get('default_speed', 50.0))
-        default_accel: float = float(config_data.get('default_accel', 300.0))
-        max_accel: float = float(config_data.get('max_accel', 2000.0))
-        j1_min_rad: float = float(config_data.get('j1_min_rad', -2.617994))
-        j1_max_rad: float = float(config_data.get('j1_max_rad', 2.617994))
-        j2_min_rad: float = float(config_data.get('j2_min_rad', -2.530727))
-        j2_max_rad: float = float(config_data.get('j2_max_rad', 2.530727))
-        singularity_outer_margin_mm: float = float(
-            config_data.get('singularity_outer_margin_mm', 3.0)
-        )
-        singularity_inner_margin_mm: float = float(
-            config_data.get('singularity_inner_margin_mm', 3.0)
-        )
-        singularity_theta2_min_rad: float = float(
-            config_data.get('singularity_theta2_min_rad', 0.087266)
-        )
-
-        r_dead_sq: float = (
-            l1 * l1 + l2 * l2 + 2.0 * l1 * l2 * cos(j2_max_rad)
-        )
-        deadzone_r_min: float = sqrt(max(0.0, r_dead_sq))
-
-        return ScaraBounds(
-            l1=l1,
-            l2=l2,
-            z_min=z_min,
-            z_max=z_max,
-            min_speed=min_speed,
-            max_speed=max_speed,
-            default_speed=default_speed,
-            default_accel=default_accel,
-            max_accel=max_accel,
-            j1_min_rad=j1_min_rad,
-            j1_max_rad=j1_max_rad,
-            j2_min_rad=j2_min_rad,
-            j2_max_rad=j2_max_rad,
-            singularity_outer_margin_mm=singularity_outer_margin_mm,
-            singularity_inner_margin_mm=singularity_inner_margin_mm,
-            singularity_theta2_min_rad=singularity_theta2_min_rad,
-            deadzone_r_min=deadzone_r_min
-        )
+        return loader.load_bounds()
 
     @classmethod
-    def create_bundle(cls, options: SCARAjectoryBundleOptions | None = None) -> SCARAjectoryBundle:
+    def resolve_bounds_with_options(
+        cls,
+        options: SCARAjectoryBundleOptions,
+    ) -> ScaraBounds:
         '''
-            Creates the scarajectory bundle with optional pre-configured options.
+            Resolves and constructs ScaraBounds from JSON configuration and options.
 
-            :param options: Optional pre-configured options for the bundle.
+            :param options: Bundle configuration options.
+            :return: ScaraBounds domain model.
+            :exceptions: None.
+        '''
+        opts_dict: dict[str, object] = {}
+        if SCARAjectoryBundleKeys.OPTION_L1 in options:
+            opts_dict['l1'] = options[SCARAjectoryBundleKeys.OPTION_L1]
+        if SCARAjectoryBundleKeys.OPTION_L2 in options:
+            opts_dict['l2'] = options[SCARAjectoryBundleKeys.OPTION_L2]
+        if SCARAjectoryBundleKeys.OPTION_Z_MIN in options:
+            opts_dict['z_min'] = options[SCARAjectoryBundleKeys.OPTION_Z_MIN]
+        if SCARAjectoryBundleKeys.OPTION_Z_MAX in options:
+            opts_dict['z_max'] = options[SCARAjectoryBundleKeys.OPTION_Z_MAX]
+        if SCARAjectoryBundleKeys.OPTION_MIN_SPEED in options:
+            opts_dict['min_speed'] = options[SCARAjectoryBundleKeys.OPTION_MIN_SPEED]
+        if SCARAjectoryBundleKeys.OPTION_MAX_SPEED in options:
+            opts_dict['max_speed'] = options[SCARAjectoryBundleKeys.OPTION_MAX_SPEED]
+
+        loader: IScaraConfigLoader = ScaraConfigLoaderFactory.create()
+
+        if opts_dict:
+            return loader.load_bounds_with_options(options=opts_dict)
+
+        return loader.load_bounds()
+
+    @classmethod
+    def create_bundle(cls) -> SCARAjectoryBundle:
+        '''
+            Creates the scarajectory bundle with default options.
+
             :return: The scarajectory bundle.
-            :exceptions:
-                | ATSValueError: The options or dependencies must be valid.
-                | ATSTypeError: The options or dependencies must match types.
+            :exceptions: None.
         '''
-        if options is not None:
-            SCARAjectoryBundleOptionsValidator.validate(options)
-
-        info_file: str = (
-            options[SCARAjectoryBundleKeys.OPTION_INFO_FILE]
-            if options and SCARAjectoryBundleKeys.OPTION_INFO_FILE in options
-            else cls._info_file
-        )
-
-        context_bundle: ContextBundle = ContextBundleFactory.create_bundle()
-
+        info_file: str = cls._info_file
         base_bundle: BaseBundle = BaseBundleFactory.create_bundle(
             options=BaseBundleOptions(
                 info_file=info_file,
                 use_generator=False,
-                context_bundle=context_bundle
+                context_bundle=ContextBundleFactory.create_bundle(),
             )
         )
+        context_bundle: ContextBundle = base_bundle.context_bundle
+        connection_repo: ConnectionRepository = ConnectionRepositoryFactory.create(
+            context_bundle=context_bundle
+        )
 
-        bounds: ScaraBounds = cls._resolve_bounds(options=options)
-        kinematics: KinematicsService = KinematicsService(bounds=bounds)
-        validator: TrajectoryValidator = TrajectoryValidator(bounds=bounds, kinematics=kinematics)
-        transport: SerialTransport = SerialTransport()
-        streamer: TrajectoryStreamer = TrajectoryStreamer(transport=transport)
-        storage: PlanStorageService = PlanStorageService(context_bundle=context_bundle)
-        plan: TrajectoryPlan = TrajectoryPlan()
-        dsl_service: ScaraDslService = ScaraDslService(validator=validator)
-        service: Service = Service(
+        loader: IScaraConfigLoader = ScaraConfigLoaderFactory.create()
+        bounds: ScaraBounds = cls.resolve_bounds()
+        transmission: TransmissionParameters = loader.load_transmission()
+        kinematics: IKinematicsService = KinematicsServiceFactory.create(
+            bounds=bounds,
+        )
+        validator: ITrajectoryValidator = TrajectoryValidatorFactory.create(
+            kinematics=kinematics,
+        )
+        transport: ITransport = TransportFactory.create_default_transport()
+        streamer: ITrajectoryStreamer = TrajectoryStreamerFactory.create(
+            transport=transport
+        )
+        storage: PlanStorageService = PlanStorageServiceFactory.create_with_context(
+            context_bundle=context_bundle
+        )
+        plan: TrajectoryPlan = TrajectoryPlanFactory.create()
+        dsl_service: IScaraDslService = ScaraDslServiceFactory.create(
+            validator=validator,
+            kinematics=kinematics,
+            transmission=transmission,
+        )
+        service: Service = ServiceFactory.create(
             validator=validator,
             streamer=streamer,
             storage=storage,
             plan=plan,
-            dsl_service=dsl_service
+            dsl_service=dsl_service,
         )
-        gui: ScarajectoryGUI = ScarajectoryGUI(service=service)
-
+        gui: ScarajectoryGUI = ScarajectoryGUIFactory.create(
+            service=service,
+            connection_repository=connection_repo,
+        )
         cli_bundle: CLIBundle = CLIBundleFactory.create_bundle(
             options=CLIBundleOptions(
                 service=service,
                 parser=base_bundle.option_manager,
-                gui=gui
+                gui=gui,
             )
         )
-
-        cli: CLI = CLI(cli_bundle)
+        cli: CLI = CLI(bundle=cli_bundle)
 
         return SCARAjectoryBundleRegistry.create_bundle(
             dependencies=SCARAjectoryBundleDependencies(
@@ -263,9 +217,98 @@ class SCARAjectoryBundleFactory:
                 service=service,
                 gui=gui,
                 streamer=streamer,
-                cli=cli
+                cli=cli,
             )
         )
+
+    @classmethod
+    def create_bundle_with_options(
+        cls,
+        options: SCARAjectoryBundleOptions,
+    ) -> SCARAjectoryBundle:
+        '''
+            Creates the scarajectory bundle with pre-configured options.
+
+            :param options: Pre-configured options for the bundle.
+            :return: The scarajectory bundle.
+            :exceptions:
+                | ATSValueError: The options or dependencies must be valid.
+                | ATSTypeError: The options or dependencies must match types.
+        '''
+        SCARAjectoryBundleOptionsValidator.validate(options)
+
+        info_file: str = (
+            options[SCARAjectoryBundleKeys.OPTION_INFO_FILE]
+            if SCARAjectoryBundleKeys.OPTION_INFO_FILE in options
+            else cls._info_file
+        )
+
+        base_bundle: BaseBundle = BaseBundleFactory.create_bundle(
+            options=BaseBundleOptions(
+                info_file=info_file,
+                use_generator=False,
+                context_bundle=ContextBundleFactory.create_bundle(),
+            )
+        )
+        context_bundle: ContextBundle = base_bundle.context_bundle
+        connection_repo: ConnectionRepository = ConnectionRepositoryFactory.create(
+            context_bundle=context_bundle
+        )
+
+        loader: IScaraConfigLoader = ScaraConfigLoaderFactory.create()
+        bounds: ScaraBounds = cls.resolve_bounds_with_options(options=options)
+        transmission: TransmissionParameters = loader.load_transmission()
+        kinematics: IKinematicsService = KinematicsServiceFactory.create(
+            bounds=bounds,
+        )
+        validator: ITrajectoryValidator = TrajectoryValidatorFactory.create(
+            kinematics=kinematics,
+        )
+        transport: ITransport = TransportFactory.create_default_transport()
+        streamer: ITrajectoryStreamer = TrajectoryStreamerFactory.create(
+            transport=transport
+        )
+        storage: PlanStorageService = PlanStorageServiceFactory.create_with_context(
+            context_bundle=context_bundle
+        )
+        plan: TrajectoryPlan = TrajectoryPlanFactory.create()
+        dsl_service: IScaraDslService = ScaraDslServiceFactory.create(
+            validator=validator,
+            kinematics=kinematics,
+            transmission=transmission,
+        )
+        service: Service = ServiceFactory.create(
+            validator=validator,
+            streamer=streamer,
+            storage=storage,
+            plan=plan,
+            dsl_service=dsl_service,
+        )
+        gui: ScarajectoryGUI = ScarajectoryGUIFactory.create(
+            service=service,
+            connection_repository=connection_repo,
+        )
+
+        cli_bundle: CLIBundle = CLIBundleFactory.create_bundle(
+            options=CLIBundleOptions(
+                service=service,
+                parser=base_bundle.option_manager,
+                gui=gui,
+            )
+        )
+
+        cli: CLI = CLI(bundle=cli_bundle)
+
+        return SCARAjectoryBundleRegistry.create_bundle(
+            dependencies=SCARAjectoryBundleDependencies(
+                base=base_bundle,
+                service=service,
+                gui=gui,
+                streamer=streamer,
+                cli=cli,
+            )
+        )
+
 
     @classmethod
     def get_version(cls) -> str:

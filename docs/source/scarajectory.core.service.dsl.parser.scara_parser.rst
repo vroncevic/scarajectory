@@ -5,3 +5,4 @@ scarajectory.core.service.dsl.parser.scara\_parser module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

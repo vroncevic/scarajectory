@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-'''
+"""
 Module
     itransport.py
 Copyright
@@ -17,14 +17,14 @@ Copyright
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
     Interface protocol defining low-level bidirectional communication transports.
-'''
+"""
 
 from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 from collections.abc import Callable
 
-from scarajectory.core.model.communication.stream_config import StreamConfig
+from scarajectory.core.model.communication.stream.stream_config import StreamConfig
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -38,7 +38,7 @@ __status__ = 'Updated'
 
 @runtime_checkable
 class ITransport(Protocol):
-    '''
+    """
         Structural interface protocol for physical robot communication transports.
 
         It defines:
@@ -49,44 +49,64 @@ class ITransport(Protocol):
                 | connect_with_config - Establishes communication session using configuration DTO.
                 | disconnect - Terminates communication link and frees resources.
                 | send_raw - Transmits command string over communication channel.
-    '''
+                | send_bytes - Transmits raw bytes over communication channel.
+                | read_bytes - Reads raw byte chunk from communication channel.
+    """
 
     def is_connected(self) -> bool:
-        '''
+        """
             Checks if communication link is active.
 
             :return: True if connected, False otherwise.
-        '''
+        """
 
     def set_callbacks(
         self,
         on_line: Callable[[str], None] | None = None,
-        on_log: Callable[[str, bool], None] | None = None
+        on_log: Callable[[str, bool], None] | None = None,
+        on_bytes: Callable[[bytes], None] | None = None,
     ) -> None:
-        '''
+        """
             Registers packet reception and connection logging hooks.
 
             :param on_line: Optional line received callback.
             :param on_log: Optional logging callback.
-        '''
+            :param on_bytes: Optional raw byte chunk received callback.
+        """
 
     def connect_with_config(self, config: StreamConfig) -> bool:
-        '''
+        """
             Establishes communication session using configuration DTO.
 
             :param config: StreamConfig parameter bundle.
             :return: True if connected successfully, False otherwise.
-        '''
+        """
 
     def disconnect(self) -> None:
-        '''
+        """
             Terminates communication link and frees resources.
-        '''
+        """
 
     def send_raw(self, cmd: str) -> bool:
-        '''
+        """
             Transmits command string over communication channel.
 
             :param cmd: Formatted command payload.
             :return: True if transmission succeeded, False otherwise.
-        '''
+        """
+
+    def send_bytes(self, payload: bytes) -> bool:
+        """
+            Transmits raw bytes over communication channel.
+
+            :param payload: Binary byte payload.
+            :return: True if transmission succeeded, False otherwise.
+        """
+
+    def read_bytes(self, size: int) -> bytes:
+        """
+            Reads raw byte chunk from communication channel.
+
+            :param size: Maximum bytes to read.
+            :return: Received bytes.
+        """

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/classic.css?v=514cf933" />
+    
+    <script src="../../../../../_static/documentation_options.js?v=57319df4"></script>
+    <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Module</span>
+<span class="sd">    trajectory_streamer_factory.py</span>
+<span class="sd">Copyright</span>
+<span class="sd">    Copyright (C) 2026 Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;</span>
+<span class="sd">    scarajectory is free software: you can redistribute it and/or modify it</span>
+<span class="sd">    under the terms of the GNU General Public License as published by the</span>
+<span class="sd">    Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">    (at your option) any later version.</span>
+<span class="sd">    scarajectory is distributed in the hope that it will be useful, but</span>
+<span class="sd">    WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
+<span class="sd">    See the GNU General Public License for more details.</span>
+<span class="sd">    You should have received a copy of the GNU General Public License along</span>
+<span class="sd">    with this program. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">Info</span>
+<span class="sd">    Factory assembling TrajectoryStreamer instances with full collaborator dependency injection.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.communication.protocol.protocol_mode</span> <span class="kn">import</span> <span class="n">ProtocolMode</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.kinematics.scara_bounds</span> <span class="kn">import</span> <span class="n">ScaraBounds</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.kinematics.transmission_parameters</span> <span class="kn">import</span> <span class="n">TransmissionParameters</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.communication.stream.iexecution_worker</span> <span class="kn">import</span> <span class="n">IExecutionWorker</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.kinematics.ikinematics_service</span> <span class="kn">import</span> <span class="n">IKinematicsService</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.kinematics.kinematics_service_factory</span> <span class="kn">import</span> <span class="n">KinematicsServiceFactory</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.controller.robot_controller</span> <span class="kn">import</span> <span class="n">RobotController</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.controller.robot_controller_factory</span> <span class="kn">import</span> <span class="n">RobotControllerFactory</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.protocol.binary.builder.binary_frame_builder</span> <span class="kn">import</span> <span class="n">BinaryFrameBuilder</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.protocol.binary.builder.binary_frame_builder_factory</span> <span class="kn">import</span> <span class="n">BinaryFrameBuilderFactory</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.streamer.binary_packet_strategy</span> <span class="kn">import</span> <span class="n">BinaryPacketStrategy</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.streamer.binary_packet_strategy_factory</span> <span class="kn">import</span> <span class="n">BinaryPacketStrategyFactory</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.streamer.binary_stream_execution_worker_factory</span> <span class="kn">import</span> <span class="n">BinaryStreamExecutionWorkerFactory</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.streamer.flow_controller</span> <span class="kn">import</span> <span class="n">FlowController</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.streamer.flow_controller_factory</span> <span class="kn">import</span> <span class="n">FlowControllerFactory</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.streamer.stream_connection_manager</span> <span class="kn">import</span> <span class="n">StreamConnectionManager</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.streamer.stream_connection_manager_factory</span> <span class="kn">import</span> <span class="n">StreamConnectionManagerFactory</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.streamer.stream_execution_worker_factory</span> <span class="kn">import</span> <span class="n">StreamExecutionWorkerFactory</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.streamer.stream_observer_dispatcher</span> <span class="kn">import</span> <span class="n">StreamObserverDispatcher</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.streamer.stream_observer_dispatcher_factory</span> <span class="kn">import</span> <span class="n">StreamObserverDispatcherFactory</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.streamer.stream_state_machine</span> <span class="kn">import</span> <span class="n">StreamStateMachine</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.streamer.stream_state_machine_factory</span> <span class="kn">import</span> <span class="n">StreamStateMachineFactory</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.streamer.trajectory_streamer</span> <span class="kn">import</span> <span class="n">TrajectoryStreamer</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.transport.itransport</span> <span class="kn">import</span> <span class="n">ITransport</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.transport.transport_factory</span> <span class="kn">import</span> <span class="n">TransportFactory</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.settings.config_loader_factory</span> <span class="kn">import</span> <span class="n">ScaraConfigLoaderFactory</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
+<span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
+
+
+<div class="viewcode-block" id="TrajectoryStreamerFactory">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory.html#scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory.TrajectoryStreamerFactory">[docs]</a>
+<span class="k">class</span> <span class="nc">TrajectoryStreamerFactory</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Factory assembling TrajectoryStreamer instances with full collaborator dependency injection.</span>
+
+<span class="sd">    It defines:</span>
+
+<span class="sd">        :methods:</span>
+<span class="sd">            | create - Constructs and fully wires TrajectoryStreamer with external transport.</span>
+<span class="sd">            | create_default - Constructs TrajectoryStreamer using default transport.</span>
+<span class="sd">            | create_with_collaborators - Constructs TrajectoryStreamer with custom collaborators.</span>
+<span class="sd">            | get_version - Returns factory version string.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="TrajectoryStreamerFactory.create">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory.html#scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory.TrajectoryStreamerFactory.create">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">transport</span><span class="p">:</span> <span class="n">ITransport</span><span class="p">,</span>
+        <span class="n">queue_capacity</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+        <span class="n">protocol_mode</span><span class="p">:</span> <span class="n">ProtocolMode</span> <span class="o">=</span> <span class="n">ProtocolMode</span><span class="o">.</span><span class="n">BINARY</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryStreamer</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Constructs and returns a fully wired TrajectoryStreamer instance with injected transport.</span>
+
+<span class="sd">        :param transport: Required ITransport implementation instance.</span>
+<span class="sd">        :param queue_capacity: Flow control buffer capacity integer (default 16).</span>
+<span class="sd">        :param protocol_mode: Active ProtocolMode enum value (default BINARY).</span>
+<span class="sd">        :return: Fully wired TrajectoryStreamer instance.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">conn_manager</span><span class="p">:</span> <span class="n">StreamConnectionManager</span> <span class="o">=</span> <span class="n">StreamConnectionManagerFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">transport</span><span class="p">,</span>
+            <span class="n">protocol_mode</span><span class="o">=</span><span class="n">protocol_mode</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">state_machine</span><span class="p">:</span> <span class="n">StreamStateMachine</span> <span class="o">=</span> <span class="n">StreamStateMachineFactory</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+        <span class="n">dispatcher</span><span class="p">:</span> <span class="n">StreamObserverDispatcher</span> <span class="o">=</span> <span class="n">StreamObserverDispatcherFactory</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+        <span class="n">flow_controller</span><span class="p">:</span> <span class="n">FlowController</span> <span class="o">=</span> <span class="n">FlowControllerFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">capacity</span><span class="o">=</span><span class="n">queue_capacity</span>
+        <span class="p">)</span>
+        <span class="n">frame_builder</span><span class="p">:</span> <span class="n">BinaryFrameBuilder</span> <span class="o">=</span> <span class="n">BinaryFrameBuilderFactory</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+
+        <span class="n">streamer</span> <span class="o">=</span> <span class="n">TrajectoryStreamer</span><span class="p">(</span>
+            <span class="n">connection_manager</span><span class="o">=</span><span class="n">conn_manager</span><span class="p">,</span>
+            <span class="n">flow_controller</span><span class="o">=</span><span class="n">flow_controller</span><span class="p">,</span>
+            <span class="n">state_machine</span><span class="o">=</span><span class="n">state_machine</span><span class="p">,</span>
+            <span class="n">dispatcher</span><span class="o">=</span><span class="n">dispatcher</span><span class="p">,</span>
+            <span class="n">frame_builder</span><span class="o">=</span><span class="n">frame_builder</span><span class="p">,</span>
+            <span class="n">protocol_mode</span><span class="o">=</span><span class="n">protocol_mode</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">worker</span><span class="p">:</span> <span class="n">IExecutionWorker</span>
+        <span class="k">if</span> <span class="n">protocol_mode</span> <span class="o">==</span> <span class="n">ProtocolMode</span><span class="o">.</span><span class="n">BINARY</span><span class="p">:</span>
+            <span class="n">loader</span> <span class="o">=</span> <span class="n">ScaraConfigLoaderFactory</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+            <span class="n">bounds</span><span class="p">:</span> <span class="n">ScaraBounds</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_bounds</span><span class="p">()</span>
+            <span class="n">transmission</span><span class="p">:</span> <span class="n">TransmissionParameters</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_transmission</span><span class="p">()</span>
+            <span class="n">kinematics</span><span class="p">:</span> <span class="n">IKinematicsService</span> <span class="o">=</span> <span class="n">KinematicsServiceFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="n">bounds</span><span class="o">=</span><span class="n">bounds</span>
+            <span class="p">)</span>
+            <span class="n">packet_strategy</span><span class="p">:</span> <span class="n">BinaryPacketStrategy</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">BinaryPacketStrategyFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                    <span class="n">kinematics</span><span class="o">=</span><span class="n">kinematics</span><span class="p">,</span>
+                    <span class="n">transmission</span><span class="o">=</span><span class="n">transmission</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">worker</span> <span class="o">=</span> <span class="n">BinaryStreamExecutionWorkerFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="n">flow_controller</span><span class="o">=</span><span class="n">flow_controller</span><span class="p">,</span>
+                <span class="n">packet_strategy</span><span class="o">=</span><span class="n">packet_strategy</span><span class="p">,</span>
+                <span class="n">send_bytes</span><span class="o">=</span><span class="n">streamer</span><span class="o">.</span><span class="n">send_raw_bytes</span><span class="p">,</span>
+                <span class="n">notify_progress</span><span class="o">=</span><span class="n">streamer</span><span class="o">.</span><span class="n">notify_progress</span><span class="p">,</span>
+                <span class="n">notify_log</span><span class="o">=</span><span class="n">streamer</span><span class="o">.</span><span class="n">on_connection_log</span><span class="p">,</span>
+                <span class="n">on_state_change</span><span class="o">=</span><span class="n">streamer</span><span class="o">.</span><span class="n">on_worker_state_change</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">worker</span> <span class="o">=</span> <span class="n">StreamExecutionWorkerFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="n">flow_controller</span><span class="o">=</span><span class="n">flow_controller</span><span class="p">,</span>
+                <span class="n">send_command</span><span class="o">=</span><span class="n">streamer</span><span class="o">.</span><span class="n">send_raw_command</span><span class="p">,</span>
+                <span class="n">notify_progress</span><span class="o">=</span><span class="n">streamer</span><span class="o">.</span><span class="n">notify_progress</span><span class="p">,</span>
+                <span class="n">notify_log</span><span class="o">=</span><span class="n">streamer</span><span class="o">.</span><span class="n">on_connection_log</span><span class="p">,</span>
+                <span class="n">on_state_change</span><span class="o">=</span><span class="n">streamer</span><span class="o">.</span><span class="n">on_worker_state_change</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="n">streamer</span><span class="o">.</span><span class="n">set_worker</span><span class="p">(</span><span class="n">worker</span><span class="p">)</span>
+
+        <span class="n">robot_controller</span><span class="p">:</span> <span class="n">RobotController</span> <span class="o">=</span> <span class="n">RobotControllerFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">streamer</span><span class="p">,</span>
+            <span class="n">protocol_mode</span><span class="o">=</span><span class="n">protocol_mode</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">streamer</span><span class="o">.</span><span class="n">set_robot_controller</span><span class="p">(</span><span class="n">robot_controller</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">streamer</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryStreamerFactory.create_default">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory.html#scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory.TrajectoryStreamerFactory.create_default">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">create_default</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">queue_capacity</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+        <span class="n">protocol_mode</span><span class="p">:</span> <span class="n">ProtocolMode</span> <span class="o">=</span> <span class="n">ProtocolMode</span><span class="o">.</span><span class="n">BINARY</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryStreamer</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Constructs TrajectoryStreamer using the default transport mechanism.</span>
+
+<span class="sd">        :param queue_capacity: Flow control buffer capacity integer (default 16).</span>
+<span class="sd">        :param protocol_mode: Active ProtocolMode enum value (default BINARY).</span>
+<span class="sd">        :return: Fully wired TrajectoryStreamer instance.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">transport</span><span class="o">=</span><span class="n">TransportFactory</span><span class="o">.</span><span class="n">create_default_transport</span><span class="p">(),</span>
+            <span class="n">queue_capacity</span><span class="o">=</span><span class="n">queue_capacity</span><span class="p">,</span>
+            <span class="n">protocol_mode</span><span class="o">=</span><span class="n">protocol_mode</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryStreamerFactory.create_with_collaborators">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory.html#scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory.TrajectoryStreamerFactory.create_with_collaborators">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">create_with_collaborators</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">connection_manager</span><span class="p">:</span> <span class="n">StreamConnectionManager</span><span class="p">,</span>
+        <span class="n">flow_controller</span><span class="p">:</span> <span class="n">FlowController</span><span class="p">,</span>
+        <span class="n">state_machine</span><span class="p">:</span> <span class="n">StreamStateMachine</span><span class="p">,</span>
+        <span class="n">dispatcher</span><span class="p">:</span> <span class="n">StreamObserverDispatcher</span><span class="p">,</span>
+        <span class="n">worker</span><span class="p">:</span> <span class="n">IExecutionWorker</span><span class="p">,</span>
+        <span class="n">robot_controller</span><span class="p">:</span> <span class="n">RobotController</span><span class="p">,</span>
+        <span class="n">frame_builder</span><span class="p">:</span> <span class="n">BinaryFrameBuilder</span><span class="p">,</span>
+        <span class="n">protocol_mode</span><span class="p">:</span> <span class="n">ProtocolMode</span> <span class="o">=</span> <span class="n">ProtocolMode</span><span class="o">.</span><span class="n">BINARY</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryStreamer</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Constructs TrajectoryStreamer with explicitly provided custom collaborators.</span>
+
+<span class="sd">        :param connection_manager: StreamConnectionManager instance.</span>
+<span class="sd">        :param flow_controller: FlowController instance.</span>
+<span class="sd">        :param state_machine: StreamStateMachine instance.</span>
+<span class="sd">        :param dispatcher: StreamObserverDispatcher instance.</span>
+<span class="sd">        :param worker: IExecutionWorker instance.</span>
+<span class="sd">        :param robot_controller: RobotController instance.</span>
+<span class="sd">        :param frame_builder: BinaryFrameBuilder instance.</span>
+<span class="sd">        :param protocol_mode: Active ProtocolMode enum value.</span>
+<span class="sd">        :return: TrajectoryStreamer instance.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">TrajectoryStreamer</span><span class="p">(</span>
+            <span class="n">connection_manager</span><span class="o">=</span><span class="n">connection_manager</span><span class="p">,</span>
+            <span class="n">flow_controller</span><span class="o">=</span><span class="n">flow_controller</span><span class="p">,</span>
+            <span class="n">state_machine</span><span class="o">=</span><span class="n">state_machine</span><span class="p">,</span>
+            <span class="n">dispatcher</span><span class="o">=</span><span class="n">dispatcher</span><span class="p">,</span>
+            <span class="n">worker</span><span class="o">=</span><span class="n">worker</span><span class="p">,</span>
+            <span class="n">robot_controller</span><span class="o">=</span><span class="n">robot_controller</span><span class="p">,</span>
+            <span class="n">frame_builder</span><span class="o">=</span><span class="n">frame_builder</span><span class="p">,</span>
+            <span class="n">protocol_mode</span><span class="o">=</span><span class="n">protocol_mode</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryStreamerFactory.get_version">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory.html#scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory.TrajectoryStreamerFactory.get_version">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_version</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns factory version string.</span>
+
+<span class="sd">        :return: Factory version string.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">__version__</span></div>
+</div>
+
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

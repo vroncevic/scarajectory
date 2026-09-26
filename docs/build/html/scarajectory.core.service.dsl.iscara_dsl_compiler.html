@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="scarajectory.core.service.dsl.iscara_dsl_service module" href="scarajectory.core.service.dsl.iscara_dsl_service.html" />
-    <link rel="prev" title="scarajectory.core.service.dsl.parser.scara_parser module" href="scarajectory.core.service.dsl.parser.scara_parser.html" /> 
+    <link rel="prev" title="scarajectory.core.service.dsl.parser.scara_parser_factory module" href="scarajectory.core.service.dsl.parser.scara_parser_factory.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -31,7 +31,7 @@
           <a href="scarajectory.core.service.dsl.iscara_dsl_service.html" title="scarajectory.core.service.dsl.iscara_dsl_service module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.core.service.dsl.parser.scara_parser.html" title="scarajectory.core.service.dsl.parser.scara_parser module"
+          <a href="scarajectory.core.service.dsl.parser.scara_parser_factory.html" title="scarajectory.core.service.dsl.parser.scara_parser_factory module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
@@ -83,16 +83,28 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd>
 </dl>
 </div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.core.service.dsl.iscara_dsl_compiler.IScaraDslCompiler._abc_impl">
+<span class="sig-name descname"><span class="pre">_abc_impl</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;_abc._abc_data</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#scarajectory.core.service.dsl.iscara_dsl_compiler.IScaraDslCompiler._abc_impl" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.core.service.dsl.iscara_dsl_compiler.IScaraDslCompiler._is_protocol">
+<span class="sig-name descname"><span class="pre">_is_protocol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#scarajectory.core.service.dsl.iscara_dsl_compiler.IScaraDslCompiler._is_protocol" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.core.service.dsl.iscara_dsl_compiler.IScaraDslCompiler._is_runtime_protocol">
+<span class="sig-name descname"><span class="pre">_is_runtime_protocol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#scarajectory.core.service.dsl.iscara_dsl_compiler.IScaraDslCompiler._is_runtime_protocol" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.core.service.dsl.iscara_dsl_compiler.IScaraDslCompiler.compile_script">
-<span class="sig-name descname"><span class="pre">compile_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.kinematics.scara_bounds.html#scarajectory.core.model.kinematics.scara_bounds.ScaraBounds" title="scarajectory.core.model.kinematics.scara_bounds.ScaraBounds"><span class="pre">ScaraBounds</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.core.model.trajectory.trajectory_plan.html#scarajectory.core.model.trajectory.trajectory_plan.TrajectoryPlan" title="scarajectory.core.model.trajectory.trajectory_plan.TrajectoryPlan"><span class="pre">TrajectoryPlan</span></a></span></span><a class="reference internal" href="_modules/scarajectory/core/service/dsl/iscara_dsl_compiler.html#IScaraDslCompiler.compile_script"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.dsl.iscara_dsl_compiler.IScaraDslCompiler.compile_script" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">compile_script</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.core.service.trajectory.plan.trajectory_plan.html#scarajectory.core.service.trajectory.plan.trajectory_plan.TrajectoryPlan" title="scarajectory.core.service.trajectory.plan.trajectory_plan.TrajectoryPlan"><span class="pre">TrajectoryPlan</span></a></span></span><a class="reference internal" href="_modules/scarajectory/core/service/dsl/iscara_dsl_compiler.html#IScaraDslCompiler.compile_script"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.dsl.iscara_dsl_compiler.IScaraDslCompiler.compile_script" title="Link to this definition">¶</a></dt>
 <dd><p>Compiles DSL source code into an executable and validated TrajectoryPlan.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>source</strong> – Raw .scara script text.</p></li>
-<li><p><strong>bounds</strong> – Optional robot kinematic boundary constraints.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>source</strong> – Raw .scara script text.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Validated TrajectoryPlan instance.</p>
@@ -119,6 +131,9 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <ul>
 <li><a class="reference internal" href="#">scarajectory.core.service.dsl.iscara_dsl_compiler module</a><ul>
 <li><a class="reference internal" href="#scarajectory.core.service.dsl.iscara_dsl_compiler.IScaraDslCompiler"><code class="docutils literal notranslate"><span class="pre">IScaraDslCompiler</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.core.service.dsl.iscara_dsl_compiler.IScaraDslCompiler._abc_impl"><code class="docutils literal notranslate"><span class="pre">IScaraDslCompiler._abc_impl</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.service.dsl.iscara_dsl_compiler.IScaraDslCompiler._is_protocol"><code class="docutils literal notranslate"><span class="pre">IScaraDslCompiler._is_protocol</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.service.dsl.iscara_dsl_compiler.IScaraDslCompiler._is_runtime_protocol"><code class="docutils literal notranslate"><span class="pre">IScaraDslCompiler._is_runtime_protocol</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.core.service.dsl.iscara_dsl_compiler.IScaraDslCompiler.compile_script"><code class="docutils literal notranslate"><span class="pre">IScaraDslCompiler.compile_script()</span></code></a></li>
 </ul>
 </li>
@@ -129,8 +144,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.core.service.dsl.parser.scara_parser.html"
-                          title="previous chapter">scarajectory.core.service.dsl.parser.scara_parser module</a></p>
+    <p class="topless"><a href="scarajectory.core.service.dsl.parser.scara_parser_factory.html"
+                          title="previous chapter">scarajectory.core.service.dsl.parser.scara_parser_factory module</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -171,7 +186,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="scarajectory.core.service.dsl.iscara_dsl_service.html" title="scarajectory.core.service.dsl.iscara_dsl_service module"
              >next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.core.service.dsl.parser.scara_parser.html" title="scarajectory.core.service.dsl.parser.scara_parser module"
+          <a href="scarajectory.core.service.dsl.parser.scara_parser_factory.html" title="scarajectory.core.service.dsl.parser.scara_parser_factory module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>

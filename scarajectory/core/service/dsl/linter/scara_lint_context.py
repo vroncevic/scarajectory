@@ -27,7 +27,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.3'
+__version__ = '1.0.4'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -47,7 +47,7 @@ class ScaraLintContext:
                 | valve_on - Boolean indicating active blow-off valve state.
                 | zone_mode - Active zone blending mode ('FINE' or 'BLEND').
                 | zone_radius - Active zone blend radius in millimeters.
-                | last_coords - Coordinate tuple of prior linear move or None.
+                | last_coords - Coordinate tuple of prior linear move or empty tuple.
     '''
 
     is_homed: bool = False
@@ -56,4 +56,5 @@ class ScaraLintContext:
     valve_on: bool = False
     zone_mode: str = 'FINE'
     zone_radius: float = 0.0
-    last_coords: tuple[float, float, float, float] | None = None
+    last_coords: tuple[float, ...] = ()
+

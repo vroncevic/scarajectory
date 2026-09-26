@@ -30,9 +30,14 @@ if pkg_dir not in path:
     path.insert(0, pkg_dir)
 
 from scarajectory.core.model.trajectory.waypoint import Waypoint
+from scarajectory.core.service.trajectory.discretization.waypoint_factory import WaypointFactory
 from scarajectory.core.model.kinematics.scara_bounds import ScaraBounds
-from scarajectory.core.model.trajectory.trajectory_plan import TrajectoryPlan
-from scarajectory.core.service.trajectory.trajectory_validator import TrajectoryValidator
+from scarajectory.core.service.trajectory.plan.trajectory_plan import TrajectoryPlan
+from scarajectory.core.service.trajectory.plan.trajectory_plan_factory import TrajectoryPlanFactory
+from scarajectory.core.service.trajectory.validation.trajectory_validator import TrajectoryValidator
+from scarajectory.core.service.trajectory.validation.trajectory_validator_factory import TrajectoryValidatorFactory
+from scarajectory.core.service.kinematics.kinematics_service_factory import KinematicsServiceFactory
+from scarajectory.infrastructure.settings.config_loader_factory import ScaraConfigLoaderFactory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -65,8 +70,11 @@ class TestTrajectoryValidator(TestCase):
 
             :exceptions: None.
         '''
-        self.bounds = ScaraBounds(l1=150.0, l2=120.0, z_min=0.0, z_max=100.0)
-        self.validator = TrajectoryValidator(self.bounds)
+        self.bounds = ScaraConfigLoaderFactory.create().load_bounds_with_options(
+            options={'l1': 150.0, 'l2': 120.0, 'z_min': 0.0, 'z_max': 100.0}
+        )
+        self.kinematics = KinematicsServiceFactory.create(bounds=self.bounds)
+        self.validator = TrajectoryValidatorFactory.create(kinematics=self.kinematics)
 
     def test_reachable_point(self) -> None:
         '''
@@ -74,7 +82,7 @@ class TestTrajectoryValidator(TestCase):
 
             :exceptions: None.
         '''
-        pt = Waypoint(x=100.0, y=100.0, z=20.0, phi=0.0, speed=40.0)
+        pt = WaypointFactory.create(x=100.0, y=100.0, z=20.0, phi=0.0, speed=40.0)
         res = self.validator.validate_point(pt)
         self.assertTrue(res.is_valid)
 
@@ -84,7 +92,7 @@ class TestTrajectoryValidator(TestCase):
 
             :exceptions: None.
         '''
-        pt = Waypoint(x=250.0, y=250.0, z=20.0, phi=0.0, speed=40.0)
+        pt = WaypointFactory.create(x=250.0, y=250.0, z=20.0, phi=0.0, speed=40.0)
         res = self.validator.validate_point(pt)
         self.assertFalse(res.is_valid)
 
@@ -94,7 +102,7 @@ class TestTrajectoryValidator(TestCase):
 
             :exceptions: None.
         '''
-        pt = Waypoint(x=10.0, y=10.0, z=20.0, phi=0.0, speed=40.0)
+        pt = WaypointFactory.create(x=10.0, y=10.0, z=20.0, phi=0.0, speed=40.0)
         res = self.validator.validate_point(pt)
         self.assertFalse(res.is_valid)
 
@@ -104,8 +112,8 @@ class TestTrajectoryValidator(TestCase):
 
             :exceptions: None.
         '''
-        pt_low = Waypoint(x=100.0, y=100.0, z=-10.0, phi=0.0, speed=40.0)
-        pt_high = Waypoint(x=100.0, y=100.0, z=150.0, phi=0.0, speed=40.0)
+        pt_low = WaypointFactory.create(x=100.0, y=100.0, z=-10.0, phi=0.0, speed=40.0)
+        pt_high = WaypointFactory.create(x=100.0, y=100.0, z=150.0, phi=0.0, speed=40.0)
         self.assertFalse(self.validator.validate_point(pt_low).is_valid)
         self.assertFalse(self.validator.validate_point(pt_high).is_valid)
 
@@ -115,9 +123,9 @@ class TestTrajectoryValidator(TestCase):
 
             :exceptions: None.
         '''
-        plan = TrajectoryPlan()
-        plan.add_point(Waypoint(x=100.0, y=100.0, z=20.0, phi=0.0, speed=40.0))
-        plan.add_point(Waypoint(x=120.0, y=120.0, z=20.0, phi=0.0, speed=40.0))
+        plan = TrajectoryPlanFactory.create()
+        plan.add_point(WaypointFactory.create(x=100.0, y=100.0, z=20.0, phi=0.0, speed=40.0))
+        plan.add_point(WaypointFactory.create(x=120.0, y=120.0, z=20.0, phi=0.0, speed=40.0))
 
         is_valid, messages = self.validator.validate_plan(plan)
         self.assertTrue(is_valid)
@@ -129,11 +137,22 @@ class TestTrajectoryValidator(TestCase):
 
             :exceptions: None.
         '''
-        wp_valid = Waypoint(x=100.0, y=100.0, z=20.0, phi=0.0, speed=40.0)
+        wp_valid = WaypointFactory.create(x=100.0, y=100.0, z=20.0, phi=0.0, speed=40.0)
         self.assertTrue(self.validator.validate_point(wp_valid).is_valid)
 
-        wp_invalid = Waypoint(x=250.0, y=250.0, z=20.0, phi=0.0, speed=40.0)
+        wp_invalid = WaypointFactory.create(x=250.0, y=250.0, z=20.0, phi=0.0, speed=40.0)
         self.assertFalse(self.validator.validate_point(wp_invalid).is_valid)
+
+    def test_direct_constructor_injection(self) -> None:
+        '''
+            Tests direct constructor dependency injection with kinematics service.
+
+            :exceptions: None.
+        '''
+        kinematics = KinematicsServiceFactory.create(bounds=self.bounds)
+        validator = TrajectoryValidator(kinematics=kinematics)
+        self.assertEqual(validator.bounds, self.bounds)
+        self.assertEqual(validator.kinematics, kinematics)
 
 
 if __name__ == '__main__':

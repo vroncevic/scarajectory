@@ -89,16 +89,31 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd>
 </dl>
 </div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.core.service.dsl.lexer.iscara_lexer.IScaraLexer._abc_impl">
+<span class="sig-name descname"><span class="pre">_abc_impl</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;_abc._abc_data</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#scarajectory.core.service.dsl.lexer.iscara_lexer.IScaraLexer._abc_impl" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.core.service.dsl.lexer.iscara_lexer.IScaraLexer._is_protocol">
+<span class="sig-name descname"><span class="pre">_is_protocol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#scarajectory.core.service.dsl.lexer.iscara_lexer.IScaraLexer._is_protocol" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.core.service.dsl.lexer.iscara_lexer.IScaraLexer._is_runtime_protocol">
+<span class="sig-name descname"><span class="pre">_is_runtime_protocol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#scarajectory.core.service.dsl.lexer.iscara_lexer.IScaraLexer._is_runtime_protocol" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.core.service.dsl.lexer.iscara_lexer.IScaraLexer.tokenize">
-<span class="sig-name descname"><span class="pre">tokenize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.dsl.token.scara_token.html#scarajectory.core.model.dsl.token.scara_token.ScaraToken" title="scarajectory.core.model.dsl.token.scara_token.ScaraToken"><span class="pre">ScaraToken</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/dsl/lexer/iscara_lexer.html#IScaraLexer.tokenize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.dsl.lexer.iscara_lexer.IScaraLexer.tokenize" title="Link to this definition">¶</a></dt>
-<dd><p>Tokenizes source text into a tuple of ScaraToken instances.</p>
+<span class="sig-name descname"><span class="pre">tokenize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.dsl.token.token.html#scarajectory.core.model.dsl.token.token.Token" title="scarajectory.core.model.dsl.token.token.Token"><span class="pre">Token</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/dsl/lexer/iscara_lexer.html#IScaraLexer.tokenize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.dsl.lexer.iscara_lexer.IScaraLexer.tokenize" title="Link to this definition">¶</a></dt>
+<dd><p>Tokenizes source text into a tuple of Token instances.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>source</strong> – Raw source code string.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Immutable tuple of ScaraToken tokens.</p>
+<dd class="field-even"><p>Immutable tuple of Token tokens.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -119,6 +134,9 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <ul>
 <li><a class="reference internal" href="#">scarajectory.core.service.dsl.lexer.iscara_lexer module</a><ul>
 <li><a class="reference internal" href="#scarajectory.core.service.dsl.lexer.iscara_lexer.IScaraLexer"><code class="docutils literal notranslate"><span class="pre">IScaraLexer</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.core.service.dsl.lexer.iscara_lexer.IScaraLexer._abc_impl"><code class="docutils literal notranslate"><span class="pre">IScaraLexer._abc_impl</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.service.dsl.lexer.iscara_lexer.IScaraLexer._is_protocol"><code class="docutils literal notranslate"><span class="pre">IScaraLexer._is_protocol</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.service.dsl.lexer.iscara_lexer.IScaraLexer._is_runtime_protocol"><code class="docutils literal notranslate"><span class="pre">IScaraLexer._is_runtime_protocol</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.core.service.dsl.lexer.iscara_lexer.IScaraLexer.tokenize"><code class="docutils literal notranslate"><span class="pre">IScaraLexer.tokenize()</span></code></a></li>
 </ul>
 </li>

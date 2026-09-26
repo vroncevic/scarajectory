@@ -5,3 +5,4 @@ scarajectory.infrastructure.gui.stream.stream\_status\_bar module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

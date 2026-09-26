@@ -120,68 +120,170 @@ Tool structure
          │   ├── __init__.py
          │   ├── model/
          │   │   ├── communication/
+         │   │   │   ├── event/
+         │   │   │   │   ├── fault_event.py
+         │   │   │   │   ├── __init__.py
+         │   │   │   │   └── move_event.py
          │   │   │   ├── __init__.py
-         │   │   │   ├── stream_config.py
-         │   │   │   ├── stream_progress.py
-         │   │   │   ├── stream_session.py
-         │   │   │   └── stream_state.py
+         │   │   │   ├── preferences/
+         │   │   │   │   ├── connection_preference.py
+         │   │   │   │   └── __init__.py
+         │   │   │   ├── protocol/
+         │   │   │   │   ├── binary_frame.py
+         │   │   │   │   ├── error_code.py
+         │   │   │   │   ├── __init__.py
+         │   │   │   │   ├── joint_steps.py
+         │   │   │   │   ├── message_id.py
+         │   │   │   │   ├── protocol_mode.py
+         │   │   │   │   ├── scara_response.py
+         │   │   │   │   └── tool_id.py
+         │   │   │   ├── stream/
+         │   │   │   │   ├── __init__.py
+         │   │   │   │   ├── stream_config.py
+         │   │   │   │   ├── stream_progress.py
+         │   │   │   │   ├── stream_session.py
+         │   │   │   │   └── stream_state.py
+         │   │   │   └── telemetry/
+         │   │   │       ├── diagnostics_bundle.py
+         │   │   │       ├── diagnostics_snapshot.py
+         │   │   │       ├── __init__.py
+         │   │   │       └── scara_status.py
          │   │   ├── dsl/
          │   │   │   ├── ast/
+         │   │   │   │   ├── command_type.py
          │   │   │   │   ├── __init__.py
-         │   │   │   │   ├── iscara_instruction.py
-         │   │   │   │   ├── iscara_program.py
-         │   │   │   │   ├── scara_command_type.py
-         │   │   │   │   ├── scara_instruction.py
-         │   │   │   │   └── scara_program.py
+         │   │   │   │   ├── instruction.py
+         │   │   │   │   └── program.py
+         │   │   │   ├── binary/
+         │   │   │   │   ├── __init__.py
+         │   │   │   │   ├── program.py
+         │   │   │   │   └── step.py
          │   │   │   ├── diagnostic/
-         │   │   │   │   ├── __init__.py
-         │   │   │   │   ├── scara_diagnostic.py
-         │   │   │   │   └── scara_diagnostic_severity.py
+         │   │   │   │   ├── diagnostic.py
+         │   │   │   │   ├── diagnostic_severity.py
+         │   │   │   │   └── __init__.py
          │   │   │   ├── __init__.py
          │   │   │   └── token/
          │   │   │       ├── __init__.py
-         │   │   │       ├── scara_token.py
-         │   │   │       └── scara_token_type.py
+         │   │   │       ├── token.py
+         │   │   │       └── token_type.py
          │   │   ├── __init__.py
          │   │   ├── kinematics/
          │   │   │   ├── __init__.py
-         │   │   │   └── scara_bounds.py
+         │   │   │   ├── scara_bounds.py
+         │   │   │   └── transmission_parameters.py
          │   │   └── trajectory/
          │   │       ├── __init__.py
-         │   │       ├── itrajectory_history.py
-         │   │       ├── itrajectory_mutable.py
-         │   │       ├── itrajectory_plan.py
-         │   │       ├── itrajectory_read_only.py
-         │   │       ├── plan_history.py
-         │   │       ├── trajectory_metrics.py
-         │   │       ├── trajectory_plan.py
-         │   │       ├── trajectory_serializer.py
          │   │       ├── validation_result.py
          │   │       └── waypoint.py
          │   └── service/
          │       ├── communication/
-         │       │   ├── __init__.py
-         │       │   ├── irobot_controller.py
-         │       │   ├── istream_execution_service.py
-         │       │   ├── istream_observer.py
-         │       │   └── itrajectory_streamer.py
-         │       ├── dsl/
-         │       │   ├── compiler/
-         │       │   │   ├── arc_interpolator.py
-         │       │   │   ├── control_command_compiler.py
-         │       │   │   ├── iarc_interpolator.py
+         │       │   ├── controller/
+         │       │   │   ├── ijog_controller.py
+         │       │   │   ├── imotion_controller.py
          │       │   │   ├── __init__.py
-         │       │   │   ├── iprimitive_compiler.py
+         │       │   │   ├── iquery_controller.py
+         │       │   │   ├── irobot_controller.py
+         │       │   │   └── itool_controller.py
+         │       │   ├── event/
+         │       │   │   ├── binary_frame_dispatcher.py
+         │       │   │   ├── binary_frame_dispatcher_factory.py
+         │       │   │   ├── fault_event_factory.py
+         │       │   │   ├── ibinary_frame_dispatcher.py
+         │       │   │   ├── __init__.py
+         │       │   │   └── move_event_factory.py
+         │       │   ├── __init__.py
+         │       │   ├── preferences/
+         │       │   │   ├── connection_preference_factory.py
+         │       │   │   └── __init__.py
+         │       │   ├── protocol/
+         │       │   │   ├── ibinary_frame_builder.py
+         │       │   │   ├── ibinary_frame_parser.py
+         │       │   │   ├── icommand_formatter.py
+         │       │   │   ├── __init__.py
+         │       │   │   └── iprotocol_parser.py
+         │       │   ├── stream/
+         │       │   │   ├── config_factory.py
+         │       │   │   ├── iconfig_factory.py
+         │       │   │   ├── iconnection.py
+         │       │   │   ├── iexecution_service.py
+         │       │   │   ├── iexecution_worker.py
+         │       │   │   ├── iflow_controller.py
+         │       │   │   ├── imotion_streamer.py
+         │       │   │   ├── __init__.py
+         │       │   │   ├── iobservable.py
+         │       │   │   ├── iobserver.py
+         │       │   │   ├── ipacket_strategy.py
+         │       │   │   ├── iraw_channel.py
+         │       │   │   ├── itrajectory_streamer.py
+         │       │   │   └── session_factory.py
+         │       │   └── telemetry/
+         │       │       ├── diagnostics_snapshot_factory.py
+         │       │       └── __init__.py
+         │       ├── config/
+         │       │   ├── __init__.py
+         │       │   └── iscara_config_loader.py
+         │       ├── dsl/
+         │       │   ├── ast/
+         │       │   │   ├── iinstruction_factory.py
+         │       │   │   ├── __init__.py
+         │       │   │   ├── instruction_factory.py
+         │       │   │   ├── iprogram_factory.py
+         │       │   │   ├── program_factory.py
+         │       │   │   ├── scara_program_serializer.py
+         │       │   │   └── scara_source_generator.py
+         │       │   ├── binary/
+         │       │   │   ├── command/
+         │       │   │   │   ├── command_compiler.py
+         │       │   │   │   ├── command_compiler_factory.py
+         │       │   │   │   ├── icommand_compiler.py
+         │       │   │   │   └── __init__.py
+         │       │   │   ├── compiler.py
+         │       │   │   ├── compiler_factory.py
+         │       │   │   ├── icompiler.py
+         │       │   │   ├── __init__.py
+         │       │   │   ├── motion/
+         │       │   │   │   ├── imotion_compiler.py
+         │       │   │   │   ├── __init__.py
+         │       │   │   │   ├── motion_compiler.py
+         │       │   │   │   └── motion_compiler_factory.py
+         │       │   │   └── step/
+         │       │   │       ├── __init__.py
+         │       │   │       ├── istep_discretizer.py
+         │       │   │       ├── step_discretizer.py
+         │       │   │       └── step_discretizer_factory.py
+         │       │   ├── compiler/
+         │       │   │   ├── __init__.py
          │       │   │   ├── iscara_compiler.py
-         │       │   │   ├── motion_command_compiler.py
+         │       │   │   ├── motion/
+         │       │   │   │   ├── arc_interpolator.py
+         │       │   │   │   ├── arc_move_compiler.py
+         │       │   │   │   ├── arc_move_compiler_factory.py
+         │       │   │   │   ├── cartesian_move_compiler.py
+         │       │   │   │   ├── cartesian_move_compiler_factory.py
+         │       │   │   │   ├── iarc_interpolator.py
+         │       │   │   │   ├── __init__.py
+         │       │   │   │   ├── motion_command_compiler.py
+         │       │   │   │   ├── motion_command_compiler_factory.py
+         │       │   │   │   ├── vertical_move_compiler.py
+         │       │   │   │   └── vertical_move_compiler_factory.py
+         │       │   │   ├── primitive/
+         │       │   │   │   ├── control_command_compiler.py
+         │       │   │   │   ├── __init__.py
+         │       │   │   │   ├── iprimitive_compiler.py
+         │       │   │   │   ├── state_command_compiler.py
+         │       │   │   │   └── tool_command_compiler.py
          │       │   │   ├── scara_compiler.py
          │       │   │   ├── scara_compiler_context.py
-         │       │   │   ├── state_command_compiler.py
-         │       │   │   └── tool_command_compiler.py
+         │       │   │   └── scara_compiler_factory.py
+         │       │   ├── diagnostic/
+         │       │   │   ├── __init__.py
+         │       │   │   └── scara_diagnostic_formatter.py
          │       │   ├── exporter/
          │       │   │   ├── __init__.py
          │       │   │   ├── iscara_plan_exporter.py
-         │       │   │   └── scara_plan_exporter.py
+         │       │   │   ├── scara_plan_exporter.py
+         │       │   │   └── scara_plan_exporter_factory.py
          │       │   ├── __init__.py
          │       │   ├── iscara_dsl_compiler.py
          │       │   ├── iscara_dsl_service.py
@@ -190,7 +292,8 @@ Tool structure
          │       │   ├── lexer/
          │       │   │   ├── __init__.py
          │       │   │   ├── iscara_lexer.py
-         │       │   │   └── scara_lexer.py
+         │       │   │   ├── scara_lexer.py
+         │       │   │   └── scara_lexer_factory.py
          │       │   ├── linter/
          │       │   │   ├── __init__.py
          │       │   │   ├── iscara_linter.py
@@ -202,7 +305,8 @@ Tool structure
          │       │   │   │   ├── state_lint_rule.py
          │       │   │   │   └── timing_lint_rule.py
          │       │   │   ├── scara_lint_context.py
-         │       │   │   └── scara_linter.py
+         │       │   │   ├── scara_linter.py
+         │       │   │   └── scara_linter_factory.py
          │       │   ├── macro/
          │       │   │   ├── frame_macro_expander.py
          │       │   │   ├── imacro_expander.py
@@ -230,24 +334,57 @@ Tool structure
          │       │   │   ├── __init__.py
          │       │   │   ├── iscara_parser.py
          │       │   │   ├── parameter_extractor.py
-         │       │   │   └── scara_parser.py
-         │       │   └── scara_dsl_service.py
+         │       │   │   ├── scara_parser.py
+         │       │   │   └── scara_parser_factory.py
+         │       │   ├── scara_dsl_service.py
+         │       │   └── scara_dsl_service_factory.py
          │       ├── engine.py
          │       ├── __init__.py
          │       ├── iservice.py
          │       ├── kinematics/
          │       │   ├── ikinematics_service.py
          │       │   ├── __init__.py
-         │       │   └── kinematics_service.py
+         │       │   ├── kinematics_service.py
+         │       │   └── kinematics_service_factory.py
+         │       ├── service_factory.py
          │       └── trajectory/
+         │           ├── contract/
+         │           │   ├── __init__.py
+         │           │   ├── iplan_command_service.py
+         │           │   ├── iplan_persistence_service.py
+         │           │   ├── iplan_storage_service.py
+         │           │   └── iplan_validation_service.py
+         │           ├── discretization/
+         │           │   ├── __init__.py
+         │           │   ├── ishape_discretizer.py
+         │           │   ├── iwaypoint_factory.py
+         │           │   ├── shape_discretizer.py
+         │           │   ├── shape_discretizer_factory.py
+         │           │   └── waypoint_factory.py
+         │           ├── history/
+         │           │   ├── __init__.py
+         │           │   ├── iplan_history.py
+         │           │   ├── plan_history.py
+         │           │   └── plan_history_factory.py
          │           ├── __init__.py
-         │           ├── iplan_command_service.py
-         │           ├── iplan_persistence_service.py
-         │           ├── iplan_storage_service.py
-         │           ├── iplan_validation_service.py
-         │           ├── itrajectory_observer.py
-         │           ├── itrajectory_validator.py
-         │           └── trajectory_validator.py
+         │           ├── metrics/
+         │           │   ├── __init__.py
+         │           │   └── trajectory_metrics.py
+         │           ├── plan/
+         │           │   ├── __init__.py
+         │           │   ├── itrajectory_history.py
+         │           │   ├── itrajectory_mutable.py
+         │           │   ├── itrajectory_observer.py
+         │           │   ├── itrajectory_plan.py
+         │           │   ├── itrajectory_plan_factory.py
+         │           │   ├── itrajectory_read_only.py
+         │           │   ├── trajectory_plan.py
+         │           │   └── trajectory_plan_factory.py
+         │           └── validation/
+         │               ├── __init__.py
+         │               ├── itrajectory_validator.py
+         │               ├── trajectory_validator.py
+         │               └── trajectory_validator_factory.py
          ├── engine.py
          ├── infrastructure/
          │   ├── cli/
@@ -273,28 +410,82 @@ Tool structure
          │   │   ├── studio_command_definition.py
          │   │   └── studio_command_executor.py
          │   ├── communication/
+         │   │   ├── controller/
+         │   │   │   ├── base_sub_controller.py
+         │   │   │   ├── __init__.py
+         │   │   │   ├── jog_controller.py
+         │   │   │   ├── jog_controller_factory.py
+         │   │   │   ├── motion_controller.py
+         │   │   │   ├── motion_controller_factory.py
+         │   │   │   ├── query_controller.py
+         │   │   │   ├── query_controller_factory.py
+         │   │   │   ├── robot_controller.py
+         │   │   │   ├── robot_controller_factory.py
+         │   │   │   ├── tool_controller.py
+         │   │   │   └── tool_controller_factory.py
          │   │   ├── __init__.py
          │   │   ├── preferences/
-         │   │   │   ├── connection_preferences_repository.py
-         │   │   │   ├── iconnection_preferences_repository.py
+         │   │   │   ├── connection_repository.py
+         │   │   │   ├── connection_repository_factory.py
+         │   │   │   ├── iconnection_repository.py
          │   │   │   └── __init__.py
          │   │   ├── protocol/
-         │   │   │   ├── command_formatter.py
-         │   │   │   ├── command_templates.py
-         │   │   │   ├── config_command_formatter.py
-         │   │   │   ├── __init__.py
-         │   │   │   ├── motion_command_formatter.py
-         │   │   │   ├── protocol_parser.py
-         │   │   │   ├── robot_response_dto.py
-         │   │   │   └── tool_command_formatter.py
-         │   │   ├── serial_device_preferences.py
+         │   │   │   ├── ascii/
+         │   │   │   │   ├── formatter/
+         │   │   │   │   │   ├── command_formatter.py
+         │   │   │   │   │   ├── command_formatter_factory.py
+         │   │   │   │   │   ├── command_templates.py
+         │   │   │   │   │   ├── config_command_formatter.py
+         │   │   │   │   │   ├── __init__.py
+         │   │   │   │   │   ├── jog_command_formatter.py
+         │   │   │   │   │   ├── motion_command_formatter.py
+         │   │   │   │   │   ├── query_command_formatter.py
+         │   │   │   │   │   ├── system_command_formatter.py
+         │   │   │   │   │   └── tool_command_formatter.py
+         │   │   │   │   ├── __init__.py
+         │   │   │   │   └── parser/
+         │   │   │   │       ├── __init__.py
+         │   │   │   │       ├── protocol_parser.py
+         │   │   │   │       ├── protocol_parser_factory.py
+         │   │   │   │       ├── protocol_status_classifier.py
+         │   │   │   │       └── response_parser.py
+         │   │   │   ├── binary/
+         │   │   │   │   ├── binary_delimiter.py
+         │   │   │   │   ├── binary_struct_format.py
+         │   │   │   │   ├── builder/
+         │   │   │   │   │   ├── binary_frame_builder.py
+         │   │   │   │   │   ├── binary_frame_builder_factory.py
+         │   │   │   │   │   └── __init__.py
+         │   │   │   │   ├── checksum/
+         │   │   │   │   │   ├── crc16_ccitt.py
+         │   │   │   │   │   └── __init__.py
+         │   │   │   │   ├── __init__.py
+         │   │   │   │   └── parser/
+         │   │   │   │       ├── binary_frame_parser.py
+         │   │   │   │       ├── binary_frame_parser_factory.py
+         │   │   │   │       ├── binary_payload_unpacker.py
+         │   │   │   │       ├── __init__.py
+         │   │   │   │       └── parser_state.py
+         │   │   │   └── __init__.py
          │   │   ├── serial_port_scanner.py
          │   │   ├── streamer/
+         │   │   │   ├── binary_packet_strategy.py
+         │   │   │   ├── binary_packet_strategy_factory.py
+         │   │   │   ├── binary_stream_execution_worker.py
+         │   │   │   ├── binary_stream_execution_worker_factory.py
          │   │   │   ├── flow_controller.py
+         │   │   │   ├── flow_controller_factory.py
          │   │   │   ├── __init__.py
-         │   │   │   ├── robot_controller.py
+         │   │   │   ├── stream_connection_manager.py
+         │   │   │   ├── stream_connection_manager_factory.py
          │   │   │   ├── stream_execution_worker.py
-         │   │   │   └── trajectory_streamer.py
+         │   │   │   ├── stream_execution_worker_factory.py
+         │   │   │   ├── stream_observer_dispatcher.py
+         │   │   │   ├── stream_observer_dispatcher_factory.py
+         │   │   │   ├── stream_state_machine.py
+         │   │   │   ├── stream_state_machine_factory.py
+         │   │   │   ├── trajectory_streamer.py
+         │   │   │   └── trajectory_streamer_factory.py
          │   │   └── transport/
          │   │       ├── base_transport.py
          │   │       ├── __init__.py
@@ -321,6 +512,7 @@ Tool structure
          │   │   │   └── __init__.py
          │   │   ├── controls/
          │   │   │   ├── controls.py
+         │   │   │   ├── controls_panel_factory.py
          │   │   │   ├── icontrols_panel.py
          │   │   │   └── __init__.py
          │   │   ├── dsl/
@@ -328,6 +520,7 @@ Tool structure
          │   │   │   ├── dsl_console_view.py
          │   │   │   ├── dsl_document_manager.py
          │   │   │   ├── dsl_editor_tab.py
+         │   │   │   ├── dsl_editor_tab_factory.py
          │   │   │   ├── dsl_editor_toolbar.py
          │   │   │   ├── dsl_example_catalog.py
          │   │   │   ├── dsl_syntax_highlighter.py
@@ -338,11 +531,13 @@ Tool structure
          │   │   │   ├── __init__.py
          │   │   │   ├── itable.py
          │   │   │   ├── preview_tab.py
+         │   │   │   ├── preview_tab_factory.py
          │   │   │   ├── table.py
          │   │   │   ├── validation_tab.py
          │   │   │   └── waypoint_editor.py
          │   │   ├── engine.py
          │   │   ├── gui_event_mediator.py
+         │   │   ├── gui_factory.py
          │   │   ├── igui.py
          │   │   ├── __init__.py
          │   │   ├── menu/
@@ -371,11 +566,18 @@ Tool structure
          │   │   └── toolbar/
          │   │       ├── __init__.py
          │   │       ├── itoolbar.py
-         │   │       └── toolbar.py
+         │   │       ├── toolbar.py
+         │   │       └── toolbar_factory.py
          │   ├── __init__.py
+         │   ├── settings/
+         │   │   ├── config_loader.py
+         │   │   ├── config_loader_factory.py
+         │   │   └── __init__.py
          │   └── storage/
          │       ├── __init__.py
-         │       └── plan_storage_service.py
+         │       ├── plan_storage_service.py
+         │       ├── plan_storage_service_factory.py
+         │       └── trajectory_serializer.py
          ├── __init__.py
          ├── py.typed
          └── setup/
@@ -390,7 +592,7 @@ Tool structure
              ├── registry.py
              └── validator.py
 
-     45 directories, 229 files
+     81 directories, 395 files
 
 ✨ Features
 -----------
@@ -473,11 +675,11 @@ Launch the graphical studio with default configuration:
 
     python3 main.py studio
 
-Launch with initial trajectory plan file and disabled deadzone restriction:
+Launch with initial trajectory plan file, deadzone restriction, and verbose output:
 
 .. code-block:: bash
 
-    python3 main.py studio --file ./trajectories/rectangle_demo.json --dead-zone disable --verbose enable
+    python3 main.py studio --file ./trajectories/rectangle_demo.json --dead-zone --verbose
 
 .. list-table:: Studio CLI Options
    :widths: 20 15 25 40
@@ -492,13 +694,13 @@ Launch with initial trajectory plan file and disabled deadzone restriction:
      - *File path*
      - Path to initial trajectory JSON plan file to load on startup.
    * - **--dead-zone**
-     - ``str``
-     - ``enable``, ``disable``
-     - Enable or disable inner deadzone geometric validation (:math:`R_{min}`).
+     - ``bool``
+     - *Flag*
+     - Enable kinematic dead zone enforcement (:math:`R_{min}`).
    * - **--verbose**
-     - ``str``
-     - ``enable``, ``disable``
-     - Enable or disable verbose ATS operational logging.
+     - ``bool``
+     - *Flag*
+     - Enable verbose ATS operational logging.
 
 Interactive Motion Planning Workflow
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

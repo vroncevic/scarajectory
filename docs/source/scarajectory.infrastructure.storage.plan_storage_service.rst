@@ -5,3 +5,4 @@ scarajectory.infrastructure.storage.plan\_storage\_service module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

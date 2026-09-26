@@ -15,7 +15,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="scarajectory.core.service.dsl.linter package" href="scarajectory.core.service.dsl.linter.html" />
+    <link rel="next" title="scarajectory.core.service.dsl.lexer.scara_lexer_factory module" href="scarajectory.core.service.dsl.lexer.scara_lexer_factory.html" />
     <link rel="prev" title="scarajectory.core.service.dsl.lexer.iscara_lexer module" href="scarajectory.core.service.dsl.lexer.iscara_lexer.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -28,7 +28,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.core.service.dsl.linter.html" title="scarajectory.core.service.dsl.linter package"
+          <a href="scarajectory.core.service.dsl.lexer.scara_lexer_factory.html" title="scarajectory.core.service.dsl.lexer.scara_lexer_factory module"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="scarajectory.core.service.dsl.lexer.iscara_lexer.html" title="scarajectory.core.service.dsl.lexer.iscara_lexer module"
@@ -89,16 +89,21 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd>
 </dl>
 </div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.core.service.dsl.lexer.scara_lexer.ScaraLexer._TOKEN_REGEX">
+<span class="sig-name descname"><span class="pre">_TOKEN_REGEX</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Pattern</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">re.compile('(?P&lt;COMMENT&gt;[#;].*$)|(?P&lt;NUMBER&gt;[-+]?(?:\\d*\\.\\d+|\\d+)(?:[eE][-+]?\\d+)?)|(?P&lt;STRING&gt;&quot;(?:\\\\.|[^&quot;\\\\])*&quot;|\\\'(?:\\\\.|[^\\\'\\\\])*\\\')|(?P&lt;EQUALS&gt;=)|(?P&lt;COMMA&gt;,)|(?P&lt;LPAREN&gt;\\()|(?P&lt;RPAREN&gt;\\))</span></em><a class="headerlink" href="#scarajectory.core.service.dsl.lexer.scara_lexer.ScaraLexer._TOKEN_REGEX" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.core.service.dsl.lexer.scara_lexer.ScaraLexer.tokenize">
-<span class="sig-name descname"><span class="pre">tokenize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.dsl.token.scara_token.html#scarajectory.core.model.dsl.token.scara_token.ScaraToken" title="scarajectory.core.model.dsl.token.scara_token.ScaraToken"><span class="pre">ScaraToken</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/dsl/lexer/scara_lexer.html#ScaraLexer.tokenize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.dsl.lexer.scara_lexer.ScaraLexer.tokenize" title="Link to this definition">¶</a></dt>
-<dd><p>Tokenizes source text into a tuple of ScaraToken instances.</p>
+<span class="sig-name descname"><span class="pre">tokenize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.dsl.token.token.html#scarajectory.core.model.dsl.token.token.Token" title="scarajectory.core.model.dsl.token.token.Token"><span class="pre">Token</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/dsl/lexer/scara_lexer.html#ScaraLexer.tokenize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.dsl.lexer.scara_lexer.ScaraLexer.tokenize" title="Link to this definition">¶</a></dt>
+<dd><p>Tokenizes source text into a tuple of Token instances.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>source</strong> – Raw source code string.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Immutable tuple of ScaraToken tokens.</p>
+<dd class="field-even"><p>Immutable tuple of Token tokens.</p>
 </dd>
 <dt class="field-odd">Exceptions<span class="colon">:</span></dt>
 <dd class="field-odd"><p>ValueError if an illegal/unrecognized character is encountered.</p>
@@ -122,6 +127,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <ul>
 <li><a class="reference internal" href="#">scarajectory.core.service.dsl.lexer.scara_lexer module</a><ul>
 <li><a class="reference internal" href="#scarajectory.core.service.dsl.lexer.scara_lexer.ScaraLexer"><code class="docutils literal notranslate"><span class="pre">ScaraLexer</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.core.service.dsl.lexer.scara_lexer.ScaraLexer._TOKEN_REGEX"><code class="docutils literal notranslate"><span class="pre">ScaraLexer._TOKEN_REGEX</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.core.service.dsl.lexer.scara_lexer.ScaraLexer.tokenize"><code class="docutils literal notranslate"><span class="pre">ScaraLexer.tokenize()</span></code></a></li>
 </ul>
 </li>
@@ -137,8 +143,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="scarajectory.core.service.dsl.linter.html"
-                          title="next chapter">scarajectory.core.service.dsl.linter package</a></p>
+    <p class="topless"><a href="scarajectory.core.service.dsl.lexer.scara_lexer_factory.html"
+                          title="next chapter">scarajectory.core.service.dsl.lexer.scara_lexer_factory module</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -171,7 +177,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.core.service.dsl.linter.html" title="scarajectory.core.service.dsl.linter package"
+          <a href="scarajectory.core.service.dsl.lexer.scara_lexer_factory.html" title="scarajectory.core.service.dsl.lexer.scara_lexer_factory module"
              >next</a> |</li>
         <li class="right" >
           <a href="scarajectory.core.service.dsl.lexer.iscara_lexer.html" title="scarajectory.core.service.dsl.lexer.iscara_lexer module"

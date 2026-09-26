@@ -5,3 +5,4 @@ scarajectory.infrastructure.gui.canvas.canvas\_event\_binder module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

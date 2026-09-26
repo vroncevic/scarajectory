@@ -31,14 +31,17 @@ pkg_dir = dirname(dirname(abspath(__file__)))
 if pkg_dir not in path:
     path.insert(0, pkg_dir)
 
-from scarajectory.core.model.trajectory.waypoint import Waypoint
+from scarajectory.core.service.trajectory.discretization.waypoint_factory import WaypointFactory
 from scarajectory.core.model.kinematics.scara_bounds import ScaraBounds
-from scarajectory.core.model.trajectory.trajectory_plan import TrajectoryPlan
-from scarajectory.core.service.trajectory.trajectory_validator import TrajectoryValidator
+from scarajectory.core.service.trajectory.plan.trajectory_plan import TrajectoryPlan
+from scarajectory.core.service.trajectory.plan.trajectory_plan_factory import TrajectoryPlanFactory
+from scarajectory.core.service.trajectory.validation.trajectory_validator_factory import TrajectoryValidatorFactory
+from scarajectory.infrastructure.settings.config_loader_factory import ScaraConfigLoaderFactory
 from scarajectory.infrastructure.storage.plan_storage_service import PlanStorageService
-from scarajectory.infrastructure.communication.transport.serial_transport import SerialTransport
-from scarajectory.infrastructure.communication.streamer.trajectory_streamer import TrajectoryStreamer
-from scarajectory.core.service.engine import Service
+from scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory import TrajectoryStreamerFactory
+from scarajectory.core.service.dsl.scara_dsl_service_factory import ScaraDslServiceFactory
+from scarajectory.core.service.kinematics.kinematics_service_factory import KinematicsServiceFactory
+from scarajectory.core.service.service_factory import ServiceFactory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -70,16 +73,27 @@ class TestServiceEngine(TestCase):
 
             :exceptions: None.
         '''
-        self.bounds = ScaraBounds(l1=150.0, l2=120.0, z_min=0.0, z_max=100.0)
-        self.validator = TrajectoryValidator(self.bounds)
+        loader = ScaraConfigLoaderFactory.create()
+        self.bounds = loader.load_bounds_with_options(
+            options={'l1': 150.0, 'l2': 120.0, 'z_min': 0.0, 'z_max': 100.0}
+        )
+        self.kinematics = KinematicsServiceFactory.create(bounds=self.bounds)
+        self.validator = TrajectoryValidatorFactory.create(kinematics=self.kinematics)
         self.storage = PlanStorageService()
-        self.streamer = TrajectoryStreamer(SerialTransport())
-        self.plan = TrajectoryPlan()
-        self.service = Service(
+        self.streamer = TrajectoryStreamerFactory.create_default()
+        self.plan = TrajectoryPlanFactory.create()
+        transmission = loader.load_transmission()
+        self.dsl_service = ScaraDslServiceFactory.create(
+            validator=self.validator,
+            kinematics=self.validator.kinematics,
+            transmission=transmission,
+        )
+        self.service = ServiceFactory.create(
             validator=self.validator,
             streamer=self.streamer,
             storage=self.storage,
-            plan=self.plan
+            plan=self.plan,
+            dsl_service=self.dsl_service,
         )
 
     def test_service_initialization(self) -> None:
@@ -93,6 +107,7 @@ class TestServiceEngine(TestCase):
         self.assertEqual(self.service.get_validator(), self.validator)
         self.assertEqual(self.service.get_storage(), self.storage)
         self.assertEqual(self.service.get_streamer(), self.streamer)
+        self.assertEqual(self.service.get_dsl_service(), self.dsl_service)
 
     def test_save_and_load_plan(self) -> None:
         '''
@@ -100,7 +115,7 @@ class TestServiceEngine(TestCase):
 
             :exceptions: None.
         '''
-        pt = Waypoint(x=100.0, y=50.0, z=20.0, phi=0.0, speed=40.0)
+        pt = WaypointFactory.create(x=100.0, y=50.0, z=20.0, phi=0.0, speed=40.0)
         self.plan.add_point(pt)
 
         with NamedTemporaryFile(suffix='.json', delete=False) as tf:
@@ -125,8 +140,8 @@ class TestServiceEngine(TestCase):
 
             :exceptions: None.
         '''
-        pt1 = Waypoint(x=50.0, y=20.0, z=10.0, phi=0.0, speed=20.0)
-        pt2 = Waypoint(x=80.0, y=40.0, z=15.0, phi=5.0, speed=30.0)
+        pt1 = WaypointFactory.create(x=50.0, y=20.0, z=10.0, phi=0.0, speed=20.0)
+        pt2 = WaypointFactory.create(x=80.0, y=40.0, z=15.0, phi=5.0, speed=30.0)
 
         self.plan.add_point(pt1)
         self.plan.add_point(pt2)

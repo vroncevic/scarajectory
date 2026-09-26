@@ -29,26 +29,26 @@ pkg_dir = str(Path(__file__).resolve().parent.parent)
 if pkg_dir not in path:
     path.insert(0, pkg_dir)
 
-from scarajectory.core.model.dsl.ast.scara_command_type import ScaraCommandType
-from scarajectory.core.model.dsl.ast.scara_instruction import ScaraInstruction
-from scarajectory.core.model.dsl.ast.scara_program import ScaraProgram
+from scarajectory.core.model.dsl.ast.command_type import CommandType
+from scarajectory.core.model.dsl.ast.instruction import Instruction
+from scarajectory.core.model.dsl.ast.program import Program
 from scarajectory.core.model.trajectory.waypoint import Waypoint
-from scarajectory.core.service.dsl.compiler.control_command_compiler import (
-    ControlCommandCompiler,
-)
-from scarajectory.core.service.dsl.compiler.motion_command_compiler import (
-    MotionCommandCompiler,
-)
+from scarajectory.core.service.dsl.compiler.motion.arc_interpolator import ArcInterpolator
+from scarajectory.core.service.dsl.compiler.primitive.control_command_compiler import ControlCommandCompiler
+from scarajectory.core.service.dsl.compiler.motion.motion_command_compiler import MotionCommandCompiler
+from scarajectory.core.service.dsl.compiler.motion.motion_command_compiler_factory import MotionCommandCompilerFactory
+from scarajectory.core.service.dsl.compiler.motion.cartesian_move_compiler_factory import CartesianMoveCompilerFactory
+from scarajectory.core.service.dsl.compiler.motion.vertical_move_compiler_factory import VerticalMoveCompilerFactory
+from scarajectory.core.service.dsl.compiler.motion.arc_move_compiler_factory import ArcMoveCompilerFactory
 from scarajectory.core.service.dsl.compiler.scara_compiler import ScaraCompiler
-from scarajectory.core.service.dsl.compiler.scara_compiler_context import (
-    ScaraCompilerContext,
-)
-from scarajectory.core.service.dsl.compiler.state_command_compiler import (
-    StateCommandCompiler,
-)
-from scarajectory.core.service.dsl.compiler.tool_command_compiler import (
-    ToolCommandCompiler,
-)
+from scarajectory.core.service.dsl.compiler.scara_compiler_context import ScaraCompilerContext
+from scarajectory.core.service.dsl.compiler.scara_compiler_factory import ScaraCompilerFactory
+from scarajectory.core.service.dsl.compiler.primitive.state_command_compiler import StateCommandCompiler
+from scarajectory.core.service.dsl.compiler.primitive.tool_command_compiler import ToolCommandCompiler
+from scarajectory.core.service.dsl.macro.tangent_macro_expander import TangentMacroExpander
+from scarajectory.core.service.kinematics.kinematics_service_factory import KinematicsServiceFactory
+from scarajectory.core.service.trajectory.validation.trajectory_validator_factory import TrajectoryValidatorFactory
+from scarajectory.infrastructure.settings.config_loader_factory import ScaraConfigLoaderFactory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -81,8 +81,8 @@ class TestScaraCompiler(TestCase):
         ctx = ScaraCompilerContext()
         waypoints: list[Waypoint] = []
 
-        speed_inst = ScaraInstruction(
-            command_type=ScaraCommandType.SPEED,
+        speed_inst = Instruction(
+            command_type=CommandType.SPEED,
             parameters={'mode': 'RAPID', 'speed': 150.0},
             line_number=1,
             raw_text='SPEED RAPID 150.0',
@@ -91,8 +91,8 @@ class TestScaraCompiler(TestCase):
         compiler.compile(instruction=speed_inst, context=ctx, waypoints=waypoints)
         self.assertEqual(ctx.speed_rapid, 150.0)
 
-        zone_inst = ScaraInstruction(
-            command_type=ScaraCommandType.ZONE,
+        zone_inst = Instruction(
+            command_type=CommandType.ZONE,
             parameters={'mode': 'BLEND', 'radius': 5.0},
             line_number=2,
             raw_text='ZONE BLEND R=5.0',
@@ -110,8 +110,8 @@ class TestScaraCompiler(TestCase):
         ctx.current_y = 50.0
         waypoints: list[Waypoint] = []
 
-        pump_inst = ScaraInstruction(
-            command_type=ScaraCommandType.PUMP,
+        pump_inst = Instruction(
+            command_type=CommandType.PUMP,
             parameters={'state': 'ON'},
             line_number=3,
             raw_text='PUMP ON',
@@ -128,8 +128,8 @@ class TestScaraCompiler(TestCase):
         ctx = ScaraCompilerContext()
         waypoints: list[Waypoint] = []
 
-        home_inst = ScaraInstruction(
-            command_type=ScaraCommandType.HOME,
+        home_inst = Instruction(
+            command_type=CommandType.HOME,
             parameters={},
             line_number=1,
             raw_text='HOME',
@@ -139,8 +139,8 @@ class TestScaraCompiler(TestCase):
         self.assertEqual(len(waypoints), 1)
         self.assertEqual(waypoints[0].command, '<CMD:HOME>')
 
-        wait_inst = ScaraInstruction(
-            command_type=ScaraCommandType.WAIT_MS,
+        wait_inst = Instruction(
+            command_type=CommandType.WAIT_MS,
             parameters={'ms': 250.0},
             line_number=2,
             raw_text='WAIT_MS 250',
@@ -152,12 +152,20 @@ class TestScaraCompiler(TestCase):
 
     def test_motion_command_compiler(self) -> None:
         '''Verifies MotionCommandCompiler handles Cartesian and approach moves.'''
-        compiler = MotionCommandCompiler()
+        compiler = MotionCommandCompiler(
+            cartesian_compiler=CartesianMoveCompilerFactory.create_with_tangent_helper(
+                tangent_helper=TangentMacroExpander()
+            ),
+            vertical_compiler=VerticalMoveCompilerFactory.create(),
+            arc_compiler=ArcMoveCompilerFactory.create_with_interpolator(
+                arc_interpolator=ArcInterpolator()
+            ),
+        )
         ctx = ScaraCompilerContext()
         waypoints: list[Waypoint] = []
 
-        move_inst = ScaraInstruction(
-            command_type=ScaraCommandType.MOVE_L,
+        move_inst = Instruction(
+            command_type=CommandType.MOVE_L,
             parameters={'X': 120.0, 'Y': 60.0, 'Z': 15.0, 'SPEED': 50.0},
             line_number=1,
             raw_text='MOVE_L X=120.0 Y=60.0 Z=15.0 SPEED=50.0',
@@ -169,8 +177,8 @@ class TestScaraCompiler(TestCase):
         self.assertEqual(ctx.current_y, 60.0)
         self.assertEqual(ctx.current_z, 15.0)
 
-        approach_inst = ScaraInstruction(
-            command_type=ScaraCommandType.APPROACH,
+        approach_inst = Instruction(
+            command_type=CommandType.APPROACH,
             parameters={'DIST': 10.0, 'SPEED': 25.0},
             line_number=2,
             raw_text='APPROACH DIST=10.0 SPEED=25.0',
@@ -182,46 +190,105 @@ class TestScaraCompiler(TestCase):
 
     def test_compiler_end_to_end(self) -> None:
         '''Verifies full program compilation through ScaraCompiler orchestrator.'''
-        compiler = ScaraCompiler()
+        bounds = ScaraConfigLoaderFactory.create().load_bounds()
+        kinematics = KinematicsServiceFactory.create(bounds=bounds)
+        validator = TrajectoryValidatorFactory.create(kinematics=kinematics)
+        compiler = ScaraCompilerFactory.create(
+            validator=validator
+        )
         instructions = [
-            ScaraInstruction(
-                command_type=ScaraCommandType.HOME,
+            Instruction(
+                command_type=CommandType.HOME,
                 parameters={},
                 line_number=1,
                 raw_text='HOME',
             ),
-            ScaraInstruction(
-                command_type=ScaraCommandType.MOVE_J,
+            Instruction(
+                command_type=CommandType.MOVE_J,
                 parameters={'X': 150.0, 'Y': 50.0, 'Z': 20.0, 'PHI': 0.0},
                 line_number=2,
                 raw_text='MOVE_J X=150.0 Y=50.0 Z=20.0 PHI=0.0',
             ),
-            ScaraInstruction(
-                command_type=ScaraCommandType.PUMP,
+            Instruction(
+                command_type=CommandType.PUMP,
                 parameters={'state': 'ON'},
                 line_number=3,
                 raw_text='PUMP ON',
             ),
         ]
-        program = ScaraProgram(instructions=instructions)
+        program = Program(instructions=instructions)
         plan = compiler.compile(program=program)
         self.assertGreaterEqual(plan.count, 3)
 
     def test_compiler_custom_sub_compilers(self) -> None:
         '''Verifies ScaraCompiler accepts custom primitive sub-compilers.'''
+        bounds = ScaraConfigLoaderFactory.create().load_bounds()
+        kinematics = KinematicsServiceFactory.create(bounds=bounds)
+        validator = TrajectoryValidatorFactory.create(kinematics=kinematics)
         custom_tool = ToolCommandCompiler()
-        compiler = ScaraCompiler(primitive_compilers=(custom_tool,))
+        compiler = ScaraCompilerFactory.create_with_compilers(
+            validator=validator,
+            primitive_compilers=(custom_tool,),
+        )
         instructions = [
-            ScaraInstruction(
-                command_type=ScaraCommandType.PUMP,
+            Instruction(
+                command_type=CommandType.PUMP,
                 parameters={'state': 'ON'},
                 line_number=1,
                 raw_text='PUMP ON',
             ),
         ]
-        program = ScaraProgram(instructions=instructions)
+        program = Program(instructions=instructions)
         plan = compiler.compile(program=program)
         self.assertEqual(plan.count, 1)
+
+    def test_decomposed_motion_sub_compilers_and_factory(self) -> None:
+        '''Verifies CartesianMoveCompiler, VerticalMoveCompiler, ArcMoveCompiler, and MotionCommandCompilerFactory.'''
+        compiler = MotionCommandCompilerFactory.create_with_helpers(
+            arc_interpolator=ArcInterpolator(),
+            tangent_helper=TangentMacroExpander(),
+        )
+        default_compiler = MotionCommandCompilerFactory.create()
+        self.assertIsNotNone(default_compiler)
+        self.assertEqual(MotionCommandCompilerFactory.get_version(), '1.0.3')
+
+        ctx = ScaraCompilerContext()
+        waypoints: list[Waypoint] = []
+
+        move_inst = Instruction(
+            command_type=CommandType.MOVE_L,
+            parameters={'X': 100.0, 'Y': 50.0, 'Z': 10.0, 'SPEED': 40.0},
+            line_number=1,
+            raw_text='MOVE_L X=100.0 Y=50.0 Z=10.0 SPEED=40.0',
+        )
+        retract_inst = Instruction(
+            command_type=CommandType.RETRACT,
+            parameters={'DIST': 15.0},
+            line_number=2,
+            raw_text='RETRACT DIST=15.0',
+        )
+        arc_inst = Instruction(
+            command_type=CommandType.ARC_CW,
+            parameters={'X': 110.0, 'Y': 60.0, 'I': 5.0, 'J': 5.0},
+            line_number=3,
+            raw_text='ARC_CW X=110.0 Y=60.0 I=5.0 J=5.0',
+        )
+
+        self.assertTrue(compiler.can_compile(instruction=move_inst))
+        self.assertTrue(compiler.can_compile(instruction=retract_inst))
+        self.assertTrue(compiler.can_compile(instruction=arc_inst))
+
+        compiler.compile(instruction=move_inst, context=ctx, waypoints=waypoints)
+        self.assertEqual(len(waypoints), 1)
+        self.assertEqual(ctx.current_x, 100.0)
+
+        compiler.compile(instruction=retract_inst, context=ctx, waypoints=waypoints)
+        self.assertEqual(len(waypoints), 2)
+        self.assertEqual(ctx.current_z, 25.0)
+
+        compiler.compile(instruction=arc_inst, context=ctx, waypoints=waypoints)
+        self.assertGreater(len(waypoints), 2)
+        self.assertEqual(ctx.current_x, 110.0)
 
 
 if __name__ == '__main__':

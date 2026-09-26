@@ -29,8 +29,9 @@ pkg_dir = dirname(dirname(abspath(__file__)))
 if pkg_dir not in path:
     path.insert(0, pkg_dir)
 
-from scarajectory.core.model.trajectory.waypoint import Waypoint
-from scarajectory.core.model.trajectory.trajectory_plan import TrajectoryPlan
+from scarajectory.core.service.trajectory.discretization.waypoint_factory import WaypointFactory
+from scarajectory.core.service.trajectory.plan.trajectory_plan import TrajectoryPlan
+from scarajectory.core.service.trajectory.plan.trajectory_plan_factory import TrajectoryPlanFactory
 from scarajectory.infrastructure.gui.model.canvas_settings import CanvasSettings
 from scarajectory.infrastructure.gui.model.canvas_tool_mode import CanvasToolMode
 from scarajectory.infrastructure.gui.model.canvas_interaction_state import CanvasInteractionState
@@ -80,7 +81,7 @@ class TestCanvasMouseHandler(TestCase):
 
             :exceptions: None.
         '''
-        self.plan = TrajectoryPlan()
+        self.plan = TrajectoryPlanFactory.create()
         self.vp = ViewportTransform()
         self.state = CanvasInteractionState()
         self.settings = CanvasSettings(default_z=15.0, default_speed=35.0)
@@ -104,7 +105,7 @@ class TestCanvasMouseHandler(TestCase):
 
             :exceptions: None.
         '''
-        pt = Waypoint(x=0.0, y=0.0, z=10.0, phi=0.0, speed=20.0)
+        pt = WaypointFactory.create(x=0.0, y=0.0, z=10.0, phi=0.0, speed=20.0)
         self.plan.add_point(pt)
 
         # Center of screen (400, 300) corresponds to world (0, 0)

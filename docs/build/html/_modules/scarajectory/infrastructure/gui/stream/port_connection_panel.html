@@ -64,8 +64,10 @@
 <span class="kn">from</span> <span class="nn">tkinter.ttk</span> <span class="kn">import</span> <span class="n">Button</span><span class="p">,</span> <span class="n">Combobox</span><span class="p">,</span> <span class="n">Frame</span><span class="p">,</span> <span class="n">Label</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span>
 
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.communication.preferences.connection_preference</span> <span class="kn">import</span> <span class="n">ConnectionPreference</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.communication.preferences.connection_preference_factory</span> <span class="kn">import</span> <span class="n">ConnectionPreferenceFactory</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.serial_port_scanner</span> <span class="kn">import</span> <span class="n">SerialPortScanner</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.serial_device_preferences</span> <span class="kn">import</span> <span class="n">SerialDevicePreferences</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.preferences.iconnection_repository</span> <span class="kn">import</span> <span class="n">IConnectionRepository</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
@@ -89,6 +91,7 @@
 <span class="sd">                | _cbo_ports - Dropdown list of detected serial communication ports.</span>
 <span class="sd">                | _btn_connect - Connect and disconnect action toggle button.</span>
 <span class="sd">                | _on_toggle_connect - Callback invoked on connect/disconnect click.</span>
+<span class="sd">                | _connection_repository - Injected hardware connection preferences repository.</span>
 <span class="sd">            :methods:</span>
 <span class="sd">                | __init__ - Initializes the port connection controls layout.</span>
 <span class="sd">                | refresh_ports - Scans available serial/USB ports and selects preference.</span>
@@ -100,12 +103,14 @@
     <span class="n">_cbo_ports</span><span class="p">:</span> <span class="n">Combobox</span>
     <span class="n">_btn_connect</span><span class="p">:</span> <span class="n">Button</span>
     <span class="n">_on_toggle_connect</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="n">_connection_repository</span><span class="p">:</span> <span class="n">IConnectionRepository</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">parent</span><span class="p">:</span> <span class="n">Widget</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">on_toggle_connect</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">],</span>
+        <span class="n">connection_repository</span><span class="p">:</span> <span class="n">IConnectionRepository</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
@@ -113,10 +118,12 @@
 
 <span class="sd">            :param parent: Parent container widget.</span>
 <span class="sd">            :param on_toggle_connect: Callback invoked when connection button is clicked.</span>
+<span class="sd">            :param connection_repository: Injected IConnectionRepository instance.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_on_toggle_connect</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="n">on_toggle_connect</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connection_repository</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IConnectionRepository</span><span class="p">]</span> <span class="o">=</span> <span class="n">connection_repository</span>
 
         <span class="n">Label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Port:&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cbo_ports</span> <span class="o">=</span> <span class="n">Combobox</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
@@ -143,14 +150,14 @@
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">current_selection</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cbo_ports</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-        <span class="n">saved_port</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">SerialDevicePreferences</span><span class="o">.</span><span class="n">load_preference</span><span class="p">()</span>
+        <span class="n">preference</span><span class="p">:</span> <span class="n">ConnectionPreference</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection_repository</span><span class="o">.</span><span class="n">load_preference</span><span class="p">()</span>
         <span class="n">ports</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;127.0.0.1:8888 (Digital Twin)&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">SerialPortScanner</span><span class="o">.</span><span class="n">scan_ports</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cbo_ports</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ports</span>
 
         <span class="k">if</span> <span class="n">current_selection</span> <span class="ow">in</span> <span class="n">ports</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_cbo_ports</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">current_selection</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">saved_port</span><span class="p">:</span>
-            <span class="n">matched_port</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">ports</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">saved_port</span><span class="p">)),</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">preference</span><span class="o">.</span><span class="n">port</span><span class="p">:</span>
+            <span class="n">matched_port</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">ports</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">preference</span><span class="o">.</span><span class="n">port</span><span class="p">)),</span> <span class="kc">None</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">matched_port</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_cbo_ports</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">matched_port</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">ports</span><span class="p">:</span>
@@ -206,7 +213,11 @@
         <span class="n">port</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_selected_port</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">port</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">port</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;127.0.0.1:8888&#39;</span><span class="p">):</span>
-            <span class="n">SerialDevicePreferences</span><span class="o">.</span><span class="n">save_preference</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="mi">115200</span><span class="p">)</span></div>
+            <span class="n">preference</span><span class="p">:</span> <span class="n">ConnectionPreference</span> <span class="o">=</span> <span class="n">ConnectionPreferenceFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">,</span>
+                <span class="n">baud</span><span class="o">=</span><span class="mi">115200</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_connection_repository</span><span class="o">.</span><span class="n">save_preference</span><span class="p">(</span><span class="n">preference</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

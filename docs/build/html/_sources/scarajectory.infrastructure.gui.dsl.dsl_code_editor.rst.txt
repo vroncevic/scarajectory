@@ -5,3 +5,4 @@ scarajectory.infrastructure.gui.dsl.dsl\_code\_editor module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

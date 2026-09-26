@@ -5,3 +5,4 @@ scarajectory.core.service.dsl.lexer.iscara\_lexer module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

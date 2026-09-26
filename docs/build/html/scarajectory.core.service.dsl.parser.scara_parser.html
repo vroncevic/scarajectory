@@ -15,7 +15,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="scarajectory.core.service.dsl.iscara_dsl_compiler module" href="scarajectory.core.service.dsl.iscara_dsl_compiler.html" />
+    <link rel="next" title="scarajectory.core.service.dsl.parser.scara_parser_factory module" href="scarajectory.core.service.dsl.parser.scara_parser_factory.html" />
     <link rel="prev" title="scarajectory.core.service.dsl.parser.parameter_extractor module" href="scarajectory.core.service.dsl.parser.parameter_extractor.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -28,7 +28,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.core.service.dsl.iscara_dsl_compiler.html" title="scarajectory.core.service.dsl.iscara_dsl_compiler module"
+          <a href="scarajectory.core.service.dsl.parser.scara_parser_factory.html" title="scarajectory.core.service.dsl.parser.scara_parser_factory module"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="scarajectory.core.service.dsl.parser.parameter_extractor.html" title="scarajectory.core.service.dsl.parser.parameter_extractor module"
@@ -71,9 +71,9 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="scarajectory.core.service.dsl.parser.scara_parser.ScaraParser">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.core.service.dsl.parser.scara_parser.</span></span><span class="sig-name descname"><span class="pre">ScaraParser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lexer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.dsl.lexer.iscara_lexer.html#scarajectory.core.service.dsl.lexer.iscara_lexer.IScaraLexer" title="scarajectory.core.service.dsl.lexer.iscara_lexer.IScaraLexer"><span class="pre">IScaraLexer</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handlers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.service.dsl.parser.icommand_parser.html#scarajectory.core.service.dsl.parser.icommand_parser.ICommandParser" title="scarajectory.core.service.dsl.parser.icommand_parser.ICommandParser"><span class="pre">ICommandParser</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/core/service/dsl/parser/scara_parser.html#ScaraParser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.dsl.parser.scara_parser.ScaraParser" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.core.service.dsl.parser.scara_parser.</span></span><span class="sig-name descname"><span class="pre">ScaraParser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lexer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.dsl.lexer.iscara_lexer.html#scarajectory.core.service.dsl.lexer.iscara_lexer.IScaraLexer" title="scarajectory.core.service.dsl.lexer.iscara_lexer.IScaraLexer"><span class="pre">IScaraLexer</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">handlers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.service.dsl.parser.icommand_parser.html#scarajectory.core.service.dsl.parser.icommand_parser.ICommandParser" title="scarajectory.core.service.dsl.parser.icommand_parser.ICommandParser"><span class="pre">ICommandParser</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">program_factory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.dsl.ast.iprogram_factory.html#scarajectory.core.service.dsl.ast.iprogram_factory.IProgramFactory" title="scarajectory.core.service.dsl.ast.iprogram_factory.IProgramFactory"><span class="pre">IProgramFactory</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/core/service/dsl/parser/scara_parser.html#ScaraParser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.dsl.parser.scara_parser.ScaraParser" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Orchestrator parser coordinating modular command handlers into a ScaraProgram AST.</p>
+<p>Orchestrator parser coordinating modular command handlers into a Program AST.</p>
 <p>It defines:</p>
 <blockquote>
 <div><dl class="field-list">
@@ -85,23 +85,40 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd>
 <dt class="field-even">methods<span class="colon">:</span></dt>
 <dd class="field-even"><div class="line-block">
-<div class="line">__init__ - Initializes ScaraParser with optional lexer and command handlers.</div>
-<div class="line">parse - Parses raw DSL source string into an IScaraProgram AST.</div>
-<div class="line">parse_tokens - Parses a sequence of lexical tokens into an IScaraProgram AST.</div>
+<div class="line">__init__ - Initializes ScaraParser with injected lexer and command handlers.</div>
+<div class="line">parse - Parses raw DSL source string into a Program AST.</div>
+<div class="line">parse_tokens - Parses a sequence of lexical tokens into a Program AST.</div>
 </div>
 </dd>
 </dl>
 </div></blockquote>
 <dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.core.service.dsl.parser.scara_parser.ScaraParser._parse_instruction_line">
+<span class="sig-name descname"><span class="pre">_parse_instruction_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.dsl.token.token.html#scarajectory.core.model.dsl.token.token.Token" title="scarajectory.core.model.dsl.token.token.Token"><span class="pre">Token</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.core.model.dsl.ast.instruction.html#scarajectory.core.model.dsl.ast.instruction.Instruction" title="scarajectory.core.model.dsl.ast.instruction.Instruction"><span class="pre">Instruction</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/dsl/parser/scara_parser.html#ScaraParser._parse_instruction_line"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.dsl.parser.scara_parser.ScaraParser._parse_instruction_line" title="Link to this definition">¶</a></dt>
+<dd><p>Delegates statement tokens to registered command handlers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tokens</strong> – Statement token tuple.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Instruction node or None.</p>
+</dd>
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ValueError if no registered handler recognizes the command.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.core.service.dsl.parser.scara_parser.ScaraParser.parse">
-<span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.core.model.dsl.ast.iscara_program.html#scarajectory.core.model.dsl.ast.iscara_program.IScaraProgram" title="scarajectory.core.model.dsl.ast.iscara_program.IScaraProgram"><span class="pre">IScaraProgram</span></a></span></span><a class="reference internal" href="_modules/scarajectory/core/service/dsl/parser/scara_parser.html#ScaraParser.parse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.dsl.parser.scara_parser.ScaraParser.parse" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.core.model.dsl.ast.program.html#scarajectory.core.model.dsl.ast.program.Program" title="scarajectory.core.model.dsl.ast.program.Program"><span class="pre">Program</span></a></span></span><a class="reference internal" href="_modules/scarajectory/core/service/dsl/parser/scara_parser.html#ScaraParser.parse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.dsl.parser.scara_parser.ScaraParser.parse" title="Link to this definition">¶</a></dt>
 <dd><p>Parses raw SCARA DSL code string into an immutable AST program representation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>source</strong> – Raw source code text.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>IScaraProgram instance.</p>
+<dd class="field-even"><p>Program instance.</p>
 </dd>
 <dt class="field-odd">Exceptions<span class="colon">:</span></dt>
 <dd class="field-odd"><p>ValueError on syntactic parse error.</p>
@@ -111,14 +128,14 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.core.service.dsl.parser.scara_parser.ScaraParser.parse_tokens">
-<span class="sig-name descname"><span class="pre">parse_tokens</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.dsl.token.scara_token.html#scarajectory.core.model.dsl.token.scara_token.ScaraToken" title="scarajectory.core.model.dsl.token.scara_token.ScaraToken"><span class="pre">ScaraToken</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.core.model.dsl.ast.iscara_program.html#scarajectory.core.model.dsl.ast.iscara_program.IScaraProgram" title="scarajectory.core.model.dsl.ast.iscara_program.IScaraProgram"><span class="pre">IScaraProgram</span></a></span></span><a class="reference internal" href="_modules/scarajectory/core/service/dsl/parser/scara_parser.html#ScaraParser.parse_tokens"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.dsl.parser.scara_parser.ScaraParser.parse_tokens" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">parse_tokens</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.dsl.token.token.html#scarajectory.core.model.dsl.token.token.Token" title="scarajectory.core.model.dsl.token.token.Token"><span class="pre">Token</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.core.model.dsl.ast.program.html#scarajectory.core.model.dsl.ast.program.Program" title="scarajectory.core.model.dsl.ast.program.Program"><span class="pre">Program</span></a></span></span><a class="reference internal" href="_modules/scarajectory/core/service/dsl/parser/scara_parser.html#ScaraParser.parse_tokens"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.dsl.parser.scara_parser.ScaraParser.parse_tokens" title="Link to this definition">¶</a></dt>
 <dd><p>Parses a sequence of lexical tokens into an immutable AST program representation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>tokens</strong> – Sequence of ScaraToken instances.</p>
+<dd class="field-odd"><p><strong>tokens</strong> – Sequence of Token instances.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>IScaraProgram instance.</p>
+<dd class="field-even"><p>Program instance.</p>
 </dd>
 <dt class="field-odd">Exceptions<span class="colon">:</span></dt>
 <dd class="field-odd"><p>ValueError on syntactic parse error.</p>
@@ -142,6 +159,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <ul>
 <li><a class="reference internal" href="#">scarajectory.core.service.dsl.parser.scara_parser module</a><ul>
 <li><a class="reference internal" href="#scarajectory.core.service.dsl.parser.scara_parser.ScaraParser"><code class="docutils literal notranslate"><span class="pre">ScaraParser</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.core.service.dsl.parser.scara_parser.ScaraParser._parse_instruction_line"><code class="docutils literal notranslate"><span class="pre">ScaraParser._parse_instruction_line()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.core.service.dsl.parser.scara_parser.ScaraParser.parse"><code class="docutils literal notranslate"><span class="pre">ScaraParser.parse()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.core.service.dsl.parser.scara_parser.ScaraParser.parse_tokens"><code class="docutils literal notranslate"><span class="pre">ScaraParser.parse_tokens()</span></code></a></li>
 </ul>
@@ -158,8 +176,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="scarajectory.core.service.dsl.iscara_dsl_compiler.html"
-                          title="next chapter">scarajectory.core.service.dsl.iscara_dsl_compiler module</a></p>
+    <p class="topless"><a href="scarajectory.core.service.dsl.parser.scara_parser_factory.html"
+                          title="next chapter">scarajectory.core.service.dsl.parser.scara_parser_factory module</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -192,7 +210,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.core.service.dsl.iscara_dsl_compiler.html" title="scarajectory.core.service.dsl.iscara_dsl_compiler module"
+          <a href="scarajectory.core.service.dsl.parser.scara_parser_factory.html" title="scarajectory.core.service.dsl.parser.scara_parser_factory module"
              >next</a> |</li>
         <li class="right" >
           <a href="scarajectory.core.service.dsl.parser.parameter_extractor.html" title="scarajectory.core.service.dsl.parser.parameter_extractor module"

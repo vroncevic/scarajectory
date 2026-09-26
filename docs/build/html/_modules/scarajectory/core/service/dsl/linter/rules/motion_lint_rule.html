@@ -59,15 +59,11 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.iscara_instruction</span> <span class="kn">import</span> <span class="n">IScaraInstruction</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.scara_command_type</span> <span class="kn">import</span> <span class="n">ScaraCommandType</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.scara_diagnostic</span> <span class="kn">import</span> <span class="n">ScaraDiagnostic</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.scara_diagnostic_severity</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">ScaraDiagnosticSeverity</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.linter.scara_lint_context</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">ScaraLintContext</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.command_type</span> <span class="kn">import</span> <span class="n">CommandType</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.instruction</span> <span class="kn">import</span> <span class="n">Instruction</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.diagnostic</span> <span class="kn">import</span> <span class="n">Diagnostic</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.diagnostic_severity</span> <span class="kn">import</span> <span class="n">DiagnosticSeverity</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.linter.scara_lint_context</span> <span class="kn">import</span> <span class="n">ScaraLintContext</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
@@ -93,15 +89,15 @@
 <span class="sd">                | check - Analyzes motion instruction against current simulation context.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="n">_MOTION_COMMANDS</span><span class="p">:</span> <span class="nb">frozenset</span><span class="p">[</span><span class="n">ScaraCommandType</span><span class="p">]</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span>
-        <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">MOVE_L</span><span class="p">,</span>
-        <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">MOVE_J</span><span class="p">,</span>
-        <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">ARC_CW</span><span class="p">,</span>
-        <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">ARC_CCW</span><span class="p">,</span>
-        <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">JUMP</span><span class="p">,</span>
-        <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">APPROACH</span><span class="p">,</span>
-        <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">RETRACT</span><span class="p">,</span>
-        <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">MOVE_PALLET</span><span class="p">,</span>
+    <span class="n">_MOTION_COMMANDS</span><span class="p">:</span> <span class="nb">frozenset</span><span class="p">[</span><span class="n">CommandType</span><span class="p">]</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span>
+        <span class="n">CommandType</span><span class="o">.</span><span class="n">MOVE_L</span><span class="p">,</span>
+        <span class="n">CommandType</span><span class="o">.</span><span class="n">MOVE_J</span><span class="p">,</span>
+        <span class="n">CommandType</span><span class="o">.</span><span class="n">ARC_CW</span><span class="p">,</span>
+        <span class="n">CommandType</span><span class="o">.</span><span class="n">ARC_CCW</span><span class="p">,</span>
+        <span class="n">CommandType</span><span class="o">.</span><span class="n">JUMP</span><span class="p">,</span>
+        <span class="n">CommandType</span><span class="o">.</span><span class="n">APPROACH</span><span class="p">,</span>
+        <span class="n">CommandType</span><span class="o">.</span><span class="n">RETRACT</span><span class="p">,</span>
+        <span class="n">CommandType</span><span class="o">.</span><span class="n">MOVE_PALLET</span><span class="p">,</span>
     <span class="p">})</span>
 
 <div class="viewcode-block" id="MotionLintRule.check">
@@ -109,9 +105,9 @@
     <span class="k">def</span> <span class="nf">check</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">instruction</span><span class="p">:</span> <span class="n">IScaraInstruction</span><span class="p">,</span>
+        <span class="n">instruction</span><span class="p">:</span> <span class="n">Instruction</span><span class="p">,</span>
         <span class="n">context</span><span class="p">:</span> <span class="n">ScaraLintContext</span><span class="p">,</span>
-        <span class="n">diagnostics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ScaraDiagnostic</span><span class="p">],</span>
+        <span class="n">diagnostics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Diagnostic</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Evaluates motion calibration and duplicate move findings.</span>
@@ -122,6 +118,7 @@
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="n">instruction</span><span class="o">.</span><span class="n">command_type</span>
+
         <span class="k">if</span> <span class="n">cmd</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_MOTION_COMMANDS</span><span class="p">:</span>
             <span class="k">return</span>
 
@@ -130,9 +127,9 @@
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">context</span><span class="o">.</span><span class="n">is_homed</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">context</span><span class="o">.</span><span class="n">motion_occurred</span><span class="p">:</span>
             <span class="n">diagnostics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">ScaraDiagnostic</span><span class="p">(</span>
+                <span class="n">Diagnostic</span><span class="p">(</span>
                     <span class="n">code</span><span class="o">=</span><span class="s1">&#39;UNCALIBRATED_MOTION&#39;</span><span class="p">,</span>
-                    <span class="n">severity</span><span class="o">=</span><span class="n">ScaraDiagnosticSeverity</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span>
+                    <span class="n">severity</span><span class="o">=</span><span class="n">DiagnosticSeverity</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span>
                     <span class="n">message</span><span class="o">=</span><span class="p">(</span>
                         <span class="s1">&#39;First motion instruction occurs before HOME or &#39;</span>
                         <span class="s1">&#39;SETPOS calibration. Machine coordinates unreferenced.&#39;</span>
@@ -142,7 +139,7 @@
                 <span class="p">)</span>
             <span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="p">(</span><span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">MOVE_L</span><span class="p">,</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">MOVE_J</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="p">(</span><span class="n">CommandType</span><span class="o">.</span><span class="n">MOVE_L</span><span class="p">,</span> <span class="n">CommandType</span><span class="o">.</span><span class="n">MOVE_J</span><span class="p">):</span>
             <span class="n">x_val</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">))</span>
             <span class="n">y_val</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">))</span>
             <span class="n">z_val</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Z&#39;</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">))</span>
@@ -154,11 +151,11 @@
                     <span class="nb">float</span><span class="p">(</span><span class="n">z_val</span><span class="p">),</span>
                     <span class="nb">float</span><span class="p">(</span><span class="n">phi_val</span><span class="p">),</span>
                 <span class="p">)</span>
-                <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">last_coords</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">coords</span> <span class="o">==</span> <span class="n">context</span><span class="o">.</span><span class="n">last_coords</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">last_coords</span> <span class="ow">and</span> <span class="n">coords</span> <span class="o">==</span> <span class="n">context</span><span class="o">.</span><span class="n">last_coords</span><span class="p">:</span>
                     <span class="n">diagnostics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                        <span class="n">ScaraDiagnostic</span><span class="p">(</span>
+                        <span class="n">Diagnostic</span><span class="p">(</span>
                             <span class="n">code</span><span class="o">=</span><span class="s1">&#39;DUPLICATE_MOTION&#39;</span><span class="p">,</span>
-                            <span class="n">severity</span><span class="o">=</span><span class="n">ScaraDiagnosticSeverity</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+                            <span class="n">severity</span><span class="o">=</span><span class="n">DiagnosticSeverity</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
                             <span class="n">message</span><span class="o">=</span><span class="p">(</span>
                                 <span class="sa">f</span><span class="s1">&#39;Consecutive move to identical target coordinates &#39;</span>
                                 <span class="sa">f</span><span class="s1">&#39;(</span><span class="si">{</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">coords</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">coords</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">coords</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">).&#39;</span>
@@ -169,9 +166,9 @@
                     <span class="p">)</span>
                 <span class="n">context</span><span class="o">.</span><span class="n">last_coords</span> <span class="o">=</span> <span class="n">coords</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">context</span><span class="o">.</span><span class="n">last_coords</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">context</span><span class="o">.</span><span class="n">last_coords</span> <span class="o">=</span> <span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">context</span><span class="o">.</span><span class="n">last_coords</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">context</span><span class="o">.</span><span class="n">last_coords</span> <span class="o">=</span> <span class="p">()</span>
 
         <span class="n">context</span><span class="o">.</span><span class="n">motion_occurred</span> <span class="o">=</span> <span class="kc">True</span></div>
 </div>

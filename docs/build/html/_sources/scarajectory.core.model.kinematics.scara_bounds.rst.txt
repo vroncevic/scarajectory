@@ -5,3 +5,4 @@ scarajectory.core.model.kinematics.scara\_bounds module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

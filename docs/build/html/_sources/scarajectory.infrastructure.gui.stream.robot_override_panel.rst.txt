@@ -5,3 +5,4 @@ scarajectory.infrastructure.gui.stream.robot\_override\_panel module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

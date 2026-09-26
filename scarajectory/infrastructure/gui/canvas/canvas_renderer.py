@@ -23,8 +23,8 @@ from __future__ import annotations
 
 from tkinter import Canvas
 
-from scarajectory.core.model.trajectory.trajectory_plan import TrajectoryPlan
-from scarajectory.core.service.trajectory.itrajectory_validator import ITrajectoryValidator
+from scarajectory.core.service.trajectory.plan.itrajectory_plan import ITrajectoryPlan
+from scarajectory.core.service.trajectory.validation.itrajectory_validator import ITrajectoryValidator
 from scarajectory.infrastructure.gui.canvas.canvas_background_renderer import CanvasBackgroundRenderer
 from scarajectory.infrastructure.gui.canvas.canvas_preview_renderer import CanvasPreviewRenderer
 from scarajectory.infrastructure.gui.canvas.canvas_trajectory_renderer import CanvasTrajectoryRenderer
@@ -58,23 +58,23 @@ class CanvasRenderer:
         cls,
         canvas: Canvas,
         vp: ViewportTransform,
-        r_min_or_validator: float | ITrajectoryValidator
+        validator: ITrajectoryValidator,
     ) -> None:
         '''
             Renders polar rays, concentric distance rings, axes and reach limits.
 
             :param canvas: Target Tkinter canvas widget.
             :param vp: ViewportTransform instance.
-            :param r_min_or_validator: Minimum deadzone radius float or ITrajectoryValidator instance.
+            :param validator: ITrajectoryValidator instance.
         '''
-        CanvasBackgroundRenderer.draw_background(canvas, vp, r_min_or_validator)
+        CanvasBackgroundRenderer.draw_background(canvas, vp, validator)
 
     @classmethod
     def draw_trajectory(
         cls,
         canvas: Canvas,
         vp: ViewportTransform,
-        plan: TrajectoryPlan,
+        plan: ITrajectoryPlan,
         validator: ITrajectoryValidator
     ) -> None:
         '''

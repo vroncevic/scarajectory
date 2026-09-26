@@ -29,8 +29,10 @@ pkg_dir = dirname(dirname(abspath(__file__)))
 if pkg_dir not in path:
     path.insert(0, pkg_dir)
 
-from scarajectory.core.model.trajectory.waypoint import Waypoint
-from scarajectory.core.model.trajectory.plan_history import PlanHistory
+from scarajectory.core.service.trajectory.discretization.waypoint_factory import WaypointFactory
+from scarajectory.core.service.trajectory.history.plan_history import PlanHistory
+from scarajectory.core.service.trajectory.history.plan_history_factory import PlanHistoryFactory
+from scarajectory.core.service.trajectory.history.iplan_history import IPlanHistory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -53,6 +55,7 @@ class TestPlanHistory(TestCase):
                 | test_save_state_and_undo - Tests snapshot creation and undo restore.
                 | test_redo - Tests redo forward stack restoration.
                 | test_clear - Tests history reset.
+                | test_factory_and_protocol_conformance - Tests factory instantiation and protocol conformance.
     '''
 
     def test_initial_state(self) -> None:
@@ -62,7 +65,7 @@ class TestPlanHistory(TestCase):
             :exceptions: None.
         '''
         history = PlanHistory()
-        pt = Waypoint(x=10.0, y=20.0, z=0.0, phi=0.0, speed=10.0)
+        pt = WaypointFactory.create(x=10.0, y=20.0, z=0.0, phi=0.0, speed=10.0)
         self.assertIsNone(history.undo([pt]))
         self.assertIsNone(history.redo([pt]))
 
@@ -73,8 +76,8 @@ class TestPlanHistory(TestCase):
             :exceptions: None.
         '''
         history = PlanHistory()
-        pt1 = Waypoint(x=10.0, y=20.0, z=0.0, phi=0.0, speed=10.0)
-        pt2 = Waypoint(x=30.0, y=40.0, z=0.0, phi=0.0, speed=10.0)
+        pt1 = WaypointFactory.create(x=10.0, y=20.0, z=0.0, phi=0.0, speed=10.0)
+        pt2 = WaypointFactory.create(x=30.0, y=40.0, z=0.0, phi=0.0, speed=10.0)
 
         history.save_state([pt1])
         restored = history.undo([pt1, pt2])
@@ -90,8 +93,8 @@ class TestPlanHistory(TestCase):
             :exceptions: None.
         '''
         history = PlanHistory()
-        pt1 = Waypoint(x=10.0, y=20.0, z=0.0, phi=0.0, speed=10.0)
-        pt2 = Waypoint(x=30.0, y=40.0, z=0.0, phi=0.0, speed=10.0)
+        pt1 = WaypointFactory.create(x=10.0, y=20.0, z=0.0, phi=0.0, speed=10.0)
+        pt2 = WaypointFactory.create(x=30.0, y=40.0, z=0.0, phi=0.0, speed=10.0)
 
         history.save_state([pt1])
         history.undo([pt1, pt2])
@@ -108,11 +111,21 @@ class TestPlanHistory(TestCase):
             :exceptions: None.
         '''
         history = PlanHistory()
-        pt1 = Waypoint(x=10.0, y=20.0, z=0.0, phi=0.0, speed=10.0)
+        pt1 = WaypointFactory.create(x=10.0, y=20.0, z=0.0, phi=0.0, speed=10.0)
         history.save_state([pt1])
         history.clear()
         self.assertIsNone(history.undo([pt1]))
         self.assertIsNone(history.redo([pt1]))
+
+    def test_factory_and_protocol_conformance(self) -> None:
+        '''
+            Tests factory creation and IPlanHistory protocol conformance.
+
+            :exceptions: None.
+        '''
+        history = PlanHistoryFactory.create()
+        self.assertIsInstance(history, PlanHistory)
+        self.assertIsInstance(history, IPlanHistory)
 
 
 if __name__ == '__main__':

@@ -61,8 +61,8 @@
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.iscara_program</span> <span class="kn">import</span> <span class="n">IScaraProgram</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.scara_diagnostic</span> <span class="kn">import</span> <span class="n">ScaraDiagnostic</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.program</span> <span class="kn">import</span> <span class="n">Program</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.diagnostic</span> <span class="kn">import</span> <span class="n">Diagnostic</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
@@ -86,21 +86,17 @@
 <span class="sd">            :attributes:</span>
 <span class="sd">                | None.</span>
 <span class="sd">            :methods:</span>
-<span class="sd">                | lint - Performs static analysis and returns tuple of ScaraDiagnostic findings.</span>
+<span class="sd">                | lint - Performs static analysis and returns tuple of Diagnostic findings.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
 <div class="viewcode-block" id="IScaraLinter.lint">
 <a class="viewcode-back" href="../../../../../../scarajectory.core.service.dsl.linter.iscara_linter.html#scarajectory.core.service.dsl.linter.iscara_linter.IScaraLinter.lint">[docs]</a>
-    <span class="k">def</span> <span class="nf">lint</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">program</span><span class="p">:</span> <span class="n">IScaraProgram</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ScaraDiagnostic</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">lint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Diagnostic</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Performs static analysis checks on a SCARA DSL AST program.</span>
 
-<span class="sd">            :param program: Parsed IScaraProgram AST root.</span>
-<span class="sd">            :return: Tuple of ScaraDiagnostic findings.</span>
+<span class="sd">            :param program: Parsed Program AST root.</span>
+<span class="sd">            :return: Tuple of Diagnostic findings.</span>
 <span class="sd">        &#39;&#39;&#39;</span></div>
 </div>
 

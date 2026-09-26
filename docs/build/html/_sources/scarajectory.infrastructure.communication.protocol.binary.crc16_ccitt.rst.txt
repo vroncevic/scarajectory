@@ -1,0 +1,8 @@
+scarajectory.infrastructure.communication.protocol.binary.crc16\_ccitt module
+=============================================================================
+
+.. automodule:: scarajectory.infrastructure.communication.protocol.binary.crc16_ccitt
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

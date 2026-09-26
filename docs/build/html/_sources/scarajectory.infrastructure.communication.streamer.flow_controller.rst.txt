@@ -5,3 +5,4 @@ scarajectory.infrastructure.communication.streamer.flow\_controller module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

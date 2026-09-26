@@ -1,19 +1,18 @@
 scarajectory.core.service.trajectory package
 ============================================
 
-Submodules
-----------
+Subpackages
+-----------
 
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.core.service.trajectory.iplan_command_service
-   scarajectory.core.service.trajectory.iplan_persistence_service
-   scarajectory.core.service.trajectory.iplan_storage_service
-   scarajectory.core.service.trajectory.iplan_validation_service
-   scarajectory.core.service.trajectory.itrajectory_observer
-   scarajectory.core.service.trajectory.itrajectory_validator
-   scarajectory.core.service.trajectory.trajectory_validator
+   scarajectory.core.service.trajectory.contract
+   scarajectory.core.service.trajectory.discretization
+   scarajectory.core.service.trajectory.history
+   scarajectory.core.service.trajectory.metrics
+   scarajectory.core.service.trajectory.plan
+   scarajectory.core.service.trajectory.validation
 
 Module contents
 ---------------
@@ -22,3 +21,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

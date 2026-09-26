@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="scarajectory.infrastructure.communication.transport.base_transport module" href="scarajectory.infrastructure.communication.transport.base_transport.html" />
-    <link rel="prev" title="scarajectory.infrastructure.communication.streamer.trajectory_streamer module" href="scarajectory.infrastructure.communication.streamer.trajectory_streamer.html" /> 
+    <link rel="prev" title="scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory module" href="scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -31,7 +31,7 @@
           <a href="scarajectory.infrastructure.communication.transport.base_transport.html" title="scarajectory.infrastructure.communication.transport.base_transport module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.communication.streamer.trajectory_streamer.html" title="scarajectory.infrastructure.communication.streamer.trajectory_streamer module"
+          <a href="scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory.html" title="scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
@@ -55,9 +55,25 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.base_transport.html">scarajectory.infrastructure.communication.transport.base_transport module</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.base_transport.html#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport"><code class="docutils literal notranslate"><span class="pre">BaseTransport</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.base_transport.html#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._channel_is_open"><code class="docutils literal notranslate"><span class="pre">BaseTransport._channel_is_open()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.base_transport.html#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._channel_name"><code class="docutils literal notranslate"><span class="pre">BaseTransport._channel_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.base_transport.html#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._close_channel"><code class="docutils literal notranslate"><span class="pre">BaseTransport._close_channel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.base_transport.html#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._connected_log_message"><code class="docutils literal notranslate"><span class="pre">BaseTransport._connected_log_message()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.base_transport.html#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._lock"><code class="docutils literal notranslate"><span class="pre">BaseTransport._lock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.base_transport.html#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._on_bytes"><code class="docutils literal notranslate"><span class="pre">BaseTransport._on_bytes</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.base_transport.html#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._on_line"><code class="docutils literal notranslate"><span class="pre">BaseTransport._on_line</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.base_transport.html#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._on_log"><code class="docutils literal notranslate"><span class="pre">BaseTransport._on_log</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.base_transport.html#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._open_channel"><code class="docutils literal notranslate"><span class="pre">BaseTransport._open_channel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.base_transport.html#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._read_bytes"><code class="docutils literal notranslate"><span class="pre">BaseTransport._read_bytes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.base_transport.html#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._reader_loop"><code class="docutils literal notranslate"><span class="pre">BaseTransport._reader_loop()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.base_transport.html#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._reader_thread"><code class="docutils literal notranslate"><span class="pre">BaseTransport._reader_thread</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.base_transport.html#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._stop_event"><code class="docutils literal notranslate"><span class="pre">BaseTransport._stop_event</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.base_transport.html#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport._write_bytes"><code class="docutils literal notranslate"><span class="pre">BaseTransport._write_bytes()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.base_transport.html#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.connect_with_config"><code class="docutils literal notranslate"><span class="pre">BaseTransport.connect_with_config()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.base_transport.html#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.disconnect"><code class="docutils literal notranslate"><span class="pre">BaseTransport.disconnect()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.base_transport.html#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.is_connected"><code class="docutils literal notranslate"><span class="pre">BaseTransport.is_connected()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.base_transport.html#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.read_bytes"><code class="docutils literal notranslate"><span class="pre">BaseTransport.read_bytes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.base_transport.html#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.send_bytes"><code class="docutils literal notranslate"><span class="pre">BaseTransport.send_bytes()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.base_transport.html#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.send_raw"><code class="docutils literal notranslate"><span class="pre">BaseTransport.send_raw()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.base_transport.html#scarajectory.infrastructure.communication.transport.base_transport.BaseTransport.set_callbacks"><code class="docutils literal notranslate"><span class="pre">BaseTransport.set_callbacks()</span></code></a></li>
 </ul>
@@ -66,9 +82,14 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.itransport.html">scarajectory.infrastructure.communication.transport.itransport module</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.itransport.html#scarajectory.infrastructure.communication.transport.itransport.ITransport"><code class="docutils literal notranslate"><span class="pre">ITransport</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.itransport.html#scarajectory.infrastructure.communication.transport.itransport.ITransport._abc_impl"><code class="docutils literal notranslate"><span class="pre">ITransport._abc_impl</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.itransport.html#scarajectory.infrastructure.communication.transport.itransport.ITransport._is_protocol"><code class="docutils literal notranslate"><span class="pre">ITransport._is_protocol</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.itransport.html#scarajectory.infrastructure.communication.transport.itransport.ITransport._is_runtime_protocol"><code class="docutils literal notranslate"><span class="pre">ITransport._is_runtime_protocol</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.itransport.html#scarajectory.infrastructure.communication.transport.itransport.ITransport.connect_with_config"><code class="docutils literal notranslate"><span class="pre">ITransport.connect_with_config()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.itransport.html#scarajectory.infrastructure.communication.transport.itransport.ITransport.disconnect"><code class="docutils literal notranslate"><span class="pre">ITransport.disconnect()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.itransport.html#scarajectory.infrastructure.communication.transport.itransport.ITransport.is_connected"><code class="docutils literal notranslate"><span class="pre">ITransport.is_connected()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.itransport.html#scarajectory.infrastructure.communication.transport.itransport.ITransport.read_bytes"><code class="docutils literal notranslate"><span class="pre">ITransport.read_bytes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.itransport.html#scarajectory.infrastructure.communication.transport.itransport.ITransport.send_bytes"><code class="docutils literal notranslate"><span class="pre">ITransport.send_bytes()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.itransport.html#scarajectory.infrastructure.communication.transport.itransport.ITransport.send_raw"><code class="docutils literal notranslate"><span class="pre">ITransport.send_raw()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.itransport.html#scarajectory.infrastructure.communication.transport.itransport.ITransport.set_callbacks"><code class="docutils literal notranslate"><span class="pre">ITransport.set_callbacks()</span></code></a></li>
 </ul>
@@ -76,11 +97,31 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.serial_transport.html">scarajectory.infrastructure.communication.transport.serial_transport module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.serial_transport.html#scarajectory.infrastructure.communication.transport.serial_transport.SerialTransport"><code class="docutils literal notranslate"><span class="pre">SerialTransport</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.serial_transport.html#scarajectory.infrastructure.communication.transport.serial_transport.SerialTransport"><code class="docutils literal notranslate"><span class="pre">SerialTransport</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.serial_transport.html#scarajectory.infrastructure.communication.transport.serial_transport.SerialTransport._channel_is_open"><code class="docutils literal notranslate"><span class="pre">SerialTransport._channel_is_open()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.serial_transport.html#scarajectory.infrastructure.communication.transport.serial_transport.SerialTransport._channel_name"><code class="docutils literal notranslate"><span class="pre">SerialTransport._channel_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.serial_transport.html#scarajectory.infrastructure.communication.transport.serial_transport.SerialTransport._close_channel"><code class="docutils literal notranslate"><span class="pre">SerialTransport._close_channel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.serial_transport.html#scarajectory.infrastructure.communication.transport.serial_transport.SerialTransport._connected_log_message"><code class="docutils literal notranslate"><span class="pre">SerialTransport._connected_log_message()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.serial_transport.html#scarajectory.infrastructure.communication.transport.serial_transport.SerialTransport._open_channel"><code class="docutils literal notranslate"><span class="pre">SerialTransport._open_channel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.serial_transport.html#scarajectory.infrastructure.communication.transport.serial_transport.SerialTransport._read_bytes"><code class="docutils literal notranslate"><span class="pre">SerialTransport._read_bytes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.serial_transport.html#scarajectory.infrastructure.communication.transport.serial_transport.SerialTransport._serial"><code class="docutils literal notranslate"><span class="pre">SerialTransport._serial</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.serial_transport.html#scarajectory.infrastructure.communication.transport.serial_transport.SerialTransport._write_bytes"><code class="docutils literal notranslate"><span class="pre">SerialTransport._write_bytes()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.tcp_transport.html">scarajectory.infrastructure.communication.transport.tcp_transport module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.tcp_transport.html#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport"><code class="docutils literal notranslate"><span class="pre">TcpTransport</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.tcp_transport.html#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport"><code class="docutils literal notranslate"><span class="pre">TcpTransport</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.tcp_transport.html#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._channel_is_open"><code class="docutils literal notranslate"><span class="pre">TcpTransport._channel_is_open()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.tcp_transport.html#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._channel_name"><code class="docutils literal notranslate"><span class="pre">TcpTransport._channel_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.tcp_transport.html#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._close_channel"><code class="docutils literal notranslate"><span class="pre">TcpTransport._close_channel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.tcp_transport.html#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._connected_log_message"><code class="docutils literal notranslate"><span class="pre">TcpTransport._connected_log_message()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.tcp_transport.html#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._open_channel"><code class="docutils literal notranslate"><span class="pre">TcpTransport._open_channel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.tcp_transport.html#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._read_bytes"><code class="docutils literal notranslate"><span class="pre">TcpTransport._read_bytes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.tcp_transport.html#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._sock"><code class="docutils literal notranslate"><span class="pre">TcpTransport._sock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.tcp_transport.html#scarajectory.infrastructure.communication.transport.tcp_transport.TcpTransport._write_bytes"><code class="docutils literal notranslate"><span class="pre">TcpTransport._write_bytes()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.communication.transport.transport_factory.html">scarajectory.infrastructure.communication.transport.transport_factory module</a><ul>
@@ -137,8 +178,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.communication.streamer.trajectory_streamer.html"
-                          title="previous chapter">scarajectory.infrastructure.communication.streamer.trajectory_streamer module</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory.html"
+                          title="previous chapter">scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory module</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -179,7 +220,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="scarajectory.infrastructure.communication.transport.base_transport.html" title="scarajectory.infrastructure.communication.transport.base_transport module"
              >next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.communication.streamer.trajectory_streamer.html" title="scarajectory.infrastructure.communication.streamer.trajectory_streamer module"
+          <a href="scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory.html" title="scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>

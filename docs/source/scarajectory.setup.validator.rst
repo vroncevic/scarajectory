@@ -5,3 +5,4 @@ scarajectory.setup.validator module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

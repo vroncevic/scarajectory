@@ -59,10 +59,9 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.iscara_instruction</span> <span class="kn">import</span> <span class="n">IScaraInstruction</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.scara_command_type</span> <span class="kn">import</span> <span class="n">ScaraCommandType</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.scara_instruction</span> <span class="kn">import</span> <span class="n">ScaraInstruction</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.token.scara_token</span> <span class="kn">import</span> <span class="n">ScaraToken</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.command_type</span> <span class="kn">import</span> <span class="n">CommandType</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.instruction</span> <span class="kn">import</span> <span class="n">Instruction</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.token.token</span> <span class="kn">import</span> <span class="n">Token</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
@@ -86,7 +85,7 @@
 <span class="sd">                | None.</span>
 <span class="sd">            :methods:</span>
 <span class="sd">                | can_parse - Checks whether command is CONFIG, SPEED, ACCEL, or OVERRIDE.</span>
-<span class="sd">                | parse - Parses configuration statement tokens into ScaraInstruction.</span>
+<span class="sd">                | parse - Parses configuration statement tokens into Instruction.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
 <div class="viewcode-block" id="ConfigCommandParser.can_parse">
@@ -106,17 +105,17 @@
     <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">tokens</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ScaraToken</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+        <span class="n">tokens</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Token</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
         <span class="n">line_num</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">raw_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IScaraInstruction</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Instruction</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Parses configuration statement into ScaraInstruction.</span>
+<span class="sd">            Parses configuration statement into Instruction.</span>
 
 <span class="sd">            :param tokens: Statement token tuple.</span>
 <span class="sd">            :param line_num: Line number in source code.</span>
 <span class="sd">            :param raw_text: Original statement text.</span>
-<span class="sd">            :return: IScaraInstruction node.</span>
+<span class="sd">            :return: Instruction node.</span>
 <span class="sd">            :exceptions: ValueError on invalid parameter syntax.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
@@ -127,17 +126,20 @@
                         <span class="sa">f</span><span class="s1">&#39;Invalid CONFIG syntax at line </span><span class="si">{</span><span class="n">line_num</span><span class="si">}</span><span class="s1">. Expected: CONFIG ELBOW &lt;LEFT|RIGHT&gt;&#39;</span>
                     <span class="p">)</span>
                 <span class="n">sub</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+
                 <span class="k">if</span> <span class="n">sub</span> <span class="o">!=</span> <span class="s1">&#39;ELBOW&#39;</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s1">&#39;Unknown CONFIG property </span><span class="si">{</span><span class="n">sub</span><span class="si">!r}</span><span class="s1"> at line </span><span class="si">{</span><span class="n">line_num</span><span class="si">}</span><span class="s1">&#39;</span>
                     <span class="p">)</span>
                 <span class="n">val</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+
                 <span class="k">if</span> <span class="n">val</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;LEFT&#39;</span><span class="p">,</span> <span class="s1">&#39;RIGHT&#39;</span><span class="p">):</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s1">&#39;Invalid elbow configuration </span><span class="si">{</span><span class="n">val</span><span class="si">!r}</span><span class="s1"> at line </span><span class="si">{</span><span class="n">line_num</span><span class="si">}</span><span class="s1">. Must be LEFT or RIGHT&#39;</span>
                     <span class="p">)</span>
-                <span class="k">return</span> <span class="n">ScaraInstruction</span><span class="p">(</span>
-                    <span class="n">command_type</span><span class="o">=</span><span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">CONFIG_ELBOW</span><span class="p">,</span>
+
+                <span class="k">return</span> <span class="n">Instruction</span><span class="p">(</span>
+                    <span class="n">command_type</span><span class="o">=</span><span class="n">CommandType</span><span class="o">.</span><span class="n">CONFIG_ELBOW</span><span class="p">,</span>
                     <span class="n">line_number</span><span class="o">=</span><span class="n">line_num</span><span class="p">,</span>
                     <span class="n">raw_text</span><span class="o">=</span><span class="n">raw_text</span><span class="p">,</span>
                     <span class="n">parameters</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;elbow&#39;</span><span class="p">:</span> <span class="n">val</span><span class="p">},</span>
@@ -149,8 +151,9 @@
                     <span class="p">)</span>
                 <span class="n">mode</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
                 <span class="n">val</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">ScaraInstruction</span><span class="p">(</span>
-                    <span class="n">command_type</span><span class="o">=</span><span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">SPEED</span><span class="p">,</span>
+
+                <span class="k">return</span> <span class="n">Instruction</span><span class="p">(</span>
+                    <span class="n">command_type</span><span class="o">=</span><span class="n">CommandType</span><span class="o">.</span><span class="n">SPEED</span><span class="p">,</span>
                     <span class="n">line_number</span><span class="o">=</span><span class="n">line_num</span><span class="p">,</span>
                     <span class="n">raw_text</span><span class="o">=</span><span class="n">raw_text</span><span class="p">,</span>
                     <span class="n">parameters</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="n">mode</span><span class="p">,</span> <span class="s1">&#39;speed&#39;</span><span class="p">:</span> <span class="n">val</span><span class="p">},</span>
@@ -160,8 +163,9 @@
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s1">&#39;Missing argument for ACCEL at line </span><span class="si">{</span><span class="n">line_num</span><span class="si">}</span><span class="s1">&#39;</span>
                     <span class="p">)</span>
-                <span class="k">return</span> <span class="n">ScaraInstruction</span><span class="p">(</span>
-                    <span class="n">command_type</span><span class="o">=</span><span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">ACCEL</span><span class="p">,</span>
+
+                <span class="k">return</span> <span class="n">Instruction</span><span class="p">(</span>
+                    <span class="n">command_type</span><span class="o">=</span><span class="n">CommandType</span><span class="o">.</span><span class="n">ACCEL</span><span class="p">,</span>
                     <span class="n">line_number</span><span class="o">=</span><span class="n">line_num</span><span class="p">,</span>
                     <span class="n">raw_text</span><span class="o">=</span><span class="n">raw_text</span><span class="p">,</span>
                     <span class="n">parameters</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;accel&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)},</span>
@@ -171,8 +175,9 @@
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s1">&#39;Missing argument for OVERRIDE at line </span><span class="si">{</span><span class="n">line_num</span><span class="si">}</span><span class="s1">&#39;</span>
                     <span class="p">)</span>
-                <span class="k">return</span> <span class="n">ScaraInstruction</span><span class="p">(</span>
-                    <span class="n">command_type</span><span class="o">=</span><span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">OVERRIDE</span><span class="p">,</span>
+
+                <span class="k">return</span> <span class="n">Instruction</span><span class="p">(</span>
+                    <span class="n">command_type</span><span class="o">=</span><span class="n">CommandType</span><span class="o">.</span><span class="n">OVERRIDE</span><span class="p">,</span>
                     <span class="n">line_number</span><span class="o">=</span><span class="n">line_num</span><span class="p">,</span>
                     <span class="n">raw_text</span><span class="o">=</span><span class="n">raw_text</span><span class="p">,</span>
                     <span class="n">parameters</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;percent&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)},</span>

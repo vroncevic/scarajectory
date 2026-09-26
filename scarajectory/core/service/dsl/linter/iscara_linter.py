@@ -23,8 +23,8 @@ from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
-from scarajectory.core.model.dsl.ast.iscara_program import IScaraProgram
-from scarajectory.core.model.dsl.diagnostic.scara_diagnostic import ScaraDiagnostic
+from scarajectory.core.model.dsl.ast.program import Program
+from scarajectory.core.model.dsl.diagnostic.diagnostic import Diagnostic
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -46,17 +46,13 @@ class IScaraLinter(Protocol):
             :attributes:
                 | None.
             :methods:
-                | lint - Performs static analysis and returns tuple of ScaraDiagnostic findings.
+                | lint - Performs static analysis and returns tuple of Diagnostic findings.
     '''
 
-    def lint(
-        self,
-        *,
-        program: IScaraProgram,
-    ) -> tuple[ScaraDiagnostic, ...]:
+    def lint(self, *, program: Program) -> tuple[Diagnostic, ...]:
         '''
             Performs static analysis checks on a SCARA DSL AST program.
 
-            :param program: Parsed IScaraProgram AST root.
-            :return: Tuple of ScaraDiagnostic findings.
+            :param program: Parsed Program AST root.
+            :return: Tuple of Diagnostic findings.
         '''

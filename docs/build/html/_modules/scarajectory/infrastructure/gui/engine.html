@@ -65,16 +65,18 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span>
 
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.model.canvas_settings</span> <span class="kn">import</span> <span class="n">CanvasSettings</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.communication.stream_progress</span> <span class="kn">import</span> <span class="n">StreamProgress</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.communication.stream.stream_progress</span> <span class="kn">import</span> <span class="n">StreamProgress</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.iservice</span> <span class="kn">import</span> <span class="n">IService</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.preferences.iconnection_repository</span> <span class="kn">import</span> <span class="n">IConnectionRepository</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.canvas.icanvas</span> <span class="kn">import</span> <span class="n">ICanvas</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.controls.icontrols_panel</span> <span class="kn">import</span> <span class="n">IControlsPanel</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.editor.itable</span> <span class="kn">import</span> <span class="n">ITable</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.canvas.canvas</span> <span class="kn">import</span> <span class="n">TrajectoryCanvas</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.controls.controls</span> <span class="kn">import</span> <span class="n">ControlsPanel</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.controls.controls_panel_factory</span> <span class="kn">import</span> <span class="n">ControlsPanelFactory</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.theme.theme</span> <span class="kn">import</span> <span class="n">ThemeManager</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.editor.waypoint_editor</span> <span class="kn">import</span> <span class="n">WaypointEditor</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.toolbar.toolbar</span> <span class="kn">import</span> <span class="n">Toolbar</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.toolbar.toolbar_factory</span> <span class="kn">import</span> <span class="n">ToolbarFactory</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.menu.menu_bar</span> <span class="kn">import</span> <span class="n">AppMenuBar</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
@@ -118,21 +120,29 @@
 
     <span class="n">_root</span><span class="p">:</span> <span class="n">Tk</span>
     <span class="n">_service</span><span class="p">:</span> <span class="n">IService</span>
+    <span class="n">_connection_repository</span><span class="p">:</span> <span class="n">IConnectionRepository</span>
     <span class="n">_canvas</span><span class="p">:</span> <span class="n">ICanvas</span>
     <span class="n">_table</span><span class="p">:</span> <span class="n">ITable</span>
     <span class="n">_controls</span><span class="p">:</span> <span class="n">IControlsPanel</span>
     <span class="n">_toolbar</span><span class="p">:</span> <span class="n">Toolbar</span>
     <span class="n">_menu_bar</span><span class="p">:</span> <span class="n">AppMenuBar</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service</span><span class="p">:</span> <span class="n">IService</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="n">Tk</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">service</span><span class="p">:</span> <span class="n">IService</span><span class="p">,</span>
+        <span class="n">connection_repository</span><span class="p">:</span> <span class="n">IConnectionRepository</span><span class="p">,</span>
+        <span class="n">root</span><span class="p">:</span> <span class="n">Tk</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Initializes GUI window and layout.</span>
 
 <span class="sd">            :param service: IService core logic instance.</span>
+<span class="sd">            :param connection_repository: Injected IConnectionRepository instance.</span>
 <span class="sd">            :param root: Optional root Tk window.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_service</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IService</span><span class="p">]</span> <span class="o">=</span> <span class="n">service</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connection_repository</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IConnectionRepository</span><span class="p">]</span> <span class="o">=</span> <span class="n">connection_repository</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_root</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">Tk</span><span class="p">]</span> <span class="o">=</span> <span class="n">root</span> <span class="k">if</span> <span class="n">root</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">Tk</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_root</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;SCARAjectory — Motion Trajectory Studio &amp; Streamer&#39;</span><span class="p">)</span>
         <span class="n">sw</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_root</span><span class="o">.</span><span class="n">winfo_screenwidth</span><span class="p">()</span>
@@ -283,7 +293,12 @@
 
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">settings</span> <span class="o">=</span> <span class="n">CanvasSettings</span><span class="p">(</span><span class="n">default_z</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">default_speed</span><span class="o">=</span><span class="mf">40.0</span><span class="p">,</span> <span class="n">enforce_deadzone</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">bounds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service</span><span class="o">.</span><span class="n">get_validator</span><span class="p">()</span><span class="o">.</span><span class="n">bounds</span>
+        <span class="n">settings</span> <span class="o">=</span> <span class="n">CanvasSettings</span><span class="p">(</span>
+            <span class="n">default_z</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span>
+            <span class="n">default_speed</span><span class="o">=</span><span class="n">bounds</span><span class="o">.</span><span class="n">default_speed</span><span class="p">,</span>
+            <span class="n">enforce_deadzone</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="n">main_paned</span> <span class="o">=</span> <span class="n">PanedWindow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="n">HORIZONTAL</span><span class="p">)</span>
 
@@ -298,10 +313,13 @@
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_toolbar</span> <span class="o">=</span> <span class="n">Toolbar</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_toolbar</span> <span class="o">=</span> <span class="n">ToolbarFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_root</span><span class="p">,</span>
             <span class="n">canvas</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="p">,</span>
-            <span class="n">plan</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_service</span><span class="o">.</span><span class="n">get_plan</span><span class="p">()</span>
+            <span class="n">plan</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_service</span><span class="o">.</span><span class="n">get_plan</span><span class="p">(),</span>
+            <span class="n">r_min</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_service</span><span class="o">.</span><span class="n">get_validator</span><span class="p">()</span><span class="o">.</span><span class="n">r_min</span><span class="p">,</span>
+            <span class="n">r_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_service</span><span class="o">.</span><span class="n">get_validator</span><span class="p">()</span><span class="o">.</span><span class="n">r_max</span><span class="p">,</span>
+            <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_toolbar</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">TOP</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
         <span class="n">main_paned</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
@@ -317,14 +335,15 @@
 
         <span class="n">ctl_frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">right_paned</span><span class="p">)</span>
         <span class="n">right_paned</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ctl_frame</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_controls</span> <span class="o">=</span> <span class="n">ControlsPanel</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_controls</span> <span class="o">=</span> <span class="n">ControlsPanelFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
             <span class="n">ctl_frame</span><span class="p">,</span>
             <span class="n">plan</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_service</span><span class="o">.</span><span class="n">get_plan</span><span class="p">(),</span>
             <span class="n">validator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_service</span><span class="o">.</span><span class="n">get_validator</span><span class="p">(),</span>
             <span class="n">streamer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_service</span><span class="o">.</span><span class="n">get_streamer</span><span class="p">(),</span>
             <span class="n">storage</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_service</span><span class="o">.</span><span class="n">get_storage</span><span class="p">(),</span>
             <span class="n">dsl_service</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_service</span><span class="o">.</span><span class="n">get_dsl_service</span><span class="p">(),</span>
-            <span class="n">service</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_service</span>
+            <span class="n">service</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_service</span><span class="p">,</span>
+            <span class="n">connection_repository</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_connection_repository</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_controls</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 

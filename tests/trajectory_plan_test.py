@@ -29,8 +29,15 @@ pkg_dir = dirname(dirname(abspath(__file__)))
 if pkg_dir not in path:
     path.insert(0, pkg_dir)
 
-from scarajectory.core.model.trajectory.waypoint import Waypoint
-from scarajectory.core.model.trajectory.trajectory_plan import TrajectoryPlan
+from scarajectory.core.service.trajectory.discretization.waypoint_factory import WaypointFactory
+from scarajectory.core.service.trajectory.plan.trajectory_plan import TrajectoryPlan
+from scarajectory.core.service.trajectory.plan.trajectory_plan_factory import TrajectoryPlanFactory
+from scarajectory.core.service.trajectory.history.plan_history_factory import PlanHistoryFactory
+from scarajectory.core.service.trajectory.plan.itrajectory_plan import ITrajectoryPlan
+from scarajectory.core.service.trajectory.plan.itrajectory_read_only import ITrajectoryReadOnly
+from scarajectory.core.service.trajectory.plan.itrajectory_mutable import ITrajectoryMutable
+from scarajectory.core.service.trajectory.plan.itrajectory_history import ITrajectoryHistory
+from scarajectory.core.service.trajectory.history.iplan_history import IPlanHistory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -63,7 +70,7 @@ class TestTrajectoryPlan(TestCase):
 
             :exceptions: None.
         '''
-        self.plan = TrajectoryPlan()
+        self.plan = TrajectoryPlanFactory.create()
 
     def test_add_and_count(self) -> None:
         '''
@@ -72,9 +79,9 @@ class TestTrajectoryPlan(TestCase):
             :exceptions: None.
         '''
         self.assertEqual(self.plan.count, 0)
-        p1 = Waypoint(x=0.0, y=0.0, z=20.0, phi=0.0, speed=40.0)
-        p2 = Waypoint(x=40.0, y=0.0, z=20.0, phi=0.0, speed=40.0)
-        p3 = Waypoint(x=40.0, y=30.0, z=20.0, phi=0.0, speed=40.0)
+        p1 = WaypointFactory.create(x=0.0, y=0.0, z=20.0, phi=0.0, speed=40.0)
+        p2 = WaypointFactory.create(x=40.0, y=0.0, z=20.0, phi=0.0, speed=40.0)
+        p3 = WaypointFactory.create(x=40.0, y=30.0, z=20.0, phi=0.0, speed=40.0)
 
         self.plan.add_point(p1)
         self.plan.add_point(p2)
@@ -89,11 +96,11 @@ class TestTrajectoryPlan(TestCase):
 
             :exceptions: None.
         '''
-        p1 = Waypoint(x=10.0, y=10.0, z=0.0, phi=0.0, speed=10.0)
-        p2 = Waypoint(x=20.0, y=20.0, z=0.0, phi=0.0, speed=10.0)
+        p1 = WaypointFactory.create(x=10.0, y=10.0, z=0.0, phi=0.0, speed=10.0)
+        p2 = WaypointFactory.create(x=20.0, y=20.0, z=0.0, phi=0.0, speed=10.0)
         self.plan.set_waypoints([p1, p2])
 
-        p1_mod = Waypoint(x=15.0, y=15.0, z=0.0, phi=0.0, speed=10.0)
+        p1_mod = WaypointFactory.create(x=15.0, y=15.0, z=0.0, phi=0.0, speed=10.0)
         updated = self.plan.update_point(0, p1_mod)
         self.assertTrue(updated)
         self.assertEqual(self.plan.waypoints[0].x, 15.0)
@@ -109,7 +116,7 @@ class TestTrajectoryPlan(TestCase):
 
             :exceptions: None.
         '''
-        p1 = Waypoint(x=10.0, y=10.0, z=0.0, phi=0.0, speed=10.0)
+        p1 = WaypointFactory.create(x=10.0, y=10.0, z=0.0, phi=0.0, speed=10.0)
         self.plan.add_point(p1)
 
         self.plan.set_selected_index(0)
@@ -124,8 +131,8 @@ class TestTrajectoryPlan(TestCase):
 
             :exceptions: None.
         '''
-        p1 = Waypoint(x=10.0, y=10.0, z=0.0, phi=0.0, speed=10.0)
-        p2 = Waypoint(x=20.0, y=20.0, z=0.0, phi=0.0, speed=10.0)
+        p1 = WaypointFactory.create(x=10.0, y=10.0, z=0.0, phi=0.0, speed=10.0)
+        p2 = WaypointFactory.create(x=20.0, y=20.0, z=0.0, phi=0.0, speed=10.0)
 
         self.plan.add_point(p1)
         self.plan.add_point(p2)
@@ -145,11 +152,35 @@ class TestTrajectoryPlan(TestCase):
 
             :exceptions: None.
         '''
-        p1 = Waypoint(x=10.0, y=10.0, z=0.0, phi=0.0, speed=10.0)
+        p1 = WaypointFactory.create(x=10.0, y=10.0, z=0.0, phi=0.0, speed=10.0)
         self.plan.add_point(p1)
         self.plan.clear()
         self.assertEqual(self.plan.count, 0)
 
+    def test_protocol_conformance(self) -> None:
+        '''
+            Verifies structural protocol compliance of TrajectoryPlan.
+
+            :exceptions: None.
+        '''
+        self.assertIsInstance(self.plan, ITrajectoryPlan)
+        self.assertIsInstance(self.plan, ITrajectoryMutable)
+        self.assertIsInstance(self.plan, ITrajectoryReadOnly)
+        self.assertIsInstance(self.plan, ITrajectoryHistory)
+
+    def test_factory_custom_history_injection(self) -> None:
+        '''
+            Verifies TrajectoryPlanFactory with explicitly injected history.
+
+            :exceptions: None.
+        '''
+        custom_history = PlanHistoryFactory.create()
+        self.assertIsInstance(custom_history, IPlanHistory)
+        plan = TrajectoryPlanFactory.create_with_history(history=custom_history)
+        self.assertIsInstance(plan, TrajectoryPlan)
+        self.assertIsInstance(plan, ITrajectoryPlan)
+
 
 if __name__ == '__main__':
     main()
+

@@ -5,3 +5,4 @@ scarajectory.infrastructure.gui.model.canvas\_interaction\_state module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

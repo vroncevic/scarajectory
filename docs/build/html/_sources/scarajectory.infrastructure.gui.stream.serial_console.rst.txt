@@ -5,3 +5,4 @@ scarajectory.infrastructure.gui.stream.serial\_console module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

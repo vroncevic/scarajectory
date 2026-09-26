@@ -61,9 +61,8 @@
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.iscara_instruction</span> <span class="kn">import</span> <span class="n">IScaraInstruction</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.scara_command_type</span> <span class="kn">import</span> <span class="n">ScaraCommandType</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.scara_instruction</span> <span class="kn">import</span> <span class="n">ScaraInstruction</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.command_type</span> <span class="kn">import</span> <span class="n">CommandType</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.instruction</span> <span class="kn">import</span> <span class="n">Instruction</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.compiler.scara_compiler_context</span> <span class="kn">import</span> <span class="n">ScaraCompilerContext</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
@@ -93,7 +92,7 @@
 
 <div class="viewcode-block" id="PalletMacroExpander.can_expand">
 <a class="viewcode-back" href="../../../../../../scarajectory.core.service.dsl.macro.pallet_macro_expander.html#scarajectory.core.service.dsl.macro.pallet_macro_expander.PalletMacroExpander.can_expand">[docs]</a>
-    <span class="k">def</span> <span class="nf">can_expand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">instruction</span><span class="p">:</span> <span class="n">IScaraInstruction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">can_expand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">instruction</span><span class="p">:</span> <span class="n">Instruction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Checks whether this expander handles pallet instructions.</span>
 
@@ -101,8 +100,8 @@
 <span class="sd">            :return: True if PALLET_DEF or MOVE_PALLET, False otherwise.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="n">instruction</span><span class="o">.</span><span class="n">command_type</span> <span class="ow">in</span> <span class="p">(</span>
-            <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">PALLET_DEF</span><span class="p">,</span>
-            <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">MOVE_PALLET</span><span class="p">,</span>
+            <span class="n">CommandType</span><span class="o">.</span><span class="n">PALLET_DEF</span><span class="p">,</span>
+            <span class="n">CommandType</span><span class="o">.</span><span class="n">MOVE_PALLET</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 
@@ -111,9 +110,9 @@
     <span class="k">def</span> <span class="nf">expand</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">instruction</span><span class="p">:</span> <span class="n">IScaraInstruction</span><span class="p">,</span>
+        <span class="n">instruction</span><span class="p">:</span> <span class="n">Instruction</span><span class="p">,</span>
         <span class="n">context</span><span class="p">:</span> <span class="n">ScaraCompilerContext</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">IScaraInstruction</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Instruction</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Processes PALLET_DEF or calculates cell coordinate for MOVE_PALLET.</span>
 
@@ -125,7 +124,7 @@
         <span class="n">params</span> <span class="o">=</span> <span class="n">instruction</span><span class="o">.</span><span class="n">parameters</span>
         <span class="n">line_num</span> <span class="o">=</span> <span class="n">instruction</span><span class="o">.</span><span class="n">line_number</span>
 
-        <span class="k">if</span> <span class="n">instruction</span><span class="o">.</span><span class="n">command_type</span> <span class="o">==</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">PALLET_DEF</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">instruction</span><span class="o">.</span><span class="n">command_type</span> <span class="o">==</span> <span class="n">CommandType</span><span class="o">.</span><span class="n">PALLET_DEF</span><span class="p">:</span>
             <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;DEFAULT&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
             <span class="n">pallet_info</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="s1">&#39;rows&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ROWS&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
@@ -136,9 +135,11 @@
                 <span class="s1">&#39;start_y&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;START_Y&#39;</span><span class="p">,</span> <span class="n">context</span><span class="o">.</span><span class="n">current_y</span><span class="p">)),</span>
             <span class="p">}</span>
             <span class="n">context</span><span class="o">.</span><span class="n">pallets</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">pallet_info</span>
+
             <span class="k">return</span> <span class="p">()</span>
 
         <span class="n">name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;DEFAULT&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+
         <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">context</span><span class="o">.</span><span class="n">pallets</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s1">&#39;Error at line </span><span class="si">{</span><span class="n">line_num</span><span class="si">}</span><span class="s1">: Pallet </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s1"> is not defined before MOVE_PALLET&#39;</span>
@@ -159,8 +160,8 @@
         <span class="n">context</span><span class="o">.</span><span class="n">current_y</span> <span class="o">=</span> <span class="n">global_y</span>
         <span class="n">context</span><span class="o">.</span><span class="n">current_z</span> <span class="o">=</span> <span class="n">target_z</span>
 
-        <span class="n">move_inst</span> <span class="o">=</span> <span class="n">ScaraInstruction</span><span class="p">(</span>
-            <span class="n">command_type</span><span class="o">=</span><span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">MOVE_L</span><span class="p">,</span>
+        <span class="n">move_inst</span> <span class="o">=</span> <span class="n">Instruction</span><span class="p">(</span>
+            <span class="n">command_type</span><span class="o">=</span><span class="n">CommandType</span><span class="o">.</span><span class="n">MOVE_L</span><span class="p">,</span>
             <span class="n">line_number</span><span class="o">=</span><span class="n">line_num</span><span class="p">,</span>
             <span class="n">raw_text</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;# MOVE_PALLET: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">[</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s1">] -&gt; X=</span><span class="si">{</span><span class="n">global_x</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> Y=</span><span class="si">{</span><span class="n">global_y</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> Z=</span><span class="si">{</span><span class="n">target_z</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
             <span class="n">parameters</span><span class="o">=</span><span class="p">{</span>
@@ -171,6 +172,7 @@
                 <span class="s1">&#39;SPEED&#39;</span><span class="p">:</span> <span class="n">context</span><span class="o">.</span><span class="n">current_speed</span><span class="p">,</span>
             <span class="p">},</span>
         <span class="p">)</span>
+
         <span class="k">return</span> <span class="p">(</span><span class="n">move_inst</span><span class="p">,)</span></div>
 </div>
 

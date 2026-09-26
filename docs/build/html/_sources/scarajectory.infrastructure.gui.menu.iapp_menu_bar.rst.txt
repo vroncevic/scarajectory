@@ -5,3 +5,4 @@ scarajectory.infrastructure.gui.menu.iapp\_menu\_bar module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

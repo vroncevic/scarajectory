@@ -25,12 +25,8 @@ from tkinter import Widget
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 from tkinter.messagebox import showerror
 
-from scarajectory.core.service.trajectory.iplan_storage_service import (
-    IPlanStorageService,
-)
-from scarajectory.infrastructure.storage.plan_storage_service import (
-    PlanStorageService,
-)
+from scarajectory.core.service.trajectory.contract.iplan_storage_service import IPlanStorageService
+from scarajectory.infrastructure.storage.plan_storage_service import PlanStorageService
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'

@@ -5,3 +5,4 @@ scarajectory.core.model.trajectory.waypoint module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

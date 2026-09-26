@@ -5,3 +5,4 @@ scarajectory.infrastructure.communication.transport.serial\_transport module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

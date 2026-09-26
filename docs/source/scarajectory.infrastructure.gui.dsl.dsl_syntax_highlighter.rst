@@ -5,3 +5,4 @@ scarajectory.infrastructure.gui.dsl.dsl\_syntax\_highlighter module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

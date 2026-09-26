@@ -69,8 +69,9 @@
 <span class="kn">from</span> <span class="nn">ats_utilities.context.factory</span> <span class="kn">import</span> <span class="n">ContextBundleFactory</span>
 
 <span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.waypoint</span> <span class="kn">import</span> <span class="n">Waypoint</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.itrajectory_plan</span> <span class="kn">import</span> <span class="n">ITrajectoryPlan</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.trajectory_serializer</span> <span class="kn">import</span> <span class="n">TrajectorySerializer</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.itrajectory_plan</span> <span class="kn">import</span> <span class="n">ITrajectoryPlan</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.binary.program</span> <span class="kn">import</span> <span class="n">Program</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.storage.trajectory_serializer</span> <span class="kn">import</span> <span class="n">TrajectorySerializer</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
@@ -86,7 +87,7 @@
 <a class="viewcode-back" href="../../../../scarajectory.infrastructure.storage.plan_storage_service.html#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService">[docs]</a>
 <span class="k">class</span> <span class="nc">PlanStorageService</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Infrastructure storage adapter handling JSON trajectory persistence and text file I/O operations.</span>
+<span class="sd">        Infrastructure storage adapter handling JSON trajectory persistence and text/binary file I/O operations.</span>
 <span class="sd">        Integrates ats_utilities Loader and Storer for JSON configuration management.</span>
 
 <span class="sd">        It defines:</span>
@@ -99,6 +100,8 @@
 <span class="sd">                | load_plan - Loads and deserializes waypoints from JSON file path using ATS Loader.</span>
 <span class="sd">                | save_text_file - Writes string content to file path using UTF-8 encoding.</span>
 <span class="sd">                | load_text_file - Reads string content from file path using UTF-8 encoding.</span>
+<span class="sd">                | save_binary_program - Writes compiled binary program payload to destination file path.</span>
+<span class="sd">                | load_binary_file - Reads binary file content from destination file path.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="n">_context</span><span class="p">:</span> <span class="n">ContextBundle</span>
@@ -189,6 +192,37 @@
         <span class="n">target_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">target_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_handle</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">file_handle</span><span class="o">.</span><span class="n">read</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="PlanStorageService.save_binary_program">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.storage.plan_storage_service.html#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService.save_binary_program">[docs]</a>
+    <span class="k">def</span> <span class="nf">save_binary_program</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Writes compiled binary program payload to destination file path.</span>
+
+<span class="sd">            :param program: Program instance.</span>
+<span class="sd">            :param filepath: Destination file path.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">target_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+        <span class="n">target_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">target_path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_handle</span><span class="p">:</span>
+            <span class="n">file_handle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">program</span><span class="o">.</span><span class="n">raw_bytes</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PlanStorageService.load_binary_file">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.storage.plan_storage_service.html#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService.load_binary_file">[docs]</a>
+    <span class="k">def</span> <span class="nf">load_binary_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Reads binary file content from file path.</span>
+
+<span class="sd">            :param filepath: Source file path.</span>
+<span class="sd">            :return: File bytes content.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">target_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">target_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_handle</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">file_handle</span><span class="o">.</span><span class="n">read</span><span class="p">()</span></div>
 </div>
 

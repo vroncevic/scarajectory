@@ -5,3 +5,4 @@ scarajectory.infrastructure.gui.gui\_event\_mediator module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

@@ -59,12 +59,11 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.iscara_instruction</span> <span class="kn">import</span> <span class="n">IScaraInstruction</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.scara_command_type</span> <span class="kn">import</span> <span class="n">ScaraCommandType</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.scara_diagnostic</span> <span class="kn">import</span> <span class="n">ScaraDiagnostic</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.linter.scara_lint_context</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">ScaraLintContext</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.command_type</span> <span class="kn">import</span> <span class="n">CommandType</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.instruction</span> <span class="kn">import</span> <span class="n">Instruction</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.diagnostic</span> <span class="kn">import</span> <span class="n">Diagnostic</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.diagnostic_severity</span> <span class="kn">import</span> <span class="n">DiagnosticSeverity</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.linter.scara_lint_context</span> <span class="kn">import</span> <span class="n">ScaraLintContext</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
@@ -93,9 +92,9 @@
     <span class="k">def</span> <span class="nf">check</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">instruction</span><span class="p">:</span> <span class="n">IScaraInstruction</span><span class="p">,</span>
+        <span class="n">instruction</span><span class="p">:</span> <span class="n">Instruction</span><span class="p">,</span>
         <span class="n">context</span><span class="p">:</span> <span class="n">ScaraLintContext</span><span class="p">,</span>
-        <span class="n">diagnostics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ScaraDiagnostic</span><span class="p">],</span>
+        <span class="n">diagnostics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Diagnostic</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Evaluates homing and zone configuration instructions, updating context.</span>
@@ -109,12 +108,40 @@
         <span class="n">params</span> <span class="o">=</span> <span class="n">instruction</span><span class="o">.</span><span class="n">parameters</span>
 
         <span class="k">match</span> <span class="n">cmd</span><span class="p">:</span>
-            <span class="k">case</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">HOME</span><span class="p">:</span>
+            <span class="k">case</span> <span class="n">CommandType</span><span class="o">.</span><span class="n">HOME</span><span class="p">:</span>
                 <span class="n">context</span><span class="o">.</span><span class="n">is_homed</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="n">context</span><span class="o">.</span><span class="n">last_coords</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="k">case</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">ZONE</span><span class="p">:</span>
-                <span class="n">context</span><span class="o">.</span><span class="n">zone_mode</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">,</span> <span class="s1">&#39;FINE&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
-                <span class="n">context</span><span class="o">.</span><span class="n">zone_radius</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
+                <span class="n">context</span><span class="o">.</span><span class="n">last_coords</span> <span class="o">=</span> <span class="p">()</span>
+            <span class="k">case</span> <span class="n">CommandType</span><span class="o">.</span><span class="n">ZONE</span><span class="p">:</span>
+                <span class="n">raw_mode</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">,</span> <span class="s1">&#39;FINE&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+                <span class="n">radius</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;radius&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">raw_mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;FINE&#39;</span><span class="p">,</span> <span class="s1">&#39;BLEND&#39;</span><span class="p">):</span>
+                    <span class="n">diagnostics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">Diagnostic</span><span class="p">(</span>
+                            <span class="n">code</span><span class="o">=</span><span class="s1">&#39;INVALID_ZONE_MODE&#39;</span><span class="p">,</span>
+                            <span class="n">severity</span><span class="o">=</span><span class="n">DiagnosticSeverity</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span>
+                            <span class="n">message</span><span class="o">=</span><span class="p">(</span>
+                                <span class="sa">f</span><span class="s2">&quot;Unknown zone mode &#39;</span><span class="si">{</span><span class="n">raw_mode</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
+                                <span class="s2">&quot;Expected &#39;FINE&#39; or &#39;BLEND&#39;.&quot;</span>
+                            <span class="p">),</span>
+                            <span class="n">line</span><span class="o">=</span><span class="n">instruction</span><span class="o">.</span><span class="n">line_number</span><span class="p">,</span>
+                            <span class="n">command</span><span class="o">=</span><span class="s1">&#39;ZONE&#39;</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="k">if</span> <span class="n">radius</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+                    <span class="n">diagnostics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">Diagnostic</span><span class="p">(</span>
+                            <span class="n">code</span><span class="o">=</span><span class="s1">&#39;INVALID_ZONE_RADIUS&#39;</span><span class="p">,</span>
+                            <span class="n">severity</span><span class="o">=</span><span class="n">DiagnosticSeverity</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span>
+                            <span class="n">message</span><span class="o">=</span><span class="p">(</span>
+                                <span class="sa">f</span><span class="s1">&#39;Zone radius </span><span class="si">{</span><span class="n">radius</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1"> is negative. &#39;</span>
+                                <span class="s1">&#39;Expected non-negative radius.&#39;</span>
+                            <span class="p">),</span>
+                            <span class="n">line</span><span class="o">=</span><span class="n">instruction</span><span class="o">.</span><span class="n">line_number</span><span class="p">,</span>
+                            <span class="n">command</span><span class="o">=</span><span class="s1">&#39;ZONE&#39;</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="n">context</span><span class="o">.</span><span class="n">zone_mode</span> <span class="o">=</span> <span class="n">raw_mode</span>
+                <span class="n">context</span><span class="o">.</span><span class="n">zone_radius</span> <span class="o">=</span> <span class="n">radius</span>
             <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
                 <span class="k">pass</span></div>
 </div>

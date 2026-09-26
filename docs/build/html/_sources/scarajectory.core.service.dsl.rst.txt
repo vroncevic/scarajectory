@@ -7,7 +7,10 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   scarajectory.core.service.dsl.ast
+   scarajectory.core.service.dsl.binary
    scarajectory.core.service.dsl.compiler
+   scarajectory.core.service.dsl.diagnostic
    scarajectory.core.service.dsl.exporter
    scarajectory.core.service.dsl.lexer
    scarajectory.core.service.dsl.linter
@@ -25,6 +28,7 @@ Submodules
    scarajectory.core.service.dsl.iscara_dsl_validator
    scarajectory.core.service.dsl.iscara_plan_exporter_service
    scarajectory.core.service.dsl.scara_dsl_service
+   scarajectory.core.service.dsl.scara_dsl_service_factory
 
 Module contents
 ---------------
@@ -33,3 +37,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

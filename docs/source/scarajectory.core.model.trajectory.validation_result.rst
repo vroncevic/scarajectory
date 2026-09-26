@@ -5,3 +5,4 @@ scarajectory.core.model.trajectory.validation\_result module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

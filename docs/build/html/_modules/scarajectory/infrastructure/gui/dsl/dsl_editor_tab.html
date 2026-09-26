@@ -63,32 +63,16 @@
 <span class="kn">from</span> <span class="nn">tkinter.ttk</span> <span class="kn">import</span> <span class="n">Frame</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.itrajectory_plan</span> <span class="kn">import</span> <span class="n">ITrajectoryPlan</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.itrajectory_plan</span> <span class="kn">import</span> <span class="n">ITrajectoryPlan</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.iscara_dsl_service</span> <span class="kn">import</span> <span class="n">IScaraDslService</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.scara_dsl_service</span> <span class="kn">import</span> <span class="n">ScaraDslService</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.iplan_storage_service</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">IPlanStorageService</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.itrajectory_validator</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">ITrajectoryValidator</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.contract.iplan_storage_service</span> <span class="kn">import</span> <span class="n">IPlanStorageService</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.dsl.dsl_code_editor</span> <span class="kn">import</span> <span class="n">DslCodeEditor</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.dsl.dsl_console_view</span> <span class="kn">import</span> <span class="n">DslConsoleView</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.dsl.dsl_document_manager</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">DslDocumentManager</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.dsl.dsl_editor_toolbar</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">DslEditorToolbar</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.dsl.dsl_example_catalog</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">DslExampleCatalog</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.dsl.emulator_launcher</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">EmulatorLauncher</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.dsl.iemulator_launcher</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">IEmulatorLauncher</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.dsl.dsl_document_manager</span> <span class="kn">import</span> <span class="n">DslDocumentManager</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.dsl.dsl_editor_toolbar</span> <span class="kn">import</span> <span class="n">DslEditorToolbar</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.dsl.dsl_example_catalog</span> <span class="kn">import</span> <span class="n">DslExampleCatalog</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.dsl.emulator_launcher</span> <span class="kn">import</span> <span class="n">EmulatorLauncher</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.dsl.iemulator_launcher</span> <span class="kn">import</span> <span class="n">IEmulatorLauncher</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
@@ -119,12 +103,15 @@
 <span class="sd">                | _console - Diagnostic console view subcomponent.</span>
 <span class="sd">            :methods:</span>
 <span class="sd">                | __init__ - Initializes the editor tab layout and mounts subcomponents.</span>
+<span class="sd">                | build_layout - Constructs action toolbar, code editor, and status console.</span>
+<span class="sd">                | load_initial_content - Loads exported plan or demonstration script into editor.</span>
 <span class="sd">                | compile_to_plan - Compiles editor code and updates the active plan.</span>
 <span class="sd">                | validate_code - Validates editor code syntax and kinematics without mutating plan.</span>
 <span class="sd">                | export_plan_to_editor - Serializes current plan into the editor text.</span>
 <span class="sd">                | preview_in_scaraemu - Launches SCARAEmu visualizer with active script.</span>
 <span class="sd">                | open_file - Opens a .scara file into the editor.</span>
 <span class="sd">                | save_file - Saves editor contents to a .scara file.</span>
+<span class="sd">                | on_example_selected - Loads the selected example script from disk.</span>
 <span class="sd">                | load_example - Inserts standard demonstration SCARA script.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
@@ -142,8 +129,7 @@
         <span class="n">parent</span><span class="p">:</span> <span class="n">Widget</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">plan</span><span class="p">:</span> <span class="n">ITrajectoryPlan</span><span class="p">,</span>
-        <span class="n">validator</span><span class="p">:</span> <span class="n">ITrajectoryValidator</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">dsl_service</span><span class="p">:</span> <span class="n">IScaraDslService</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">dsl_service</span><span class="p">:</span> <span class="n">IScaraDslService</span><span class="p">,</span>
         <span class="n">storage</span><span class="p">:</span> <span class="n">IPlanStorageService</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">launcher</span><span class="p">:</span> <span class="n">IEmulatorLauncher</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">catalog</span><span class="p">:</span> <span class="n">DslExampleCatalog</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -155,8 +141,7 @@
 
 <span class="sd">            :param parent: Parent container widget.</span>
 <span class="sd">            :param plan: Active ITrajectoryPlan instance.</span>
-<span class="sd">            :param validator: Optional ITrajectoryValidator instance.</span>
-<span class="sd">            :param dsl_service: Optional IScaraDslService instance.</span>
+<span class="sd">            :param dsl_service: Required IScaraDslService instance.</span>
 <span class="sd">            :param storage: Optional IPlanStorageService instance.</span>
 <span class="sd">            :param launcher: Optional IEmulatorLauncher instance.</span>
 <span class="sd">            :param catalog: Optional DslExampleCatalog instance.</span>
@@ -165,11 +150,7 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span> <span class="o">=</span> <span class="n">plan</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_dsl_service</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">dsl_service</span>
-            <span class="k">if</span> <span class="n">dsl_service</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="n">ScaraDslService</span><span class="p">(</span><span class="n">validator</span><span class="o">=</span><span class="n">validator</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dsl_service</span> <span class="o">=</span> <span class="n">dsl_service</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_launcher</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">launcher</span>
             <span class="k">if</span> <span class="n">launcher</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
@@ -186,10 +167,12 @@
             <span class="k">else</span> <span class="n">DslDocumentManager</span><span class="p">(</span><span class="n">storage</span><span class="o">=</span><span class="n">storage</span><span class="p">)</span>
         <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_build_layout</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_load_initial_content</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">build_layout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_initial_content</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_build_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="DslEditorTab.build_layout">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.dsl.dsl_editor_tab.html#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.build_layout">[docs]</a>
+    <span class="k">def</span> <span class="nf">build_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Constructs action toolbar, code editor, and status console.</span>
 
@@ -203,7 +186,7 @@
             <span class="n">on_preview</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">preview_in_scaraemu</span><span class="p">,</span>
             <span class="n">on_open</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">open_file</span><span class="p">,</span>
             <span class="n">on_save</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">save_file</span><span class="p">,</span>
-            <span class="n">on_example_selected</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_on_example_selected</span><span class="p">,</span>
+            <span class="n">on_example_selected</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">on_example_selected</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_toolbar</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
 
@@ -215,9 +198,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_editor</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_console</span> <span class="o">=</span> <span class="n">DslConsoleView</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_console</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_console</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span></div>
 
-    <span class="k">def</span> <span class="nf">_load_initial_content</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="DslEditorTab.load_initial_content">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.dsl.dsl_editor_tab.html#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.load_initial_content">[docs]</a>
+    <span class="k">def</span> <span class="nf">load_initial_content</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Loads either the exported active plan or the demonstration script into the editor.</span>
 
@@ -226,9 +212,10 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">export_plan_to_editor</span><span class="p">()</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_toolbar</span><span class="o">.</span><span class="n">get_selected_example</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_on_example_selected</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_toolbar</span><span class="o">.</span><span class="n">get_selected_example</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">on_example_selected</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_toolbar</span><span class="o">.</span><span class="n">get_selected_example</span><span class="p">())</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">load_example</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_example</span><span class="p">()</span></div>
+
 
 <div class="viewcode-block" id="DslEditorTab.compile_to_plan">
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.dsl.dsl_editor_tab.html#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.compile_to_plan">[docs]</a>
@@ -338,7 +325,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ℹ️ Saved file: </span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">is_error</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_on_example_selected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selected</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="DslEditorTab.on_example_selected">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.dsl.dsl_editor_tab.html#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.on_example_selected">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_example_selected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selected</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Loads the selected example script from disk into the editor.</span>
 
@@ -352,7 +341,8 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_editor</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ℹ️ Loaded example: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">is_error</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
                 <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">load_example</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_example</span><span class="p">()</span></div>
+
 
 <div class="viewcode-block" id="DslEditorTab.load_example">
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.dsl.dsl_editor_tab.html#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.load_example">[docs]</a>

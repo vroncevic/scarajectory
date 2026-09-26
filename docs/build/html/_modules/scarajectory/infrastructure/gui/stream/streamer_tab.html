@@ -64,13 +64,15 @@
 <span class="kn">from</span> <span class="nn">tkinter.ttk</span> <span class="kn">import</span> <span class="n">Frame</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.communication.stream_config</span> <span class="kn">import</span> <span class="n">StreamConfig</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.communication.stream_progress</span> <span class="kn">import</span> <span class="n">StreamProgress</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.itrajectory_plan</span> <span class="kn">import</span> <span class="n">ITrajectoryPlan</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.itrajectory_validator</span> <span class="kn">import</span> <span class="n">ITrajectoryValidator</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.communication.irobot_controller</span> <span class="kn">import</span> <span class="n">IRobotController</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.communication.itrajectory_streamer</span> <span class="kn">import</span> <span class="n">ITrajectoryStreamer</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.communication.stream.stream_config</span> <span class="kn">import</span> <span class="n">StreamConfig</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.communication.stream.stream_progress</span> <span class="kn">import</span> <span class="n">StreamProgress</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.communication.stream.iconfig_factory</span> <span class="kn">import</span> <span class="n">IConfigFactory</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.itrajectory_plan</span> <span class="kn">import</span> <span class="n">ITrajectoryPlan</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.validation.itrajectory_validator</span> <span class="kn">import</span> <span class="n">ITrajectoryValidator</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.communication.controller.irobot_controller</span> <span class="kn">import</span> <span class="n">IRobotController</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.communication.stream.itrajectory_streamer</span> <span class="kn">import</span> <span class="n">ITrajectoryStreamer</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.iservice</span> <span class="kn">import</span> <span class="n">IService</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.preferences.iconnection_repository</span> <span class="kn">import</span> <span class="n">IConnectionRepository</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.stream.serial_console</span> <span class="kn">import</span> <span class="n">SerialConsole</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.stream.stream_status_bar</span> <span class="kn">import</span> <span class="n">StreamStatusBar</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.stream.port_connection_panel</span> <span class="kn">import</span> <span class="n">PortConnectionPanel</span>
@@ -126,6 +128,7 @@
     <span class="n">_streamer</span><span class="p">:</span> <span class="n">ITrajectoryStreamer</span>
     <span class="n">_robot_controller</span><span class="p">:</span> <span class="n">IRobotController</span> <span class="o">|</span> <span class="kc">None</span>
     <span class="n">_service</span><span class="p">:</span> <span class="n">IService</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">_connection_repository</span><span class="p">:</span> <span class="n">IConnectionRepository</span>
     <span class="n">_port_panel</span><span class="p">:</span> <span class="n">PortConnectionPanel</span>
     <span class="n">_ctrl_panel</span><span class="p">:</span> <span class="n">StreamControlPanel</span>
     <span class="n">_override_panel</span><span class="p">:</span> <span class="n">RobotOverridePanel</span>
@@ -140,7 +143,10 @@
         <span class="n">plan</span><span class="p">:</span> <span class="n">ITrajectoryPlan</span><span class="p">,</span>
         <span class="n">validator</span><span class="p">:</span> <span class="n">ITrajectoryValidator</span><span class="p">,</span>
         <span class="n">streamer</span><span class="p">:</span> <span class="n">ITrajectoryStreamer</span><span class="p">,</span>
+        <span class="n">connection_repository</span><span class="p">:</span> <span class="n">IConnectionRepository</span><span class="p">,</span>
+        <span class="n">robot_controller</span><span class="p">:</span> <span class="n">IRobotController</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">service</span><span class="p">:</span> <span class="n">IService</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">stream_config_factory</span><span class="p">:</span> <span class="n">IConfigFactory</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
@@ -150,6 +156,8 @@
 <span class="sd">            :param plan: Active ITrajectoryPlan.</span>
 <span class="sd">            :param validator: ITrajectoryValidator instance.</span>
 <span class="sd">            :param streamer: ITrajectoryStreamer instance.</span>
+<span class="sd">            :param connection_repository: Injected IConnectionRepository instance.</span>
+<span class="sd">            :param robot_controller: Optional IRobotController instance.</span>
 <span class="sd">            :param service: Optional IService facade instance.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -157,11 +165,21 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ITrajectoryPlan</span><span class="p">]</span> <span class="o">=</span> <span class="n">plan</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_validator</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ITrajectoryValidator</span><span class="p">]</span> <span class="o">=</span> <span class="n">validator</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_streamer</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ITrajectoryStreamer</span><span class="p">]</span> <span class="o">=</span> <span class="n">streamer</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_robot_controller</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">streamer</span><span class="p">,</span> <span class="s1">&#39;get_robot_controller&#39;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span><span class="p">)()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connection_repository</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IConnectionRepository</span><span class="p">]</span> <span class="o">=</span> <span class="n">connection_repository</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_robot_controller</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">robot_controller</span>
+            <span class="k">if</span> <span class="n">robot_controller</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="n">streamer</span><span class="o">.</span><span class="n">get_robot_controller</span><span class="p">()</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_service</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IService</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">service</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stream_config_factory</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IConfigFactory</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">stream_config_factory</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pump_state</span> <span class="o">=</span> <span class="kc">False</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_port_panel</span> <span class="o">=</span> <span class="n">PortConnectionPanel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">on_toggle_connect</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_on_toggle_connect</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_port_panel</span> <span class="o">=</span> <span class="n">PortConnectionPanel</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">on_toggle_connect</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_on_toggle_connect</span><span class="p">,</span>
+            <span class="n">connection_repository</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_connection_repository</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_port_panel</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_ctrl_panel</span> <span class="o">=</span> <span class="n">StreamControlPanel</span><span class="p">(</span>
@@ -244,7 +262,23 @@
                 <span class="n">showerror</span><span class="p">(</span><span class="s1">&#39;Serial Port Error&#39;</span><span class="p">,</span> <span class="s1">&#39;No serial port selected.&#39;</span><span class="p">)</span>
                 <span class="k">return</span>
 
-            <span class="n">config</span><span class="p">:</span> <span class="n">StreamConfig</span> <span class="o">=</span> <span class="n">StreamConfig</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">,</span> <span class="n">baudrate</span><span class="o">=</span><span class="mi">115200</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+            <span class="n">config</span><span class="p">:</span> <span class="n">StreamConfig</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stream_config_factory</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stream_config_factory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                    <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">,</span>
+                    <span class="n">baudrate</span><span class="o">=</span><span class="mi">115200</span><span class="p">,</span>
+                    <span class="n">timeout</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                    <span class="n">queue_capacity</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+                    <span class="n">protocol_mode</span><span class="o">=</span><span class="n">ProtocolMode</span><span class="o">.</span><span class="n">BINARY</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">config</span> <span class="o">=</span> <span class="n">StreamConfig</span><span class="p">(</span>
+                    <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">,</span>
+                    <span class="n">baudrate</span><span class="o">=</span><span class="mi">115200</span><span class="p">,</span>
+                    <span class="n">timeout</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                    <span class="n">queue_capacity</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+                    <span class="n">protocol_mode</span><span class="o">=</span><span class="n">ProtocolMode</span><span class="o">.</span><span class="n">BINARY</span><span class="p">,</span>
+                <span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_streamer</span><span class="o">.</span><span class="n">connect_with_config</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_progress_adapter</span><span class="o">.</span><span class="n">set_connected</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
 

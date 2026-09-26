@@ -5,3 +5,4 @@ scarajectory.core.service.dsl.linter.scara\_lint\_context module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

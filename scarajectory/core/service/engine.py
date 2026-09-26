@@ -21,14 +21,11 @@ Info
 
 from __future__ import annotations
 
-from typing import Final
-
-from scarajectory.core.model.trajectory.itrajectory_plan import ITrajectoryPlan
-from scarajectory.core.service.trajectory.iplan_storage_service import IPlanStorageService
-from scarajectory.core.service.trajectory.itrajectory_validator import ITrajectoryValidator
-from scarajectory.core.service.communication.itrajectory_streamer import ITrajectoryStreamer
-from scarajectory.core.service.dsl.iscara_dsl_service import IScaraDslService
-from scarajectory.core.service.dsl.scara_dsl_service import ScaraDslService
+from scarajectory.core.service.trajectory.plan.itrajectory_plan import ITrajectoryPlan
+from scarajectory.core.service.trajectory.contract.iplan_storage_service import IPlanStorageService
+from scarajectory.core.service.trajectory.validation.itrajectory_validator import ITrajectoryValidator
+from scarajectory.core.service.communication.stream.itrajectory_streamer import ITrajectoryStreamer
+from scaralang.core.service.dsl.iscara_dsl_service import IScaraDslService
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -81,7 +78,7 @@ class Service:
         streamer: ITrajectoryStreamer,
         storage: IPlanStorageService,
         plan: ITrajectoryPlan,
-        dsl_service: IScaraDslService | None = None
+        dsl_service: IScaraDslService,
     ) -> None:
         '''
             Initializes the service with injected abstractions.
@@ -90,15 +87,13 @@ class Service:
             :param streamer: ITrajectoryStreamer instance.
             :param storage: IPlanStorageService instance.
             :param plan: ITrajectoryPlan instance.
-            :param dsl_service: Optional IScaraDslService instance.
+            :param dsl_service: IScaraDslService instance.
         '''
-        self._validator: Final[ITrajectoryValidator] = validator
-        self._streamer: Final[ITrajectoryStreamer] = streamer
-        self._storage: Final[IPlanStorageService] = storage
-        self._plan: Final[ITrajectoryPlan] = plan
-        self._dsl_service: Final[IScaraDslService] = (
-            dsl_service or ScaraDslService(validator=validator)
-        )
+        self._validator = validator
+        self._streamer = streamer
+        self._storage = storage
+        self._plan = plan
+        self._dsl_service = dsl_service
 
     def is_initialized(self) -> bool:
         '''

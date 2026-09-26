@@ -41,7 +41,6 @@ class ViewportTransform:
 
             :attributes:
                 | DEFAULT_ZOOM - Default initial zoom factor.
-                | R_MAX_MM - Maximum robot reach in millimeters.
                 | ZOOM_IN_FACTOR - Scale multiplier for zoom in operation.
                 | ZOOM_OUT_FACTOR - Scale multiplier for zoom out operation.
                 | ZOOM_MIN - Minimum allowable zoom scale.
@@ -62,7 +61,6 @@ class ViewportTransform:
     '''
 
     DEFAULT_ZOOM: ClassVar[float] = 1.35
-    R_MAX_MM: ClassVar[float] = 270.0
     ZOOM_IN_FACTOR: ClassVar[float] = 1.25
     ZOOM_OUT_FACTOR: ClassVar[float] = 0.8
     ZOOM_MIN: ClassVar[float] = 0.3
@@ -146,19 +144,17 @@ class ViewportTransform:
         self,
         width: int,
         height: int,
-        r_max_mm: float | None = None
+        r_max_mm: float = 270.0,
     ) -> None:
         '''
             Adjusts scale and pan to fit robot reach boundary into window.
 
             :param width: Canvas width in pixels.
             :param height: Canvas height in pixels.
-            :param r_max_mm: Optional maximum robot reach in mm. Defaults to R_MAX_MM.
+            :param r_max_mm: Maximum robot reach in mm.
         '''
-        reach: float = r_max_mm if r_max_mm is not None else self.R_MAX_MM
-
         if width > self.MIN_CANVAS_DIMENSION and height > self.MIN_CANVAS_DIMENSION:
             min_dim: float = float(min(width, height))
-            self.scale = (min_dim * self.REACH_COVERAGE_RATIO) / reach
+            self.scale = (min_dim * self.REACH_COVERAGE_RATIO) / r_max_mm
             self.pan_x = 0.0
             self.pan_y = 0.0

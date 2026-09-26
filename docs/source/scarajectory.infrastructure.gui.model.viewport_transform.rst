@@ -5,3 +5,4 @@ scarajectory.infrastructure.gui.model.viewport\_transform module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

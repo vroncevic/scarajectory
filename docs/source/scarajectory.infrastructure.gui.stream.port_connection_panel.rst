@@ -5,3 +5,4 @@ scarajectory.infrastructure.gui.stream.port\_connection\_panel module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

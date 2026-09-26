@@ -48,4 +48,4 @@ class ValidationResult:
 
     is_valid: bool
     message: str
-    error_index: int = -1
+    error_index: int

@@ -21,10 +21,9 @@ Info
 
 from __future__ import annotations
 
-from scarajectory.core.model.dsl.ast.iscara_instruction import IScaraInstruction
-from scarajectory.core.model.dsl.ast.scara_command_type import ScaraCommandType
-from scarajectory.core.model.dsl.ast.scara_instruction import ScaraInstruction
-from scarajectory.core.model.dsl.token.scara_token import ScaraToken
+from scarajectory.core.model.dsl.ast.command_type import CommandType
+from scarajectory.core.model.dsl.ast.instruction import Instruction
+from scarajectory.core.model.dsl.token.token import Token
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -46,7 +45,7 @@ class JogCommandParser:
                 | None.
             :methods:
                 | can_parse - Checks whether command is JOG_AXIS or JOG_JOINT.
-                | parse - Parses jog statement tokens into ScaraInstruction.
+                | parse - Parses jog statement tokens into Instruction.
     '''
 
     def can_parse(self, *, command_name: str) -> bool:
@@ -61,17 +60,17 @@ class JogCommandParser:
     def parse(
         self,
         *,
-        tokens: tuple[ScaraToken, ...],
+        tokens: tuple[Token, ...],
         line_num: int,
         raw_text: str,
-    ) -> IScaraInstruction:
+    ) -> Instruction:
         '''
-            Parses jog statement into ScaraInstruction.
+            Parses jog statement into Instruction.
 
             :param tokens: Statement token tuple.
             :param line_num: Line number in source code.
             :param raw_text: Original statement text.
-            :return: IScaraInstruction node.
+            :return: Instruction node.
             :exceptions: ValueError on missing jog arguments.
         '''
         cmd = tokens[0].value.upper()
@@ -83,8 +82,9 @@ class JogCommandParser:
         if cmd == 'JOG_AXIS':
             axis = tokens[1].value.upper()
             step = float(tokens[2].value)
-            return ScaraInstruction(
-                command_type=ScaraCommandType.JOG_AXIS,
+
+            return Instruction(
+                command_type=CommandType.JOG_AXIS,
                 line_number=line_num,
                 raw_text=raw_text,
                 parameters={'axis': axis, 'step': step},
@@ -92,8 +92,9 @@ class JogCommandParser:
 
         joint_id = int(tokens[1].value)
         deg = float(tokens[2].value)
-        return ScaraInstruction(
-            command_type=ScaraCommandType.JOG_JOINT,
+
+        return Instruction(
+            command_type=CommandType.JOG_JOINT,
             line_number=line_num,
             raw_text=raw_text,
             parameters={'joint': joint_id, 'deg': deg},

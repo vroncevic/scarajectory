@@ -29,7 +29,9 @@ pkg_dir = dirname(dirname(abspath(__file__)))
 if pkg_dir not in path:
     path.insert(0, pkg_dir)
 
-from scarajectory.core.model.trajectory.waypoint import Waypoint
+from scarajectory.core.service.trajectory.discretization.waypoint_factory import WaypointFactory
+from scarajectory.core.service.trajectory.discretization.shape_discretizer_factory import ShapeDiscretizerFactory
+from scarajectory.core.service.trajectory.discretization.ishape_discretizer import IShapeDiscretizer
 from scarajectory.infrastructure.gui.model.canvas_settings import CanvasSettings
 from scarajectory.infrastructure.gui.canvas.canvas_tool_handler import CanvasToolHandler
 
@@ -65,6 +67,7 @@ class TestCanvasToolHandler(TestCase):
             :exceptions: None.
         '''
         self.settings = CanvasSettings(default_z=20.0, default_speed=40.0)
+        self.discretizer: IShapeDiscretizer = ShapeDiscretizerFactory.create()
 
     def test_hit_detection(self) -> None:
         '''
@@ -73,8 +76,8 @@ class TestCanvasToolHandler(TestCase):
             :exceptions: None.
         '''
         pts = [
-            Waypoint(x=10.0, y=20.0, z=0.0, phi=0.0, speed=10.0),
-            Waypoint(x=100.0, y=100.0, z=0.0, phi=0.0, speed=10.0)
+            WaypointFactory.create(x=10.0, y=20.0, z=0.0, phi=0.0, speed=10.0),
+            WaypointFactory.create(x=100.0, y=100.0, z=0.0, phi=0.0, speed=10.0)
         ]
         hit = CanvasToolHandler.find_hit_index(pts, 10.5, 19.8, 5.0)
         self.assertEqual(hit, 0)
@@ -88,7 +91,7 @@ class TestCanvasToolHandler(TestCase):
 
             :exceptions: None.
         '''
-        last = Waypoint(x=0.0, y=0.0, z=0.0, phi=0.0, speed=10.0)
+        last = WaypointFactory.create(x=0.0, y=0.0, z=0.0, phi=0.0, speed=10.0)
         self.assertFalse(CanvasToolHandler.is_freehand_distance_met(last, 1.0, 1.0, 5.0))
         self.assertTrue(CanvasToolHandler.is_freehand_distance_met(last, 10.0, 0.0, 5.0))
 
@@ -98,7 +101,7 @@ class TestCanvasToolHandler(TestCase):
 
             :exceptions: None.
         '''
-        pts = CanvasToolHandler.discretize_line((0.0, 0.0), (100.0, 0.0), self.settings)
+        pts = CanvasToolHandler.discretize_line((0.0, 0.0), (100.0, 0.0), self.settings, discretizer=self.discretizer)
         self.assertEqual(len(pts), 2)
         self.assertEqual(pts[0].x, 0.0)
         self.assertEqual(pts[1].x, 100.0)
@@ -109,7 +112,7 @@ class TestCanvasToolHandler(TestCase):
 
             :exceptions: None.
         '''
-        pts = CanvasToolHandler.discretize_circle((100.0, 100.0), 30.0, 8, self.settings)
+        pts = CanvasToolHandler.discretize_circle((100.0, 100.0), 30.0, 8, self.settings, discretizer=self.discretizer)
         self.assertEqual(len(pts), 9)
         self.assertAlmostEqual(pts[0].x, pts[-1].x, places=3)
         self.assertAlmostEqual(pts[0].y, pts[-1].y, places=3)
@@ -120,7 +123,7 @@ class TestCanvasToolHandler(TestCase):
 
             :exceptions: None.
         '''
-        pts = CanvasToolHandler.discretize_rectangle((10.0, 20.0), (50.0, 60.0), self.settings)
+        pts = CanvasToolHandler.discretize_rectangle((10.0, 20.0), (50.0, 60.0), self.settings, discretizer=self.discretizer)
         self.assertEqual(len(pts), 5)
         self.assertEqual(pts[0].x, pts[-1].x)
         self.assertEqual(pts[0].y, pts[-1].y)

@@ -26,13 +26,15 @@ from tkinter.messagebox import askyesno, showerror, showinfo
 from tkinter.ttk import Frame
 from typing import Final
 
-from scarajectory.core.model.communication.stream_config import StreamConfig
-from scarajectory.core.model.communication.stream_progress import StreamProgress
-from scarajectory.core.model.trajectory.itrajectory_plan import ITrajectoryPlan
-from scarajectory.core.service.trajectory.itrajectory_validator import ITrajectoryValidator
-from scarajectory.core.service.communication.irobot_controller import IRobotController
-from scarajectory.core.service.communication.itrajectory_streamer import ITrajectoryStreamer
+from scarajectory.core.model.communication.stream.stream_config import StreamConfig
+from scarajectory.core.model.communication.stream.stream_progress import StreamProgress
+from scarajectory.core.service.communication.stream.iconfig_factory import IConfigFactory
+from scarajectory.core.service.trajectory.plan.itrajectory_plan import ITrajectoryPlan
+from scarajectory.core.service.trajectory.validation.itrajectory_validator import ITrajectoryValidator
+from scarajectory.core.service.communication.controller.irobot_controller import IRobotController
+from scarajectory.core.service.communication.stream.itrajectory_streamer import ITrajectoryStreamer
 from scarajectory.core.service.iservice import IService
+from scarajectory.infrastructure.communication.preferences.iconnection_repository import IConnectionRepository
 from scarajectory.infrastructure.gui.stream.serial_console import SerialConsole
 from scarajectory.infrastructure.gui.stream.stream_status_bar import StreamStatusBar
 from scarajectory.infrastructure.gui.stream.port_connection_panel import PortConnectionPanel
@@ -86,6 +88,7 @@ class StreamerTab(Frame):
     _streamer: ITrajectoryStreamer
     _robot_controller: IRobotController | None
     _service: IService | None
+    _connection_repository: IConnectionRepository
     _port_panel: PortConnectionPanel
     _ctrl_panel: StreamControlPanel
     _override_panel: RobotOverridePanel
@@ -100,7 +103,10 @@ class StreamerTab(Frame):
         plan: ITrajectoryPlan,
         validator: ITrajectoryValidator,
         streamer: ITrajectoryStreamer,
+        connection_repository: IConnectionRepository,
+        robot_controller: IRobotController | None = None,
         service: IService | None = None,
+        stream_config_factory: IConfigFactory | None = None,
         **kwargs: object,
     ) -> None:
         '''
@@ -110,6 +116,8 @@ class StreamerTab(Frame):
             :param plan: Active ITrajectoryPlan.
             :param validator: ITrajectoryValidator instance.
             :param streamer: ITrajectoryStreamer instance.
+            :param connection_repository: Injected IConnectionRepository instance.
+            :param robot_controller: Optional IRobotController instance.
             :param service: Optional IService facade instance.
             :exceptions: None.
         '''
@@ -117,11 +125,21 @@ class StreamerTab(Frame):
         self._plan: Final[ITrajectoryPlan] = plan
         self._validator: Final[ITrajectoryValidator] = validator
         self._streamer: Final[ITrajectoryStreamer] = streamer
-        self._robot_controller = getattr(streamer, 'get_robot_controller', lambda: None)()
+        self._connection_repository: Final[IConnectionRepository] = connection_repository
+        self._robot_controller = (
+            robot_controller
+            if robot_controller is not None
+            else streamer.get_robot_controller()
+        )
         self._service: Final[IService | None] = service
+        self._stream_config_factory: Final[IConfigFactory | None] = stream_config_factory
         self._pump_state = False
 
-        self._port_panel = PortConnectionPanel(self, on_toggle_connect=self._on_toggle_connect)
+        self._port_panel = PortConnectionPanel(
+            self,
+            on_toggle_connect=self._on_toggle_connect,
+            connection_repository=self._connection_repository,
+        )
         self._port_panel.pack(fill=X, pady=2)
 
         self._ctrl_panel = StreamControlPanel(
@@ -195,7 +213,23 @@ class StreamerTab(Frame):
                 showerror('Serial Port Error', 'No serial port selected.')
                 return
 
-            config: StreamConfig = StreamConfig(port=port, baudrate=115200, timeout=0.1)
+            config: StreamConfig
+            if self._stream_config_factory is not None:
+                config = self._stream_config_factory.create(
+                    port=port,
+                    baudrate=115200,
+                    timeout=0.1,
+                    queue_capacity=16,
+                    protocol_mode=ProtocolMode.BINARY,
+                )
+            else:
+                config = StreamConfig(
+                    port=port,
+                    baudrate=115200,
+                    timeout=0.1,
+                    queue_capacity=16,
+                    protocol_mode=ProtocolMode.BINARY,
+                )
             if self._streamer.connect_with_config(config):
                 self._progress_adapter.set_connected(port)
 

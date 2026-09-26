@@ -23,8 +23,8 @@ from __future__ import annotations
 
 from math import atan2, degrees, hypot
 
-from scarajectory.core.model.dsl.ast.iscara_instruction import IScaraInstruction
-from scarajectory.core.model.dsl.ast.scara_command_type import ScaraCommandType
+from scarajectory.core.model.dsl.ast.command_type import CommandType
+from scarajectory.core.model.dsl.ast.instruction import Instruction
 from scarajectory.core.service.dsl.compiler.scara_compiler_context import ScaraCompilerContext
 
 __author__ = 'Vladimir Roncevic'
@@ -50,21 +50,21 @@ class TangentMacroExpander:
                 | expand - Updates orientation mode or calculates tangent angle for motion target.
     '''
 
-    def can_expand(self, *, instruction: IScaraInstruction) -> bool:
+    def can_expand(self, *, instruction: Instruction) -> bool:
         '''
             Checks whether this expander handles TOOL_ORIENT instructions.
 
             :param instruction: Instruction node to check.
             :return: True if TOOL_ORIENT, False otherwise.
         '''
-        return instruction.command_type == ScaraCommandType.TOOL_ORIENT
+        return instruction.command_type == CommandType.TOOL_ORIENT
 
     def expand(
         self,
         *,
-        instruction: IScaraInstruction,
+        instruction: Instruction,
         context: ScaraCompilerContext,
-    ) -> tuple[IScaraInstruction, ...]:
+    ) -> tuple[Instruction, ...]:
         '''
             Configures tool orientation mode in compiler context.
 
@@ -75,6 +75,7 @@ class TangentMacroExpander:
         params = instruction.parameters
         mode = str(params.get('mode', 'FIXED')).upper()
         context.tool_orient_mode = mode
+
         if 'phi' in params:
             context.current_phi = float(params['phi'])
 
@@ -102,6 +103,8 @@ class TangentMacroExpander:
         dx = target_x - current_x
         dy = target_y - current_y
         dist = hypot(dx, dy)
+
         if dist < 1e-4:
             return fallback_phi
+
         return degrees(atan2(dy, dx))

@@ -5,3 +5,4 @@ scarajectory.infrastructure.command.icommand\_definition module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

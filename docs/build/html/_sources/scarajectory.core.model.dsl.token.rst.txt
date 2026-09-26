@@ -7,8 +7,8 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.core.model.dsl.token.scara_token
-   scarajectory.core.model.dsl.token.scara_token_type
+   scarajectory.core.model.dsl.token.token
+   scarajectory.core.model.dsl.token.token_type
 
 Module contents
 ---------------
@@ -17,3 +17,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

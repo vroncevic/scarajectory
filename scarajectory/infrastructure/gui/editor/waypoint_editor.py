@@ -27,7 +27,7 @@ from tkinter.ttk import Button, Entry, Frame, Label, LabelFrame
 from typing import Final
 
 from scarajectory.core.model.trajectory.waypoint import Waypoint
-from scarajectory.core.model.trajectory.itrajectory_plan import ITrajectoryPlan
+from scarajectory.core.service.trajectory.plan.itrajectory_plan import ITrajectoryPlan
 from scarajectory.infrastructure.gui.editor.table import TrajectoryTable
 
 __author__ = 'Vladimir Roncevic'
@@ -141,7 +141,8 @@ class WaypointEditor(LabelFrame):
                     z=float(self._entry_z.get()),
                     phi=float(self._entry_phi.get()),
                     speed=float(self._entry_spd.get()),
-                    name=cur.name
+                    name=cur.name,
+                    command=cur.command,
                 )
                 self._plan.update_point(idx, updated)
             except ValueError:

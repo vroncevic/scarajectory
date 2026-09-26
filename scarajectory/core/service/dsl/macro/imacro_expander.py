@@ -23,7 +23,7 @@ from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
-from scarajectory.core.model.dsl.ast.iscara_instruction import IScaraInstruction
+from scarajectory.core.model.dsl.ast.instruction import Instruction
 from scarajectory.core.service.dsl.compiler.scara_compiler_context import ScaraCompilerContext
 
 __author__ = 'Vladimir Roncevic'
@@ -50,7 +50,7 @@ class IMacroExpander(Protocol):
                 | expand - Expands macro instruction into tuple of lower-level primitive instructions.
     '''
 
-    def can_expand(self, *, instruction: IScaraInstruction) -> bool:
+    def can_expand(self, *, instruction: Instruction) -> bool:
         '''
             Checks whether this expander handles the given instruction type.
 
@@ -61,13 +61,13 @@ class IMacroExpander(Protocol):
     def expand(
         self,
         *,
-        instruction: IScaraInstruction,
+        instruction: Instruction,
         context: ScaraCompilerContext,
-    ) -> tuple[IScaraInstruction, ...]:
+    ) -> tuple[Instruction, ...]:
         '''
             Expands macro instruction into one or more primitive instructions.
 
             :param instruction: Macro instruction to expand.
             :param context: Stateful compilation context.
-            :return: Tuple of expanded primitive IScaraInstruction nodes.
+            :return: Tuple of expanded primitive Instruction nodes.
         '''

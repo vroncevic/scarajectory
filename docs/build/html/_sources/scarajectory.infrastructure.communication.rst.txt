@@ -7,6 +7,7 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   scarajectory.infrastructure.communication.controller
    scarajectory.infrastructure.communication.preferences
    scarajectory.infrastructure.communication.protocol
    scarajectory.infrastructure.communication.streamer
@@ -18,7 +19,6 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.communication.serial_device_preferences
    scarajectory.infrastructure.communication.serial_port_scanner
 
 Module contents
@@ -28,3 +28,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

@@ -21,10 +21,11 @@ Info
 
 from __future__ import annotations
 
-from scarajectory.core.model.dsl.ast.iscara_instruction import IScaraInstruction
-from scarajectory.core.model.dsl.ast.scara_command_type import ScaraCommandType
-from scarajectory.core.model.dsl.ast.scara_instruction import ScaraInstruction
-from scarajectory.core.model.dsl.token.scara_token import ScaraToken
+from scarajectory.core.model.dsl.ast.command_type import CommandType
+from scarajectory.core.model.dsl.ast.instruction import Instruction
+from scarajectory.core.model.dsl.token.token import Token
+from scarajectory.core.service.dsl.ast.iinstruction_factory import IInstructionFactory
+from scarajectory.core.service.dsl.ast.instruction_factory import InstructionFactory
 from scarajectory.core.service.dsl.parser.parameter_extractor import ParameterExtractor
 
 __author__ = 'Vladimir Roncevic'
@@ -44,11 +45,22 @@ class FrameCommandParser:
         It defines:
 
             :attributes:
-                | None.
+                | _instruction_factory - Injected IInstructionFactory instance.
             :methods:
+                | __init__ - Initializes FrameCommandParser with injected factory.
                 | can_parse - Checks whether command is FRAME_SET or FRAME_RESET.
-                | parse - Parses frame statement tokens into ScaraInstruction.
+                | parse - Parses frame statement tokens into Instruction.
     '''
+
+    _instruction_factory: IInstructionFactory
+
+    def __init__(self, *, instruction_factory: IInstructionFactory = InstructionFactory()) -> None:
+        '''
+            Initializes FrameCommandParser constructor.
+
+            :param instruction_factory: Injected IInstructionFactory instance.
+        '''
+        self._instruction_factory = instruction_factory
 
     def can_parse(self, *, command_name: str) -> bool:
         '''
@@ -64,29 +76,32 @@ class FrameCommandParser:
     def parse(
         self,
         *,
-        tokens: tuple[ScaraToken, ...],
+        tokens: tuple[Token, ...],
         line_num: int,
         raw_text: str,
-    ) -> IScaraInstruction:
+    ) -> Instruction:
         '''
-            Parses frame statement into ScaraInstruction.
+            Parses frame statement into Instruction.
 
             :param tokens: Statement token tuple.
             :param line_num: Line number in source code.
             :param raw_text: Original statement text.
-            :return: IScaraInstruction node.
+            :return: Instruction node.
         '''
         cmd = tokens[0].value.upper()
+
         if cmd in ('FRAME_RESET', 'RESET_FRAME'):
-            return ScaraInstruction(
-                command_type=ScaraCommandType.FRAME_RESET,
+            return self._instruction_factory.create(
+                command_type=CommandType.FRAME_RESET,
                 line_number=line_num,
                 raw_text=raw_text,
+                parameters={},
             )
 
         params = ParameterExtractor.extract_key_values(tokens=tokens[1:])
-        return ScaraInstruction(
-            command_type=ScaraCommandType.FRAME_SET,
+
+        return self._instruction_factory.create(
+            command_type=CommandType.FRAME_SET,
             line_number=line_num,
             raw_text=raw_text,
             parameters=params,

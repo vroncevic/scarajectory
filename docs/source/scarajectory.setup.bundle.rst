@@ -5,3 +5,4 @@ scarajectory.setup.bundle module
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:

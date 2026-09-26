@@ -59,15 +59,11 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.iscara_instruction</span> <span class="kn">import</span> <span class="n">IScaraInstruction</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.scara_command_type</span> <span class="kn">import</span> <span class="n">ScaraCommandType</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.scara_diagnostic</span> <span class="kn">import</span> <span class="n">ScaraDiagnostic</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.scara_diagnostic_severity</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">ScaraDiagnosticSeverity</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.linter.scara_lint_context</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">ScaraLintContext</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.command_type</span> <span class="kn">import</span> <span class="n">CommandType</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.ast.instruction</span> <span class="kn">import</span> <span class="n">Instruction</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.diagnostic</span> <span class="kn">import</span> <span class="n">Diagnostic</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.dsl.diagnostic.diagnostic_severity</span> <span class="kn">import</span> <span class="n">DiagnosticSeverity</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.dsl.linter.scara_lint_context</span> <span class="kn">import</span> <span class="n">ScaraLintContext</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
@@ -96,9 +92,9 @@
     <span class="k">def</span> <span class="nf">check</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">instruction</span><span class="p">:</span> <span class="n">IScaraInstruction</span><span class="p">,</span>
+        <span class="n">instruction</span><span class="p">:</span> <span class="n">Instruction</span><span class="p">,</span>
         <span class="n">context</span><span class="p">:</span> <span class="n">ScaraLintContext</span><span class="p">,</span>
-        <span class="n">diagnostics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ScaraDiagnostic</span><span class="p">],</span>
+        <span class="n">diagnostics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Diagnostic</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Evaluates WAIT_MS instructions, reporting non-positive delays and blend flyby conflicts.</span>
@@ -108,7 +104,7 @@
 <span class="sd">            :param diagnostics: Accumulator list of diagnostic findings.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="n">instruction</span><span class="o">.</span><span class="n">command_type</span> <span class="o">!=</span> <span class="n">ScaraCommandType</span><span class="o">.</span><span class="n">WAIT_MS</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">instruction</span><span class="o">.</span><span class="n">command_type</span> <span class="o">!=</span> <span class="n">CommandType</span><span class="o">.</span><span class="n">WAIT_MS</span><span class="p">:</span>
             <span class="k">return</span>
 
         <span class="n">line</span> <span class="o">=</span> <span class="n">instruction</span><span class="o">.</span><span class="n">line_number</span>
@@ -117,9 +113,9 @@
 
         <span class="k">if</span> <span class="n">delay_ms</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
             <span class="n">diagnostics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">ScaraDiagnostic</span><span class="p">(</span>
+                <span class="n">Diagnostic</span><span class="p">(</span>
                     <span class="n">code</span><span class="o">=</span><span class="s1">&#39;DEAD_WAIT&#39;</span><span class="p">,</span>
-                    <span class="n">severity</span><span class="o">=</span><span class="n">ScaraDiagnosticSeverity</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+                    <span class="n">severity</span><span class="o">=</span><span class="n">DiagnosticSeverity</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
                     <span class="n">message</span><span class="o">=</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s1">&#39;Dwell delay WAIT_MS </span><span class="si">{</span><span class="n">delay_ms</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1"> is &#39;</span>
                         <span class="sa">f</span><span class="s1">&#39;non-positive and produces no pause.&#39;</span>
@@ -131,16 +127,16 @@
 
         <span class="k">if</span> <span class="n">context</span><span class="o">.</span><span class="n">zone_mode</span> <span class="o">!=</span> <span class="s1">&#39;FINE&#39;</span> <span class="ow">and</span> <span class="n">context</span><span class="o">.</span><span class="n">zone_radius</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
             <span class="n">diagnostics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">ScaraDiagnostic</span><span class="p">(</span>
+                <span class="n">Diagnostic</span><span class="p">(</span>
                     <span class="n">code</span><span class="o">=</span><span class="s1">&#39;TOOL_IN_FLYBY&#39;</span><span class="p">,</span>
-                    <span class="n">severity</span><span class="o">=</span><span class="n">ScaraDiagnosticSeverity</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span>
+                    <span class="n">severity</span><span class="o">=</span><span class="n">DiagnosticSeverity</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span>
                     <span class="n">message</span><span class="o">=</span><span class="s1">&#39;Dwell pause WAIT_MS issued during active continuous blend zone.&#39;</span><span class="p">,</span>
                     <span class="n">line</span><span class="o">=</span><span class="n">line</span><span class="p">,</span>
                     <span class="n">command</span><span class="o">=</span><span class="s1">&#39;WAIT_MS&#39;</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="p">)</span>
 
-        <span class="n">context</span><span class="o">.</span><span class="n">last_coords</span> <span class="o">=</span> <span class="kc">None</span></div>
+        <span class="n">context</span><span class="o">.</span><span class="n">last_coords</span> <span class="o">=</span> <span class="p">()</span></div>
 </div>
 
 </pre></div>

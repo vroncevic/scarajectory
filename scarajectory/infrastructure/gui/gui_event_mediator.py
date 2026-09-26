@@ -21,7 +21,7 @@ Info
 
 from __future__ import annotations
 
-from scarajectory.core.service.trajectory.itrajectory_observer import ITrajectoryObserver
+from scarajectory.core.service.trajectory.plan.itrajectory_observer import ITrajectoryObserver
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'

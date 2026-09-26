@@ -1,22 +1,25 @@
 scarajectory.core.service.dsl.compiler package
 ==============================================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   scarajectory.core.service.dsl.compiler.motion
+   scarajectory.core.service.dsl.compiler.primitive
+
 Submodules
 ----------
 
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.core.service.dsl.compiler.arc_interpolator
-   scarajectory.core.service.dsl.compiler.control_command_compiler
-   scarajectory.core.service.dsl.compiler.iarc_interpolator
-   scarajectory.core.service.dsl.compiler.iprimitive_compiler
    scarajectory.core.service.dsl.compiler.iscara_compiler
-   scarajectory.core.service.dsl.compiler.motion_command_compiler
    scarajectory.core.service.dsl.compiler.scara_compiler
    scarajectory.core.service.dsl.compiler.scara_compiler_context
-   scarajectory.core.service.dsl.compiler.state_command_compiler
-   scarajectory.core.service.dsl.compiler.tool_command_compiler
+   scarajectory.core.service.dsl.compiler.scara_compiler_factory
 
 Module contents
 ---------------
@@ -25,3 +28,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :private-members:
