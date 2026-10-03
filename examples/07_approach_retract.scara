@@ -1,0 +1,22 @@
+# ==============================================================================
+# 07_approach_retract.scara - Relative Approach & Retract
+# ==============================================================================
+# APPROACH moves down along Z towards part at controlled low feedrate.
+# RETRACT moves up along Z away from part at rapid feedrate.
+# ==============================================================================
+
+ENABLE
+HOME
+
+# Hover over target cell
+MOVE_L X=150.0 Y=60.0 Z=25.0 PHI=0.0 SPEED=80.0
+
+# Smooth approach down 15mm to contact surface
+APPROACH DIST=15.0 SPEED=20.0
+
+# Grasp part
+PUMP ON
+WAIT_MS 100
+
+# Fast retract up 20mm to safe travel height
+RETRACT DIST=20.0 SPEED=80.0

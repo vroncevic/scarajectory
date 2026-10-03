@@ -37,7 +37,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.2'
+__version__ = '1.0.4'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -59,7 +59,7 @@ class SCARAjectory(Base):
     '''
 
     _is_initialized: bool
-    _logger: ILogger | None
+    _logger: ILogger
     _cli: ICLI
 
     def __init__(self, bundle: SCARAjectoryBundle) -> None:
@@ -70,7 +70,6 @@ class SCARAjectory(Base):
             :exceptions: None.
         '''
         self._is_initialized = False
-        self._logger = None
 
         try:
             SCARAjectoryBundleValidator.validate(bundle)
@@ -115,35 +114,27 @@ class SCARAjectory(Base):
         result: Mapping[str, object] = {}
 
         try:
-            if self.is_initialized() and self._logger is not None:
+            if self.is_initialized():
                 self._logger.write_log(INFO, '🔥 Starting execution command...')
                 result = self._cli.run()
                 self._logger.write_log(INFO, '✅ Execution finished!')
 
                 if result.get('returncode') != 0:
-                    self._logger.write_log(ERROR, f'❌ scarajectory: {result.get("stderr") or "failed!"}')
+                    stderr_msg: str = str(result.get('stderr') or 'failed!')
+                    self._logger.write_log(ERROR, f'❌ scarajectory: {stderr_msg}')
                     return False
 
                 self._logger.write_log(INFO, '✅ scarajectory: done!')
                 self._logger.write_log(INFO, '✅ scarajectory: exiting successfully!')
                 return True
 
-            if self._logger is not None:
-                self._logger.write_log(ERROR, '❌ scarajectory: engine not initialized!')
-            else:
-                stdout.write('❌ scarajectory: engine not initialized!\n')
+            stdout.write('❌ scarajectory: engine not initialized!')
             return False
 
         except (ATSValueError, ATSTypeError) as exc:
-            if self._logger is not None:
-                self._logger.write_log(ERROR, f'❌ scarajectory: {exc}!')
-            else:
-                stdout.write(f'❌ scarajectory: {exc}!\n')
+            stdout.write(f'❌ scarajectory: {exc}!\n')
             return False
 
         except Exception as exc:
-            if self._logger is not None:
-                self._logger.write_log(ERROR, f'❌ scarajectory unexpected exception: {exc}!')
-            else:
-                stdout.write(f'❌ scarajectory unexpected exception: {exc}!\n')
+            stdout.write(f'❌ scarajectory unexpected exception: {exc}!\n')
             return False

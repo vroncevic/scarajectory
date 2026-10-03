@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
 '''
@@ -30,7 +29,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'GNU General Public License (GPL)'
-__version__ = '1.0.2'
+__version__ = '1.0.4'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -42,7 +41,7 @@ with open(join(THIS_DIR, 'README.md'), encoding='utf-8') as readme:
     long_description = readme.read()
 
 PROGRAMMING_LANG: str = 'Programming Language :: Python ::'
-VERSIONS: list[str] = ['3.10', '3.11', '3.12', '3.13', '3.14']
+VERSIONS: list[str] = ['3.12', '3.13', '3.14']
 SUPPORTED_PY_VERSIONS: list[str] = [f'{PROGRAMMING_LANG} {VERSION}' for VERSION in VERSIONS]
 PYP_CLASSIFIERS: list[str] = SUPPORTED_PY_VERSIONS
 
@@ -71,7 +70,7 @@ def find_package_data(pkg: str) -> list[str]:
 
 setup(
     name='scarajectory',
-    version='1.0.2',
+    version='1.0.4',
     description='SCARA Motion Trajectory Studio, CAD Vector Editor and Hardware Serial Streamer.',
     author='Vladimir Roncevic',
     author_email='elektron.ronca@gmail.com',
@@ -83,7 +82,7 @@ setup(
     platforms='POSIX',
     classifiers=PYP_CLASSIFIERS,
     packages=find_packages(exclude=['tests', 'tests.*', '*.*.pyc', '*.pyo']),
-    install_requires=['ats-utilities', 'pyserial'],
+    install_requires=['ats-utilities', 'pyserial', 'scaralang'],
     package_data={'scarajectory': find_package_data('scarajectory')},
     entry_points={
         'console_scripts': [

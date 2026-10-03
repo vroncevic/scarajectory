@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>scarajectory.infrastructure.gui.streaming.streamer_tab module &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
+    
+    <script src="_static/documentation_options.js?v=57319df4"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="scarajectory.infrastructure.gui.streaming.streamer_tab_factory module" href="scarajectory.infrastructure.gui.streaming.streamer_tab_factory.html" />
+    <link rel="prev" title="scarajectory.infrastructure.gui.streaming.streamer_controllers_bundle module" href="scarajectory.infrastructure.gui.streaming.streamer_controllers_bundle.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.streaming.streamer_tab_factory.html" title="scarajectory.infrastructure.gui.streaming.streamer_tab_factory module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.streaming.streamer_controllers_bundle.html" title="scarajectory.infrastructure.gui.streaming.streamer_controllers_bundle module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.gui.html" >scarajectory.infrastructure.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.infrastructure.gui.streaming.html" accesskey="U">scarajectory.infrastructure.gui.streaming package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.streaming.streamer_tab module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-scarajectory.infrastructure.gui.streaming.streamer_tab">
+<span id="scarajectory-infrastructure-gui-streaming-streamer-tab-module"></span><h1>scarajectory.infrastructure.gui.streaming.streamer_tab module<a class="headerlink" href="#module-scarajectory.infrastructure.gui.streaming.streamer_tab" title="Link to this heading">¶</a></h1>
+<dl class="simple">
+<dt>Module</dt><dd><p>streamer_tab.py</p>
+</dd>
+<dt>Copyright</dt><dd><p>Copyright (C) 2026 Vladimir Roncevic &lt;<a class="reference external" href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+scarajectory is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+scarajectory is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along
+with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+</dd>
+<dt>Info</dt><dd><p>Hardware connection and trajectory streaming tab container.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.gui.streaming.streamer_tab.</span></span><span class="sig-name descname"><span class="pre">StreamerTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Widget</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connection_repository</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.preferences.iconnection_repository.html#scarajectory.core.service.preferences.iconnection_repository.IConnectionRepository" title="scarajectory.core.service.preferences.iconnection_repository.IConnectionRepository"><span class="pre">IConnectionRepository</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/streaming/streamer_tab.html#StreamerTab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></p>
+<p>Hardware connection and trajectory streaming tab container.</p>
+<p>It defines:</p>
+<blockquote>
+<div><dl class="field-list">
+<dt class="field-odd">attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="line-block">
+<div class="line">_port_panel - Serial port connection subpanel.</div>
+<div class="line">_status_bar - Status bar rendering active connection info.</div>
+<div class="line">_progress_adapter - UI adapter synchronizing stream state.</div>
+<div class="line">_override_panel - Manual manipulator override controls panel.</div>
+<div class="line">_actions - Mounted playback and tool action handlers bundle.</div>
+<div class="line">_ctrl_panel - Streaming playback execution control panel.</div>
+<div class="line">_console - Serial communication terminal output component.</div>
+</div>
+</dd>
+<dt class="field-even">methods<span class="colon">:</span></dt>
+<dd class="field-even"><div class="line-block">
+<div class="line">__init__ - Initializes the streamer tab panel and sub-widgets.</div>
+<div class="line">mount_actions - Mounts pre-assembled action handlers and control panel.</div>
+<div class="line">refresh_ports - Scans available serial/USB ports on the host.</div>
+<div class="line">append_log - Appends message to terminal log console.</div>
+<div class="line">update_progress - Updates streamer progress bar and metrics.</div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab._actions">
+<span class="sig-name descname"><span class="pre">_actions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.streaming.streamer_action_bundle.html#scarajectory.infrastructure.gui.streaming.streamer_action_bundle.StreamerActionBundle" title="scarajectory.infrastructure.gui.streaming.streamer_action_bundle.StreamerActionBundle"><span class="pre">StreamerActionBundle</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab._actions" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab._console">
+<span class="sig-name descname"><span class="pre">_console</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.console.serial_console.html#scarajectory.infrastructure.gui.console.serial_console.SerialConsole" title="scarajectory.infrastructure.gui.console.serial_console.SerialConsole"><span class="pre">SerialConsole</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab._console" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab._ctrl_panel">
+<span class="sig-name descname"><span class="pre">_ctrl_panel</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.streaming.panel.stream_control_panel.html#scarajectory.infrastructure.gui.streaming.panel.stream_control_panel.StreamControlPanel" title="scarajectory.infrastructure.gui.streaming.panel.stream_control_panel.StreamControlPanel"><span class="pre">StreamControlPanel</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab._ctrl_panel" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab._override_panel">
+<span class="sig-name descname"><span class="pre">_override_panel</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.manipulator.manipulator_override_panel.html#scarajectory.infrastructure.gui.manipulator.manipulator_override_panel.ManipulatorOverridePanel" title="scarajectory.infrastructure.gui.manipulator.manipulator_override_panel.ManipulatorOverridePanel"><span class="pre">ManipulatorOverridePanel</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab._override_panel" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab._port_panel">
+<span class="sig-name descname"><span class="pre">_port_panel</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.connection.port_connection_panel.html#scarajectory.infrastructure.gui.connection.port_connection_panel.PortConnectionPanel" title="scarajectory.infrastructure.gui.connection.port_connection_panel.PortConnectionPanel"><span class="pre">PortConnectionPanel</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab._port_panel" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab._progress_adapter">
+<span class="sig-name descname"><span class="pre">_progress_adapter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.streaming.panel.stream_progress_adapter.html#scarajectory.infrastructure.gui.streaming.panel.stream_progress_adapter.StreamProgressAdapter" title="scarajectory.infrastructure.gui.streaming.panel.stream_progress_adapter.StreamProgressAdapter"><span class="pre">StreamProgressAdapter</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab._progress_adapter" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab._status_bar">
+<span class="sig-name descname"><span class="pre">_status_bar</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.streaming.panel.stream_status_bar.html#scarajectory.infrastructure.gui.streaming.panel.stream_status_bar.StreamStatusBar" title="scarajectory.infrastructure.gui.streaming.panel.stream_status_bar.StreamStatusBar"><span class="pre">StreamStatusBar</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab._status_bar" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.actions">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">actions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.streaming.streamer_action_bundle.html#scarajectory.infrastructure.gui.streaming.streamer_action_bundle.StreamerActionBundle" title="scarajectory.infrastructure.gui.streaming.streamer_action_bundle.StreamerActionBundle"><span class="pre">StreamerActionBundle</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.actions" title="Link to this definition">¶</a></dt>
+<dd><p>Returns mounted action handlers bundle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StreamerActionBundle instance.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.append_log">
+<span class="sig-name descname"><span class="pre">append_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_outgoing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/streaming/streamer_tab.html#StreamerTab.append_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.append_log" title="Link to this definition">¶</a></dt>
+<dd><p>Appends timestamped message to the terminal console widget.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> – Message string.</p></li>
+<li><p><strong>is_outgoing</strong> – True if transmitted command.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.console">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">console</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.console.serial_console.html#scarajectory.infrastructure.gui.console.serial_console.SerialConsole" title="scarajectory.infrastructure.gui.console.serial_console.SerialConsole"><span class="pre">SerialConsole</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.console" title="Link to this definition">¶</a></dt>
+<dd><p>Returns serial terminal console component.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>SerialConsole instance.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.mount_actions">
+<span class="sig-name descname"><span class="pre">mount_actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">actions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.streaming.streamer_action_bundle.html#scarajectory.infrastructure.gui.streaming.streamer_action_bundle.StreamerActionBundle" title="scarajectory.infrastructure.gui.streaming.streamer_action_bundle.StreamerActionBundle"><span class="pre">StreamerActionBundle</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/streaming/streamer_tab.html#StreamerTab.mount_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.mount_actions" title="Link to this definition">¶</a></dt>
+<dd><p>Mounts pre-assembled action handlers and control panel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>actions</strong> – StreamerActionBundle containing action handlers.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.override_panel">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">override_panel</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.manipulator.manipulator_override_panel.html#scarajectory.infrastructure.gui.manipulator.manipulator_override_panel.ManipulatorOverridePanel" title="scarajectory.infrastructure.gui.manipulator.manipulator_override_panel.ManipulatorOverridePanel"><span class="pre">ManipulatorOverridePanel</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.override_panel" title="Link to this definition">¶</a></dt>
+<dd><p>Returns manipulator override panel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ManipulatorOverridePanel instance.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.port_panel">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">port_panel</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.connection.port_connection_panel.html#scarajectory.infrastructure.gui.connection.port_connection_panel.PortConnectionPanel" title="scarajectory.infrastructure.gui.connection.port_connection_panel.PortConnectionPanel"><span class="pre">PortConnectionPanel</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.port_panel" title="Link to this definition">¶</a></dt>
+<dd><p>Returns port connection panel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>PortConnectionPanel instance.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.progress_adapter">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">progress_adapter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.streaming.panel.stream_progress_adapter.html#scarajectory.infrastructure.gui.streaming.panel.stream_progress_adapter.StreamProgressAdapter" title="scarajectory.infrastructure.gui.streaming.panel.stream_progress_adapter.StreamProgressAdapter"><span class="pre">StreamProgressAdapter</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.progress_adapter" title="Link to this definition">¶</a></dt>
+<dd><p>Returns stream progress adapter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StreamProgressAdapter instance.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.refresh_ports">
+<span class="sig-name descname"><span class="pre">refresh_ports</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/streaming/streamer_tab.html#StreamerTab.refresh_ports"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.refresh_ports" title="Link to this definition">¶</a></dt>
+<dd><p>Scans and lists active serial / tty ports on the host system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.status_bar">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">status_bar</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.streaming.panel.stream_status_bar.html#scarajectory.infrastructure.gui.streaming.panel.stream_status_bar.StreamStatusBar" title="scarajectory.infrastructure.gui.streaming.panel.stream_status_bar.StreamStatusBar"><span class="pre">StreamStatusBar</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.status_bar" title="Link to this definition">¶</a></dt>
+<dd><p>Returns stream status bar.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StreamStatusBar instance.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.update_progress">
+<span class="sig-name descname"><span class="pre">update_progress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.telemetry.stream_progress.html#scarajectory.core.model.telemetry.stream_progress.StreamProgress" title="scarajectory.core.model.telemetry.stream_progress.StreamProgress"><span class="pre">StreamProgress</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/streaming/streamer_tab.html#StreamerTab.update_progress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.update_progress" title="Link to this definition">¶</a></dt>
+<dd><p>Updates progress bar and streaming status indicator widgets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>progress</strong> – StreamProgress data model.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">scarajectory.infrastructure.gui.streaming.streamer_tab module</a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab"><code class="docutils literal notranslate"><span class="pre">StreamerTab</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab._actions"><code class="docutils literal notranslate"><span class="pre">StreamerTab._actions</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab._console"><code class="docutils literal notranslate"><span class="pre">StreamerTab._console</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab._ctrl_panel"><code class="docutils literal notranslate"><span class="pre">StreamerTab._ctrl_panel</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab._override_panel"><code class="docutils literal notranslate"><span class="pre">StreamerTab._override_panel</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab._port_panel"><code class="docutils literal notranslate"><span class="pre">StreamerTab._port_panel</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab._progress_adapter"><code class="docutils literal notranslate"><span class="pre">StreamerTab._progress_adapter</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab._status_bar"><code class="docutils literal notranslate"><span class="pre">StreamerTab._status_bar</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.actions"><code class="docutils literal notranslate"><span class="pre">StreamerTab.actions</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.append_log"><code class="docutils literal notranslate"><span class="pre">StreamerTab.append_log()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.console"><code class="docutils literal notranslate"><span class="pre">StreamerTab.console</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.mount_actions"><code class="docutils literal notranslate"><span class="pre">StreamerTab.mount_actions()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.override_panel"><code class="docutils literal notranslate"><span class="pre">StreamerTab.override_panel</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.port_panel"><code class="docutils literal notranslate"><span class="pre">StreamerTab.port_panel</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.progress_adapter"><code class="docutils literal notranslate"><span class="pre">StreamerTab.progress_adapter</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.refresh_ports"><code class="docutils literal notranslate"><span class="pre">StreamerTab.refresh_ports()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.status_bar"><code class="docutils literal notranslate"><span class="pre">StreamerTab.status_bar</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.streamer_tab.StreamerTab.update_progress"><code class="docutils literal notranslate"><span class="pre">StreamerTab.update_progress()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.streaming.streamer_controllers_bundle.html"
+                          title="previous chapter">scarajectory.infrastructure.gui.streaming.streamer_controllers_bundle module</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.streaming.streamer_tab_factory.html"
+                          title="next chapter">scarajectory.infrastructure.gui.streaming.streamer_tab_factory module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/scarajectory.infrastructure.gui.streaming.streamer_tab.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.streaming.streamer_tab_factory.html" title="scarajectory.infrastructure.gui.streaming.streamer_tab_factory module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.streaming.streamer_controllers_bundle.html" title="scarajectory.infrastructure.gui.streaming.streamer_controllers_bundle module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.gui.html" >scarajectory.infrastructure.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.infrastructure.gui.streaming.html" >scarajectory.infrastructure.gui.streaming package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.streaming.streamer_tab module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

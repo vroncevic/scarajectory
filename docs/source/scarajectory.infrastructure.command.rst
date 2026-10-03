@@ -7,7 +7,7 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.command.command
+   scarajectory.infrastructure.command.command_bundle
    scarajectory.infrastructure.command.icommand_definition
    scarajectory.infrastructure.command.icommand_executor
    scarajectory.infrastructure.command.studio_command_definition

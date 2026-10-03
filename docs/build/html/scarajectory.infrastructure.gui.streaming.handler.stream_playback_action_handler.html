@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler module &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
+    
+    <script src="_static/documentation_options.js?v=57319df4"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler_factory module" href="scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler_factory.html" />
+    <link rel="prev" title="scarajectory.infrastructure.gui.streaming.handler.playback_handler_bundle module" href="scarajectory.infrastructure.gui.streaming.handler.playback_handler_bundle.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler_factory.html" title="scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler_factory module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.streaming.handler.playback_handler_bundle.html" title="scarajectory.infrastructure.gui.streaming.handler.playback_handler_bundle module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.gui.html" >scarajectory.infrastructure.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.infrastructure.gui.streaming.html" >scarajectory.infrastructure.gui.streaming package</a> &#187;</li>
+          <li class="nav-item nav-item-6"><a href="scarajectory.infrastructure.gui.streaming.handler.html" accesskey="U">scarajectory.infrastructure.gui.streaming.handler package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler">
+<span id="scarajectory-infrastructure-gui-streaming-handler-stream-playback-action-handler-module"></span><h1>scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler module<a class="headerlink" href="#module-scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler" title="Link to this heading">¶</a></h1>
+<dl class="simple">
+<dt>Module</dt><dd><p>stream_playback_action_handler.py</p>
+</dd>
+<dt>Copyright</dt><dd><p>Copyright (C) 2026 Vladimir Roncevic &lt;<a class="reference external" href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+scarajectory is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+scarajectory is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along
+with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+</dd>
+<dt>Info</dt><dd><p>Action handler coordinating stream connection, validation dialogs, and playback flow.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.</span></span><span class="sig-name descname"><span class="pre">StreamPlaybackActionHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bundle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.streaming.handler.playback_handler_bundle.html#scarajectory.infrastructure.gui.streaming.handler.playback_handler_bundle.PlaybackHandlerBundle" title="scarajectory.infrastructure.gui.streaming.handler.playback_handler_bundle.PlaybackHandlerBundle"><span class="pre">PlaybackHandlerBundle</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/streaming/handler/stream_playback_action_handler.html#StreamPlaybackActionHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Action handler coordinating stream connection, validation dialogs, and playback flow.</p>
+<p>It defines:</p>
+<blockquote>
+<div><dl class="field-list">
+<dt class="field-odd">attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="line-block">
+<div class="line">_plan - Active trajectory plan read-only abstraction.</div>
+<div class="line">_validator - Kinematic reachability validator.</div>
+<div class="line">_connection - Stream transport connection controller.</div>
+<div class="line">_playback_controller - Motion trajectory playback controller.</div>
+<div class="line">_progress_adapter - UI adapter synchronizing stream state.</div>
+<div class="line">_port_panel - Serial port connection subpanel.</div>
+</div>
+</dd>
+<dt class="field-even">methods<span class="colon">:</span></dt>
+<dd class="field-even"><div class="line-block">
+<div class="line">__init__ - Initializes playback action handler with collaborators.</div>
+<div class="line">toggle_connection - Connects or disconnects from selected serial port.</div>
+<div class="line">on_start_stream - Validates plan and initiates trajectory stream.</div>
+<div class="line">on_pause_resume_stream - Toggles stream pause/resume state.</div>
+<div class="line">on_stop_stream - Stops active streaming transmission immediately.</div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler._connection">
+<span class="sig-name descname"><span class="pre">_connection</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.connection.istream_connection.html#scarajectory.core.service.connection.istream_connection.IStreamConnection" title="scarajectory.core.service.connection.istream_connection.IStreamConnection"><span class="pre">IStreamConnection</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler._connection" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler._plan">
+<span class="sig-name descname"><span class="pre">_plan</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.trajectory.plan.itrajectory_read_only.html#scarajectory.core.service.trajectory.plan.itrajectory_read_only.ITrajectoryReadOnly" title="scarajectory.core.service.trajectory.plan.itrajectory_read_only.ITrajectoryReadOnly"><span class="pre">ITrajectoryReadOnly</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler._plan" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler._playback_controller">
+<span class="sig-name descname"><span class="pre">_playback_controller</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.streaming.istream_playback_controller.html#scarajectory.core.service.streaming.istream_playback_controller.IStreamPlaybackController" title="scarajectory.core.service.streaming.istream_playback_controller.IStreamPlaybackController"><span class="pre">IStreamPlaybackController</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler._playback_controller" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler._port_panel">
+<span class="sig-name descname"><span class="pre">_port_panel</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.connection.port_connection_panel.html#scarajectory.infrastructure.gui.connection.port_connection_panel.PortConnectionPanel" title="scarajectory.infrastructure.gui.connection.port_connection_panel.PortConnectionPanel"><span class="pre">PortConnectionPanel</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler._port_panel" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler._progress_adapter">
+<span class="sig-name descname"><span class="pre">_progress_adapter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.streaming.panel.stream_progress_adapter.html#scarajectory.infrastructure.gui.streaming.panel.stream_progress_adapter.StreamProgressAdapter" title="scarajectory.infrastructure.gui.streaming.panel.stream_progress_adapter.StreamProgressAdapter"><span class="pre">StreamProgressAdapter</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler._progress_adapter" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler._validator">
+<span class="sig-name descname"><span class="pre">_validator</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ITrajectoryValidator</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler._validator" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler.on_pause_resume_stream">
+<span class="sig-name descname"><span class="pre">on_pause_resume_stream</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/streaming/handler/stream_playback_action_handler.html#StreamPlaybackActionHandler.on_pause_resume_stream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler.on_pause_resume_stream" title="Link to this definition">¶</a></dt>
+<dd><p>Toggles stream pause/resume state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler.on_start_stream">
+<span class="sig-name descname"><span class="pre">on_start_stream</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/streaming/handler/stream_playback_action_handler.html#StreamPlaybackActionHandler.on_start_stream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler.on_start_stream" title="Link to this definition">¶</a></dt>
+<dd><p>Validates plan and initiates trajectory stream transmission.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler.on_stop_stream">
+<span class="sig-name descname"><span class="pre">on_stop_stream</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/streaming/handler/stream_playback_action_handler.html#StreamPlaybackActionHandler.on_stop_stream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler.on_stop_stream" title="Link to this definition">¶</a></dt>
+<dd><p>Stops active streaming transmission immediately.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler.toggle_connection">
+<span class="sig-name descname"><span class="pre">toggle_connection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/streaming/handler/stream_playback_action_handler.html#StreamPlaybackActionHandler.toggle_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler.toggle_connection" title="Link to this definition">¶</a></dt>
+<dd><p>Connects or disconnects from selected serial port.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler module</a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler"><code class="docutils literal notranslate"><span class="pre">StreamPlaybackActionHandler</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler._connection"><code class="docutils literal notranslate"><span class="pre">StreamPlaybackActionHandler._connection</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler._plan"><code class="docutils literal notranslate"><span class="pre">StreamPlaybackActionHandler._plan</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler._playback_controller"><code class="docutils literal notranslate"><span class="pre">StreamPlaybackActionHandler._playback_controller</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler._port_panel"><code class="docutils literal notranslate"><span class="pre">StreamPlaybackActionHandler._port_panel</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler._progress_adapter"><code class="docutils literal notranslate"><span class="pre">StreamPlaybackActionHandler._progress_adapter</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler._validator"><code class="docutils literal notranslate"><span class="pre">StreamPlaybackActionHandler._validator</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler.on_pause_resume_stream"><code class="docutils literal notranslate"><span class="pre">StreamPlaybackActionHandler.on_pause_resume_stream()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler.on_start_stream"><code class="docutils literal notranslate"><span class="pre">StreamPlaybackActionHandler.on_start_stream()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler.on_stop_stream"><code class="docutils literal notranslate"><span class="pre">StreamPlaybackActionHandler.on_stop_stream()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.StreamPlaybackActionHandler.toggle_connection"><code class="docutils literal notranslate"><span class="pre">StreamPlaybackActionHandler.toggle_connection()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.streaming.handler.playback_handler_bundle.html"
+                          title="previous chapter">scarajectory.infrastructure.gui.streaming.handler.playback_handler_bundle module</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler_factory.html"
+                          title="next chapter">scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler_factory module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler_factory.html" title="scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler_factory module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.streaming.handler.playback_handler_bundle.html" title="scarajectory.infrastructure.gui.streaming.handler.playback_handler_bundle module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.gui.html" >scarajectory.infrastructure.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.infrastructure.gui.streaming.html" >scarajectory.infrastructure.gui.streaming package</a> &#187;</li>
+          <li class="nav-item nav-item-6"><a href="scarajectory.infrastructure.gui.streaming.handler.html" >scarajectory.infrastructure.gui.streaming.handler package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.streaming.handler.stream_playback_action_handler module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

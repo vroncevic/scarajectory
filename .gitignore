@@ -5,7 +5,12 @@ __pycache__/
 # Reports
 *.report
 *.xml
-*.json
+*report*.json
+*coverage*.json
+/*.json
 .coverage
 htmlcov/
 .coverage.scarajectory
+
+# Architecture Audit
+.issues/

@@ -69,7 +69,7 @@
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.cli.setup.keys</span> <span class="kn">import</span> <span class="n">CLIBundleKeys</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.cli.setup.registry</span> <span class="kn">import</span> <span class="n">CLIBundleRegistry</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.cli.setup.dependencies</span> <span class="kn">import</span> <span class="n">CLIBundleDependencies</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.command.command</span> <span class="kn">import</span> <span class="n">CommandBundle</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.command.command_bundle</span> <span class="kn">import</span> <span class="n">CommandBundle</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.command.icommand_definition</span> <span class="kn">import</span> <span class="n">ICommandDefinition</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.command.icommand_executor</span> <span class="kn">import</span> <span class="n">ICommandExecutor</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.command.studio_command_definition</span> <span class="kn">import</span> <span class="n">StudioCommandDefinition</span>
@@ -79,7 +79,7 @@
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.2&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -120,14 +120,13 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">CLIBundleOptionsValidator</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
 
-        <span class="n">service</span><span class="p">:</span> <span class="n">IService</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">CLIBundleKeys</span><span class="o">.</span><span class="n">OPTION_SERVICE</span><span class="p">)</span> <span class="k">if</span> <span class="n">options</span> <span class="k">else</span> <span class="kc">None</span>
-        <span class="n">parser</span><span class="p">:</span> <span class="n">IOptionManager</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">CLIBundleKeys</span><span class="o">.</span><span class="n">OPTION_PARSER</span><span class="p">)</span> <span class="k">if</span> <span class="n">options</span> <span class="k">else</span> <span class="kc">None</span>
-        <span class="n">gui</span><span class="p">:</span> <span class="n">IGUI</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">CLIBundleKeys</span><span class="o">.</span><span class="n">OPTION_GUI</span><span class="p">)</span> <span class="k">if</span> <span class="n">options</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">service</span><span class="p">:</span> <span class="n">IService</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="n">CLIBundleKeys</span><span class="o">.</span><span class="n">OPTION_SERVICE</span><span class="p">]</span>
+        <span class="n">parser</span><span class="p">:</span> <span class="n">IOptionManager</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="n">CLIBundleKeys</span><span class="o">.</span><span class="n">OPTION_PARSER</span><span class="p">]</span>
+        <span class="n">gui</span><span class="p">:</span> <span class="n">IGUI</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="n">CLIBundleKeys</span><span class="o">.</span><span class="n">OPTION_GUI</span><span class="p">]</span>
 
         <span class="n">studio_definition</span><span class="p">:</span> <span class="n">ICommandDefinition</span> <span class="o">=</span> <span class="n">StudioCommandDefinition</span><span class="p">()</span>
         <span class="n">studio_executor</span><span class="p">:</span> <span class="n">ICommandExecutor</span><span class="p">[</span><span class="n">ICommandDefinition</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="nb">object</span><span class="p">]</span> <span class="o">=</span> <span class="n">StudioCommandExecutor</span><span class="p">(</span>
-            <span class="n">definition</span><span class="o">=</span><span class="n">studio_definition</span><span class="p">,</span>
-            <span class="n">gui</span><span class="o">=</span><span class="n">gui</span>
+            <span class="n">definition</span><span class="o">=</span><span class="n">studio_definition</span><span class="p">,</span> <span class="n">gui</span><span class="o">=</span><span class="n">gui</span>
         <span class="p">)</span>
         <span class="n">studio_cmd</span><span class="p">:</span> <span class="n">CommandBundle</span> <span class="o">=</span> <span class="n">CommandBundle</span><span class="p">(</span><span class="n">definition</span><span class="o">=</span><span class="n">studio_definition</span><span class="p">,</span> <span class="n">executor</span><span class="o">=</span><span class="n">studio_executor</span><span class="p">)</span>
 

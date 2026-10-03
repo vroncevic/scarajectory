@@ -30,7 +30,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.2'
+__version__ = '1.0.4'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -89,20 +89,20 @@ class StudioCommandDefinition:
             ),
             OptionData(
                 name='--dead-zone',
-                help_text='Enable or disable kinematic dead zone enforcement',
-                action=None,
-                default='enable',
+                help_text='Enable kinematic dead zone enforcement',
+                action='store_true',
+                default=False,
                 required=False,
-                choices=['enable', 'disable'],
+                choices=None,
                 nargs=None
             ),
             OptionData(
                 name='--verbose',
-                help_text='Enable or disable verbose output',
-                action=None,
-                default='disable',
+                help_text='Enable verbose logging output',
+                action='store_true',
+                default=False,
                 required=False,
-                choices=['enable', 'disable'],
+                choices=None,
                 nargs=None
             )
         ]

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>scarajectory.infrastructure.connection.channel_dispatcher &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/classic.css?v=514cf933" />
+    
+    <script src="../../../../_static/documentation_options.js?v=57319df4"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.connection.channel_dispatcher</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for scarajectory.infrastructure.connection.channel_dispatcher</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Module</span>
+<span class="sd">    channel_dispatcher.py</span>
+<span class="sd">Copyright</span>
+<span class="sd">    Copyright (C) 2026 Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;</span>
+<span class="sd">    scarajectory is free software: you can redistribute it and/or modify it</span>
+<span class="sd">    under the terms of the GNU General Public License as published by the</span>
+<span class="sd">    Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">    (at your option) any later version.</span>
+<span class="sd">    scarajectory is distributed in the hope that it will be useful, but</span>
+<span class="sd">    WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
+<span class="sd">    See the GNU General Public License for more details.</span>
+<span class="sd">    You should have received a copy of the GNU General Public License along</span>
+<span class="sd">    with this program. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">Info</span>
+<span class="sd">    Dispatcher managing communication channel, frame serialization, and cyclic packet sequence counter.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span>
+
+<span class="kn">from</span> <span class="nn">scaralang.core.model.protocol.binary_frame</span> <span class="kn">import</span> <span class="n">BinaryFrame</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.protocol.ibinary_frame_builder</span> <span class="kn">import</span> <span class="n">IBinaryFrameBuilder</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.protocol.protocol_mode</span> <span class="kn">import</span> <span class="n">ProtocolMode</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.connection.iraw_channel</span> <span class="kn">import</span> <span class="n">IRawChannel</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
+<span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
+
+
+<div class="viewcode-block" id="ChannelDispatcher">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.connection.channel_dispatcher.html#scarajectory.infrastructure.connection.channel_dispatcher.ChannelDispatcher">[docs]</a>
+<span class="k">class</span> <span class="nc">ChannelDispatcher</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Dispatches ASCII command strings and binary frames over communication channel.</span>
+
+<span class="sd">        It defines:</span>
+
+<span class="sd">            :attributes:</span>
+<span class="sd">                | _raw_channel - Injected IRawChannel communication transport interface.</span>
+<span class="sd">                | _frame_builder - Injected IBinaryFrameBuilder frame assembler interface.</span>
+<span class="sd">                | _protocol_mode - Active wire protocol mode enum value.</span>
+<span class="sd">                | _seq_num - Monotonic cyclic packet sequence counter (0 - 255).</span>
+<span class="sd">            :methods:</span>
+<span class="sd">                | __init__ - Initializes dispatcher with channel, builder, and protocol mode.</span>
+<span class="sd">                | is_connected - Checks if communication transport is active.</span>
+<span class="sd">                | next_seq - Increments and returns next cyclic sequence counter.</span>
+<span class="sd">                | send_command - Transmits ASCII formatted command string over transport.</span>
+<span class="sd">                | send_frame - Serializes and transmits binary frame over transport.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">_raw_channel</span><span class="p">:</span> <span class="n">IRawChannel</span>
+    <span class="n">_frame_builder</span><span class="p">:</span> <span class="n">IBinaryFrameBuilder</span>
+    <span class="n">_protocol_mode</span><span class="p">:</span> <span class="n">ProtocolMode</span>
+    <span class="n">_seq_num</span><span class="p">:</span> <span class="nb">int</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">raw_channel</span><span class="p">:</span> <span class="n">IRawChannel</span><span class="p">,</span>
+        <span class="n">frame_builder</span><span class="p">:</span> <span class="n">IBinaryFrameBuilder</span><span class="p">,</span>
+        <span class="n">protocol_mode</span><span class="p">:</span> <span class="n">ProtocolMode</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Initializes dispatcher with transport channel, frame builder, and protocol mode.</span>
+
+<span class="sd">            :param raw_channel: IRawChannel transport channel instance.</span>
+<span class="sd">            :param frame_builder: IBinaryFrameBuilder builder instance.</span>
+<span class="sd">            :param protocol_mode: Active ProtocolMode enum value.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_raw_channel</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IRawChannel</span><span class="p">]</span> <span class="o">=</span> <span class="n">raw_channel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_frame_builder</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IBinaryFrameBuilder</span><span class="p">]</span> <span class="o">=</span> <span class="n">frame_builder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_protocol_mode</span> <span class="o">=</span> <span class="n">protocol_mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_seq_num</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">protocol_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ProtocolMode</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Returns active wire protocol mode.</span>
+
+<span class="sd">            :return: ProtocolMode enum value.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protocol_mode</span>
+
+    <span class="nd">@protocol_mode</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">protocol_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="n">ProtocolMode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Updates active wire protocol mode dynamically.</span>
+
+<span class="sd">            :param mode: ProtocolMode enum value.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_protocol_mode</span> <span class="o">=</span> <span class="n">mode</span>
+
+<div class="viewcode-block" id="ChannelDispatcher.is_connected">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.connection.channel_dispatcher.html#scarajectory.infrastructure.connection.channel_dispatcher.ChannelDispatcher.is_connected">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_connected</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Checks whether transport connection is currently active.</span>
+
+<span class="sd">            :return: True if connected, False otherwise.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_channel</span><span class="o">.</span><span class="n">is_connected</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ChannelDispatcher.next_seq">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.connection.channel_dispatcher.html#scarajectory.infrastructure.connection.channel_dispatcher.ChannelDispatcher.next_seq">[docs]</a>
+    <span class="k">def</span> <span class="nf">next_seq</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Increments and returns next cyclic sequence counter.</span>
+
+<span class="sd">            :return: Cyclic sequence counter value (0-255).</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">seq</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seq_num</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_seq_num</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_seq_num</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span>
+        <span class="k">return</span> <span class="n">seq</span></div>
+
+
+<div class="viewcode-block" id="ChannelDispatcher.send_command">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.connection.channel_dispatcher.html#scarajectory.infrastructure.connection.channel_dispatcher.ChannelDispatcher.send_command">[docs]</a>
+    <span class="k">def</span> <span class="nf">send_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Transmits raw command string if streamer transport is connected.</span>
+
+<span class="sd">            :param cmd: Formatted command string.</span>
+<span class="sd">            :return: True if command transmitted, False otherwise.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_channel</span><span class="o">.</span><span class="n">is_connected</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_raw_channel</span><span class="o">.</span><span class="n">send_raw_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="ChannelDispatcher.send_frame">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.connection.channel_dispatcher.html#scarajectory.infrastructure.connection.channel_dispatcher.ChannelDispatcher.send_frame">[docs]</a>
+    <span class="k">def</span> <span class="nf">send_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">:</span> <span class="n">BinaryFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Packs and transmits binary frame if streamer transport is connected.</span>
+
+<span class="sd">            :param frame: BinaryFrame instance.</span>
+<span class="sd">            :return: True if frame transmitted, False otherwise.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_channel</span><span class="o">.</span><span class="n">is_connected</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">payload_bytes</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_frame_builder</span><span class="o">.</span><span class="n">pack_frame</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raw_channel</span><span class="o">.</span><span class="n">send_raw_bytes</span><span class="p">(</span><span class="n">payload_bytes</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.connection.channel_dispatcher</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

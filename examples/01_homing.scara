@@ -1,0 +1,9 @@
+# ==============================================================================
+# 01_homing.scara - Multi-axis Homing & Zero Calibration
+# ==============================================================================
+# Enables stepper motor drivers and triggers coordinated hardware homing.
+# Sequence: Z moves up to limit switch, followed by J2 (elbow), then J1 (shoulder).
+# ==============================================================================
+
+ENABLE
+HOME

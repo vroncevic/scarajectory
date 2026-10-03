@@ -37,7 +37,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.2'
+__version__ = '1.0.4'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -92,9 +92,11 @@ class CLI:
         '''
         try:
             command_name, params = self._parser.parse_command()
-            executor: ICommandExecutor[ICommandDefinition, object, object, object] | None = self._executors.get(command_name)
+            if command_name in self._executors:
+                executor: ICommandExecutor[ICommandDefinition, object, object, object] = self._executors[command_name]
+                return executor.execute(params=params, service=self._service)
 
-            return executor.execute(params=params, service=self._service) if executor else {
+            return {
                 'returncode': 1, 'stdout': '', 'stderr': 'cli::run - command not found'
             }
 

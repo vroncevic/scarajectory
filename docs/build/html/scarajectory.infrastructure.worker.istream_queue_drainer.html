@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>scarajectory.infrastructure.worker.istream_queue_drainer module &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
+    
+    <script src="_static/documentation_options.js?v=57319df4"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="scarajectory.infrastructure.worker.istream_step_dispatcher module" href="scarajectory.infrastructure.worker.istream_step_dispatcher.html" />
+    <link rel="prev" title="scarajectory.infrastructure.worker.binary.ibinary_stream_loop_runner module" href="scarajectory.infrastructure.worker.binary.ibinary_stream_loop_runner.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.worker.istream_step_dispatcher.html" title="scarajectory.infrastructure.worker.istream_step_dispatcher module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.worker.binary.ibinary_stream_loop_runner.html" title="scarajectory.infrastructure.worker.binary.ibinary_stream_loop_runner module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.worker.html" accesskey="U">scarajectory.infrastructure.worker package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.worker.istream_queue_drainer module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-scarajectory.infrastructure.worker.istream_queue_drainer">
+<span id="scarajectory-infrastructure-worker-istream-queue-drainer-module"></span><h1>scarajectory.infrastructure.worker.istream_queue_drainer module<a class="headerlink" href="#module-scarajectory.infrastructure.worker.istream_queue_drainer" title="Link to this heading">¶</a></h1>
+<dl class="simple">
+<dt>Module</dt><dd><p>istream_queue_drainer.py</p>
+</dd>
+<dt>Copyright</dt><dd><p>Copyright (C) 2026 Vladimir Roncevic &lt;<a class="reference external" href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+scarajectory is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+scarajectory is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along
+with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+</dd>
+<dt>Info</dt><dd><p>Defines structural protocol IStreamQueueDrainer for queue draining.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.istream_queue_drainer.IStreamQueueDrainer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.worker.istream_queue_drainer.</span></span><span class="sig-name descname"><span class="pre">IStreamQueueDrainer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/worker/istream_queue_drainer.html#IStreamQueueDrainer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.worker.istream_queue_drainer.IStreamQueueDrainer" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></p>
+<p>Structural protocol defining remote queue draining operations.</p>
+<p>It defines:</p>
+<blockquote>
+<div><dl class="field-list">
+<dt class="field-odd">methods<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="line-block">
+<div class="line">is_queue_empty - Checks if in-flight moves have completed.</div>
+<div class="line">drain_queue - Waits for remaining commands to drain.</div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.istream_queue_drainer.IStreamQueueDrainer._abc_impl">
+<span class="sig-name descname"><span class="pre">_abc_impl</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;_abc._abc_data</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#scarajectory.infrastructure.worker.istream_queue_drainer.IStreamQueueDrainer._abc_impl" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.istream_queue_drainer.IStreamQueueDrainer._is_protocol">
+<span class="sig-name descname"><span class="pre">_is_protocol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#scarajectory.infrastructure.worker.istream_queue_drainer.IStreamQueueDrainer._is_protocol" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.istream_queue_drainer.IStreamQueueDrainer._is_runtime_protocol">
+<span class="sig-name descname"><span class="pre">_is_runtime_protocol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#scarajectory.infrastructure.worker.istream_queue_drainer.IStreamQueueDrainer._is_runtime_protocol" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.istream_queue_drainer.IStreamQueueDrainer.drain_queue">
+<span class="sig-name descname"><span class="pre">drain_queue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.state.stream_session.html#scarajectory.core.model.state.stream_session.StreamSession" title="scarajectory.core.model.state.stream_session.StreamSession"><span class="pre">StreamSession</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Event</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/worker/istream_queue_drainer.html#IStreamQueueDrainer.drain_queue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.worker.istream_queue_drainer.IStreamQueueDrainer.drain_queue" title="Link to this definition">¶</a></dt>
+<dd><p>Waits for remote queue to drain and marks stream completed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> – Active StreamSession model.</p></li>
+<li><p><strong>stop_event</strong> – Thread stop signal event.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.istream_queue_drainer.IStreamQueueDrainer.is_queue_empty">
+<span class="sig-name descname"><span class="pre">is_queue_empty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.state.stream_session.html#scarajectory.core.model.state.stream_session.StreamSession" title="scarajectory.core.model.state.stream_session.StreamSession"><span class="pre">StreamSession</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/worker/istream_queue_drainer.html#IStreamQueueDrainer.is_queue_empty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.worker.istream_queue_drainer.IStreamQueueDrainer.is_queue_empty" title="Link to this definition">¶</a></dt>
+<dd><p>Checks if all waypoints have completed or failed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> – Active StreamSession model.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if remote queue is completely drained.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">scarajectory.infrastructure.worker.istream_queue_drainer module</a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.istream_queue_drainer.IStreamQueueDrainer"><code class="docutils literal notranslate"><span class="pre">IStreamQueueDrainer</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.istream_queue_drainer.IStreamQueueDrainer._abc_impl"><code class="docutils literal notranslate"><span class="pre">IStreamQueueDrainer._abc_impl</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.istream_queue_drainer.IStreamQueueDrainer._is_protocol"><code class="docutils literal notranslate"><span class="pre">IStreamQueueDrainer._is_protocol</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.istream_queue_drainer.IStreamQueueDrainer._is_runtime_protocol"><code class="docutils literal notranslate"><span class="pre">IStreamQueueDrainer._is_runtime_protocol</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.istream_queue_drainer.IStreamQueueDrainer.drain_queue"><code class="docutils literal notranslate"><span class="pre">IStreamQueueDrainer.drain_queue()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.istream_queue_drainer.IStreamQueueDrainer.is_queue_empty"><code class="docutils literal notranslate"><span class="pre">IStreamQueueDrainer.is_queue_empty()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.worker.binary.ibinary_stream_loop_runner.html"
+                          title="previous chapter">scarajectory.infrastructure.worker.binary.ibinary_stream_loop_runner module</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.worker.istream_step_dispatcher.html"
+                          title="next chapter">scarajectory.infrastructure.worker.istream_step_dispatcher module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/scarajectory.infrastructure.worker.istream_queue_drainer.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.worker.istream_step_dispatcher.html" title="scarajectory.infrastructure.worker.istream_step_dispatcher module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.worker.binary.ibinary_stream_loop_runner.html" title="scarajectory.infrastructure.worker.binary.ibinary_stream_loop_runner module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.worker.html" >scarajectory.infrastructure.worker package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.worker.istream_queue_drainer module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>scarajectory.infrastructure.transport.driver.ichannel module &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
+    
+    <script src="_static/documentation_options.js?v=57319df4"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="scarajectory.infrastructure.transport.driver.serial_channel module" href="scarajectory.infrastructure.transport.driver.serial_channel.html" />
+    <link rel="prev" title="scarajectory.infrastructure.transport.driver package" href="scarajectory.infrastructure.transport.driver.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.transport.driver.serial_channel.html" title="scarajectory.infrastructure.transport.driver.serial_channel module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.transport.driver.html" title="scarajectory.infrastructure.transport.driver package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.transport.html" >scarajectory.infrastructure.transport package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.infrastructure.transport.driver.html" accesskey="U">scarajectory.infrastructure.transport.driver package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.transport.driver.ichannel module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-scarajectory.infrastructure.transport.driver.ichannel">
+<span id="scarajectory-infrastructure-transport-driver-ichannel-module"></span><h1>scarajectory.infrastructure.transport.driver.ichannel module<a class="headerlink" href="#module-scarajectory.infrastructure.transport.driver.ichannel" title="Link to this heading">¶</a></h1>
+<dl class="simple">
+<dt>Module</dt><dd><p>ichannel.py</p>
+</dd>
+<dt>Copyright</dt><dd><p>Copyright (C) 2026 Vladimir Roncevic &lt;<a class="reference external" href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+scarajectory is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+scarajectory is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along
+with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+</dd>
+<dt>Info</dt><dd><p>Interface protocol for physical and network communication channel drivers.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.transport.driver.ichannel.</span></span><span class="sig-name descname"><span class="pre">IChannelDriver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/transport/driver/ichannel.html#IChannelDriver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></p>
+<p>Structural interface protocol for low-level transport channel drivers.</p>
+<p>It defines:</p>
+<blockquote>
+<div><dl class="field-list">
+<dt class="field-odd">methods<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="line-block">
+<div class="line">open_channel - Opens low-level physical or network connection.</div>
+<div class="line">close_channel - Closes active connection.</div>
+<div class="line">read_bytes - Reads raw byte chunk from connection.</div>
+<div class="line">write_bytes - Transmits raw bytes over connection.</div>
+<div class="line">is_open - Checks whether connection is active.</div>
+<div class="line">channel_name - Returns readable channel endpoint descriptor.</div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver._abc_impl">
+<span class="sig-name descname"><span class="pre">_abc_impl</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;_abc._abc_data</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver._abc_impl" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver._is_protocol">
+<span class="sig-name descname"><span class="pre">_is_protocol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver._is_protocol" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver._is_runtime_protocol">
+<span class="sig-name descname"><span class="pre">_is_runtime_protocol</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver._is_runtime_protocol" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver.channel_name">
+<span class="sig-name descname"><span class="pre">channel_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/transport/driver/ichannel.html#IChannelDriver.channel_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver.channel_name" title="Link to this definition">¶</a></dt>
+<dd><p>Returns readable channel endpoint descriptor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Channel name string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver.close_channel">
+<span class="sig-name descname"><span class="pre">close_channel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/transport/driver/ichannel.html#IChannelDriver.close_channel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver.close_channel" title="Link to this definition">¶</a></dt>
+<dd><p>Closes active connection and frees underlying resources.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver.is_open">
+<span class="sig-name descname"><span class="pre">is_open</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/transport/driver/ichannel.html#IChannelDriver.is_open"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver.is_open" title="Link to this definition">¶</a></dt>
+<dd><p>Checks whether connection is active and open.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if open, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver.open_channel">
+<span class="sig-name descname"><span class="pre">open_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.streaming.stream_config.html#scarajectory.core.model.streaming.stream_config.StreamConfig" title="scarajectory.core.model.streaming.stream_config.StreamConfig"><span class="pre">StreamConfig</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/transport/driver/ichannel.html#IChannelDriver.open_channel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver.open_channel" title="Link to this definition">¶</a></dt>
+<dd><p>Opens low-level physical or network connection with configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> – StreamConfig connection parameters.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver.read_bytes">
+<span class="sig-name descname"><span class="pre">read_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/transport/driver/ichannel.html#IChannelDriver.read_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver.read_bytes" title="Link to this definition">¶</a></dt>
+<dd><p>Reads raw byte chunk from connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>size</strong> – Maximum bytes to read.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Read bytes buffer.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver.write_bytes">
+<span class="sig-name descname"><span class="pre">write_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/transport/driver/ichannel.html#IChannelDriver.write_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver.write_bytes" title="Link to this definition">¶</a></dt>
+<dd><p>Transmits raw bytes over connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>payload</strong> – Byte payload to transmit.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">scarajectory.infrastructure.transport.driver.ichannel module</a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver"><code class="docutils literal notranslate"><span class="pre">IChannelDriver</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver._abc_impl"><code class="docutils literal notranslate"><span class="pre">IChannelDriver._abc_impl</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver._is_protocol"><code class="docutils literal notranslate"><span class="pre">IChannelDriver._is_protocol</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver._is_runtime_protocol"><code class="docutils literal notranslate"><span class="pre">IChannelDriver._is_runtime_protocol</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver.channel_name"><code class="docutils literal notranslate"><span class="pre">IChannelDriver.channel_name()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver.close_channel"><code class="docutils literal notranslate"><span class="pre">IChannelDriver.close_channel()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver.is_open"><code class="docutils literal notranslate"><span class="pre">IChannelDriver.is_open()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver.open_channel"><code class="docutils literal notranslate"><span class="pre">IChannelDriver.open_channel()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver.read_bytes"><code class="docutils literal notranslate"><span class="pre">IChannelDriver.read_bytes()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.transport.driver.ichannel.IChannelDriver.write_bytes"><code class="docutils literal notranslate"><span class="pre">IChannelDriver.write_bytes()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.transport.driver.html"
+                          title="previous chapter">scarajectory.infrastructure.transport.driver package</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.transport.driver.serial_channel.html"
+                          title="next chapter">scarajectory.infrastructure.transport.driver.serial_channel module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/scarajectory.infrastructure.transport.driver.ichannel.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.transport.driver.serial_channel.html" title="scarajectory.infrastructure.transport.driver.serial_channel module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.transport.driver.html" title="scarajectory.infrastructure.transport.driver package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.transport.html" >scarajectory.infrastructure.transport package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.infrastructure.transport.driver.html" >scarajectory.infrastructure.transport.driver package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.transport.driver.ichannel module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

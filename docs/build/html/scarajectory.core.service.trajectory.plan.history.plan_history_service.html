@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>scarajectory.core.service.trajectory.plan.history.plan_history_service module &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
+    
+    <script src="_static/documentation_options.js?v=57319df4"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="scarajectory.core.service.trajectory.plan.history.plan_history_service_factory module" href="scarajectory.core.service.trajectory.plan.history.plan_history_service_factory.html" />
+    <link rel="prev" title="scarajectory.core.service.trajectory.plan.history package" href="scarajectory.core.service.trajectory.plan.history.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.core.service.trajectory.plan.history.plan_history_service_factory.html" title="scarajectory.core.service.trajectory.plan.history.plan_history_service_factory module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.core.service.trajectory.plan.history.html" title="scarajectory.core.service.trajectory.plan.history package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.core.html" >scarajectory.core package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.core.service.html" >scarajectory.core.service package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.core.service.trajectory.html" >scarajectory.core.service.trajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-6"><a href="scarajectory.core.service.trajectory.plan.html" >scarajectory.core.service.trajectory.plan package</a> &#187;</li>
+          <li class="nav-item nav-item-7"><a href="scarajectory.core.service.trajectory.plan.history.html" accesskey="U">scarajectory.core.service.trajectory.plan.history package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.core.service.trajectory.plan.history.plan_history_service module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-scarajectory.core.service.trajectory.plan.history.plan_history_service">
+<span id="scarajectory-core-service-trajectory-plan-history-plan-history-service-module"></span><h1>scarajectory.core.service.trajectory.plan.history.plan_history_service module<a class="headerlink" href="#module-scarajectory.core.service.trajectory.plan.history.plan_history_service" title="Link to this heading">¶</a></h1>
+<dl class="simple">
+<dt>Module</dt><dd><p>plan_history_service.py</p>
+</dd>
+<dt>Copyright</dt><dd><p>Copyright (C) 2026 Vladimir Roncevic &lt;<a class="reference external" href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+scarajectory is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+scarajectory is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along
+with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+</dd>
+<dt>Info</dt><dd><p>Defines PlanHistoryService coordinating undo and redo transactions on trajectory plan.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="scarajectory.core.service.trajectory.plan.history.plan_history_service.PlanHistoryService">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.core.service.trajectory.plan.history.plan_history_service.</span></span><span class="sig-name descname"><span class="pre">PlanHistoryService</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.plan.store.iwaypoint_store.html#scarajectory.core.service.trajectory.plan.store.iwaypoint_store.IWaypointStore" title="scarajectory.core.service.trajectory.plan.store.iwaypoint_store.IWaypointStore"><span class="pre">IWaypointStore</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">history</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.history.iplan_history.html#scarajectory.core.service.trajectory.history.iplan_history.IPlanHistory" title="scarajectory.core.service.trajectory.history.iplan_history.IPlanHistory"><span class="pre">IPlanHistory</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">selection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.plan.selection.iplan_selection_manager.html#scarajectory.core.service.trajectory.plan.selection.iplan_selection_manager.IPlanSelectionManager" title="scarajectory.core.service.trajectory.plan.selection.iplan_selection_manager.IPlanSelectionManager"><span class="pre">IPlanSelectionManager</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dispatcher</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.plan.observer.iplan_observer_dispatcher.html#scarajectory.core.service.trajectory.plan.observer.iplan_observer_dispatcher.IPlanObserverDispatcher" title="scarajectory.core.service.trajectory.plan.observer.iplan_observer_dispatcher.IPlanObserverDispatcher"><span class="pre">IPlanObserverDispatcher</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/core/service/trajectory/plan/history/plan_history_service.html#PlanHistoryService"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.trajectory.plan.history.plan_history_service.PlanHistoryService" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Domain service coordinating plan undo and redo transactions across store, selection, and observers.</p>
+<p>It defines:</p>
+<blockquote>
+<div><dl class="field-list">
+<dt class="field-odd">attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="line-block">
+<div class="line">_store - Injected IWaypointStore collaborator.</div>
+<div class="line">_history - Injected IPlanHistory collaborator.</div>
+<div class="line">_selection - Injected IPlanSelectionManager collaborator.</div>
+<div class="line">_dispatcher - Injected IPlanObserverDispatcher collaborator.</div>
+</div>
+</dd>
+<dt class="field-even">methods<span class="colon">:</span></dt>
+<dd class="field-even"><div class="line-block">
+<div class="line">__init__ - Initializes the history service with injected collaborators.</div>
+<div class="line">undo - Reverts last state change on the plan.</div>
+<div class="line">redo - Restores reverted state change on the plan.</div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.core.service.trajectory.plan.history.plan_history_service.PlanHistoryService._dispatcher">
+<span class="sig-name descname"><span class="pre">_dispatcher</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.trajectory.plan.observer.iplan_observer_dispatcher.html#scarajectory.core.service.trajectory.plan.observer.iplan_observer_dispatcher.IPlanObserverDispatcher" title="scarajectory.core.service.trajectory.plan.observer.iplan_observer_dispatcher.IPlanObserverDispatcher"><span class="pre">IPlanObserverDispatcher</span></a></em><a class="headerlink" href="#scarajectory.core.service.trajectory.plan.history.plan_history_service.PlanHistoryService._dispatcher" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.core.service.trajectory.plan.history.plan_history_service.PlanHistoryService._history">
+<span class="sig-name descname"><span class="pre">_history</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.trajectory.history.iplan_history.html#scarajectory.core.service.trajectory.history.iplan_history.IPlanHistory" title="scarajectory.core.service.trajectory.history.iplan_history.IPlanHistory"><span class="pre">IPlanHistory</span></a></em><a class="headerlink" href="#scarajectory.core.service.trajectory.plan.history.plan_history_service.PlanHistoryService._history" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.core.service.trajectory.plan.history.plan_history_service.PlanHistoryService._selection">
+<span class="sig-name descname"><span class="pre">_selection</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.trajectory.plan.selection.iplan_selection_manager.html#scarajectory.core.service.trajectory.plan.selection.iplan_selection_manager.IPlanSelectionManager" title="scarajectory.core.service.trajectory.plan.selection.iplan_selection_manager.IPlanSelectionManager"><span class="pre">IPlanSelectionManager</span></a></em><a class="headerlink" href="#scarajectory.core.service.trajectory.plan.history.plan_history_service.PlanHistoryService._selection" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.core.service.trajectory.plan.history.plan_history_service.PlanHistoryService._store">
+<span class="sig-name descname"><span class="pre">_store</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.trajectory.plan.store.iwaypoint_store.html#scarajectory.core.service.trajectory.plan.store.iwaypoint_store.IWaypointStore" title="scarajectory.core.service.trajectory.plan.store.iwaypoint_store.IWaypointStore"><span class="pre">IWaypointStore</span></a></em><a class="headerlink" href="#scarajectory.core.service.trajectory.plan.history.plan_history_service.PlanHistoryService._store" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.core.service.trajectory.plan.history.plan_history_service.PlanHistoryService.redo">
+<span class="sig-name descname"><span class="pre">redo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/trajectory/plan/history/plan_history_service.html#PlanHistoryService.redo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.trajectory.plan.history.plan_history_service.PlanHistoryService.redo" title="Link to this definition">¶</a></dt>
+<dd><p>Re-applies previously undone action.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if reapplied, False otherwise.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.core.service.trajectory.plan.history.plan_history_service.PlanHistoryService.undo">
+<span class="sig-name descname"><span class="pre">undo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/trajectory/plan/history/plan_history_service.html#PlanHistoryService.undo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.trajectory.plan.history.plan_history_service.PlanHistoryService.undo" title="Link to this definition">¶</a></dt>
+<dd><p>Reverts last modification.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if undone, False otherwise.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">scarajectory.core.service.trajectory.plan.history.plan_history_service module</a><ul>
+<li><a class="reference internal" href="#scarajectory.core.service.trajectory.plan.history.plan_history_service.PlanHistoryService"><code class="docutils literal notranslate"><span class="pre">PlanHistoryService</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.core.service.trajectory.plan.history.plan_history_service.PlanHistoryService._dispatcher"><code class="docutils literal notranslate"><span class="pre">PlanHistoryService._dispatcher</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.service.trajectory.plan.history.plan_history_service.PlanHistoryService._history"><code class="docutils literal notranslate"><span class="pre">PlanHistoryService._history</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.service.trajectory.plan.history.plan_history_service.PlanHistoryService._selection"><code class="docutils literal notranslate"><span class="pre">PlanHistoryService._selection</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.service.trajectory.plan.history.plan_history_service.PlanHistoryService._store"><code class="docutils literal notranslate"><span class="pre">PlanHistoryService._store</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.service.trajectory.plan.history.plan_history_service.PlanHistoryService.redo"><code class="docutils literal notranslate"><span class="pre">PlanHistoryService.redo()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.service.trajectory.plan.history.plan_history_service.PlanHistoryService.undo"><code class="docutils literal notranslate"><span class="pre">PlanHistoryService.undo()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="scarajectory.core.service.trajectory.plan.history.html"
+                          title="previous chapter">scarajectory.core.service.trajectory.plan.history package</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="scarajectory.core.service.trajectory.plan.history.plan_history_service_factory.html"
+                          title="next chapter">scarajectory.core.service.trajectory.plan.history.plan_history_service_factory module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/scarajectory.core.service.trajectory.plan.history.plan_history_service.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.core.service.trajectory.plan.history.plan_history_service_factory.html" title="scarajectory.core.service.trajectory.plan.history.plan_history_service_factory module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.core.service.trajectory.plan.history.html" title="scarajectory.core.service.trajectory.plan.history package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.core.html" >scarajectory.core package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.core.service.html" >scarajectory.core.service package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.core.service.trajectory.html" >scarajectory.core.service.trajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-6"><a href="scarajectory.core.service.trajectory.plan.html" >scarajectory.core.service.trajectory.plan package</a> &#187;</li>
+          <li class="nav-item nav-item-7"><a href="scarajectory.core.service.trajectory.plan.history.html" >scarajectory.core.service.trajectory.plan.history package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.core.service.trajectory.plan.history.plan_history_service module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

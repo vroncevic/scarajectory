@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>scarajectory.infrastructure.worker.binary.binary_stream_loop_runner module &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
+    
+    <script src="_static/documentation_options.js?v=57319df4"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner_factory module" href="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner_factory.html" />
+    <link rel="prev" title="scarajectory.infrastructure.worker.binary.binary_stream_frame_handler_factory module" href="scarajectory.infrastructure.worker.binary.binary_stream_frame_handler_factory.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner_factory.html" title="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner_factory module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.worker.binary.binary_stream_frame_handler_factory.html" title="scarajectory.infrastructure.worker.binary.binary_stream_frame_handler_factory module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.worker.html" >scarajectory.infrastructure.worker package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.infrastructure.worker.binary.html" accesskey="U">scarajectory.infrastructure.worker.binary package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.worker.binary.binary_stream_loop_runner module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-scarajectory.infrastructure.worker.binary.binary_stream_loop_runner">
+<span id="scarajectory-infrastructure-worker-binary-binary-stream-loop-runner-module"></span><h1>scarajectory.infrastructure.worker.binary.binary_stream_loop_runner module<a class="headerlink" href="#module-scarajectory.infrastructure.worker.binary.binary_stream_loop_runner" title="Link to this heading">¶</a></h1>
+<dl class="simple">
+<dt>Module</dt><dd><p>binary_stream_loop_runner.py</p>
+</dd>
+<dt>Copyright</dt><dd><p>Copyright (C) 2026 Vladimir Roncevic &lt;<a class="reference external" href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+scarajectory is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+scarajectory is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along
+with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+</dd>
+<dt>Info</dt><dd><p>Executes binary transmission loops for waypoints or binary programs and handles frames.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.</span></span><span class="sig-name descname"><span class="pre">BinaryStreamLoopRunner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flow_pacing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.pacing.iflow_pacing_controller.html#scarajectory.core.service.pacing.iflow_pacing_controller.IFlowPacingController" title="scarajectory.core.service.pacing.iflow_pacing_controller.IFlowPacingController"><span class="pre">IFlowPacingController</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">packet_strategy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.packet.ipacket_strategy.html#scarajectory.core.service.packet.ipacket_strategy.IPacketStrategy" title="scarajectory.core.service.packet.ipacket_strategy.IPacketStrategy"><span class="pre">IPacketStrategy</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_parser</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BinaryFrameParser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_handler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.ibinary_stream_frame_handler.html#scarajectory.infrastructure.worker.binary.ibinary_stream_frame_handler.IBinaryStreamFrameHandler" title="scarajectory.infrastructure.worker.binary.ibinary_stream_frame_handler.IBinaryStreamFrameHandler"><span class="pre">IBinaryStreamFrameHandler</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">byte_sender</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.worker.ibyte_sender.html#scarajectory.core.service.worker.ibyte_sender.IByteSender" title="scarajectory.core.service.worker.ibyte_sender.IByteSender"><span class="pre">IByteSender</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">state_controller</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.state.istream_state_controller.html#scarajectory.core.service.state.istream_state_controller.IStreamStateController" title="scarajectory.core.service.state.istream_state_controller.IStreamStateController"><span class="pre">IStreamStateController</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">observer_dispatcher</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.streaming.observer.istream_observer_dispatcher.html#scarajectory.core.service.streaming.observer.istream_observer_dispatcher.IStreamObserverDispatcher" title="scarajectory.core.service.streaming.observer.istream_observer_dispatcher.IStreamObserverDispatcher"><span class="pre">IStreamObserverDispatcher</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">pacing_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.streaming.stream_pacing_config.html#scarajectory.core.model.streaming.stream_pacing_config.StreamPacingConfig" title="scarajectory.core.model.streaming.stream_pacing_config.StreamPacingConfig"><span class="pre">StreamPacingConfig</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/worker/binary/binary_stream_loop_runner.html#BinaryStreamLoopRunner"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Executes binary transmission loops for waypoints or binary programs and handles frames.</p>
+<p>It defines:</p>
+<blockquote>
+<div><dl class="field-list">
+<dt class="field-odd">attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="line-block">
+<div class="line">_flow_pacing - IFlowPacingController managing buffer queue.</div>
+<div class="line">_packet_strategy - IPacketStrategy encoding waypoints.</div>
+<div class="line">_frame_parser - BinaryFrameParser decoding inbound frames.</div>
+<div class="line">_frame_handler - IBinaryStreamFrameHandler handling responses.</div>
+<div class="line">_byte_sender - IByteSender transmitting raw byte stream.</div>
+<div class="line">_state_controller - IStreamStateController managing stream lifecycle.</div>
+<div class="line">_observer_dispatcher - IStreamObserverDispatcher emitting progress and logs.</div>
+<div class="line">_pacing_config - StreamPacingConfig with loop pacing delays.</div>
+</div>
+</dd>
+<dt class="field-even">methods<span class="colon">:</span></dt>
+<dd class="field-even"><div class="line-block">
+<div class="line">__init__ - Initializes loop runner with injected collaborators.</div>
+<div class="line">run_waypoints_loop - Background loop streaming sequence of waypoints.</div>
+<div class="line">run_program_loop - Background loop streaming pre-compiled binary steps.</div>
+<div class="line">handle_incoming_bytes - Feeds raw incoming bytes and dispatches frames.</div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._byte_sender">
+<span class="sig-name descname"><span class="pre">_byte_sender</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.worker.ibyte_sender.html#scarajectory.core.service.worker.ibyte_sender.IByteSender" title="scarajectory.core.service.worker.ibyte_sender.IByteSender"><span class="pre">IByteSender</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._byte_sender" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._flow_pacing">
+<span class="sig-name descname"><span class="pre">_flow_pacing</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.pacing.iflow_pacing_controller.html#scarajectory.core.service.pacing.iflow_pacing_controller.IFlowPacingController" title="scarajectory.core.service.pacing.iflow_pacing_controller.IFlowPacingController"><span class="pre">IFlowPacingController</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._flow_pacing" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._frame_handler">
+<span class="sig-name descname"><span class="pre">_frame_handler</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.worker.binary.ibinary_stream_frame_handler.html#scarajectory.infrastructure.worker.binary.ibinary_stream_frame_handler.IBinaryStreamFrameHandler" title="scarajectory.infrastructure.worker.binary.ibinary_stream_frame_handler.IBinaryStreamFrameHandler"><span class="pre">IBinaryStreamFrameHandler</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._frame_handler" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._frame_parser">
+<span class="sig-name descname"><span class="pre">_frame_parser</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">BinaryFrameParser</span></em><a class="headerlink" href="#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._frame_parser" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._observer_dispatcher">
+<span class="sig-name descname"><span class="pre">_observer_dispatcher</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.streaming.observer.istream_observer_dispatcher.html#scarajectory.core.service.streaming.observer.istream_observer_dispatcher.IStreamObserverDispatcher" title="scarajectory.core.service.streaming.observer.istream_observer_dispatcher.IStreamObserverDispatcher"><span class="pre">IStreamObserverDispatcher</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._observer_dispatcher" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._pacing_config">
+<span class="sig-name descname"><span class="pre">_pacing_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.model.streaming.stream_pacing_config.html#scarajectory.core.model.streaming.stream_pacing_config.StreamPacingConfig" title="scarajectory.core.model.streaming.stream_pacing_config.StreamPacingConfig"><span class="pre">StreamPacingConfig</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._pacing_config" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._packet_strategy">
+<span class="sig-name descname"><span class="pre">_packet_strategy</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.packet.ipacket_strategy.html#scarajectory.core.service.packet.ipacket_strategy.IPacketStrategy" title="scarajectory.core.service.packet.ipacket_strategy.IPacketStrategy"><span class="pre">IPacketStrategy</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._packet_strategy" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._state_controller">
+<span class="sig-name descname"><span class="pre">_state_controller</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.state.istream_state_controller.html#scarajectory.core.service.state.istream_state_controller.IStreamStateController" title="scarajectory.core.service.state.istream_state_controller.IStreamStateController"><span class="pre">IStreamStateController</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._state_controller" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner.handle_incoming_bytes">
+<span class="sig-name descname"><span class="pre">handle_incoming_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.state.stream_session.html#scarajectory.core.model.state.stream_session.StreamSession" title="scarajectory.core.model.state.stream_session.StreamSession"><span class="pre">StreamSession</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/worker/binary/binary_stream_loop_runner.html#BinaryStreamLoopRunner.handle_incoming_bytes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner.handle_incoming_bytes" title="Link to this definition">¶</a></dt>
+<dd><p>Feeds raw incoming bytes into parser and dispatches inbound frames.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – Byte chunk received from transport.</p></li>
+<li><p><strong>session</strong> – Active StreamSession tracking metrics.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if a fault occurred requiring immediate stop, False otherwise.</p>
+</dd>
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner.run_program_loop">
+<span class="sig-name descname"><span class="pre">run_program_loop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.state.stream_session.html#scarajectory.core.model.state.stream_session.StreamSession" title="scarajectory.core.model.state.stream_session.StreamSession"><span class="pre">StreamSession</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">program</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BinaryProgram</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause_event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Event</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/worker/binary/binary_stream_loop_runner.html#BinaryStreamLoopRunner.run_program_loop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner.run_program_loop" title="Link to this definition">¶</a></dt>
+<dd><p>Streams pre-compiled binary steps directly to hardware.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> – Active StreamSession tracking stream metrics.</p></li>
+<li><p><strong>program</strong> – BinaryProgram containing compiled binary steps.</p></li>
+<li><p><strong>stop_event</strong> – Event signaling loop termination.</p></li>
+<li><p><strong>pause_event</strong> – Event signaling transmission pause.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner.run_waypoints_loop">
+<span class="sig-name descname"><span class="pre">run_waypoints_loop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.state.stream_session.html#scarajectory.core.model.state.stream_session.StreamSession" title="scarajectory.core.model.state.stream_session.StreamSession"><span class="pre">StreamSession</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pause_event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Event</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/worker/binary/binary_stream_loop_runner.html#BinaryStreamLoopRunner.run_waypoints_loop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner.run_waypoints_loop" title="Link to this definition">¶</a></dt>
+<dd><p>Streams sequence of raw waypoints converted to binary frames.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> – Active StreamSession tracking waypoints and progress.</p></li>
+<li><p><strong>stop_event</strong> – Event signaling loop termination.</p></li>
+<li><p><strong>pause_event</strong> – Event signaling transmission pause.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">scarajectory.infrastructure.worker.binary.binary_stream_loop_runner module</a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunner</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._byte_sender"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunner._byte_sender</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._flow_pacing"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunner._flow_pacing</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._frame_handler"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunner._frame_handler</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._frame_parser"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunner._frame_parser</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._observer_dispatcher"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunner._observer_dispatcher</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._pacing_config"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunner._pacing_config</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._packet_strategy"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunner._packet_strategy</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._state_controller"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunner._state_controller</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner.handle_incoming_bytes"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunner.handle_incoming_bytes()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner.run_program_loop"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunner.run_program_loop()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner.run_waypoints_loop"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunner.run_waypoints_loop()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.worker.binary.binary_stream_frame_handler_factory.html"
+                          title="previous chapter">scarajectory.infrastructure.worker.binary.binary_stream_frame_handler_factory module</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner_factory.html"
+                          title="next chapter">scarajectory.infrastructure.worker.binary.binary_stream_loop_runner_factory module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner_factory.html" title="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner_factory module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.worker.binary.binary_stream_frame_handler_factory.html" title="scarajectory.infrastructure.worker.binary.binary_stream_frame_handler_factory module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.worker.html" >scarajectory.infrastructure.worker package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.infrastructure.worker.binary.html" >scarajectory.infrastructure.worker.binary package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.worker.binary.binary_stream_loop_runner module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

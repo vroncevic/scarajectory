@@ -1,0 +1,15 @@
+# ==============================================================================
+# 05_jump_arch.scara - 3D Pick & Place Arch Trajectory (JUMP)
+# ==============================================================================
+# Executes parabolic clearance arch: lifts Z, traverses XY, and descends to target.
+# ARCH specifies maximum clearance lift above start/target Z heights.
+# ==============================================================================
+
+ENABLE
+HOME
+
+# Start at initial pick position
+MOVE_L X=140.0 Y=50.0 Z=10.0 PHI=0.0 SPEED=50.0
+
+# Jump arch to place position with 30mm obstacle clearance height
+JUMP X=180.0 Y=-40.0 Z=15.0 ARCH=30.0 SPEED=60.0

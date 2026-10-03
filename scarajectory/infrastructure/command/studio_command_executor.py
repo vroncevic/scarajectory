@@ -33,7 +33,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.2'
+__version__ = '1.0.4'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -85,15 +85,16 @@ class StudioCommandExecutor:
             }
 
         try:
-            file_path: object = params.get('file')
-            if file_path is not None and isinstance(file_path, str) and file_path:
+            file_path: str = params.get('file')
+
+            if isinstance(file_path, str) and file_path.strip():
                 self.gui.load_file(file_path)
 
-            dead_zone: object = params.get('dead_zone')
-            if dead_zone is not None and isinstance(dead_zone, str):
-                self.gui.set_deadzone(dead_zone.lower() != 'disable')
+            if bool(params.get('dead_zone')):
+                self.gui.set_deadzone(True)
 
             self.gui.start()
+
             return {'returncode': 0, 'stdout': 'Studio closed successfully', 'stderr': ''}
 
         except Exception as exc:
