@@ -30,7 +30,7 @@ other information that should be provided before the modules are installed.
   - [🏗 Architecture & SOLID Principles](#-architecture--solid-principles)
     - [SOLID Principles Compliance](#solid-principles-compliance)
     - [Automated Quality Gates (`run_quality_gates.sh`)](#automated-quality-gates-run_quality_gatessh)
-    - [SCARA Ecosystem & Dual-Mode Motor Actuation](#-scara-ecosystem--dual-mode-motor-actuation)
+    - [🌐 SCARA Ecosystem & Dual-Mode Motor Actuation](#-scara-ecosystem--dual-mode-motor-actuation)
   - [✨ Features](#-features)
   - [📐 SCARA Kinematic & Geometric Configuration](#-scara-kinematic--geometric-configuration)
   - [📜 SCARA Domain-Specific Language (DSL) & `.scara` Programs](#-scara-domain-specific-language-dsl--scara-programs)
