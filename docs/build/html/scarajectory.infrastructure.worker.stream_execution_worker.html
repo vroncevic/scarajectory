@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>scarajectory.infrastructure.worker.stream_execution_worker module &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
+    
+    <script src="_static/documentation_options.js?v=57319df4"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="scarajectory.infrastructure.worker.stream_execution_worker_factory module" href="scarajectory.infrastructure.worker.stream_execution_worker_factory.html" />
+    <link rel="prev" title="scarajectory.infrastructure.worker.istream_step_dispatcher module" href="scarajectory.infrastructure.worker.istream_step_dispatcher.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.worker.stream_execution_worker_factory.html" title="scarajectory.infrastructure.worker.stream_execution_worker_factory module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.worker.istream_step_dispatcher.html" title="scarajectory.infrastructure.worker.istream_step_dispatcher module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.worker.html" accesskey="U">scarajectory.infrastructure.worker package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.worker.stream_execution_worker module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-scarajectory.infrastructure.worker.stream_execution_worker">
+<span id="scarajectory-infrastructure-worker-stream-execution-worker-module"></span><h1>scarajectory.infrastructure.worker.stream_execution_worker module<a class="headerlink" href="#module-scarajectory.infrastructure.worker.stream_execution_worker" title="Link to this heading">¶</a></h1>
+<dl class="simple">
+<dt>Module</dt><dd><p>stream_execution_worker.py</p>
+</dd>
+<dt>Copyright</dt><dd><p>Copyright (C) 2026 Vladimir Roncevic &lt;<a class="reference external" href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+scarajectory is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+scarajectory is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along
+with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+</dd>
+<dt>Info</dt><dd><p>Worker thread managing streaming transmission concurrency and state.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.worker.stream_execution_worker.</span></span><span class="sig-name descname"><span class="pre">StreamExecutionWorker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop_runner</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.worker.istream_loop_runner.html#scarajectory.core.service.worker.istream_loop_runner.IStreamLoopRunner" title="scarajectory.core.service.worker.istream_loop_runner.IStreamLoopRunner"><span class="pre">IStreamLoopRunner</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">barrier_coordinator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.barrier.iflow_barrier_coordinator.html#scarajectory.core.service.barrier.iflow_barrier_coordinator.IFlowBarrierCoordinator" title="scarajectory.core.service.barrier.iflow_barrier_coordinator.IFlowBarrierCoordinator"><span class="pre">IFlowBarrierCoordinator</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/worker/stream_execution_worker.html#StreamExecutionWorker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Worker thread managing streaming transmission concurrency and state.</p>
+<p>It defines:</p>
+<blockquote>
+<div><dl class="field-list">
+<dt class="field-odd">attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="line-block">
+<div class="line">_loop_runner - IStreamLoopRunner managing execution loops and lines.</div>
+<div class="line">_barrier_coordinator - Injected IFlowBarrierCoordinator managing synchronization.</div>
+<div class="line">_worker_thread - Active background worker thread.</div>
+<div class="line">_stop_event - Event signaling streaming loop termination.</div>
+<div class="line">_pause_event - Event signaling transmission pause.</div>
+<div class="line">_session - Active trajectory streaming session metrics.</div>
+<div class="line">_is_running - Flag indicating whether worker thread is actively executing.</div>
+</div>
+</dd>
+<dt class="field-even">methods<span class="colon">:</span></dt>
+<dd class="field-even"><div class="line-block">
+<div class="line">__init__ - Initializes the streaming execution worker with loop runner and barrier.</div>
+<div class="line">start - Launches the background streaming thread for the active session.</div>
+<div class="line">pause - Signals the worker loop to pause waypoint transmission.</div>
+<div class="line">resume - Resumes the paused transmission loop.</div>
+<div class="line">stop - Aborts transmission loop and cleans up synchronization events.</div>
+<div class="line">is_running - Checks if background thread is active.</div>
+<div class="line">handle_incoming_line - Evaluates incoming response line and stops on fatal error.</div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker._barrier_coordinator">
+<span class="sig-name descname"><span class="pre">_barrier_coordinator</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.barrier.iflow_barrier_coordinator.html#scarajectory.core.service.barrier.iflow_barrier_coordinator.IFlowBarrierCoordinator" title="scarajectory.core.service.barrier.iflow_barrier_coordinator.IFlowBarrierCoordinator"><span class="pre">IFlowBarrierCoordinator</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker._barrier_coordinator" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker._is_running">
+<span class="sig-name descname"><span class="pre">_is_running</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker._is_running" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker._loop_runner">
+<span class="sig-name descname"><span class="pre">_loop_runner</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.worker.istream_loop_runner.html#scarajectory.core.service.worker.istream_loop_runner.IStreamLoopRunner" title="scarajectory.core.service.worker.istream_loop_runner.IStreamLoopRunner"><span class="pre">IStreamLoopRunner</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker._loop_runner" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker._pause_event">
+<span class="sig-name descname"><span class="pre">_pause_event</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Event</span></em><a class="headerlink" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker._pause_event" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker._session">
+<span class="sig-name descname"><span class="pre">_session</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.model.state.stream_session.html#scarajectory.core.model.state.stream_session.StreamSession" title="scarajectory.core.model.state.stream_session.StreamSession"><span class="pre">StreamSession</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker._session" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker._stop_event">
+<span class="sig-name descname"><span class="pre">_stop_event</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Event</span></em><a class="headerlink" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker._stop_event" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker._worker_thread">
+<span class="sig-name descname"><span class="pre">_worker_thread</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Thread</span></em><a class="headerlink" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker._worker_thread" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker.handle_incoming_line">
+<span class="sig-name descname"><span class="pre">handle_incoming_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/worker/stream_execution_worker.html#StreamExecutionWorker.handle_incoming_line"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker.handle_incoming_line" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluates incoming response line and stops on fatal error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>line</strong> – Raw response line string from transport.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker.is_running">
+<span class="sig-name descname"><span class="pre">is_running</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/worker/stream_execution_worker.html#StreamExecutionWorker.is_running"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker.is_running" title="Link to this definition">¶</a></dt>
+<dd><p>Checks whether the background worker thread is currently running.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if alive, False otherwise.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker.pause">
+<span class="sig-name descname"><span class="pre">pause</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/worker/stream_execution_worker.html#StreamExecutionWorker.pause"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker.pause" title="Link to this definition">¶</a></dt>
+<dd><p>Signals the worker loop to pause waypoint transmission.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker.resume">
+<span class="sig-name descname"><span class="pre">resume</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/worker/stream_execution_worker.html#StreamExecutionWorker.resume"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker.resume" title="Link to this definition">¶</a></dt>
+<dd><p>Resumes the paused transmission loop.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker.start">
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.state.stream_session.html#scarajectory.core.model.state.stream_session.StreamSession" title="scarajectory.core.model.state.stream_session.StreamSession"><span class="pre">StreamSession</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/worker/stream_execution_worker.html#StreamExecutionWorker.start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker.start" title="Link to this definition">¶</a></dt>
+<dd><p>Launches the background streaming thread for the active session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>session</strong> – Active StreamSession tracking waypoints and transmission counters.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker.stop">
+<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/worker/stream_execution_worker.html#StreamExecutionWorker.stop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker.stop" title="Link to this definition">¶</a></dt>
+<dd><p>Signals the worker loop to abort immediately and resets synchronization flags.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">scarajectory.infrastructure.worker.stream_execution_worker module</a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker"><code class="docutils literal notranslate"><span class="pre">StreamExecutionWorker</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker._barrier_coordinator"><code class="docutils literal notranslate"><span class="pre">StreamExecutionWorker._barrier_coordinator</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker._is_running"><code class="docutils literal notranslate"><span class="pre">StreamExecutionWorker._is_running</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker._loop_runner"><code class="docutils literal notranslate"><span class="pre">StreamExecutionWorker._loop_runner</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker._pause_event"><code class="docutils literal notranslate"><span class="pre">StreamExecutionWorker._pause_event</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker._session"><code class="docutils literal notranslate"><span class="pre">StreamExecutionWorker._session</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker._stop_event"><code class="docutils literal notranslate"><span class="pre">StreamExecutionWorker._stop_event</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker._worker_thread"><code class="docutils literal notranslate"><span class="pre">StreamExecutionWorker._worker_thread</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker.handle_incoming_line"><code class="docutils literal notranslate"><span class="pre">StreamExecutionWorker.handle_incoming_line()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker.is_running"><code class="docutils literal notranslate"><span class="pre">StreamExecutionWorker.is_running()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker.pause"><code class="docutils literal notranslate"><span class="pre">StreamExecutionWorker.pause()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker.resume"><code class="docutils literal notranslate"><span class="pre">StreamExecutionWorker.resume()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker.start"><code class="docutils literal notranslate"><span class="pre">StreamExecutionWorker.start()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.stream_execution_worker.StreamExecutionWorker.stop"><code class="docutils literal notranslate"><span class="pre">StreamExecutionWorker.stop()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.worker.istream_step_dispatcher.html"
+                          title="previous chapter">scarajectory.infrastructure.worker.istream_step_dispatcher module</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.worker.stream_execution_worker_factory.html"
+                          title="next chapter">scarajectory.infrastructure.worker.stream_execution_worker_factory module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/scarajectory.infrastructure.worker.stream_execution_worker.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.worker.stream_execution_worker_factory.html" title="scarajectory.infrastructure.worker.stream_execution_worker_factory module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.worker.istream_step_dispatcher.html" title="scarajectory.infrastructure.worker.istream_step_dispatcher module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.worker.html" >scarajectory.infrastructure.worker package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.worker.stream_execution_worker module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

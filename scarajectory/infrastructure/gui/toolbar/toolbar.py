@@ -16,26 +16,24 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Top toolbar housing CAD drawing tools, zoom controls, plan undo/redo and default settings.
+    Top toolbar housing CAD drawing tools, zoom controls, plan undo/redo
+    and default settings.
 '''
 
 from __future__ import annotations
 
-from tkinter import BooleanVar, LEFT, RIGHT, StringVar, VERTICAL, Widget, Y
-from tkinter.ttk import Button, Checkbutton, Frame, Label, Radiobutton, Separator, Spinbox
-from typing import Final
+from tkinter import LEFT, VERTICAL, Widget, X, Y
+from tkinter.ttk import Frame, Label, Separator
 
-from scarajectory.core.model.kinematics.scara_bounds import ScaraBounds
-from scarajectory.infrastructure.gui.model.canvas_tool_mode import CanvasToolMode
-from scarajectory.infrastructure.gui.model.canvas_settings import CanvasSettings
-from scarajectory.core.service.trajectory.plan.itrajectory_plan import ITrajectoryPlan
-from scarajectory.infrastructure.gui.canvas.icanvas import ICanvas
+from scarajectory.infrastructure.gui.toolbar.tool_selector import ToolbarToolSelector
+from scarajectory.infrastructure.gui.toolbar.navigation_controls import ToolbarNavigationControls
+from scarajectory.infrastructure.gui.toolbar.parameter_inputs import ToolbarParameterInputs
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.3'
+__version__ = '1.0.4'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -43,171 +41,74 @@ __status__ = 'Updated'
 
 class Toolbar(Frame):
     '''
-        Application toolbar for mode selection, CAD actions, and kinematic defaults.
+        Application toolbar for mode selection, CAD actions, and kinematic
+        defaults.
 
         It defines:
 
             :attributes:
-                | _canvas - Active CAD canvas interface.
-                | _plan - Active trajectory plan domain model.
-                | _r_min - Minimum reach distance from origin in mm.
-                | _r_max - Maximum reach distance from origin in mm.
-                | _settings - Active canvas creation parameters.
-                | _tool_var - Active CAD tool mode variable.
-                | _spin_z - Default waypoint Z elevation spinbox.
-                | _spin_speed - Default waypoint feedrate spinbox.
-                | _deadzone_var - Deadzone kinematic boundary lock checkbox variable.
-                | _lbl_cursor - Dynamic cursor coordinate and zoom readout label.
+                | _tool_selector - CAD tool mode selector subcomponent.
+                | _nav_controls - Navigation and history controls component.
+                | _param_inputs - Parameter defaults and cursor component.
             :methods:
-                | __init__ - Initializes toolbar widgets.
-                | build_layout - Constructs CAD tools, zoom buttons, parameter inputs and cursor monitor.
-                | on_defaults_changed - Applies updated defaults from toolbar to canvas.
+                | __init__ - Initializes toolbar container.
+                | mount_controls - Mounts injected toolbar sub-panels.
                 | set_deadzone - Sets deadzone enforcement checkbox state.
                 | get_cursor_label - Returns cursor info label widget.
     '''
 
-    _canvas: ICanvas
-    _plan: ITrajectoryPlan
-    _r_min: float | None
-    _r_max: float | None
-    _settings: CanvasSettings
-    _tool_var: StringVar
-    _spin_z: Spinbox
-    _spin_speed: Spinbox
-    _deadzone_var: BooleanVar
-    _lbl_cursor: Label
+    _tool_selector: ToolbarToolSelector
+    _nav_controls: ToolbarNavigationControls
+    _param_inputs: ToolbarParameterInputs
 
-    def __init__(
-        self,
-        parent: Widget,
-        canvas: ICanvas,
-        plan: ITrajectoryPlan,
-        *,
-        r_min: float | None = None,
-        r_max: float | None = None,
-        settings: CanvasSettings | None = None,
-        **kwargs: object,
-    ) -> None:
+    def __init__(self, parent: Widget) -> None:
         '''
-            Initializes toolbar widgets.
+            Initializes toolbar container.
 
             :param parent: Parent container widget.
-            :param canvas: ICanvas interface instance.
-            :param plan: ITrajectoryPlan instance.
-            :param r_min: Optional minimum workspace radius in mm.
-            :param r_max: Optional maximum workspace radius in mm.
-            :param settings: Optional CanvasSettings instance.
             :exceptions: None.
         '''
-        super().__init__(parent, padding=(8, 6), **kwargs)
-        self._canvas: Final[ICanvas] = canvas
-        self._plan: Final[ITrajectoryPlan] = plan
-        self._r_min = r_min
-        self._r_max = r_max
-        self._settings = settings if settings is not None else CanvasSettings()
-        self.build_layout()
+        super().__init__(parent, padding=(8, 6))
 
-    def build_layout(self) -> None:
+    def mount_controls(
+        self,
+        tool_selector: ToolbarToolSelector,
+        nav_controls: ToolbarNavigationControls,
+        param_inputs: ToolbarParameterInputs,
+    ) -> None:
         '''
-            Constructs CAD tools, zoom buttons, parameter inputs and cursor monitor.
+            Mounts injected toolbar sub-panels.
 
+            :param tool_selector: Tool selector component.
+            :param nav_controls: Navigation controls component.
+            :param param_inputs: Parameter inputs component.
             :exceptions: None.
         '''
-        Label(self, text='Tool:', style='Header.TLabel').pack(side=LEFT, padx=(0, 4))
-        self._tool_var = StringVar(value='POINT')
-        tools = [
-            ('Point', 'POINT', CanvasToolMode.POINT),
-            ('Line', 'LINE', CanvasToolMode.LINE),
-            ('Select/Move', 'SELECT', CanvasToolMode.SELECT),
-            ('Circle', 'CIRCLE', CanvasToolMode.CIRCLE),
-            ('Rectangle', 'RECTANGLE', CanvasToolMode.RECTANGLE),
-            ('Freehand', 'FREEHAND', CanvasToolMode.FREEHAND)
-        ]
-        for text, val, mode in tools:
-            btn = Radiobutton(
-                self,
-                text=text,
-                value=val,
-                variable=self._tool_var,
-                command=lambda m=mode: self._canvas.set_tool_mode(m)
-            )
-            btn.pack(side=LEFT, padx=2)
+        self._tool_selector = tool_selector
+        self._tool_selector.pack(side=LEFT)
 
         Separator(self, orient=VERTICAL).pack(side=LEFT, fill=Y, padx=8)
-        Button(self, text='[ + ]', width=4, command=self._canvas.zoom_in).pack(side=LEFT, padx=1)
-        Button(self, text='[ - ]', width=4, command=self._canvas.zoom_out).pack(side=LEFT, padx=1)
-        Button(self, text='Fit', width=4, command=self._canvas.fit_reach_view).pack(side=LEFT, padx=1)
-        Button(self, text='100%', width=5, command=self._canvas.reset_view).pack(side=LEFT, padx=1)
+        self._nav_controls = nav_controls
+        self._nav_controls.pack(side=LEFT)
 
         Separator(self, orient=VERTICAL).pack(side=LEFT, fill=Y, padx=8)
-        Label(self, text='Z (mm):').pack(side=LEFT, padx=2)
-        self._spin_z = Spinbox(self, from_=0.0, to=100.0, increment=5.0, width=5)
-        self._spin_z.set(f'{self._settings.default_z:.1f}')
-        self._spin_z.pack(side=LEFT, padx=2)
-
-        Label(self, text='Speed (mm/s):').pack(side=LEFT, padx=(6, 2))
-        self._spin_speed = Spinbox(self, from_=5.0, to=100.0, increment=5.0, width=5)
-        self._spin_speed.set(f'{self._settings.default_speed:.1f}')
-        self._spin_speed.pack(side=LEFT, padx=2)
-
-        self._spin_z.bind('<FocusOut>', lambda e: self.on_defaults_changed())
-        self._spin_speed.bind('<FocusOut>', lambda e: self.on_defaults_changed())
-
-        Separator(self, orient=VERTICAL).pack(side=LEFT, fill=Y, padx=8)
-        self._deadzone_var = BooleanVar(value=self._settings.enforce_deadzone)
-        reach_text: str = (
-            f'Enforce Reach Limits ({self._r_min:.0f}-{self._r_max:.0f}mm)'
-            if self._r_min is not None and self._r_max is not None
-            else 'Enforce Reach Limits'
-        )
-        Checkbutton(
-            self,
-            text=reach_text,
-            variable=self._deadzone_var,
-            command=self.on_defaults_changed
-        ).pack(side=LEFT, padx=3)
-
-        Separator(self, orient=VERTICAL).pack(side=LEFT, fill=Y, padx=8)
-        Button(self, text='Undo', width=5, command=self._plan.undo).pack(side=LEFT, padx=2)
-        Button(self, text='Redo', width=5, command=self._plan.redo).pack(side=LEFT, padx=2)
-
-        self._lbl_cursor = Label(
-            self,
-            text='Cursor: X=  0.0 mm | Y=  0.0 mm | R=  0.0 mm | Zoom: 100%',
-            font=('DejaVu Sans Mono', 9)
-        )
-        self._lbl_cursor.pack(side=RIGHT, padx=8)
-        self._canvas.set_hover_label(self._lbl_cursor)
-
-    def on_defaults_changed(self) -> None:
-        '''
-            Applies updated defaults from toolbar to canvas.
-
-            :exceptions: None.
-        '''
-        try:
-            dz: float = float(self._spin_z.get())
-            dsp: float = float(self._spin_speed.get())
-            enforce: bool = self._deadzone_var.get()
-            self._canvas.update_settings(CanvasSettings(default_z=dz, default_speed=dsp, enforce_deadzone=enforce))
-        except ValueError:
-            pass
+        self._param_inputs = param_inputs
+        self._param_inputs.pack(side=LEFT, fill=X, expand=True)
 
     def set_deadzone(self, enabled: bool) -> None:
         '''
-            Sets deadzone enforcement state.
+            Sets deadzone enforcement checkbox state.
 
             :param enabled: True to enforce deadzone, False to disable.
             :exceptions: None.
         '''
-        self._deadzone_var.set(enabled)
-        self.on_defaults_changed()
+        self._param_inputs.set_deadzone(enabled)
 
     def get_cursor_label(self) -> Label:
         '''
-            Returns cursor monitor label widget.
+            Returns cursor info label widget.
 
-            :return: Label instance.
+            :return: Label widget displaying coordinates and zoom.
             :exceptions: None.
         '''
-        return self._lbl_cursor
+        return self._param_inputs.get_cursor_label()

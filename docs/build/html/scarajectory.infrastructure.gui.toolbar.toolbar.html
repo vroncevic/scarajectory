@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="scarajectory.infrastructure.gui.toolbar.toolbar_factory module" href="scarajectory.infrastructure.gui.toolbar.toolbar_factory.html" />
-    <link rel="prev" title="scarajectory.infrastructure.gui.toolbar.itoolbar module" href="scarajectory.infrastructure.gui.toolbar.itoolbar.html" /> 
+    <link rel="prev" title="scarajectory.infrastructure.gui.toolbar.tool_selector_factory module" href="scarajectory.infrastructure.gui.toolbar.tool_selector_factory.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -31,7 +31,7 @@
           <a href="scarajectory.infrastructure.gui.toolbar.toolbar_factory.html" title="scarajectory.infrastructure.gui.toolbar.toolbar_factory module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.gui.toolbar.itoolbar.html" title="scarajectory.infrastructure.gui.toolbar.itoolbar module"
+          <a href="scarajectory.infrastructure.gui.toolbar.tool_selector_factory.html" title="scarajectory.infrastructure.gui.toolbar.tool_selector_factory module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
@@ -65,36 +65,30 @@ See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
 </dd>
-<dt>Info</dt><dd><p>Top toolbar housing CAD drawing tools, zoom controls, plan undo/redo and default settings.</p>
+<dt>Info</dt><dd><p>Top toolbar housing CAD drawing tools, zoom controls, plan undo/redo
+and default settings.</p>
 </dd>
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.gui.toolbar.toolbar.</span></span><span class="sig-name descname"><span class="pre">Toolbar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">canvas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.canvas.icanvas.html#scarajectory.infrastructure.gui.canvas.icanvas.ICanvas" title="scarajectory.infrastructure.gui.canvas.icanvas.ICanvas"><span class="pre">ICanvas</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">plan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.plan.itrajectory_plan.html#scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan" title="scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan"><span class="pre">ITrajectoryPlan</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.model.canvas_settings.html#scarajectory.infrastructure.gui.model.canvas_settings.CanvasSettings" title="scarajectory.infrastructure.gui.model.canvas_settings.CanvasSettings"><span class="pre">CanvasSettings</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/toolbar/toolbar.html#Toolbar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.gui.toolbar.toolbar.</span></span><span class="sig-name descname"><span class="pre">Toolbar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Widget</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/toolbar/toolbar.html#Toolbar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></p>
-<p>Application toolbar for mode selection, CAD actions, and kinematic defaults.</p>
+<p>Application toolbar for mode selection, CAD actions, and kinematic
+defaults.</p>
 <p>It defines:</p>
 <blockquote>
 <div><dl class="field-list">
 <dt class="field-odd">attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><div class="line-block">
-<div class="line">_canvas - Active CAD canvas interface.</div>
-<div class="line">_plan - Active trajectory plan domain model.</div>
-<div class="line">_r_min - Minimum reach distance from origin in mm.</div>
-<div class="line">_r_max - Maximum reach distance from origin in mm.</div>
-<div class="line">_settings - Active canvas creation parameters.</div>
-<div class="line">_tool_var - Active CAD tool mode variable.</div>
-<div class="line">_spin_z - Default waypoint Z elevation spinbox.</div>
-<div class="line">_spin_speed - Default waypoint feedrate spinbox.</div>
-<div class="line">_deadzone_var - Deadzone kinematic boundary lock checkbox variable.</div>
-<div class="line">_lbl_cursor - Dynamic cursor coordinate and zoom readout label.</div>
+<div class="line">_tool_selector - CAD tool mode selector subcomponent.</div>
+<div class="line">_nav_controls - Navigation and history controls component.</div>
+<div class="line">_param_inputs - Parameter defaults and cursor component.</div>
 </div>
 </dd>
 <dt class="field-even">methods<span class="colon">:</span></dt>
 <dd class="field-even"><div class="line-block">
-<div class="line">__init__ - Initializes toolbar widgets.</div>
-<div class="line">build_layout - Constructs CAD tools, zoom buttons, parameter inputs and cursor monitor.</div>
-<div class="line">on_defaults_changed - Applies updated defaults from toolbar to canvas.</div>
+<div class="line">__init__ - Initializes toolbar container.</div>
+<div class="line">mount_controls - Mounts injected toolbar sub-panels.</div>
 <div class="line">set_deadzone - Sets deadzone enforcement checkbox state.</div>
 <div class="line">get_cursor_label - Returns cursor info label widget.</div>
 </div>
@@ -102,73 +96,27 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dl>
 </div></blockquote>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._canvas">
-<span class="sig-name descname"><span class="pre">_canvas</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.canvas.icanvas.html#scarajectory.infrastructure.gui.canvas.icanvas.ICanvas" title="scarajectory.infrastructure.gui.canvas.icanvas.ICanvas"><span class="pre">ICanvas</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._canvas" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._nav_controls">
+<span class="sig-name descname"><span class="pre">_nav_controls</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.toolbar.navigation_controls.html#scarajectory.infrastructure.gui.toolbar.navigation_controls.ToolbarNavigationControls" title="scarajectory.infrastructure.gui.toolbar.navigation_controls.ToolbarNavigationControls"><span class="pre">ToolbarNavigationControls</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._nav_controls" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._deadzone_var">
-<span class="sig-name descname"><span class="pre">_deadzone_var</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">BooleanVar</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._deadzone_var" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._param_inputs">
+<span class="sig-name descname"><span class="pre">_param_inputs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.toolbar.parameter_inputs.html#scarajectory.infrastructure.gui.toolbar.parameter_inputs.ToolbarParameterInputs" title="scarajectory.infrastructure.gui.toolbar.parameter_inputs.ToolbarParameterInputs"><span class="pre">ToolbarParameterInputs</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._param_inputs" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._lbl_cursor">
-<span class="sig-name descname"><span class="pre">_lbl_cursor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Label</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._lbl_cursor" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._tool_selector">
+<span class="sig-name descname"><span class="pre">_tool_selector</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.toolbar.tool_selector.html#scarajectory.infrastructure.gui.toolbar.tool_selector.ToolbarToolSelector" title="scarajectory.infrastructure.gui.toolbar.tool_selector.ToolbarToolSelector"><span class="pre">ToolbarToolSelector</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._tool_selector" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._plan">
-<span class="sig-name descname"><span class="pre">_plan</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.trajectory.plan.itrajectory_plan.html#scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan" title="scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan"><span class="pre">ITrajectoryPlan</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._plan" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._r_max">
-<span class="sig-name descname"><span class="pre">_r_max</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._r_max" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._r_min">
-<span class="sig-name descname"><span class="pre">_r_min</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._r_min" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._settings">
-<span class="sig-name descname"><span class="pre">_settings</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.model.canvas_settings.html#scarajectory.infrastructure.gui.model.canvas_settings.CanvasSettings" title="scarajectory.infrastructure.gui.model.canvas_settings.CanvasSettings"><span class="pre">CanvasSettings</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._settings" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._spin_speed">
-<span class="sig-name descname"><span class="pre">_spin_speed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Spinbox</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._spin_speed" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._spin_z">
-<span class="sig-name descname"><span class="pre">_spin_z</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Spinbox</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._spin_z" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._tool_var">
-<span class="sig-name descname"><span class="pre">_tool_var</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">StringVar</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._tool_var" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar.build_layout">
-<span class="sig-name descname"><span class="pre">build_layout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/toolbar/toolbar.html#Toolbar.build_layout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar.build_layout" title="Link to this definition">¶</a></dt>
-<dd><p>Constructs CAD tools, zoom buttons, parameter inputs and cursor monitor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar.get_cursor_label">
 <span class="sig-name descname"><span class="pre">get_cursor_label</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Label</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/toolbar/toolbar.html#Toolbar.get_cursor_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar.get_cursor_label" title="Link to this definition">¶</a></dt>
-<dd><p>Returns cursor monitor label widget.</p>
+<dd><p>Returns cursor info label widget.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Label instance.</p>
+<dd class="field-odd"><p>Label widget displaying coordinates and zoom.</p>
 </dd>
 <dt class="field-even">Exceptions<span class="colon">:</span></dt>
 <dd class="field-even"><p>None.</p>
@@ -177,12 +125,19 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar.on_defaults_changed">
-<span class="sig-name descname"><span class="pre">on_defaults_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/toolbar/toolbar.html#Toolbar.on_defaults_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar.on_defaults_changed" title="Link to this definition">¶</a></dt>
-<dd><p>Applies updated defaults from toolbar to canvas.</p>
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar.mount_controls">
+<span class="sig-name descname"><span class="pre">mount_controls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tool_selector</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.toolbar.tool_selector.html#scarajectory.infrastructure.gui.toolbar.tool_selector.ToolbarToolSelector" title="scarajectory.infrastructure.gui.toolbar.tool_selector.ToolbarToolSelector"><span class="pre">ToolbarToolSelector</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">nav_controls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.toolbar.navigation_controls.html#scarajectory.infrastructure.gui.toolbar.navigation_controls.ToolbarNavigationControls" title="scarajectory.infrastructure.gui.toolbar.navigation_controls.ToolbarNavigationControls"><span class="pre">ToolbarNavigationControls</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.toolbar.parameter_inputs.html#scarajectory.infrastructure.gui.toolbar.parameter_inputs.ToolbarParameterInputs" title="scarajectory.infrastructure.gui.toolbar.parameter_inputs.ToolbarParameterInputs"><span class="pre">ToolbarParameterInputs</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/toolbar/toolbar.html#Toolbar.mount_controls"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar.mount_controls" title="Link to this definition">¶</a></dt>
+<dd><p>Mounts injected toolbar sub-panels.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tool_selector</strong> – Tool selector component.</p></li>
+<li><p><strong>nav_controls</strong> – Navigation controls component.</p></li>
+<li><p><strong>param_inputs</strong> – Parameter inputs component.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -190,7 +145,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar.set_deadzone">
 <span class="sig-name descname"><span class="pre">set_deadzone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/toolbar/toolbar.html#Toolbar.set_deadzone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar.set_deadzone" title="Link to this definition">¶</a></dt>
-<dd><p>Sets deadzone enforcement state.</p>
+<dd><p>Sets deadzone enforcement checkbox state.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>enabled</strong> – True to enforce deadzone, False to disable.</p>
@@ -217,19 +172,11 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <ul>
 <li><a class="reference internal" href="#">scarajectory.infrastructure.gui.toolbar.toolbar module</a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar"><code class="docutils literal notranslate"><span class="pre">Toolbar</span></code></a><ul>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._canvas"><code class="docutils literal notranslate"><span class="pre">Toolbar._canvas</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._deadzone_var"><code class="docutils literal notranslate"><span class="pre">Toolbar._deadzone_var</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._lbl_cursor"><code class="docutils literal notranslate"><span class="pre">Toolbar._lbl_cursor</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._plan"><code class="docutils literal notranslate"><span class="pre">Toolbar._plan</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._r_max"><code class="docutils literal notranslate"><span class="pre">Toolbar._r_max</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._r_min"><code class="docutils literal notranslate"><span class="pre">Toolbar._r_min</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._settings"><code class="docutils literal notranslate"><span class="pre">Toolbar._settings</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._spin_speed"><code class="docutils literal notranslate"><span class="pre">Toolbar._spin_speed</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._spin_z"><code class="docutils literal notranslate"><span class="pre">Toolbar._spin_z</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._tool_var"><code class="docutils literal notranslate"><span class="pre">Toolbar._tool_var</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar.build_layout"><code class="docutils literal notranslate"><span class="pre">Toolbar.build_layout()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._nav_controls"><code class="docutils literal notranslate"><span class="pre">Toolbar._nav_controls</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._param_inputs"><code class="docutils literal notranslate"><span class="pre">Toolbar._param_inputs</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar._tool_selector"><code class="docutils literal notranslate"><span class="pre">Toolbar._tool_selector</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar.get_cursor_label"><code class="docutils literal notranslate"><span class="pre">Toolbar.get_cursor_label()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar.on_defaults_changed"><code class="docutils literal notranslate"><span class="pre">Toolbar.on_defaults_changed()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar.mount_controls"><code class="docutils literal notranslate"><span class="pre">Toolbar.mount_controls()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar.set_deadzone"><code class="docutils literal notranslate"><span class="pre">Toolbar.set_deadzone()</span></code></a></li>
 </ul>
 </li>
@@ -240,8 +187,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.gui.toolbar.itoolbar.html"
-                          title="previous chapter">scarajectory.infrastructure.gui.toolbar.itoolbar module</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.toolbar.tool_selector_factory.html"
+                          title="previous chapter">scarajectory.infrastructure.gui.toolbar.tool_selector_factory module</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -282,7 +229,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="scarajectory.infrastructure.gui.toolbar.toolbar_factory.html" title="scarajectory.infrastructure.gui.toolbar.toolbar_factory module"
              >next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.gui.toolbar.itoolbar.html" title="scarajectory.infrastructure.gui.toolbar.itoolbar module"
+          <a href="scarajectory.infrastructure.gui.toolbar.tool_selector_factory.html" title="scarajectory.infrastructure.gui.toolbar.tool_selector_factory module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>

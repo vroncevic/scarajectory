@@ -29,7 +29,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.3'
+__version__ = '1.0.4'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -43,36 +43,38 @@ class IPlanHistory(Protocol):
         It defines:
 
             :methods:
-                | save_state - Pushes current snapshot onto undo stack.
+                | can_undo - Checks whether undo history is available.
+                | can_redo - Checks whether redo history is available.
                 | undo - Pops last state from undo stack into redo stack.
                 | redo - Pops last state from redo stack into undo stack.
-                | clear - Clears all history.
     '''
 
-    def save_state(self, current: list[Waypoint]) -> None:
+    def can_undo(self) -> bool:
         '''
-            Pushes current snapshot onto undo stack.
+            Checks whether undo history is available.
 
-            :param current: Current list of waypoints.
+            :return: True if undo history exists, False otherwise.
         '''
 
-    def undo(self, current: list[Waypoint]) -> list[Waypoint] | None:
+    def can_redo(self) -> bool:
+        '''
+            Checks whether redo history is available.
+
+            :return: True if redo history exists, False otherwise.
+        '''
+
+    def undo(self, current: list[Waypoint]) -> list[Waypoint]:
         '''
             Pops last state from undo stack into redo stack.
 
             :param current: Current list of waypoints.
-            :return: Previous waypoints state or None if empty.
+            :return: Previous waypoints state, or current state if empty.
         '''
 
-    def redo(self, current: list[Waypoint]) -> list[Waypoint] | None:
+    def redo(self, current: list[Waypoint]) -> list[Waypoint]:
         '''
             Pops last state from redo stack into undo stack.
 
             :param current: Current list of waypoints.
-            :return: Next waypoints state or None if empty.
-        '''
-
-    def clear(self) -> None:
-        '''
-            Clears all history.
+            :return: Next waypoints state, or current state if empty.
         '''

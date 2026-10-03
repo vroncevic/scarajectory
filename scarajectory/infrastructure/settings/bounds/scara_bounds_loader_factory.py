@@ -1,0 +1,119 @@
+# -*- coding: UTF-8 -*-
+
+'''
+Module
+    scara_bounds_loader_factory.py
+Copyright
+    Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
+    scarajectory is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by the
+    Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    scarajectory is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+    See the GNU General Public License for more details.
+    You should have received a copy of the GNU General Public License along
+    with this program. If not, see <http://www.gnu.org/licenses/>.
+Info
+    Factory providing ScaraBoundsLoader instances.
+'''
+
+from __future__ import annotations
+
+from scarajectory.core.service.kinematics.iscara_deadzone_calculator import IScaraDeadzoneCalculator
+from scarajectory.core.service.kinematics.scara_deadzone_calculator_factory import ScaraDeadzoneCalculatorFactory
+from scarajectory.core.service.settings.iscara_bounds_parser import IScaraBoundsParser
+from scarajectory.infrastructure.settings.bounds.scara_bounds_loader import ScaraBoundsLoader
+from scarajectory.infrastructure.settings.bounds.scara_bounds_parser_factory import ScaraBoundsParserFactory
+from scarajectory.infrastructure.settings.isettings_reader import ISettingsReader
+from scarajectory.infrastructure.settings.settings_reader_factory import SettingsReaderFactory
+
+__author__ = 'Vladimir Roncevic'
+__copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
+__credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
+__license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
+__version__ = '1.0.4'
+__maintainer__ = 'Vladimir Roncevic'
+__email__ = 'elektron.ronca@gmail.com'
+__status__ = 'Updated'
+
+
+class ScaraBoundsLoaderFactory:
+    '''
+        Factory providing ScaraBoundsLoader instances.
+
+        It defines:
+
+            :methods:
+                | create - Instantiates ScaraBoundsLoader with default collaborators.
+                | create_with_reader - Instantiates ScaraBoundsLoader with explicit reader.
+                | create_with_collaborators - Instantiates with explicit collaborators.
+                | get_version - Returns factory version string.
+    '''
+
+    @classmethod
+    def create(cls) -> ScaraBoundsLoader:
+        '''
+            Creates and returns a ScaraBoundsLoader instance using default collaborators.
+
+            :return: Fully configured ScaraBoundsLoader instance.
+            :exceptions: None.
+        '''
+        return cls.create_with_collaborators(
+            reader=SettingsReaderFactory.create(),
+            deadzone_calculator=ScaraDeadzoneCalculatorFactory.create(),
+            parser=ScaraBoundsParserFactory.create(),
+        )
+
+    @classmethod
+    def create_with_reader(
+        cls,
+        *,
+        reader: ISettingsReader,
+    ) -> ScaraBoundsLoader:
+        '''
+            Creates and returns a ScaraBoundsLoader instance with explicit ISettingsReader.
+
+            :param reader: ISettingsReader providing configuration key-values.
+            :return: Fully configured ScaraBoundsLoader instance.
+            :exceptions: None.
+        '''
+        return cls.create_with_collaborators(
+            reader=reader,
+            deadzone_calculator=ScaraDeadzoneCalculatorFactory.create(),
+            parser=ScaraBoundsParserFactory.create(),
+        )
+
+    @classmethod
+    def create_with_collaborators(
+        cls,
+        *,
+        reader: ISettingsReader,
+        deadzone_calculator: IScaraDeadzoneCalculator,
+        parser: IScaraBoundsParser,
+    ) -> ScaraBoundsLoader:
+        '''
+            Creates and returns a ScaraBoundsLoader instance with explicit collaborators.
+
+            :param reader: ISettingsReader providing configuration key-values.
+            :param deadzone_calculator: Domain kinematic deadzone calculator instance.
+            :param parser: Bounds options parser implementing IScaraBoundsParser.
+            :return: Fully configured ScaraBoundsLoader instance.
+            :exceptions: None.
+        '''
+        return ScaraBoundsLoader(
+            reader=reader,
+            deadzone_calculator=deadzone_calculator,
+            parser=parser,
+        )
+
+    @classmethod
+    def get_version(cls) -> str:
+        '''
+            Returns the factory version string.
+
+            :return: Factory version string.
+            :exceptions: None.
+        '''
+        return __version__

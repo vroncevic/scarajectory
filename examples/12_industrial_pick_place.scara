@@ -12,7 +12,7 @@
 # System initialization & homing
 ENABLE
 HOME
-SET_FRAME X=0.0 Y=0.0 Z=0.0 RZ=0.0
+FRAME_SET X=0.0 Y=0.0 Z=0.0 RZ=0.0
 
 # Transit to standby inspection position
 MOVE_J X=120.0 Y=50.0 Z=45.0 PHI=0.0 SPEED=80.0

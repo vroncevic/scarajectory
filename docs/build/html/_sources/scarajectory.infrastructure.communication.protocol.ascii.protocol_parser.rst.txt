@@ -1,8 +1,0 @@
-scarajectory.infrastructure.communication.protocol.ascii.protocol\_parser module
-================================================================================
-
-.. automodule:: scarajectory.infrastructure.communication.protocol.ascii.protocol_parser
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   :private-members:

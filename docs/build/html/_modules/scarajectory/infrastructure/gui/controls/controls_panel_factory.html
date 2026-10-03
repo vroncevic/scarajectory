@@ -54,35 +54,24 @@
 <span class="sd">    You should have received a copy of the GNU General Public License along</span>
 <span class="sd">    with this program. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 <span class="sd">Info</span>
-<span class="sd">    Factory instantiating ControlsPanel and coordinating child tab factories.</span>
+<span class="sd">    Factory service constructing ControlsPanel instances.</span>
 <span class="sd">&#39;&#39;&#39;</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">Widget</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.iservice</span> <span class="kn">import</span> <span class="n">IService</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.communication.stream.itrajectory_streamer</span> <span class="kn">import</span> <span class="n">ITrajectoryStreamer</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.communication.stream.config_factory</span> <span class="kn">import</span> <span class="n">ConfigFactory</span>
-<span class="kn">from</span> <span class="nn">scaralang.core.service.dsl.iscara_dsl_service</span> <span class="kn">import</span> <span class="n">IScaraDslService</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.contract.iplan_storage_service</span> <span class="kn">import</span> <span class="n">IPlanStorageService</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.itrajectory_plan</span> <span class="kn">import</span> <span class="n">ITrajectoryPlan</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.validation.itrajectory_validator</span> <span class="kn">import</span> <span class="n">ITrajectoryValidator</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.preferences.iconnection_repository</span> <span class="kn">import</span> <span class="n">IConnectionRepository</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.controls.controls</span> <span class="kn">import</span> <span class="n">ControlsPanel</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.dsl.dsl_editor_tab</span> <span class="kn">import</span> <span class="n">DslEditorTab</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.dsl.dsl_editor_tab_factory</span> <span class="kn">import</span> <span class="n">DslEditorTabFactory</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.editor.preview_tab</span> <span class="kn">import</span> <span class="n">PreviewTab</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.editor.preview_tab_factory</span> <span class="kn">import</span> <span class="n">PreviewTabFactory</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.editor.validation_tab</span> <span class="kn">import</span> <span class="n">ValidationTab</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.stream.jog_tab</span> <span class="kn">import</span> <span class="n">JogTab</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.stream.streamer_tab</span> <span class="kn">import</span> <span class="n">StreamerTab</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.controls.bundle</span> <span class="kn">import</span> <span class="n">ControlsBundle</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.controls.controls_panel</span> <span class="kn">import</span> <span class="n">ControlsPanel</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.controls.itabs_assembler</span> <span class="kn">import</span> <span class="n">ITabsAssembler</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.controls.tabs_assembler_factory</span> <span class="kn">import</span> <span class="n">ControlsTabsAssemblerFactory</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.controls.tabs_bundle</span> <span class="kn">import</span> <span class="n">ControlsTabsBundle</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -92,7 +81,14 @@
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.controls.controls_panel_factory.html#scarajectory.infrastructure.gui.controls.controls_panel_factory.ControlsPanelFactory">[docs]</a>
 <span class="k">class</span> <span class="nc">ControlsPanelFactory</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Factory constructing ControlsPanel and hierarchically assembling child tabs.</span>
+<span class="sd">        Factory providing instantiation of ControlsPanel components.</span>
+
+<span class="sd">        It defines:</span>
+
+<span class="sd">            :methods:</span>
+<span class="sd">                | create - Constructs ControlsPanel and mounts child tabs.</span>
+<span class="sd">                | create_with_assembler - Constructs ControlsPanel with custom tabs assembler.</span>
+<span class="sd">                | get_version - Returns factory version string.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
 <div class="viewcode-block" id="ControlsPanelFactory.create">
@@ -101,49 +97,48 @@
     <span class="k">def</span> <span class="nf">create</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">parent</span><span class="p">:</span> <span class="n">Widget</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">plan</span><span class="p">:</span> <span class="n">ITrajectoryPlan</span><span class="p">,</span>
-        <span class="n">validator</span><span class="p">:</span> <span class="n">ITrajectoryValidator</span><span class="p">,</span>
-        <span class="n">streamer</span><span class="p">:</span> <span class="n">ITrajectoryStreamer</span><span class="p">,</span>
-        <span class="n">storage</span><span class="p">:</span> <span class="n">IPlanStorageService</span><span class="p">,</span>
-        <span class="n">dsl_service</span><span class="p">:</span> <span class="n">IScaraDslService</span><span class="p">,</span>
-        <span class="n">service</span><span class="p">:</span> <span class="n">IService</span><span class="p">,</span>
-        <span class="n">connection_repository</span><span class="p">:</span> <span class="n">IConnectionRepository</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">object</span>
+        <span class="n">bundle</span><span class="p">:</span> <span class="n">ControlsBundle</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ControlsPanel</span><span class="p">:</span>
-        <span class="n">panel</span> <span class="o">=</span> <span class="n">ControlsPanel</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Constructs ControlsPanel and mounts child tabs using default assembler.</span>
 
-        <span class="n">dsl_tab</span><span class="p">:</span> <span class="n">DslEditorTab</span> <span class="o">=</span> <span class="n">DslEditorTabFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">panel</span><span class="o">.</span><span class="n">notebook</span><span class="p">,</span>
-            <span class="n">plan</span><span class="o">=</span><span class="n">plan</span><span class="p">,</span>
-            <span class="n">dsl_service</span><span class="o">=</span><span class="n">dsl_service</span><span class="p">,</span>
-            <span class="n">storage</span><span class="o">=</span><span class="n">storage</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="n">stream_tab</span><span class="p">:</span> <span class="n">StreamerTab</span> <span class="o">=</span> <span class="n">StreamerTab</span><span class="p">(</span>
-            <span class="n">panel</span><span class="o">.</span><span class="n">notebook</span><span class="p">,</span>
-            <span class="n">plan</span><span class="o">=</span><span class="n">plan</span><span class="p">,</span>
-            <span class="n">validator</span><span class="o">=</span><span class="n">validator</span><span class="p">,</span>
-            <span class="n">streamer</span><span class="o">=</span><span class="n">streamer</span><span class="p">,</span>
-            <span class="n">connection_repository</span><span class="o">=</span><span class="n">connection_repository</span><span class="p">,</span>
-            <span class="n">service</span><span class="o">=</span><span class="n">service</span><span class="p">,</span>
-            <span class="n">stream_config_factory</span><span class="o">=</span><span class="n">ConfigFactory</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="n">val_tab</span><span class="p">:</span> <span class="n">ValidationTab</span> <span class="o">=</span> <span class="n">ValidationTab</span><span class="p">(</span>
-            <span class="n">panel</span><span class="o">.</span><span class="n">notebook</span><span class="p">,</span>
-            <span class="n">plan</span><span class="o">=</span><span class="n">plan</span><span class="p">,</span>
-            <span class="n">validator</span><span class="o">=</span><span class="n">validator</span><span class="p">,</span>
-            <span class="n">service</span><span class="o">=</span><span class="n">service</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="n">jog_tab</span><span class="p">:</span> <span class="n">JogTab</span> <span class="o">=</span> <span class="n">JogTab</span><span class="p">(</span><span class="n">panel</span><span class="o">.</span><span class="n">notebook</span><span class="p">,</span> <span class="n">streamer</span><span class="o">=</span><span class="n">streamer</span><span class="p">)</span>
-        <span class="n">prev_tab</span><span class="p">:</span> <span class="n">PreviewTab</span> <span class="o">=</span> <span class="n">PreviewTabFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">panel</span><span class="o">.</span><span class="n">notebook</span><span class="p">,</span> <span class="n">plan</span><span class="o">=</span><span class="n">plan</span><span class="p">)</span>
+<span class="sd">            :param parent: Parent container widget.</span>
+<span class="sd">            :param bundle: Injected ControlsBundle dependency container.</span>
+<span class="sd">            :return: Assembled ControlsPanel instance.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">assembler</span><span class="p">:</span> <span class="n">ITabsAssembler</span> <span class="o">=</span> <span class="n">ControlsTabsAssemblerFactory</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
 
-        <span class="n">panel</span><span class="o">.</span><span class="n">mount_tabs</span><span class="p">(</span>
-            <span class="n">dsl_editor_tab</span><span class="o">=</span><span class="n">dsl_tab</span><span class="p">,</span>
-            <span class="n">streamer_tab</span><span class="o">=</span><span class="n">stream_tab</span><span class="p">,</span>
-            <span class="n">validation_tab</span><span class="o">=</span><span class="n">val_tab</span><span class="p">,</span>
-            <span class="n">jog_tab</span><span class="o">=</span><span class="n">jog_tab</span><span class="p">,</span>
-            <span class="n">preview_tab</span><span class="o">=</span><span class="n">prev_tab</span><span class="p">,</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">create_with_assembler</span><span class="p">(</span>
+            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
+            <span class="n">bundle</span><span class="o">=</span><span class="n">bundle</span><span class="p">,</span>
+            <span class="n">assembler</span><span class="o">=</span><span class="n">assembler</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ControlsPanelFactory.create_with_assembler">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.controls.controls_panel_factory.html#scarajectory.infrastructure.gui.controls.controls_panel_factory.ControlsPanelFactory.create_with_assembler">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">create_with_assembler</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">parent</span><span class="p">:</span> <span class="n">Widget</span><span class="p">,</span>
+        <span class="n">bundle</span><span class="p">:</span> <span class="n">ControlsBundle</span><span class="p">,</span>
+        <span class="n">assembler</span><span class="p">:</span> <span class="n">ITabsAssembler</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ControlsPanel</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Constructs ControlsPanel and mounts child tabs using injected assembler.</span>
+
+<span class="sd">            :param parent: Parent container widget.</span>
+<span class="sd">            :param bundle: Injected ControlsBundle dependency container.</span>
+<span class="sd">            :param assembler: Injected ITabsAssembler strategy.</span>
+<span class="sd">            :return: Assembled ControlsPanel instance.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">panel</span> <span class="o">=</span> <span class="n">ControlsPanel</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="n">tabs</span><span class="p">:</span> <span class="n">ControlsTabsBundle</span> <span class="o">=</span> <span class="n">assembler</span><span class="o">.</span><span class="n">assemble_tabs</span><span class="p">(</span>
+            <span class="n">panel</span><span class="o">.</span><span class="n">notebook</span><span class="p">,</span> <span class="n">bundle</span>
         <span class="p">)</span>
+        <span class="n">panel</span><span class="o">.</span><span class="n">mount_tabs</span><span class="p">(</span><span class="n">tabs</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">panel</span></div>
 
@@ -152,6 +147,12 @@
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.controls.controls_panel_factory.html#scarajectory.infrastructure.gui.controls.controls_panel_factory.ControlsPanelFactory.get_version">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">get_version</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Returns component version string.</span>
+
+<span class="sd">            :return: Version string.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="n">__version__</span></div>
 </div>
 

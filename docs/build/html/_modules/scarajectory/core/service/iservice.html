@@ -54,19 +54,14 @@
 <span class="sd">    You should have received a copy of the GNU General Public License along</span>
 <span class="sd">    with this program. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 <span class="sd">Info</span>
-<span class="sd">    Defines interface IService for trajectory business logic and subsystem orchestration.</span>
+<span class="sd">    Defines interface IService for trajectory business logic and plan orchestration.</span>
 <span class="sd">&#39;&#39;&#39;</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.itrajectory_plan</span> <span class="kn">import</span> <span class="n">ITrajectoryPlan</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.contract.iplan_storage_service</span> <span class="kn">import</span> <span class="n">IPlanStorageService</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.validation.itrajectory_validator</span> <span class="kn">import</span> <span class="n">ITrajectoryValidator</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.communication.stream.itrajectory_streamer</span> <span class="kn">import</span> <span class="n">ITrajectoryStreamer</span>
-<span class="kn">from</span> <span class="nn">scaralang.core.service.dsl.iscara_dsl_service</span> <span class="kn">import</span> <span class="n">IScaraDslService</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.contract.iplan_command_service</span> <span class="kn">import</span> <span class="n">IPlanCommandService</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.trajectory.validation.itrajectory_validator</span> <span class="kn">import</span> <span class="n">ITrajectoryValidator</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.contract.iplan_persistence_service</span> <span class="kn">import</span> <span class="n">IPlanPersistenceService</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.contract.iplan_validation_service</span> <span class="kn">import</span> <span class="n">IPlanValidationService</span>
 
@@ -74,7 +69,7 @@
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -83,20 +78,26 @@
 <div class="viewcode-block" id="IService">
 <a class="viewcode-back" href="../../../../scarajectory.core.service.iservice.html#scarajectory.core.service.iservice.IService">[docs]</a>
 <span class="nd">@runtime_checkable</span>
-<span class="k">class</span> <span class="nc">IService</span><span class="p">(</span><span class="n">IPlanCommandService</span><span class="p">,</span> <span class="n">IPlanPersistenceService</span><span class="p">,</span> <span class="n">IPlanValidationService</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">IService</span><span class="p">(</span><span class="n">IPlanPersistenceService</span><span class="p">,</span> <span class="n">IPlanValidationService</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Composite interface for orchestrating trajectory operations and services.</span>
+<span class="sd">        Interface for orchestrating trajectory validation, persistence, and plan lifecycle.</span>
 
 <span class="sd">        It defines:</span>
 
+<span class="sd">            :properties:</span>
+<span class="sd">                | validator - Returns active trajectory validator.</span>
 <span class="sd">            :methods:</span>
 <span class="sd">                | is_initialized - Checks if the service is properly initialized.</span>
-<span class="sd">                | get_plan - Returns the active ITrajectoryPlan.</span>
-<span class="sd">                | get_storage - Returns the active IPlanStorageService.</span>
-<span class="sd">                | get_validator - Returns the active ITrajectoryValidator.</span>
-<span class="sd">                | get_streamer - Returns the active ITrajectoryStreamer.</span>
-<span class="sd">                | get_dsl_service - Returns the active IScaraDslService.</span>
+<span class="sd">                | clear_plan - Clears all waypoints from active plan.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">validator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ITrajectoryValidator</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Returns the active trajectory validator.</span>
+
+<span class="sd">            :return: ITrajectoryValidator instance.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
 
 <div class="viewcode-block" id="IService.is_initialized">
 <a class="viewcode-back" href="../../../../scarajectory.core.service.iservice.html#scarajectory.core.service.iservice.IService.is_initialized">[docs]</a>
@@ -108,56 +109,13 @@
 <span class="sd">        &#39;&#39;&#39;</span></div>
 
 
-<div class="viewcode-block" id="IService.get_plan">
-<a class="viewcode-back" href="../../../../scarajectory.core.service.iservice.html#scarajectory.core.service.iservice.IService.get_plan">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ITrajectoryPlan</span><span class="p">:</span>
+<div class="viewcode-block" id="IService.clear_plan">
+<a class="viewcode-back" href="../../../../scarajectory.core.service.iservice.html#scarajectory.core.service.iservice.IService.clear_plan">[docs]</a>
+    <span class="k">def</span> <span class="nf">clear_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Returns the active ITrajectoryPlan.</span>
-
-<span class="sd">            :return: ITrajectoryPlan instance.</span>
-<span class="sd">        &#39;&#39;&#39;</span></div>
-
-
-<div class="viewcode-block" id="IService.get_storage">
-<a class="viewcode-back" href="../../../../scarajectory.core.service.iservice.html#scarajectory.core.service.iservice.IService.get_storage">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_storage</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IPlanStorageService</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Returns the active IPlanStorageService.</span>
-
-<span class="sd">            :return: IPlanStorageService instance.</span>
-<span class="sd">        &#39;&#39;&#39;</span></div>
-
-
-<div class="viewcode-block" id="IService.get_validator">
-<a class="viewcode-back" href="../../../../scarajectory.core.service.iservice.html#scarajectory.core.service.iservice.IService.get_validator">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_validator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ITrajectoryValidator</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Returns the active ITrajectoryValidator.</span>
-
-<span class="sd">            :return: ITrajectoryValidator instance.</span>
-<span class="sd">        &#39;&#39;&#39;</span></div>
-
-
-<div class="viewcode-block" id="IService.get_streamer">
-<a class="viewcode-back" href="../../../../scarajectory.core.service.iservice.html#scarajectory.core.service.iservice.IService.get_streamer">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_streamer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ITrajectoryStreamer</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Returns the active ITrajectoryStreamer.</span>
-
-<span class="sd">            :return: ITrajectoryStreamer instance.</span>
-<span class="sd">        &#39;&#39;&#39;</span></div>
-
-
-<div class="viewcode-block" id="IService.get_dsl_service">
-<a class="viewcode-back" href="../../../../scarajectory.core.service.iservice.html#scarajectory.core.service.iservice.IService.get_dsl_service">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_dsl_service</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IScaraDslService</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Returns the active IScaraDslService.</span>
-
-<span class="sd">            :return: IScaraDslService instance.</span>
+<span class="sd">            Clears all waypoints from active plan.</span>
 <span class="sd">        &#39;&#39;&#39;</span></div>
 </div>
-
 
 </pre></div>
 

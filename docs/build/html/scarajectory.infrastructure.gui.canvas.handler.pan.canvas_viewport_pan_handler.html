@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler module &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
+    
+    <script src="_static/documentation_options.js?v=57319df4"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler_factory module" href="scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler_factory.html" />
+    <link rel="prev" title="scarajectory.infrastructure.gui.canvas.handler.pan package" href="scarajectory.infrastructure.gui.canvas.handler.pan.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler_factory.html" title="scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler_factory module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.canvas.handler.pan.html" title="scarajectory.infrastructure.gui.canvas.handler.pan package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.gui.html" >scarajectory.infrastructure.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.infrastructure.gui.canvas.html" >scarajectory.infrastructure.gui.canvas package</a> &#187;</li>
+          <li class="nav-item nav-item-6"><a href="scarajectory.infrastructure.gui.canvas.handler.html" >scarajectory.infrastructure.gui.canvas.handler package</a> &#187;</li>
+          <li class="nav-item nav-item-7"><a href="scarajectory.infrastructure.gui.canvas.handler.pan.html" accesskey="U">scarajectory.infrastructure.gui.canvas.handler.pan package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler">
+<span id="scarajectory-infrastructure-gui-canvas-handler-pan-canvas-viewport-pan-handler-module"></span><h1>scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler module<a class="headerlink" href="#module-scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler" title="Link to this heading">¶</a></h1>
+<dl class="simple">
+<dt>Module</dt><dd><p>canvas_viewport_pan_handler.py</p>
+</dd>
+<dt>Copyright</dt><dd><p>Copyright (C) 2026 Vladimir Roncevic &lt;<a class="reference external" href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+scarajectory is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+scarajectory is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along
+with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+</dd>
+<dt>Info</dt><dd><p>Dedicated handler translating mouse pan events into canvas viewport
+offsets.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler.CanvasViewportPanHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler.</span></span><span class="sig-name descname"><span class="pre">CanvasViewportPanHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.model.viewport_transform.html#scarajectory.infrastructure.gui.model.viewport_transform.ViewportTransform" title="scarajectory.infrastructure.gui.model.viewport_transform.ViewportTransform"><span class="pre">ViewportTransform</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.model.canvas_interaction_state.html#scarajectory.infrastructure.gui.model.canvas_interaction_state.CanvasInteractionState" title="scarajectory.infrastructure.gui.model.canvas_interaction_state.CanvasInteractionState"><span class="pre">CanvasInteractionState</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas/handler/pan/canvas_viewport_pan_handler.html#CanvasViewportPanHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler.CanvasViewportPanHandler" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Handles mouse button press, drag, and release for viewport panning.</p>
+<p>It defines:</p>
+<blockquote>
+<div><dl class="field-list">
+<dt class="field-odd">attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="line-block">
+<div class="line">_vp - Viewport transformation matrix.</div>
+<div class="line">_state - Interactive mouse pan, drag, and selection state.</div>
+</div>
+</dd>
+<dt class="field-even">methods<span class="colon">:</span></dt>
+<dd class="field-even"><div class="line-block">
+<div class="line">__init__ - Initializes pan handler with viewport and state.</div>
+<div class="line">try_start_pan - Checks event and initiates viewport panning.</div>
+<div class="line">pan_drag - Translates viewport offsets during active drag.</div>
+<div class="line">stop_pan - Terminates active viewport panning on release.</div>
+<div class="line">is_panning - Queries active panning state.</div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler.CanvasViewportPanHandler._state">
+<span class="sig-name descname"><span class="pre">_state</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.model.canvas_interaction_state.html#scarajectory.infrastructure.gui.model.canvas_interaction_state.CanvasInteractionState" title="scarajectory.infrastructure.gui.model.canvas_interaction_state.CanvasInteractionState"><span class="pre">CanvasInteractionState</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler.CanvasViewportPanHandler._state" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler.CanvasViewportPanHandler._vp">
+<span class="sig-name descname"><span class="pre">_vp</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.model.viewport_transform.html#scarajectory.infrastructure.gui.model.viewport_transform.ViewportTransform" title="scarajectory.infrastructure.gui.model.viewport_transform.ViewportTransform"><span class="pre">ViewportTransform</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler.CanvasViewportPanHandler._vp" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler.CanvasViewportPanHandler.is_panning">
+<span class="sig-name descname"><span class="pre">is_panning</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas/handler/pan/canvas_viewport_pan_handler.html#CanvasViewportPanHandler.is_panning"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler.CanvasViewportPanHandler.is_panning" title="Link to this definition">¶</a></dt>
+<dd><p>Queries active panning state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if currently panning, False otherwise.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler.CanvasViewportPanHandler.pan_drag">
+<span class="sig-name descname"><span class="pre">pan_drag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas/handler/pan/canvas_viewport_pan_handler.html#CanvasViewportPanHandler.pan_drag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler.CanvasViewportPanHandler.pan_drag" title="Link to this definition">¶</a></dt>
+<dd><p>Translates viewport offsets during active mouse drag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>event_x</strong> – Current mouse X pixel coordinate.</p></li>
+<li><p><strong>event_y</strong> – Current mouse Y pixel coordinate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if viewport offset was modified, False otherwise.</p>
+</dd>
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler.CanvasViewportPanHandler.stop_pan">
+<span class="sig-name descname"><span class="pre">stop_pan</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas/handler/pan/canvas_viewport_pan_handler.html#CanvasViewportPanHandler.stop_pan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler.CanvasViewportPanHandler.stop_pan" title="Link to this definition">¶</a></dt>
+<dd><p>Terminates active viewport panning on mouse release.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if panning was terminated, False if not panning.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler.CanvasViewportPanHandler.try_start_pan">
+<span class="sig-name descname"><span class="pre">try_start_pan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Event</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas/handler/pan/canvas_viewport_pan_handler.html#CanvasViewportPanHandler.try_start_pan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler.CanvasViewportPanHandler.try_start_pan" title="Link to this definition">¶</a></dt>
+<dd><p>Checks event and initiates panning if button 2 or 3 is pressed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>event</strong> – Tkinter mouse Event.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if panning was initiated, False otherwise.</p>
+</dd>
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler module</a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler.CanvasViewportPanHandler"><code class="docutils literal notranslate"><span class="pre">CanvasViewportPanHandler</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler.CanvasViewportPanHandler._state"><code class="docutils literal notranslate"><span class="pre">CanvasViewportPanHandler._state</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler.CanvasViewportPanHandler._vp"><code class="docutils literal notranslate"><span class="pre">CanvasViewportPanHandler._vp</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler.CanvasViewportPanHandler.is_panning"><code class="docutils literal notranslate"><span class="pre">CanvasViewportPanHandler.is_panning()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler.CanvasViewportPanHandler.pan_drag"><code class="docutils literal notranslate"><span class="pre">CanvasViewportPanHandler.pan_drag()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler.CanvasViewportPanHandler.stop_pan"><code class="docutils literal notranslate"><span class="pre">CanvasViewportPanHandler.stop_pan()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler.CanvasViewportPanHandler.try_start_pan"><code class="docutils literal notranslate"><span class="pre">CanvasViewportPanHandler.try_start_pan()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.canvas.handler.pan.html"
+                          title="previous chapter">scarajectory.infrastructure.gui.canvas.handler.pan package</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler_factory.html"
+                          title="next chapter">scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler_factory module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler_factory.html" title="scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler_factory module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.canvas.handler.pan.html" title="scarajectory.infrastructure.gui.canvas.handler.pan package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.gui.html" >scarajectory.infrastructure.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.infrastructure.gui.canvas.html" >scarajectory.infrastructure.gui.canvas package</a> &#187;</li>
+          <li class="nav-item nav-item-6"><a href="scarajectory.infrastructure.gui.canvas.handler.html" >scarajectory.infrastructure.gui.canvas.handler package</a> &#187;</li>
+          <li class="nav-item nav-item-7"><a href="scarajectory.infrastructure.gui.canvas.handler.pan.html" >scarajectory.infrastructure.gui.canvas.handler.pan package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

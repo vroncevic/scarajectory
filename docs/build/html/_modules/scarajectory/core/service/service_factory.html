@@ -59,18 +59,17 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.itrajectory_plan</span> <span class="kn">import</span> <span class="n">ITrajectoryPlan</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.contract.iplan_storage_service</span> <span class="kn">import</span> <span class="n">IPlanStorageService</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.validation.itrajectory_validator</span> <span class="kn">import</span> <span class="n">ITrajectoryValidator</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.communication.stream.itrajectory_streamer</span> <span class="kn">import</span> <span class="n">ITrajectoryStreamer</span>
-<span class="kn">from</span> <span class="nn">scaralang.core.service.dsl.iscara_dsl_service</span> <span class="kn">import</span> <span class="n">IScaraDslService</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.trajectory.validation.itrajectory_validator</span> <span class="kn">import</span> <span class="n">ITrajectoryValidator</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.engine</span> <span class="kn">import</span> <span class="n">Service</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.storage.iplan_storage_service</span> <span class="kn">import</span> <span class="n">IPlanStorageService</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.mutation.iplan_bulk_mutator</span> <span class="kn">import</span> <span class="n">IPlanBulkMutator</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.store.iwaypoint_store</span> <span class="kn">import</span> <span class="n">IWaypointStore</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -86,6 +85,7 @@
 
 <span class="sd">            :methods:</span>
 <span class="sd">                | create - Assembles and instantiates a Service instance.</span>
+<span class="sd">                | get_version - Returns factory version string.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
 <div class="viewcode-block" id="ServiceFactory.create">
@@ -94,29 +94,39 @@
     <span class="k">def</span> <span class="nf">create</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">validator</span><span class="p">:</span> <span class="n">ITrajectoryValidator</span><span class="p">,</span>
-        <span class="n">streamer</span><span class="p">:</span> <span class="n">ITrajectoryStreamer</span><span class="p">,</span>
         <span class="n">storage</span><span class="p">:</span> <span class="n">IPlanStorageService</span><span class="p">,</span>
-        <span class="n">plan</span><span class="p">:</span> <span class="n">ITrajectoryPlan</span><span class="p">,</span>
-        <span class="n">dsl_service</span><span class="p">:</span> <span class="n">IScaraDslService</span><span class="p">,</span>
+        <span class="n">store</span><span class="p">:</span> <span class="n">IWaypointStore</span><span class="p">,</span>
+        <span class="n">mutation</span><span class="p">:</span> <span class="n">IPlanBulkMutator</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Service</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Assembles and instantiates a Service facade instance.</span>
+<span class="sd">            Assembles and instantiates a Service instance.</span>
 
 <span class="sd">            :param validator: ITrajectoryValidator instance.</span>
-<span class="sd">            :param streamer: ITrajectoryStreamer instance.</span>
 <span class="sd">            :param storage: IPlanStorageService instance.</span>
-<span class="sd">            :param plan: ITrajectoryPlan instance.</span>
-<span class="sd">            :param dsl_service: IScaraDslService instance.</span>
+<span class="sd">            :param store: IWaypointStore instance.</span>
+<span class="sd">            :param mutation: IPlanBulkMutator instance.</span>
 <span class="sd">            :return: Fully assembled Service instance.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="n">Service</span><span class="p">(</span>
             <span class="n">validator</span><span class="o">=</span><span class="n">validator</span><span class="p">,</span>
-            <span class="n">streamer</span><span class="o">=</span><span class="n">streamer</span><span class="p">,</span>
             <span class="n">storage</span><span class="o">=</span><span class="n">storage</span><span class="p">,</span>
-            <span class="n">plan</span><span class="o">=</span><span class="n">plan</span><span class="p">,</span>
-            <span class="n">dsl_service</span><span class="o">=</span><span class="n">dsl_service</span><span class="p">,</span>
+            <span class="n">store</span><span class="o">=</span><span class="n">store</span><span class="p">,</span>
+            <span class="n">mutation</span><span class="o">=</span><span class="n">mutation</span><span class="p">,</span>
         <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ServiceFactory.get_version">
+<a class="viewcode-back" href="../../../../scarajectory.core.service.service_factory.html#scarajectory.core.service.service_factory.ServiceFactory.get_version">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_version</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Returns the factory version string.</span>
+
+<span class="sd">            :return: Factory version string.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">__version__</span></div>
 </div>
 
 </pre></div>

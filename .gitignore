@@ -11,3 +11,6 @@ __pycache__/
 .coverage
 htmlcov/
 .coverage.scarajectory
+
+# Architecture Audit
+.issues/

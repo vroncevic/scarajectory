@@ -15,7 +15,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="scarajectory.infrastructure.gui.engine module" href="scarajectory.infrastructure.gui.engine.html" />
+    <link rel="next" title="scarajectory.infrastructure.gui.validation package" href="scarajectory.infrastructure.gui.validation.html" />
     <link rel="prev" title="scarajectory.infrastructure.gui.toolbar.toolbar module" href="scarajectory.infrastructure.gui.toolbar.toolbar.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -28,7 +28,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.gui.engine.html" title="scarajectory.infrastructure.gui.engine module"
+          <a href="scarajectory.infrastructure.gui.validation.html" title="scarajectory.infrastructure.gui.validation package"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="scarajectory.infrastructure.gui.toolbar.toolbar.html" title="scarajectory.infrastructure.gui.toolbar.toolbar module"
@@ -79,23 +79,20 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dt class="field-odd">methods<span class="colon">:</span></dt>
 <dd class="field-odd"><div class="line-block">
 <div class="line">create - Assembles and instantiates a Toolbar widget.</div>
+<div class="line">get_version - Returns factory version string.</div>
 </div>
 </dd>
 </dl>
 </div></blockquote>
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.toolbar.toolbar_factory.ToolbarFactory.create">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Widget</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">canvas</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.canvas.icanvas.html#scarajectory.infrastructure.gui.canvas.icanvas.ICanvas" title="scarajectory.infrastructure.gui.canvas.icanvas.ICanvas"><span class="pre">ICanvas</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">plan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.plan.itrajectory_plan.html#scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan" title="scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan"><span class="pre">ITrajectoryPlan</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.model.canvas_settings.html#scarajectory.infrastructure.gui.model.canvas_settings.CanvasSettings" title="scarajectory.infrastructure.gui.model.canvas_settings.CanvasSettings"><span class="pre">CanvasSettings</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.infrastructure.gui.toolbar.toolbar.html#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar" title="scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar"><span class="pre">Toolbar</span></a></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/toolbar/toolbar_factory.html#ToolbarFactory.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.toolbar.toolbar_factory.ToolbarFactory.create" title="Link to this definition">¶</a></dt>
-<dd><p>Assembles and instantiates a Toolbar widget.</p>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bundle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.toolbar.bundle.html#scarajectory.infrastructure.gui.toolbar.bundle.ToolbarBundle" title="scarajectory.infrastructure.gui.toolbar.bundle.ToolbarBundle"><span class="pre">ToolbarBundle</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.infrastructure.gui.toolbar.toolbar.html#scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar" title="scarajectory.infrastructure.gui.toolbar.toolbar.Toolbar"><span class="pre">Toolbar</span></a></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/toolbar/toolbar_factory.html#ToolbarFactory.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.toolbar.toolbar_factory.ToolbarFactory.create" title="Link to this definition">¶</a></dt>
+<dd><p>Assembles and instantiates a Toolbar widget using parameter bundle.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>parent</strong> – Parent container widget.</p></li>
-<li><p><strong>canvas</strong> – ICanvas interface instance.</p></li>
-<li><p><strong>plan</strong> – ITrajectoryPlan instance.</p></li>
-<li><p><strong>r_min</strong> – Minimum reach radius in mm.</p></li>
-<li><p><strong>r_max</strong> – Maximum reach radius in mm.</p></li>
-<li><p><strong>settings</strong> – CanvasSettings instance.</p></li>
+<li><p><strong>bundle</strong> – Injected ToolbarBundle collaborator and settings bundle.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -103,6 +100,20 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd>
 <dt class="field-odd">Exceptions<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.toolbar.toolbar_factory.ToolbarFactory.get_version">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/toolbar/toolbar_factory.html#ToolbarFactory.get_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.toolbar.toolbar_factory.ToolbarFactory.get_version" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the factory version string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Factory version string.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -124,6 +135,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <li><a class="reference internal" href="#">scarajectory.infrastructure.gui.toolbar.toolbar_factory module</a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.toolbar.toolbar_factory.ToolbarFactory"><code class="docutils literal notranslate"><span class="pre">ToolbarFactory</span></code></a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.toolbar.toolbar_factory.ToolbarFactory.create"><code class="docutils literal notranslate"><span class="pre">ToolbarFactory.create()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.toolbar.toolbar_factory.ToolbarFactory.get_version"><code class="docutils literal notranslate"><span class="pre">ToolbarFactory.get_version()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -138,8 +150,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.gui.engine.html"
-                          title="next chapter">scarajectory.infrastructure.gui.engine module</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.validation.html"
+                          title="next chapter">scarajectory.infrastructure.gui.validation package</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -172,7 +184,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.gui.engine.html" title="scarajectory.infrastructure.gui.engine module"
+          <a href="scarajectory.infrastructure.gui.validation.html" title="scarajectory.infrastructure.gui.validation package"
              >next</a> |</li>
         <li class="right" >
           <a href="scarajectory.infrastructure.gui.toolbar.toolbar.html" title="scarajectory.infrastructure.gui.toolbar.toolbar module"

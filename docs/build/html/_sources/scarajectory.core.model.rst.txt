@@ -7,9 +7,12 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.core.model.communication
-   scarajectory.core.model.kinematics
-   scarajectory.core.model.trajectory
+   scarajectory.core.model.jog
+   scarajectory.core.model.preferences
+   scarajectory.core.model.protocol
+   scarajectory.core.model.state
+   scarajectory.core.model.streaming
+   scarajectory.core.model.telemetry
 
 Module contents
 ---------------

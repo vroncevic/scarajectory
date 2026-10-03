@@ -61,14 +61,14 @@
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.model.canvas_tool_mode</span> <span class="kn">import</span> <span class="n">CanvasToolMode</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.model.canvas_settings</span> <span class="kn">import</span> <span class="n">CanvasSettings</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.model.canvas_tool_mode</span> <span class="kn">import</span> <span class="n">CanvasToolMode</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -86,10 +86,6 @@
 <span class="sd">            :methods:</span>
 <span class="sd">                | set_tool_mode - Sets the active drawing/selection tool mode.</span>
 <span class="sd">                | update_settings - Updates default point properties.</span>
-<span class="sd">                | zoom_in - Scales canvas view in by 1.25x.</span>
-<span class="sd">                | zoom_out - Scales canvas view out by 0.8x.</span>
-<span class="sd">                | reset_view - Resets viewport zoom to 100%.</span>
-<span class="sd">                | fit_reach_view - Fits maximum reach circle to canvas view.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
 <div class="viewcode-block" id="ICanvas.set_tool_mode">
@@ -109,38 +105,6 @@
 <span class="sd">            Updates default point properties.</span>
 
 <span class="sd">            :param settings: CanvasSettings instance.</span>
-<span class="sd">        &#39;&#39;&#39;</span></div>
-
-
-<div class="viewcode-block" id="ICanvas.zoom_in">
-<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.canvas.icanvas.html#scarajectory.infrastructure.gui.canvas.icanvas.ICanvas.zoom_in">[docs]</a>
-    <span class="k">def</span> <span class="nf">zoom_in</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Scales canvas view in by 1.25x.</span>
-<span class="sd">        &#39;&#39;&#39;</span></div>
-
-
-<div class="viewcode-block" id="ICanvas.zoom_out">
-<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.canvas.icanvas.html#scarajectory.infrastructure.gui.canvas.icanvas.ICanvas.zoom_out">[docs]</a>
-    <span class="k">def</span> <span class="nf">zoom_out</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Scales canvas view out by 0.8x.</span>
-<span class="sd">        &#39;&#39;&#39;</span></div>
-
-
-<div class="viewcode-block" id="ICanvas.reset_view">
-<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.canvas.icanvas.html#scarajectory.infrastructure.gui.canvas.icanvas.ICanvas.reset_view">[docs]</a>
-    <span class="k">def</span> <span class="nf">reset_view</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Resets viewport zoom to 100%.</span>
-<span class="sd">        &#39;&#39;&#39;</span></div>
-
-
-<div class="viewcode-block" id="ICanvas.fit_reach_view">
-<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.canvas.icanvas.html#scarajectory.infrastructure.gui.canvas.icanvas.ICanvas.fit_reach_view">[docs]</a>
-    <span class="k">def</span> <span class="nf">fit_reach_view</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Fits maximum reach circle to canvas view.</span>
 <span class="sd">        &#39;&#39;&#39;</span></div>
 </div>
 

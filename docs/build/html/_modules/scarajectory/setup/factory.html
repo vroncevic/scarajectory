@@ -66,47 +66,28 @@
 <span class="kn">from</span> <span class="nn">ats_utilities.base.setup.options</span> <span class="kn">import</span> <span class="n">BaseBundleOptions</span>
 <span class="kn">from</span> <span class="nn">ats_utilities.context.bundle</span> <span class="kn">import</span> <span class="n">ContextBundle</span>
 <span class="kn">from</span> <span class="nn">ats_utilities.context.factory</span> <span class="kn">import</span> <span class="n">ContextBundleFactory</span>
-
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.settings.config_loader_factory</span> <span class="kn">import</span> <span class="n">ScaraConfigLoaderFactory</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.config.iscara_config_loader</span> <span class="kn">import</span> <span class="n">IScaraConfigLoader</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.kinematics.scara_bounds</span> <span class="kn">import</span> <span class="n">ScaraBounds</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.kinematics.transmission_parameters</span> <span class="kn">import</span> <span class="n">TransmissionParameters</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.trajectory_plan</span> <span class="kn">import</span> <span class="n">TrajectoryPlan</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.trajectory_plan_factory</span> <span class="kn">import</span> <span class="n">TrajectoryPlanFactory</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.kinematics.ikinematics_service</span> <span class="kn">import</span> <span class="n">IKinematicsService</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.kinematics.kinematics_service_factory</span> <span class="kn">import</span> <span class="n">KinematicsServiceFactory</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.validation.itrajectory_validator</span> <span class="kn">import</span> <span class="n">ITrajectoryValidator</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.validation.trajectory_validator_factory</span> <span class="kn">import</span> <span class="n">TrajectoryValidatorFactory</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.preferences.connection_repository</span> <span class="kn">import</span> <span class="n">ConnectionRepository</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.preferences.connection_repository_factory</span> <span class="kn">import</span> <span class="n">ConnectionRepositoryFactory</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.storage.plan_storage_service</span> <span class="kn">import</span> <span class="n">PlanStorageService</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.storage.plan_storage_service_factory</span> <span class="kn">import</span> <span class="n">PlanStorageServiceFactory</span>
-<span class="kn">from</span> <span class="nn">scaralang.core.service.dsl.iscara_dsl_service</span> <span class="kn">import</span> <span class="n">IScaraDslService</span>
-<span class="kn">from</span> <span class="nn">scaralang.core.service.dsl.scara_dsl_service_factory</span> <span class="kn">import</span> <span class="n">ScaraDslServiceFactory</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.engine</span> <span class="kn">import</span> <span class="n">Service</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.service_factory</span> <span class="kn">import</span> <span class="n">ServiceFactory</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.transport.itransport</span> <span class="kn">import</span> <span class="n">ITransport</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.transport.transport_factory</span> <span class="kn">import</span> <span class="n">TransportFactory</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.communication.stream.itrajectory_streamer</span> <span class="kn">import</span> <span class="n">ITrajectoryStreamer</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory</span> <span class="kn">import</span> <span class="n">TrajectoryStreamerFactory</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.engine</span> <span class="kn">import</span> <span class="n">ScarajectoryGUI</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.gui_factory</span> <span class="kn">import</span> <span class="n">ScarajectoryGUIFactory</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.cli.engine</span> <span class="kn">import</span> <span class="n">CLI</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.cli.setup.bundle</span> <span class="kn">import</span> <span class="n">CLIBundle</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.cli.setup.options</span> <span class="kn">import</span> <span class="n">CLIBundleOptions</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.cli.setup.factory</span> <span class="kn">import</span> <span class="n">CLIBundleFactory</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.model.kinematics.scara_bounds</span> <span class="kn">import</span> <span class="n">ScaraBounds</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.settings.iscara_bounds_loader</span> <span class="kn">import</span> <span class="n">IScaraBoundsLoader</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.settings.bounds.scara_bounds_loader_factory</span> <span class="kn">import</span> <span class="n">ScaraBoundsLoaderFactory</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.settings.settings_reader</span> <span class="kn">import</span> <span class="n">SettingsReader</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.settings.settings_reader_factory</span> <span class="kn">import</span> <span class="n">SettingsReaderFactory</span>
+<span class="kn">from</span> <span class="nn">scarajectory.setup.assembly.app_core_assembler</span> <span class="kn">import</span> <span class="n">AppCoreAssembler</span>
+<span class="kn">from</span> <span class="nn">scarajectory.setup.assembly.app_core_bundle</span> <span class="kn">import</span> <span class="n">AppCoreBundle</span>
+<span class="kn">from</span> <span class="nn">scarajectory.setup.assembly.app_presentation_assembler</span> <span class="kn">import</span> <span class="n">AppPresentationAssembler</span>
+<span class="kn">from</span> <span class="nn">scarajectory.setup.assembly.app_runtime_assembler</span> <span class="kn">import</span> <span class="n">AppRuntimeAssembler</span>
+<span class="kn">from</span> <span class="nn">scarajectory.setup.assembly.app_runtime_bundle</span> <span class="kn">import</span> <span class="n">AppRuntimeBundle</span>
 <span class="kn">from</span> <span class="nn">scarajectory.setup.bundle</span> <span class="kn">import</span> <span class="n">SCARAjectoryBundle</span>
-<span class="kn">from</span> <span class="nn">scarajectory.setup.options</span> <span class="kn">import</span> <span class="n">SCARAjectoryBundleOptions</span>
-<span class="kn">from</span> <span class="nn">scarajectory.setup.registry</span> <span class="kn">import</span> <span class="n">SCARAjectoryBundleRegistry</span>
-<span class="kn">from</span> <span class="nn">scarajectory.setup.dependencies</span> <span class="kn">import</span> <span class="n">SCARAjectoryBundleDependencies</span>
-<span class="kn">from</span> <span class="nn">scarajectory.setup.opt_validator</span> <span class="kn">import</span> <span class="n">SCARAjectoryBundleOptionsValidator</span>
 <span class="kn">from</span> <span class="nn">scarajectory.setup.keys</span> <span class="kn">import</span> <span class="n">SCARAjectoryBundleKeys</span>
+<span class="kn">from</span> <span class="nn">scarajectory.setup.opt_validator</span> <span class="kn">import</span> <span class="n">SCARAjectoryBundleOptionsValidator</span>
+<span class="kn">from</span> <span class="nn">scarajectory.setup.options</span> <span class="kn">import</span> <span class="n">SCARAjectoryBundleOptions</span>
+<span class="kn">from</span> <span class="nn">scarajectory.setup.pipeline.plan_pipeline_builder</span> <span class="kn">import</span> <span class="n">PlanPipelineBuilder</span>
+<span class="kn">from</span> <span class="nn">scarajectory.setup.pipeline.plan_pipeline_bundle</span> <span class="kn">import</span> <span class="n">PlanPipelineBundle</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -122,25 +103,17 @@
 
 <span class="sd">            :attributes:</span>
 <span class="sd">                | _info_file - Path to the scarajectory info file.</span>
-<span class="sd">                | _geometry_config_file - Path to default robot geometry config file.</span>
-<span class="sd">                | _geometry_scheme_file - Path to robot geometry validation scheme.</span>
 <span class="sd">            :methods:</span>
-<span class="sd">                | resolve_bounds - Resolves and constructs ScaraBounds from JSON config and options.</span>
-<span class="sd">                | create_bundle - Creates the scarajectory bundle with optional pre-configured options.</span>
-<span class="sd">                | get_version - Returns the factory version.</span>
+<span class="sd">                | resolve_bounds - Resolves ScaraBounds from config.</span>
+<span class="sd">                | resolve_bounds_with_options - Resolves bounds from options.</span>
+<span class="sd">                | create_bundle - Creates scarajectory bundle with defaults.</span>
+<span class="sd">                | create_bundle_with_options - Creates bundle with options.</span>
+<span class="sd">                | get_version - Returns the factory version string.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="n">_info_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span>
         <span class="n">dirname</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))),</span>
         <span class="s1">&#39;infrastructure&#39;</span><span class="p">,</span> <span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="s1">&#39;scarajectory.cfg&#39;</span>
-    <span class="p">)</span>
-    <span class="n">_geometry_config_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span>
-        <span class="n">dirname</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))),</span>
-        <span class="s1">&#39;infrastructure&#39;</span><span class="p">,</span> <span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="s1">&#39;scara_geometry.json&#39;</span>
-    <span class="p">)</span>
-    <span class="n">_geometry_scheme_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span>
-        <span class="n">dirname</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))),</span>
-        <span class="s1">&#39;infrastructure&#39;</span><span class="p">,</span> <span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="s1">&#39;scheme.json&#39;</span>
     <span class="p">)</span>
 
 <div class="viewcode-block" id="SCARAjectoryBundleFactory.resolve_bounds">
@@ -153,9 +126,10 @@
 <span class="sd">            :return: ScaraBounds domain model.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">loader</span><span class="p">:</span> <span class="n">IScaraConfigLoader</span> <span class="o">=</span> <span class="n">ScaraConfigLoaderFactory</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
-
-        <span class="k">return</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_bounds</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">resolve_bounds_with_options</span><span class="p">(</span>
+            <span class="n">options</span><span class="o">=</span><span class="n">SCARAjectoryBundleOptions</span><span class="p">({}),</span>
+            <span class="n">context_bundle</span><span class="o">=</span><span class="n">ContextBundleFactory</span><span class="o">.</span><span class="n">create_bundle</span><span class="p">(),</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SCARAjectoryBundleFactory.resolve_bounds_with_options">
@@ -164,11 +138,13 @@
     <span class="k">def</span> <span class="nf">resolve_bounds_with_options</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">options</span><span class="p">:</span> <span class="n">SCARAjectoryBundleOptions</span><span class="p">,</span>
+        <span class="n">context_bundle</span><span class="p">:</span> <span class="n">ContextBundle</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ScaraBounds</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Resolves and constructs ScaraBounds from JSON configuration and options.</span>
+<span class="sd">            Resolves ScaraBounds from JSON configuration and options.</span>
 
 <span class="sd">            :param options: Bundle configuration options.</span>
+<span class="sd">            :param context_bundle: Shared ATS ContextBundle instance.</span>
 <span class="sd">            :return: ScaraBounds domain model.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -182,11 +158,20 @@
         <span class="k">if</span> <span class="n">SCARAjectoryBundleKeys</span><span class="o">.</span><span class="n">OPTION_Z_MAX</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
             <span class="n">opts_dict</span><span class="p">[</span><span class="s1">&#39;z_max&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="n">SCARAjectoryBundleKeys</span><span class="o">.</span><span class="n">OPTION_Z_MAX</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">SCARAjectoryBundleKeys</span><span class="o">.</span><span class="n">OPTION_MIN_SPEED</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
-            <span class="n">opts_dict</span><span class="p">[</span><span class="s1">&#39;min_speed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="n">SCARAjectoryBundleKeys</span><span class="o">.</span><span class="n">OPTION_MIN_SPEED</span><span class="p">]</span>
+            <span class="n">opts_dict</span><span class="p">[</span><span class="s1">&#39;min_speed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span>
+                <span class="n">SCARAjectoryBundleKeys</span><span class="o">.</span><span class="n">OPTION_MIN_SPEED</span>
+            <span class="p">]</span>
         <span class="k">if</span> <span class="n">SCARAjectoryBundleKeys</span><span class="o">.</span><span class="n">OPTION_MAX_SPEED</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
-            <span class="n">opts_dict</span><span class="p">[</span><span class="s1">&#39;max_speed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="n">SCARAjectoryBundleKeys</span><span class="o">.</span><span class="n">OPTION_MAX_SPEED</span><span class="p">]</span>
+            <span class="n">opts_dict</span><span class="p">[</span><span class="s1">&#39;max_speed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span>
+                <span class="n">SCARAjectoryBundleKeys</span><span class="o">.</span><span class="n">OPTION_MAX_SPEED</span>
+            <span class="p">]</span>
 
-        <span class="n">loader</span><span class="p">:</span> <span class="n">IScaraConfigLoader</span> <span class="o">=</span> <span class="n">ScaraConfigLoaderFactory</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+        <span class="n">reader</span><span class="p">:</span> <span class="n">SettingsReader</span> <span class="o">=</span> <span class="n">SettingsReaderFactory</span><span class="o">.</span><span class="n">create_with_context</span><span class="p">(</span>
+            <span class="n">context_bundle</span><span class="o">=</span><span class="n">context_bundle</span>
+        <span class="p">)</span>
+        <span class="n">loader</span><span class="p">:</span> <span class="n">IScaraBoundsLoader</span> <span class="o">=</span> <span class="n">ScaraBoundsLoaderFactory</span><span class="o">.</span><span class="n">create_with_reader</span><span class="p">(</span>
+            <span class="n">reader</span><span class="o">=</span><span class="n">reader</span>
+        <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">opts_dict</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_bounds_with_options</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="n">opts_dict</span><span class="p">)</span>
@@ -204,69 +189,8 @@
 <span class="sd">            :return: The scarajectory bundle.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">info_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_info_file</span>
-        <span class="n">base_bundle</span><span class="p">:</span> <span class="n">BaseBundle</span> <span class="o">=</span> <span class="n">BaseBundleFactory</span><span class="o">.</span><span class="n">create_bundle</span><span class="p">(</span>
-            <span class="n">options</span><span class="o">=</span><span class="n">BaseBundleOptions</span><span class="p">(</span>
-                <span class="n">info_file</span><span class="o">=</span><span class="n">info_file</span><span class="p">,</span>
-                <span class="n">use_generator</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                <span class="n">context_bundle</span><span class="o">=</span><span class="n">ContextBundleFactory</span><span class="o">.</span><span class="n">create_bundle</span><span class="p">(),</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
-        <span class="n">context_bundle</span><span class="p">:</span> <span class="n">ContextBundle</span> <span class="o">=</span> <span class="n">base_bundle</span><span class="o">.</span><span class="n">context_bundle</span>
-        <span class="n">connection_repo</span><span class="p">:</span> <span class="n">ConnectionRepository</span> <span class="o">=</span> <span class="n">ConnectionRepositoryFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">context_bundle</span><span class="o">=</span><span class="n">context_bundle</span>
-        <span class="p">)</span>
-
-        <span class="n">loader</span><span class="p">:</span> <span class="n">IScaraConfigLoader</span> <span class="o">=</span> <span class="n">ScaraConfigLoaderFactory</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
-        <span class="n">bounds</span><span class="p">:</span> <span class="n">ScaraBounds</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">resolve_bounds</span><span class="p">()</span>
-        <span class="n">transmission</span><span class="p">:</span> <span class="n">TransmissionParameters</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_transmission</span><span class="p">()</span>
-        <span class="n">kinematics</span><span class="p">:</span> <span class="n">IKinematicsService</span> <span class="o">=</span> <span class="n">KinematicsServiceFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">bounds</span><span class="o">=</span><span class="n">bounds</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="n">validator</span><span class="p">:</span> <span class="n">ITrajectoryValidator</span> <span class="o">=</span> <span class="n">TrajectoryValidatorFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">kinematics</span><span class="o">=</span><span class="n">kinematics</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="n">transport</span><span class="p">:</span> <span class="n">ITransport</span> <span class="o">=</span> <span class="n">TransportFactory</span><span class="o">.</span><span class="n">create_default_transport</span><span class="p">()</span>
-        <span class="n">streamer</span><span class="p">:</span> <span class="n">ITrajectoryStreamer</span> <span class="o">=</span> <span class="n">TrajectoryStreamerFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">transport</span><span class="o">=</span><span class="n">transport</span>
-        <span class="p">)</span>
-        <span class="n">storage</span><span class="p">:</span> <span class="n">PlanStorageService</span> <span class="o">=</span> <span class="n">PlanStorageServiceFactory</span><span class="o">.</span><span class="n">create_with_context</span><span class="p">(</span>
-            <span class="n">context_bundle</span><span class="o">=</span><span class="n">context_bundle</span>
-        <span class="p">)</span>
-        <span class="n">plan</span><span class="p">:</span> <span class="n">TrajectoryPlan</span> <span class="o">=</span> <span class="n">TrajectoryPlanFactory</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
-        <span class="n">dsl_service</span><span class="p">:</span> <span class="n">IScaraDslService</span> <span class="o">=</span> <span class="n">ScaraDslServiceFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">validator</span><span class="o">=</span><span class="n">validator</span><span class="p">,</span>
-            <span class="n">kinematics</span><span class="o">=</span><span class="n">kinematics</span><span class="p">,</span>
-            <span class="n">transmission</span><span class="o">=</span><span class="n">transmission</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="n">service</span><span class="p">:</span> <span class="n">Service</span> <span class="o">=</span> <span class="n">ServiceFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">validator</span><span class="o">=</span><span class="n">validator</span><span class="p">,</span>
-            <span class="n">streamer</span><span class="o">=</span><span class="n">streamer</span><span class="p">,</span>
-            <span class="n">storage</span><span class="o">=</span><span class="n">storage</span><span class="p">,</span>
-            <span class="n">plan</span><span class="o">=</span><span class="n">plan</span><span class="p">,</span>
-            <span class="n">dsl_service</span><span class="o">=</span><span class="n">dsl_service</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="n">gui</span><span class="p">:</span> <span class="n">ScarajectoryGUI</span> <span class="o">=</span> <span class="n">ScarajectoryGUIFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">service</span><span class="o">=</span><span class="n">service</span><span class="p">,</span>
-            <span class="n">connection_repository</span><span class="o">=</span><span class="n">connection_repo</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="n">cli_bundle</span><span class="p">:</span> <span class="n">CLIBundle</span> <span class="o">=</span> <span class="n">CLIBundleFactory</span><span class="o">.</span><span class="n">create_bundle</span><span class="p">(</span>
-            <span class="n">options</span><span class="o">=</span><span class="n">CLIBundleOptions</span><span class="p">(</span>
-                <span class="n">service</span><span class="o">=</span><span class="n">service</span><span class="p">,</span>
-                <span class="n">parser</span><span class="o">=</span><span class="n">base_bundle</span><span class="o">.</span><span class="n">option_manager</span><span class="p">,</span>
-                <span class="n">gui</span><span class="o">=</span><span class="n">gui</span><span class="p">,</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
-        <span class="n">cli</span><span class="p">:</span> <span class="n">CLI</span> <span class="o">=</span> <span class="n">CLI</span><span class="p">(</span><span class="n">bundle</span><span class="o">=</span><span class="n">cli_bundle</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">SCARAjectoryBundleRegistry</span><span class="o">.</span><span class="n">create_bundle</span><span class="p">(</span>
-            <span class="n">dependencies</span><span class="o">=</span><span class="n">SCARAjectoryBundleDependencies</span><span class="p">(</span>
-                <span class="n">base</span><span class="o">=</span><span class="n">base_bundle</span><span class="p">,</span>
-                <span class="n">service</span><span class="o">=</span><span class="n">service</span><span class="p">,</span>
-                <span class="n">gui</span><span class="o">=</span><span class="n">gui</span><span class="p">,</span>
-                <span class="n">streamer</span><span class="o">=</span><span class="n">streamer</span><span class="p">,</span>
-                <span class="n">cli</span><span class="o">=</span><span class="n">cli</span><span class="p">,</span>
-            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">create_bundle_with_options</span><span class="p">(</span>
+            <span class="n">options</span><span class="o">=</span><span class="n">SCARAjectoryBundleOptions</span><span class="p">({})</span>
         <span class="p">)</span></div>
 
 
@@ -284,7 +208,7 @@
 <span class="sd">            :return: The scarajectory bundle.</span>
 <span class="sd">            :exceptions:</span>
 <span class="sd">                | ATSValueError: The options or dependencies must be valid.</span>
-<span class="sd">                | ATSTypeError: The options or dependencies must match types.</span>
+<span class="sd">                | ATSTypeError:  The options or dependencies must match types.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">SCARAjectoryBundleOptionsValidator</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
 
@@ -301,65 +225,25 @@
                 <span class="n">context_bundle</span><span class="o">=</span><span class="n">ContextBundleFactory</span><span class="o">.</span><span class="n">create_bundle</span><span class="p">(),</span>
             <span class="p">)</span>
         <span class="p">)</span>
-        <span class="n">context_bundle</span><span class="p">:</span> <span class="n">ContextBundle</span> <span class="o">=</span> <span class="n">base_bundle</span><span class="o">.</span><span class="n">context_bundle</span>
-        <span class="n">connection_repo</span><span class="p">:</span> <span class="n">ConnectionRepository</span> <span class="o">=</span> <span class="n">ConnectionRepositoryFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">context_bundle</span><span class="o">=</span><span class="n">context_bundle</span>
+        <span class="n">bounds</span><span class="p">:</span> <span class="n">ScaraBounds</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">resolve_bounds_with_options</span><span class="p">(</span>
+            <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span>
+            <span class="n">context_bundle</span><span class="o">=</span><span class="n">base_bundle</span><span class="o">.</span><span class="n">context_bundle</span><span class="p">,</span>
         <span class="p">)</span>
-
-        <span class="n">loader</span><span class="p">:</span> <span class="n">IScaraConfigLoader</span> <span class="o">=</span> <span class="n">ScaraConfigLoaderFactory</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
-        <span class="n">bounds</span><span class="p">:</span> <span class="n">ScaraBounds</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">resolve_bounds_with_options</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
-        <span class="n">transmission</span><span class="p">:</span> <span class="n">TransmissionParameters</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_transmission</span><span class="p">()</span>
-        <span class="n">kinematics</span><span class="p">:</span> <span class="n">IKinematicsService</span> <span class="o">=</span> <span class="n">KinematicsServiceFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">core_bundle</span><span class="p">:</span> <span class="n">AppCoreBundle</span> <span class="o">=</span> <span class="n">AppCoreAssembler</span><span class="o">.</span><span class="n">assemble</span><span class="p">(</span>
             <span class="n">bounds</span><span class="o">=</span><span class="n">bounds</span><span class="p">,</span>
+            <span class="n">context_bundle</span><span class="o">=</span><span class="n">base_bundle</span><span class="o">.</span><span class="n">context_bundle</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">validator</span><span class="p">:</span> <span class="n">ITrajectoryValidator</span> <span class="o">=</span> <span class="n">TrajectoryValidatorFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">kinematics</span><span class="o">=</span><span class="n">kinematics</span><span class="p">,</span>
+        <span class="n">runtime_bundle</span><span class="p">:</span> <span class="n">AppRuntimeBundle</span> <span class="o">=</span> <span class="n">AppRuntimeAssembler</span><span class="o">.</span><span class="n">assemble</span><span class="p">(</span>
+            <span class="n">context_bundle</span><span class="o">=</span><span class="n">base_bundle</span><span class="o">.</span><span class="n">context_bundle</span>
         <span class="p">)</span>
-        <span class="n">transport</span><span class="p">:</span> <span class="n">ITransport</span> <span class="o">=</span> <span class="n">TransportFactory</span><span class="o">.</span><span class="n">create_default_transport</span><span class="p">()</span>
-        <span class="n">streamer</span><span class="p">:</span> <span class="n">ITrajectoryStreamer</span> <span class="o">=</span> <span class="n">TrajectoryStreamerFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">transport</span><span class="o">=</span><span class="n">transport</span>
-        <span class="p">)</span>
-        <span class="n">storage</span><span class="p">:</span> <span class="n">PlanStorageService</span> <span class="o">=</span> <span class="n">PlanStorageServiceFactory</span><span class="o">.</span><span class="n">create_with_context</span><span class="p">(</span>
-            <span class="n">context_bundle</span><span class="o">=</span><span class="n">context_bundle</span>
-        <span class="p">)</span>
-        <span class="n">plan</span><span class="p">:</span> <span class="n">TrajectoryPlan</span> <span class="o">=</span> <span class="n">TrajectoryPlanFactory</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
-        <span class="n">dsl_service</span><span class="p">:</span> <span class="n">IScaraDslService</span> <span class="o">=</span> <span class="n">ScaraDslServiceFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">validator</span><span class="o">=</span><span class="n">validator</span><span class="p">,</span>
-            <span class="n">kinematics</span><span class="o">=</span><span class="n">kinematics</span><span class="p">,</span>
-            <span class="n">transmission</span><span class="o">=</span><span class="n">transmission</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="n">service</span><span class="p">:</span> <span class="n">Service</span> <span class="o">=</span> <span class="n">ServiceFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">validator</span><span class="o">=</span><span class="n">validator</span><span class="p">,</span>
-            <span class="n">streamer</span><span class="o">=</span><span class="n">streamer</span><span class="p">,</span>
-            <span class="n">storage</span><span class="o">=</span><span class="n">storage</span><span class="p">,</span>
-            <span class="n">plan</span><span class="o">=</span><span class="n">plan</span><span class="p">,</span>
-            <span class="n">dsl_service</span><span class="o">=</span><span class="n">dsl_service</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="n">gui</span><span class="p">:</span> <span class="n">ScarajectoryGUI</span> <span class="o">=</span> <span class="n">ScarajectoryGUIFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">service</span><span class="o">=</span><span class="n">service</span><span class="p">,</span>
-            <span class="n">connection_repository</span><span class="o">=</span><span class="n">connection_repo</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="n">plan_bundle</span><span class="p">:</span> <span class="n">PlanPipelineBundle</span> <span class="o">=</span> <span class="n">PlanPipelineBuilder</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
 
-        <span class="n">cli_bundle</span><span class="p">:</span> <span class="n">CLIBundle</span> <span class="o">=</span> <span class="n">CLIBundleFactory</span><span class="o">.</span><span class="n">create_bundle</span><span class="p">(</span>
-            <span class="n">options</span><span class="o">=</span><span class="n">CLIBundleOptions</span><span class="p">(</span>
-                <span class="n">service</span><span class="o">=</span><span class="n">service</span><span class="p">,</span>
-                <span class="n">parser</span><span class="o">=</span><span class="n">base_bundle</span><span class="o">.</span><span class="n">option_manager</span><span class="p">,</span>
-                <span class="n">gui</span><span class="o">=</span><span class="n">gui</span><span class="p">,</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
-
-        <span class="n">cli</span><span class="p">:</span> <span class="n">CLI</span> <span class="o">=</span> <span class="n">CLI</span><span class="p">(</span><span class="n">bundle</span><span class="o">=</span><span class="n">cli_bundle</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">SCARAjectoryBundleRegistry</span><span class="o">.</span><span class="n">create_bundle</span><span class="p">(</span>
-            <span class="n">dependencies</span><span class="o">=</span><span class="n">SCARAjectoryBundleDependencies</span><span class="p">(</span>
-                <span class="n">base</span><span class="o">=</span><span class="n">base_bundle</span><span class="p">,</span>
-                <span class="n">service</span><span class="o">=</span><span class="n">service</span><span class="p">,</span>
-                <span class="n">gui</span><span class="o">=</span><span class="n">gui</span><span class="p">,</span>
-                <span class="n">streamer</span><span class="o">=</span><span class="n">streamer</span><span class="p">,</span>
-                <span class="n">cli</span><span class="o">=</span><span class="n">cli</span><span class="p">,</span>
-            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">AppPresentationAssembler</span><span class="o">.</span><span class="n">assemble</span><span class="p">(</span>
+            <span class="n">base_bundle</span><span class="o">=</span><span class="n">base_bundle</span><span class="p">,</span>
+            <span class="n">core_bundle</span><span class="o">=</span><span class="n">core_bundle</span><span class="p">,</span>
+            <span class="n">runtime_bundle</span><span class="o">=</span><span class="n">runtime_bundle</span><span class="p">,</span>
+            <span class="n">plan_bundle</span><span class="o">=</span><span class="n">plan_bundle</span><span class="p">,</span>
         <span class="p">)</span></div>
-
 
 
 <div class="viewcode-block" id="SCARAjectoryBundleFactory.get_version">
@@ -367,7 +251,7 @@
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">get_version</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Returns the factory version.</span>
+<span class="sd">            Returns the factory version string.</span>
 
 <span class="sd">            :return: The factory version string.</span>
 <span class="sd">            :exceptions: None.</span>

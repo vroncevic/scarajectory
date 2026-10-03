@@ -65,7 +65,7 @@
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -81,12 +81,13 @@
 
 <span class="sd">            :methods:</span>
 <span class="sd">                | create - Instantiates a new PlanHistory stack manager.</span>
+<span class="sd">                | get_version - Returns factory version string.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
 <div class="viewcode-block" id="PlanHistoryFactory.create">
 <a class="viewcode-back" href="../../../../../../scarajectory.core.service.trajectory.history.plan_history_factory.html#scarajectory.core.service.trajectory.history.plan_history_factory.PlanHistoryFactory.create">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PlanHistory</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PlanHistory</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Instantiates a new PlanHistory stack manager.</span>
 
@@ -94,6 +95,18 @@
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="n">PlanHistory</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="PlanHistoryFactory.get_version">
+<a class="viewcode-back" href="../../../../../../scarajectory.core.service.trajectory.history.plan_history_factory.html#scarajectory.core.service.trajectory.history.plan_history_factory.PlanHistoryFactory.get_version">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_version</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Returns the factory version string.</span>
+
+<span class="sd">            :return: Factory version string.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">__version__</span></div>
 </div>
 
 </pre></div>

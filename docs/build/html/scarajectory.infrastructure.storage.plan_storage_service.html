@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="scarajectory.infrastructure.storage.plan_storage_service_factory module" href="scarajectory.infrastructure.storage.plan_storage_service_factory.html" />
-    <link rel="prev" title="scarajectory.infrastructure.storage package" href="scarajectory.infrastructure.storage.html" /> 
+    <link rel="prev" title="scarajectory.infrastructure.storage.plan_loader module" href="scarajectory.infrastructure.storage.plan_loader.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -31,7 +31,7 @@
           <a href="scarajectory.infrastructure.storage.plan_storage_service_factory.html" title="scarajectory.infrastructure.storage.plan_storage_service_factory module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.storage.html" title="scarajectory.infrastructure.storage package"
+          <a href="scarajectory.infrastructure.storage.plan_loader.html" title="scarajectory.infrastructure.storage.plan_loader module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
@@ -64,28 +64,28 @@ See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
 </dd>
-<dt>Info</dt><dd><p>Infrastructure storage adapter for trajectory plan serialization and file persistence using ats_utilities.</p>
+<dt>Info</dt><dd><p>Infrastructure storage coordinator delegating trajectory plan loading and storing.</p>
 </dd>
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.storage.plan_storage_service.</span></span><span class="sig-name descname"><span class="pre">PlanStorageService</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">context_bundle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ContextBundle</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/storage/plan_storage_service.html#PlanStorageService"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.storage.plan_storage_service.</span></span><span class="sig-name descname"><span class="pre">PlanStorageService</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loader</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.storage.iplan_loader.html#scarajectory.core.service.storage.iplan_loader.IPlanLoader" title="scarajectory.core.service.storage.iplan_loader.IPlanLoader"><span class="pre">IPlanLoader</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">storer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.storage.iplan_storer.html#scarajectory.core.service.storage.iplan_storer.IPlanStorer" title="scarajectory.core.service.storage.iplan_storer.IPlanStorer"><span class="pre">IPlanStorer</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/storage/plan_storage_service.html#PlanStorageService"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Infrastructure storage adapter handling JSON trajectory persistence and text/binary file I/O operations.
-Integrates ats_utilities Loader and Storer for JSON configuration management.</p>
+<p>Infrastructure storage adapter coordinating JSON trajectory persistence and file I/O operations.</p>
 <p>It defines:</p>
 <blockquote>
 <div><dl class="field-list">
 <dt class="field-odd">attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><div class="line-block">
-<div class="line">_context - The ContextBundle for ATS configuration I/O operations.</div>
+<div class="line">_loader - Dedicated plan and file reader collaborator.</div>
+<div class="line">_storer - Dedicated plan and file writer collaborator.</div>
 </div>
 </dd>
 <dt class="field-even">methods<span class="colon">:</span></dt>
 <dd class="field-even"><div class="line-block">
-<div class="line">__init__ - Initializes the plan storage service.</div>
-<div class="line">save_plan - Saves trajectory plan waypoints to JSON file path using ATS Storer.</div>
-<div class="line">load_plan - Loads and deserializes waypoints from JSON file path using ATS Loader.</div>
+<div class="line">__init__ - Initializes the plan storage service with injected loader and storer.</div>
+<div class="line">save_plan - Saves trajectory plan waypoints to JSON file path.</div>
+<div class="line">load_plan - Loads and deserializes waypoints from JSON file path.</div>
 <div class="line">save_text_file - Writes string content to file path using UTF-8 encoding.</div>
 <div class="line">load_text_file - Reads string content from file path using UTF-8 encoding.</div>
 <div class="line">save_binary_program - Writes compiled binary program payload to destination file path.</div>
@@ -95,8 +95,13 @@ Integrates ats_utilities Loader and Storer for JSON configuration management.</p
 </dl>
 </div></blockquote>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService._context">
-<span class="sig-name descname"><span class="pre">_context</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ContextBundle</span></em><a class="headerlink" href="#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService._context" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService._loader">
+<span class="sig-name descname"><span class="pre">_loader</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.storage.iplan_loader.html#scarajectory.core.service.storage.iplan_loader.IPlanLoader" title="scarajectory.core.service.storage.iplan_loader.IPlanLoader"><span class="pre">IPlanLoader</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService._loader" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService._storer">
+<span class="sig-name descname"><span class="pre">_storer</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.storage.iplan_storer.html#scarajectory.core.service.storage.iplan_storer.IPlanStorer" title="scarajectory.core.service.storage.iplan_storer.IPlanStorer"><span class="pre">IPlanStorer</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService._storer" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -115,8 +120,8 @@ Integrates ats_utilities Loader and Storer for JSON configuration management.</p
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService.load_plan">
-<span class="sig-name descname"><span class="pre">load_plan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.trajectory.waypoint.html#scarajectory.core.model.trajectory.waypoint.Waypoint" title="scarajectory.core.model.trajectory.waypoint.Waypoint"><span class="pre">Waypoint</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/storage/plan_storage_service.html#PlanStorageService.load_plan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService.load_plan" title="Link to this definition">¶</a></dt>
-<dd><p>Loads and deserializes waypoints from JSON file path using ATS Loader.</p>
+<span class="sig-name descname"><span class="pre">load_plan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Waypoint</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/storage/plan_storage_service.html#PlanStorageService.load_plan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService.load_plan" title="Link to this definition">¶</a></dt>
+<dd><p>Loads and deserializes waypoints from JSON file path.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>filepath</strong> – Source file path.</p>
@@ -143,12 +148,12 @@ Integrates ats_utilities Loader and Storer for JSON configuration management.</p
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService.save_binary_program">
-<span class="sig-name descname"><span class="pre">save_binary_program</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">program</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Program</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/storage/plan_storage_service.html#PlanStorageService.save_binary_program"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService.save_binary_program" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">save_binary_program</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">program</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BinaryProgram</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/storage/plan_storage_service.html#PlanStorageService.save_binary_program"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService.save_binary_program" title="Link to this definition">¶</a></dt>
 <dd><p>Writes compiled binary program payload to destination file path.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>program</strong> – Program instance.</p></li>
+<li><p><strong>program</strong> – BinaryProgram instance.</p></li>
 <li><p><strong>filepath</strong> – Destination file path.</p></li>
 </ul>
 </dd>
@@ -157,12 +162,12 @@ Integrates ats_utilities Loader and Storer for JSON configuration management.</p
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService.save_plan">
-<span class="sig-name descname"><span class="pre">save_plan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.plan.itrajectory_plan.html#scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan" title="scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan"><span class="pre">ITrajectoryPlan</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/storage/plan_storage_service.html#PlanStorageService.save_plan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService.save_plan" title="Link to this definition">¶</a></dt>
-<dd><p>Saves trajectory plan waypoints to JSON file path using ATS Storer.</p>
+<span class="sig-name descname"><span class="pre">save_plan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.plan.itrajectory_read_only.html#scarajectory.core.service.trajectory.plan.itrajectory_read_only.ITrajectoryReadOnly" title="scarajectory.core.service.trajectory.plan.itrajectory_read_only.ITrajectoryReadOnly"><span class="pre">ITrajectoryReadOnly</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/storage/plan_storage_service.html#PlanStorageService.save_plan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService.save_plan" title="Link to this definition">¶</a></dt>
+<dd><p>Saves trajectory plan waypoints to JSON file path.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>plan</strong> – ITrajectoryPlan instance.</p></li>
+<li><p><strong>plan</strong> – ITrajectoryReadOnly instance.</p></li>
 <li><p><strong>filepath</strong> – Target file path.</p></li>
 </ul>
 </dd>
@@ -199,7 +204,8 @@ Integrates ats_utilities Loader and Storer for JSON configuration management.</p
     <ul>
 <li><a class="reference internal" href="#">scarajectory.infrastructure.storage.plan_storage_service module</a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService"><code class="docutils literal notranslate"><span class="pre">PlanStorageService</span></code></a><ul>
-<li><a class="reference internal" href="#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService._context"><code class="docutils literal notranslate"><span class="pre">PlanStorageService._context</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService._loader"><code class="docutils literal notranslate"><span class="pre">PlanStorageService._loader</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService._storer"><code class="docutils literal notranslate"><span class="pre">PlanStorageService._storer</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService.load_binary_file"><code class="docutils literal notranslate"><span class="pre">PlanStorageService.load_binary_file()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService.load_plan"><code class="docutils literal notranslate"><span class="pre">PlanStorageService.load_plan()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService.load_text_file"><code class="docutils literal notranslate"><span class="pre">PlanStorageService.load_text_file()</span></code></a></li>
@@ -215,8 +221,8 @@ Integrates ats_utilities Loader and Storer for JSON configuration management.</p
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.storage.html"
-                          title="previous chapter">scarajectory.infrastructure.storage package</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.storage.plan_loader.html"
+                          title="previous chapter">scarajectory.infrastructure.storage.plan_loader module</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -257,7 +263,7 @@ Integrates ats_utilities Loader and Storer for JSON configuration management.</p
           <a href="scarajectory.infrastructure.storage.plan_storage_service_factory.html" title="scarajectory.infrastructure.storage.plan_storage_service_factory module"
              >next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.storage.html" title="scarajectory.infrastructure.storage package"
+          <a href="scarajectory.infrastructure.storage.plan_loader.html" title="scarajectory.infrastructure.storage.plan_loader module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>

@@ -15,7 +15,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="scarajectory.core.service.trajectory.plan.itrajectory_observer module" href="scarajectory.core.service.trajectory.plan.itrajectory_observer.html" />
+    <link rel="next" title="scarajectory.core.service.trajectory.plan.itrajectory_read_only module" href="scarajectory.core.service.trajectory.plan.itrajectory_read_only.html" />
     <link rel="prev" title="scarajectory.core.service.trajectory.plan.itrajectory_history module" href="scarajectory.core.service.trajectory.plan.itrajectory_history.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -28,7 +28,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.core.service.trajectory.plan.itrajectory_observer.html" title="scarajectory.core.service.trajectory.plan.itrajectory_observer module"
+          <a href="scarajectory.core.service.trajectory.plan.itrajectory_read_only.html" title="scarajectory.core.service.trajectory.plan.itrajectory_read_only module"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="scarajectory.core.service.trajectory.plan.itrajectory_history.html" title="scarajectory.core.service.trajectory.plan.itrajectory_history module"
@@ -106,7 +106,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.core.service.trajectory.plan.itrajectory_mutable.ITrajectoryMutable.add_point">
-<span class="sig-name descname"><span class="pre">add_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.trajectory.waypoint.html#scarajectory.core.model.trajectory.waypoint.Waypoint" title="scarajectory.core.model.trajectory.waypoint.Waypoint"><span class="pre">Waypoint</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/trajectory/plan/itrajectory_mutable.html#ITrajectoryMutable.add_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.trajectory.plan.itrajectory_mutable.ITrajectoryMutable.add_point" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">add_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Waypoint</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/trajectory/plan/itrajectory_mutable.html#ITrajectoryMutable.add_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.trajectory.plan.itrajectory_mutable.ITrajectoryMutable.add_point" title="Link to this definition">¶</a></dt>
 <dd><p>Appends waypoint to plan.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -123,7 +123,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.core.service.trajectory.plan.itrajectory_mutable.ITrajectoryMutable.insert_point">
-<span class="sig-name descname"><span class="pre">insert_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.trajectory.waypoint.html#scarajectory.core.model.trajectory.waypoint.Waypoint" title="scarajectory.core.model.trajectory.waypoint.Waypoint"><span class="pre">Waypoint</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/trajectory/plan/itrajectory_mutable.html#ITrajectoryMutable.insert_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.trajectory.plan.itrajectory_mutable.ITrajectoryMutable.insert_point" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">insert_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Waypoint</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/trajectory/plan/itrajectory_mutable.html#ITrajectoryMutable.insert_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.trajectory.plan.itrajectory_mutable.ITrajectoryMutable.insert_point" title="Link to this definition">¶</a></dt>
 <dd><p>Inserts waypoint at specified index.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -151,7 +151,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.core.service.trajectory.plan.itrajectory_mutable.ITrajectoryMutable.set_waypoints">
-<span class="sig-name descname"><span class="pre">set_waypoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">waypoints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.trajectory.waypoint.html#scarajectory.core.model.trajectory.waypoint.Waypoint" title="scarajectory.core.model.trajectory.waypoint.Waypoint"><span class="pre">Waypoint</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/trajectory/plan/itrajectory_mutable.html#ITrajectoryMutable.set_waypoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.trajectory.plan.itrajectory_mutable.ITrajectoryMutable.set_waypoints" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set_waypoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">waypoints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Waypoint</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/trajectory/plan/itrajectory_mutable.html#ITrajectoryMutable.set_waypoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.trajectory.plan.itrajectory_mutable.ITrajectoryMutable.set_waypoints" title="Link to this definition">¶</a></dt>
 <dd><p>Replaces all waypoints with a new sequence.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -162,7 +162,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.core.service.trajectory.plan.itrajectory_mutable.ITrajectoryMutable.update_point">
-<span class="sig-name descname"><span class="pre">update_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.trajectory.waypoint.html#scarajectory.core.model.trajectory.waypoint.Waypoint" title="scarajectory.core.model.trajectory.waypoint.Waypoint"><span class="pre">Waypoint</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/trajectory/plan/itrajectory_mutable.html#ITrajectoryMutable.update_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.trajectory.plan.itrajectory_mutable.ITrajectoryMutable.update_point" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">update_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Waypoint</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/trajectory/plan/itrajectory_mutable.html#ITrajectoryMutable.update_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.trajectory.plan.itrajectory_mutable.ITrajectoryMutable.update_point" title="Link to this definition">¶</a></dt>
 <dd><p>Modifies waypoint at index.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -216,8 +216,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="scarajectory.core.service.trajectory.plan.itrajectory_observer.html"
-                          title="next chapter">scarajectory.core.service.trajectory.plan.itrajectory_observer module</a></p>
+    <p class="topless"><a href="scarajectory.core.service.trajectory.plan.itrajectory_read_only.html"
+                          title="next chapter">scarajectory.core.service.trajectory.plan.itrajectory_read_only module</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -250,7 +250,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.core.service.trajectory.plan.itrajectory_observer.html" title="scarajectory.core.service.trajectory.plan.itrajectory_observer module"
+          <a href="scarajectory.core.service.trajectory.plan.itrajectory_read_only.html" title="scarajectory.core.service.trajectory.plan.itrajectory_read_only module"
              >next</a> |</li>
         <li class="right" >
           <a href="scarajectory.core.service.trajectory.plan.itrajectory_history.html" title="scarajectory.core.service.trajectory.plan.itrajectory_history module"

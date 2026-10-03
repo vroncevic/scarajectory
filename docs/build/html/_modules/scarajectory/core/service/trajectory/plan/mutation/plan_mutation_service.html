@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>scarajectory.core.service.trajectory.plan.mutation.plan_mutation_service &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/classic.css?v=514cf933" />
+    
+    <script src="../../../../../../../_static/documentation_options.js?v=57319df4"></script>
+    <script src="../../../../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.core.service.trajectory.plan.mutation.plan_mutation_service</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for scarajectory.core.service.trajectory.plan.mutation.plan_mutation_service</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Module</span>
+<span class="sd">    plan_mutation_service.py</span>
+<span class="sd">Copyright</span>
+<span class="sd">    Copyright (C) 2026 Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;</span>
+<span class="sd">    scarajectory is free software: you can redistribute it and/or modify it</span>
+<span class="sd">    under the terms of the GNU General Public License as published by the</span>
+<span class="sd">    Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">    (at your option) any later version.</span>
+<span class="sd">    scarajectory is distributed in the hope that it will be useful, but</span>
+<span class="sd">    WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
+<span class="sd">    See the GNU General Public License for more details.</span>
+<span class="sd">    You should have received a copy of the GNU General Public License along</span>
+<span class="sd">    with this program. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">Info</span>
+<span class="sd">    Domain service coordinating waypoint additions, removals, updates, and resets.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Sequence</span>
+
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.waypoint</span> <span class="kn">import</span> <span class="n">Waypoint</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.history.iplan_history_saver</span> <span class="kn">import</span> <span class="n">IPlanHistorySaver</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.observer.iplan_observer_dispatcher</span> <span class="kn">import</span> <span class="n">IPlanObserverDispatcher</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.selection.iplan_selection_manager</span> <span class="kn">import</span> <span class="n">IPlanSelectionManager</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.store.iwaypoint_store</span> <span class="kn">import</span> <span class="n">IWaypointStore</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
+<span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
+
+
+<div class="viewcode-block" id="PlanMutationService">
+<a class="viewcode-back" href="../../../../../../../scarajectory.core.service.trajectory.plan.mutation.plan_mutation_service.html#scarajectory.core.service.trajectory.plan.mutation.plan_mutation_service.PlanMutationService">[docs]</a>
+<span class="k">class</span> <span class="nc">PlanMutationService</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Domain service coordinating waypoint additions, removals, updates, and resets.</span>
+
+<span class="sd">        It defines:</span>
+
+<span class="sd">            :attributes:</span>
+<span class="sd">                | _store - Injected IWaypointStore collaborator.</span>
+<span class="sd">                | _history - Injected IPlanHistorySaver collaborator.</span>
+<span class="sd">                | _selection - Injected IPlanSelectionManager collaborator.</span>
+<span class="sd">                | _dispatcher - Injected IPlanObserverDispatcher collaborator.</span>
+<span class="sd">            :methods:</span>
+<span class="sd">                | __init__ - Initializes the mutation service with injected collaborators.</span>
+<span class="sd">                | add_point - Appends a waypoint to the plan.</span>
+<span class="sd">                | insert_point - Inserts a waypoint at a specified index.</span>
+<span class="sd">                | update_point - Updates a waypoint at an index.</span>
+<span class="sd">                | remove_point - Removes a waypoint at an index.</span>
+<span class="sd">                | clear - Clears all waypoints from the plan.</span>
+<span class="sd">                | set_waypoints - Replaces all waypoints with a new sequence.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">_store</span><span class="p">:</span> <span class="n">IWaypointStore</span>
+    <span class="n">_history</span><span class="p">:</span> <span class="n">IPlanHistorySaver</span>
+    <span class="n">_selection</span><span class="p">:</span> <span class="n">IPlanSelectionManager</span>
+    <span class="n">_dispatcher</span><span class="p">:</span> <span class="n">IPlanObserverDispatcher</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">store</span><span class="p">:</span> <span class="n">IWaypointStore</span><span class="p">,</span>
+        <span class="n">history</span><span class="p">:</span> <span class="n">IPlanHistorySaver</span><span class="p">,</span>
+        <span class="n">selection</span><span class="p">:</span> <span class="n">IPlanSelectionManager</span><span class="p">,</span>
+        <span class="n">dispatcher</span><span class="p">:</span> <span class="n">IPlanObserverDispatcher</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Initializes the mutation service with injected collaborators.</span>
+
+<span class="sd">            :param store: Injected IWaypointStore instance.</span>
+<span class="sd">            :param history: Injected IPlanHistorySaver instance.</span>
+<span class="sd">            :param selection: Injected IPlanSelectionManager instance.</span>
+<span class="sd">            :param dispatcher: Injected IPlanObserverDispatcher instance.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IWaypointStore</span><span class="p">]</span> <span class="o">=</span> <span class="n">store</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_history</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IPlanHistorySaver</span><span class="p">]</span> <span class="o">=</span> <span class="n">history</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_selection</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IPlanSelectionManager</span><span class="p">]</span> <span class="o">=</span> <span class="n">selection</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dispatcher</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IPlanObserverDispatcher</span><span class="p">]</span> <span class="o">=</span> <span class="n">dispatcher</span>
+
+<div class="viewcode-block" id="PlanMutationService.add_point">
+<a class="viewcode-back" href="../../../../../../../scarajectory.core.service.trajectory.plan.mutation.plan_mutation_service.html#scarajectory.core.service.trajectory.plan.mutation.plan_mutation_service.PlanMutationService.add_point">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">:</span> <span class="n">Waypoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Appends a waypoint to the plan.</span>
+
+<span class="sd">            :param point: Waypoint instance to append.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_history</span><span class="o">.</span><span class="n">save_state</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="o">.</span><span class="n">waypoints</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_selection</span><span class="o">.</span><span class="n">select_last</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="o">.</span><span class="n">count</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dispatcher</span><span class="o">.</span><span class="n">notify_change</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="PlanMutationService.insert_point">
+<a class="viewcode-back" href="../../../../../../../scarajectory.core.service.trajectory.plan.mutation.plan_mutation_service.html#scarajectory.core.service.trajectory.plan.mutation.plan_mutation_service.PlanMutationService.insert_point">[docs]</a>
+    <span class="k">def</span> <span class="nf">insert_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">point</span><span class="p">:</span> <span class="n">Waypoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Inserts a waypoint at a specified index.</span>
+
+<span class="sd">            :param index: Target insertion index.</span>
+<span class="sd">            :param point: Waypoint instance to insert.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_history</span><span class="o">.</span><span class="n">save_state</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="o">.</span><span class="n">waypoints</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_selection</span><span class="o">.</span><span class="n">select_index</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dispatcher</span><span class="o">.</span><span class="n">notify_change</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="PlanMutationService.update_point">
+<a class="viewcode-back" href="../../../../../../../scarajectory.core.service.trajectory.plan.mutation.plan_mutation_service.html#scarajectory.core.service.trajectory.plan.mutation.plan_mutation_service.PlanMutationService.update_point">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">point</span><span class="p">:</span> <span class="n">Waypoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Updates a waypoint at a given index.</span>
+
+<span class="sd">            :param index: Target waypoint index.</span>
+<span class="sd">            :param point: New Waypoint data.</span>
+<span class="sd">            :return: True if updated, False if index out of bounds.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="o">.</span><span class="n">count</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_history</span><span class="o">.</span><span class="n">save_state</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="o">.</span><span class="n">waypoints</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_selection</span><span class="o">.</span><span class="n">select_index</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dispatcher</span><span class="o">.</span><span class="n">notify_change</span><span class="p">()</span>
+
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="PlanMutationService.remove_point">
+<a class="viewcode-back" href="../../../../../../../scarajectory.core.service.trajectory.plan.mutation.plan_mutation_service.html#scarajectory.core.service.trajectory.plan.mutation.plan_mutation_service.PlanMutationService.remove_point">[docs]</a>
+    <span class="k">def</span> <span class="nf">remove_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Removes a waypoint at a given index.</span>
+
+<span class="sd">            :param index: Index of waypoint to remove.</span>
+<span class="sd">            :return: True if removed, False if index out of bounds.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="o">.</span><span class="n">count</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_history</span><span class="o">.</span><span class="n">save_state</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="o">.</span><span class="n">waypoints</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_selection</span><span class="o">.</span><span class="n">clamp_to_count</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="o">.</span><span class="n">count</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dispatcher</span><span class="o">.</span><span class="n">notify_change</span><span class="p">()</span>
+
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="PlanMutationService.clear">
+<a class="viewcode-back" href="../../../../../../../scarajectory.core.service.trajectory.plan.mutation.plan_mutation_service.html#scarajectory.core.service.trajectory.plan.mutation.plan_mutation_service.PlanMutationService.clear">[docs]</a>
+    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Clears all waypoints from the plan.</span>
+
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="o">.</span><span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_history</span><span class="o">.</span><span class="n">save_state</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="o">.</span><span class="n">waypoints</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_selection</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dispatcher</span><span class="o">.</span><span class="n">notify_change</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="PlanMutationService.set_waypoints">
+<a class="viewcode-back" href="../../../../../../../scarajectory.core.service.trajectory.plan.mutation.plan_mutation_service.html#scarajectory.core.service.trajectory.plan.mutation.plan_mutation_service.PlanMutationService.set_waypoints">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_waypoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Waypoint</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Replaces all waypoints with a new sequence.</span>
+
+<span class="sd">            :param points: Sequence of Waypoint instances.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_history</span><span class="o">.</span><span class="n">save_state</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="o">.</span><span class="n">waypoints</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">points</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_selection</span><span class="o">.</span><span class="n">select_first_or_none</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="o">.</span><span class="n">count</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dispatcher</span><span class="o">.</span><span class="n">notify_change</span><span class="p">()</span></div>
+</div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.core.service.trajectory.plan.mutation.plan_mutation_service</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

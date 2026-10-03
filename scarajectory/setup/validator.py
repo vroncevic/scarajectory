@@ -28,7 +28,7 @@ from ats_utilities.validation.check_type import istype
 
 from scarajectory.setup.bundle import SCARAjectoryBundle
 from scarajectory.core.service.iservice import IService
-from scarajectory.core.service.communication.stream.itrajectory_streamer import ITrajectoryStreamer
+from scarajectory.core.service.streaming.istream_playback_controller import IStreamPlaybackController
 from scarajectory.infrastructure.gui.igui import IGUI
 from scarajectory.infrastructure.cli.icli import ICLI
 
@@ -36,7 +36,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.3'
+__version__ = '1.0.4'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -74,7 +74,7 @@ class SCARAjectoryBundleValidator:
         msg_base_istype: str = 'the base bundle must be an instance of BaseBundle'
         msg_service_istype: str = 'the service must be an instance of IService'
         msg_gui_istype: str = 'the gui must be an instance of IGUI'
-        msg_streamer_istype: str = 'the streamer must be an instance of ITrajectoryStreamer'
+        msg_streamer_istype: str = 'the streamer must be an instance of IStreamPlaybackController'
         msg_cli_istype: str = 'the cli must be an instance of ICLI'
 
         not_none(bundle, ctx, msg_bundle_none)
@@ -89,7 +89,7 @@ class SCARAjectoryBundleValidator:
         istype(bundle.base, BaseBundle, ctx, msg_base_istype)
         istype(bundle.service, IService, ctx, msg_service_istype)
         istype(bundle.gui, IGUI, ctx, msg_gui_istype)
-        istype(bundle.streamer, ITrajectoryStreamer, ctx, msg_streamer_istype)
+        istype(bundle.streamer, IStreamPlaybackController, ctx, msg_streamer_istype)
         istype(bundle.cli, ICLI, ctx, msg_cli_istype)
 
     @classmethod
@@ -104,5 +104,6 @@ class SCARAjectoryBundleValidator:
         try:
             cls.validate(bundle)
             return True
+
         except (ATSValueError, ATSTypeError):
             return False

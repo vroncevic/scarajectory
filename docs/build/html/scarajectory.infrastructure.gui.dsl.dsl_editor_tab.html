@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="scarajectory.infrastructure.gui.dsl.dsl_editor_tab_factory module" href="scarajectory.infrastructure.gui.dsl.dsl_editor_tab_factory.html" />
-    <link rel="prev" title="scarajectory.infrastructure.gui.dsl.dsl_document_manager module" href="scarajectory.infrastructure.gui.dsl.dsl_document_manager.html" /> 
+    <link rel="prev" title="scarajectory.infrastructure.gui.dsl.console_view module" href="scarajectory.infrastructure.gui.dsl.console_view.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -31,7 +31,7 @@
           <a href="scarajectory.infrastructure.gui.dsl.dsl_editor_tab_factory.html" title="scarajectory.infrastructure.gui.dsl.dsl_editor_tab_factory module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.gui.dsl.dsl_document_manager.html" title="scarajectory.infrastructure.gui.dsl.dsl_document_manager module"
+          <a href="scarajectory.infrastructure.gui.dsl.console_view.html" title="scarajectory.infrastructure.gui.dsl.console_view module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
@@ -65,148 +65,116 @@ See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
 </dd>
-<dt>Info</dt><dd><p>Dedicated SCARA DSL code editor and compiler tab integrated into the controls notebook.</p>
+<dt>Info</dt><dd><p>Dedicated SCARA DSL code editor tab container integrated into controls notebook.</p>
 </dd>
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.gui.dsl.dsl_editor_tab.</span></span><span class="sig-name descname"><span class="pre">DslEditorTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Widget</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.plan.itrajectory_plan.html#scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan" title="scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan"><span class="pre">ITrajectoryPlan</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dsl_service</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IScaraDslService</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.contract.iplan_storage_service.html#scarajectory.core.service.trajectory.contract.iplan_storage_service.IPlanStorageService" title="scarajectory.core.service.trajectory.contract.iplan_storage_service.IPlanStorageService"><span class="pre">IPlanStorageService</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">launcher</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.dsl.iemulator_launcher.html#scarajectory.infrastructure.gui.dsl.iemulator_launcher.IEmulatorLauncher" title="scarajectory.infrastructure.gui.dsl.iemulator_launcher.IEmulatorLauncher"><span class="pre">IEmulatorLauncher</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catalog</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.dsl.dsl_example_catalog.html#scarajectory.infrastructure.gui.dsl.dsl_example_catalog.DslExampleCatalog" title="scarajectory.infrastructure.gui.dsl.dsl_example_catalog.DslExampleCatalog"><span class="pre">DslExampleCatalog</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">document_manager</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.dsl.dsl_document_manager.html#scarajectory.infrastructure.gui.dsl.dsl_document_manager.DslDocumentManager" title="scarajectory.infrastructure.gui.dsl.dsl_document_manager.DslDocumentManager"><span class="pre">DslDocumentManager</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/dsl/dsl_editor_tab.html#DslEditorTab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.gui.dsl.dsl_editor_tab.</span></span><span class="sig-name descname"><span class="pre">DslEditorTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Widget</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/dsl/dsl_editor_tab.html#DslEditorTab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></p>
-<p>SCARA DSL script editor with syntax highlighting, compilation, validation and export.</p>
+<p>SCARA DSL script editor presentation container frame.</p>
 <p>It defines:</p>
 <blockquote>
 <div><dl class="field-list">
 <dt class="field-odd">attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><div class="line-block">
-<div class="line">_plan - Active trajectory plan instance.</div>
-<div class="line">_dsl_service - High-level DSL compilation and serialization service.</div>
-<div class="line">_launcher - SCARAEmu emulator process launcher.</div>
-<div class="line">_catalog - Example scripts and demonstration catalog.</div>
-<div class="line">_doc_manager - Document persistence and modal dialog manager.</div>
-<div class="line">_toolbar - Toolbar subcomponent.</div>
+<div class="line">_store - Injected waypoint query collaborator.</div>
+<div class="line">_toolbar - Action toolbar subcomponent.</div>
 <div class="line">_editor - Code editor subcomponent.</div>
 <div class="line">_console - Diagnostic console view subcomponent.</div>
+<div class="line">_execution_handler - Fine-grained delegate for DSL execution actions.</div>
+<div class="line">_file_handler - Fine-grained delegate for DSL file and example actions.</div>
 </div>
 </dd>
 <dt class="field-even">methods<span class="colon">:</span></dt>
 <dd class="field-even"><div class="line-block">
-<div class="line">__init__ - Initializes the editor tab layout and mounts subcomponents.</div>
-<div class="line">build_layout - Constructs action toolbar, code editor, and status console.</div>
-<div class="line">load_initial_content - Loads exported plan or demonstration script into editor.</div>
-<div class="line">compile_to_plan - Compiles editor code and updates the active plan.</div>
-<div class="line">validate_code - Validates editor code syntax and kinematics without mutating plan.</div>
-<div class="line">export_plan_to_editor - Serializes current plan into the editor text.</div>
-<div class="line">preview_in_scaraemu - Launches SCARAEmu visualizer with active script.</div>
-<div class="line">open_file - Opens a .scara file into the editor.</div>
-<div class="line">save_file - Saves editor contents to a .scara file.</div>
-<div class="line">on_example_selected - Loads the selected example script from disk.</div>
-<div class="line">load_example - Inserts standard demonstration SCARA script.</div>
+<div class="line">__init__ - Initializes the editor tab container frame.</div>
+<div class="line">mount_views - Mounts toolbar, editor, and console subcomponents.</div>
+<div class="line">mount_handlers - Injects execution and file delegates.</div>
+<div class="line">load_initial_content - Loads exported plan or demonstration script.</div>
 </div>
 </dd>
 </dl>
 </div></blockquote>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._catalog">
-<span class="sig-name descname"><span class="pre">_catalog</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.dsl.dsl_example_catalog.html#scarajectory.infrastructure.gui.dsl.dsl_example_catalog.DslExampleCatalog" title="scarajectory.infrastructure.gui.dsl.dsl_example_catalog.DslExampleCatalog"><span class="pre">DslExampleCatalog</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._catalog" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._console">
-<span class="sig-name descname"><span class="pre">_console</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.dsl.dsl_console_view.html#scarajectory.infrastructure.gui.dsl.dsl_console_view.DslConsoleView" title="scarajectory.infrastructure.gui.dsl.dsl_console_view.DslConsoleView"><span class="pre">DslConsoleView</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._console" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._doc_manager">
-<span class="sig-name descname"><span class="pre">_doc_manager</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.dsl.dsl_document_manager.html#scarajectory.infrastructure.gui.dsl.dsl_document_manager.DslDocumentManager" title="scarajectory.infrastructure.gui.dsl.dsl_document_manager.DslDocumentManager"><span class="pre">DslDocumentManager</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._doc_manager" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._dsl_service">
-<span class="sig-name descname"><span class="pre">_dsl_service</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">IScaraDslService</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._dsl_service" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_console</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.dsl.console_view.html#scarajectory.infrastructure.gui.dsl.console_view.DslConsoleView" title="scarajectory.infrastructure.gui.dsl.console_view.DslConsoleView"><span class="pre">DslConsoleView</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._console" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._editor">
-<span class="sig-name descname"><span class="pre">_editor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.dsl.dsl_code_editor.html#scarajectory.infrastructure.gui.dsl.dsl_code_editor.DslCodeEditor" title="scarajectory.infrastructure.gui.dsl.dsl_code_editor.DslCodeEditor"><span class="pre">DslCodeEditor</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._editor" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_editor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.dsl.code_editor.html#scarajectory.infrastructure.gui.dsl.code_editor.DslCodeEditor" title="scarajectory.infrastructure.gui.dsl.code_editor.DslCodeEditor"><span class="pre">DslCodeEditor</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._editor" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._launcher">
-<span class="sig-name descname"><span class="pre">_launcher</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.dsl.iemulator_launcher.html#scarajectory.infrastructure.gui.dsl.iemulator_launcher.IEmulatorLauncher" title="scarajectory.infrastructure.gui.dsl.iemulator_launcher.IEmulatorLauncher"><span class="pre">IEmulatorLauncher</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._launcher" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._execution_handler">
+<span class="sig-name descname"><span class="pre">_execution_handler</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.dsl.handler.iexecution_delegate.html#scarajectory.infrastructure.gui.dsl.handler.iexecution_delegate.IDslExecutionDelegate" title="scarajectory.infrastructure.gui.dsl.handler.iexecution_delegate.IDslExecutionDelegate"><span class="pre">IDslExecutionDelegate</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._execution_handler" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._plan">
-<span class="sig-name descname"><span class="pre">_plan</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.trajectory.plan.itrajectory_plan.html#scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan" title="scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan"><span class="pre">ITrajectoryPlan</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._plan" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._file_handler">
+<span class="sig-name descname"><span class="pre">_file_handler</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.dsl.handler.ifile_delegate.html#scarajectory.infrastructure.gui.dsl.handler.ifile_delegate.IDslFileDelegate" title="scarajectory.infrastructure.gui.dsl.handler.ifile_delegate.IDslFileDelegate"><span class="pre">IDslFileDelegate</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._file_handler" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._store">
+<span class="sig-name descname"><span class="pre">_store</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.trajectory.plan.store.iwaypoint_store.html#scarajectory.core.service.trajectory.plan.store.iwaypoint_store.IWaypointStore" title="scarajectory.core.service.trajectory.plan.store.iwaypoint_store.IWaypointStore"><span class="pre">IWaypointStore</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._store" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._toolbar">
-<span class="sig-name descname"><span class="pre">_toolbar</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.dsl.dsl_editor_toolbar.html#scarajectory.infrastructure.gui.dsl.dsl_editor_toolbar.DslEditorToolbar" title="scarajectory.infrastructure.gui.dsl.dsl_editor_toolbar.DslEditorToolbar"><span class="pre">DslEditorToolbar</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._toolbar" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_toolbar</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.dsl.toolbar.html#scarajectory.infrastructure.gui.dsl.toolbar.DslEditorToolbar" title="scarajectory.infrastructure.gui.dsl.toolbar.DslEditorToolbar"><span class="pre">DslEditorToolbar</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._toolbar" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.build_layout">
-<span class="sig-name descname"><span class="pre">build_layout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/dsl/dsl_editor_tab.html#DslEditorTab.build_layout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.build_layout" title="Link to this definition">¶</a></dt>
-<dd><p>Constructs action toolbar, code editor, and status console.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.console">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">console</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.dsl.console_view.html#scarajectory.infrastructure.gui.dsl.console_view.DslConsoleView" title="scarajectory.infrastructure.gui.dsl.console_view.DslConsoleView"><span class="pre">DslConsoleView</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.console" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the diagnostic console view subcomponent.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>DslConsoleView instance.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.compile_to_plan">
-<span class="sig-name descname"><span class="pre">compile_to_plan</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/dsl/dsl_editor_tab.html#DslEditorTab.compile_to_plan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.compile_to_plan" title="Link to this definition">¶</a></dt>
-<dd><p>Compiles editor code and replaces waypoints in the active TrajectoryPlan.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.editor">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">editor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.dsl.code_editor.html#scarajectory.infrastructure.gui.dsl.code_editor.DslCodeEditor" title="scarajectory.infrastructure.gui.dsl.code_editor.DslCodeEditor"><span class="pre">DslCodeEditor</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.editor" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the code editor subcomponent.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>DslCodeEditor instance.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.export_plan_to_editor">
-<span class="sig-name descname"><span class="pre">export_plan_to_editor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/dsl/dsl_editor_tab.html#DslEditorTab.export_plan_to_editor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.export_plan_to_editor" title="Link to this definition">¶</a></dt>
-<dd><p>Serializes the active plan waypoints into the editor.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.execution_handler">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">execution_handler</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.dsl.handler.iexecution_delegate.html#scarajectory.infrastructure.gui.dsl.handler.iexecution_delegate.IDslExecutionDelegate" title="scarajectory.infrastructure.gui.dsl.handler.iexecution_delegate.IDslExecutionDelegate"><span class="pre">IDslExecutionDelegate</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.execution_handler" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the execution delegate.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>IDslExecutionDelegate instance.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.load_example">
-<span class="sig-name descname"><span class="pre">load_example</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/dsl/dsl_editor_tab.html#DslEditorTab.load_example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.load_example" title="Link to this definition">¶</a></dt>
-<dd><p>Inserts standard demonstration SCARA script.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.file_handler">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">file_handler</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.dsl.handler.ifile_delegate.html#scarajectory.infrastructure.gui.dsl.handler.ifile_delegate.IDslFileDelegate" title="scarajectory.infrastructure.gui.dsl.handler.ifile_delegate.IDslFileDelegate"><span class="pre">IDslFileDelegate</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.file_handler" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the file delegate.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.load_initial_content">
-<span class="sig-name descname"><span class="pre">load_initial_content</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/dsl/dsl_editor_tab.html#DslEditorTab.load_initial_content"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.load_initial_content" title="Link to this definition">¶</a></dt>
-<dd><p>Loads either the exported active plan or the demonstration script into the editor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.on_example_selected">
-<span class="sig-name descname"><span class="pre">on_example_selected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">selected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/dsl/dsl_editor_tab.html#DslEditorTab.on_example_selected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.on_example_selected" title="Link to this definition">¶</a></dt>
-<dd><p>Loads the selected example script from disk into the editor.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>selected</strong> – Optional name of example file.</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>IDslFileDelegate instance.</p>
 </dd>
 <dt class="field-even">Exceptions<span class="colon">:</span></dt>
 <dd class="field-even"><p>None.</p>
@@ -215,9 +183,9 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.open_file">
-<span class="sig-name descname"><span class="pre">open_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/dsl/dsl_editor_tab.html#DslEditorTab.open_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.open_file" title="Link to this definition">¶</a></dt>
-<dd><p>Opens a .scara file and loads it into the editor.</p>
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.load_initial_content">
+<span class="sig-name descname"><span class="pre">load_initial_content</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/dsl/dsl_editor_tab.html#DslEditorTab.load_initial_content"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.load_initial_content" title="Link to this definition">¶</a></dt>
+<dd><p>Loads either the exported active plan or demonstration script into the editor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Exceptions<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None.</p>
@@ -226,34 +194,51 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.preview_in_scaraemu">
-<span class="sig-name descname"><span class="pre">preview_in_scaraemu</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/dsl/dsl_editor_tab.html#DslEditorTab.preview_in_scaraemu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.preview_in_scaraemu" title="Link to this definition">¶</a></dt>
-<dd><p>Exports active DSL script to temporary file and launches SCARAEmu for visual twin preview.</p>
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.mount_handlers">
+<span class="sig-name descname"><span class="pre">mount_handlers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">execution_handler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.dsl.handler.iexecution_delegate.html#scarajectory.infrastructure.gui.dsl.handler.iexecution_delegate.IDslExecutionDelegate" title="scarajectory.infrastructure.gui.dsl.handler.iexecution_delegate.IDslExecutionDelegate"><span class="pre">IDslExecutionDelegate</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_handler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.dsl.handler.ifile_delegate.html#scarajectory.infrastructure.gui.dsl.handler.ifile_delegate.IDslFileDelegate" title="scarajectory.infrastructure.gui.dsl.handler.ifile_delegate.IDslFileDelegate"><span class="pre">IDslFileDelegate</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.plan.store.iwaypoint_store.html#scarajectory.core.service.trajectory.plan.store.iwaypoint_store.IWaypointStore" title="scarajectory.core.service.trajectory.plan.store.iwaypoint_store.IWaypointStore"><span class="pre">IWaypointStore</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/dsl/dsl_editor_tab.html#DslEditorTab.mount_handlers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.mount_handlers" title="Link to this definition">¶</a></dt>
+<dd><p>Injects action delegates and store collaborator.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>execution_handler</strong> – Delegate handling compilation and execution.</p></li>
+<li><p><strong>file_handler</strong> – Delegate handling file persistence and demo loading.</p></li>
+<li><p><strong>store</strong> – Waypoint query store.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.save_file">
-<span class="sig-name descname"><span class="pre">save_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/dsl/dsl_editor_tab.html#DslEditorTab.save_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.save_file" title="Link to this definition">¶</a></dt>
-<dd><p>Saves editor content to a .scara file.</p>
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.mount_views">
+<span class="sig-name descname"><span class="pre">mount_views</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">toolbar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.dsl.toolbar.html#scarajectory.infrastructure.gui.dsl.toolbar.DslEditorToolbar" title="scarajectory.infrastructure.gui.dsl.toolbar.DslEditorToolbar"><span class="pre">DslEditorToolbar</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">editor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.dsl.code_editor.html#scarajectory.infrastructure.gui.dsl.code_editor.DslCodeEditor" title="scarajectory.infrastructure.gui.dsl.code_editor.DslCodeEditor"><span class="pre">DslCodeEditor</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">console</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.dsl.console_view.html#scarajectory.infrastructure.gui.dsl.console_view.DslConsoleView" title="scarajectory.infrastructure.gui.dsl.console_view.DslConsoleView"><span class="pre">DslConsoleView</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/dsl/dsl_editor_tab.html#DslEditorTab.mount_views"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.mount_views" title="Link to this definition">¶</a></dt>
+<dd><p>Mounts and packs toolbar, code editor, and console view subcomponents.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>toolbar</strong> – Assembled action toolbar.</p></li>
+<li><p><strong>editor</strong> – Syntax-highlighted code editor.</p></li>
+<li><p><strong>console</strong> – Diagnostic output console.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.validate_code">
-<span class="sig-name descname"><span class="pre">validate_code</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/dsl/dsl_editor_tab.html#DslEditorTab.validate_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.validate_code" title="Link to this definition">¶</a></dt>
-<dd><p>Validates editor code syntax and kinematics without modifying the plan.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.toolbar">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">toolbar</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.dsl.toolbar.html#scarajectory.infrastructure.gui.dsl.toolbar.DslEditorToolbar" title="scarajectory.infrastructure.gui.dsl.toolbar.DslEditorToolbar"><span class="pre">DslEditorToolbar</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.toolbar" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the action toolbar subcomponent.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>DslEditorToolbar instance.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -274,24 +259,20 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <ul>
 <li><a class="reference internal" href="#">scarajectory.infrastructure.gui.dsl.dsl_editor_tab module</a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab"><code class="docutils literal notranslate"><span class="pre">DslEditorTab</span></code></a><ul>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._catalog"><code class="docutils literal notranslate"><span class="pre">DslEditorTab._catalog</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._console"><code class="docutils literal notranslate"><span class="pre">DslEditorTab._console</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._doc_manager"><code class="docutils literal notranslate"><span class="pre">DslEditorTab._doc_manager</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._dsl_service"><code class="docutils literal notranslate"><span class="pre">DslEditorTab._dsl_service</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._editor"><code class="docutils literal notranslate"><span class="pre">DslEditorTab._editor</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._launcher"><code class="docutils literal notranslate"><span class="pre">DslEditorTab._launcher</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._plan"><code class="docutils literal notranslate"><span class="pre">DslEditorTab._plan</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._execution_handler"><code class="docutils literal notranslate"><span class="pre">DslEditorTab._execution_handler</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._file_handler"><code class="docutils literal notranslate"><span class="pre">DslEditorTab._file_handler</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._store"><code class="docutils literal notranslate"><span class="pre">DslEditorTab._store</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab._toolbar"><code class="docutils literal notranslate"><span class="pre">DslEditorTab._toolbar</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.build_layout"><code class="docutils literal notranslate"><span class="pre">DslEditorTab.build_layout()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.compile_to_plan"><code class="docutils literal notranslate"><span class="pre">DslEditorTab.compile_to_plan()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.export_plan_to_editor"><code class="docutils literal notranslate"><span class="pre">DslEditorTab.export_plan_to_editor()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.load_example"><code class="docutils literal notranslate"><span class="pre">DslEditorTab.load_example()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.console"><code class="docutils literal notranslate"><span class="pre">DslEditorTab.console</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.editor"><code class="docutils literal notranslate"><span class="pre">DslEditorTab.editor</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.execution_handler"><code class="docutils literal notranslate"><span class="pre">DslEditorTab.execution_handler</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.file_handler"><code class="docutils literal notranslate"><span class="pre">DslEditorTab.file_handler</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.load_initial_content"><code class="docutils literal notranslate"><span class="pre">DslEditorTab.load_initial_content()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.on_example_selected"><code class="docutils literal notranslate"><span class="pre">DslEditorTab.on_example_selected()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.open_file"><code class="docutils literal notranslate"><span class="pre">DslEditorTab.open_file()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.preview_in_scaraemu"><code class="docutils literal notranslate"><span class="pre">DslEditorTab.preview_in_scaraemu()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.save_file"><code class="docutils literal notranslate"><span class="pre">DslEditorTab.save_file()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.validate_code"><code class="docutils literal notranslate"><span class="pre">DslEditorTab.validate_code()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.mount_handlers"><code class="docutils literal notranslate"><span class="pre">DslEditorTab.mount_handlers()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.mount_views"><code class="docutils literal notranslate"><span class="pre">DslEditorTab.mount_views()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.dsl_editor_tab.DslEditorTab.toolbar"><code class="docutils literal notranslate"><span class="pre">DslEditorTab.toolbar</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -301,8 +282,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.gui.dsl.dsl_document_manager.html"
-                          title="previous chapter">scarajectory.infrastructure.gui.dsl.dsl_document_manager module</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.dsl.console_view.html"
+                          title="previous chapter">scarajectory.infrastructure.gui.dsl.console_view module</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -343,7 +324,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="scarajectory.infrastructure.gui.dsl.dsl_editor_tab_factory.html" title="scarajectory.infrastructure.gui.dsl.dsl_editor_tab_factory module"
              >next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.gui.dsl.dsl_document_manager.html" title="scarajectory.infrastructure.gui.dsl.dsl_document_manager module"
+          <a href="scarajectory.infrastructure.gui.dsl.console_view.html" title="scarajectory.infrastructure.gui.dsl.console_view module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>

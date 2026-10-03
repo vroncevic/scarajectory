@@ -7,9 +7,9 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.core.service.kinematics.ikinematics_service
-   scarajectory.core.service.kinematics.kinematics_service
-   scarajectory.core.service.kinematics.kinematics_service_factory
+   scarajectory.core.service.kinematics.iscara_deadzone_calculator
+   scarajectory.core.service.kinematics.scara_deadzone_calculator
+   scarajectory.core.service.kinematics.scara_deadzone_calculator_factory
 
 Module contents
 ---------------

@@ -24,13 +24,15 @@ from __future__ import annotations
 from ats_utilities.context.bundle import ContextBundle
 from ats_utilities.context.factory import ContextBundleFactory
 
+from scarajectory.infrastructure.storage.plan_loader import PlanLoader
+from scarajectory.infrastructure.storage.plan_storer import PlanStorer
 from scarajectory.infrastructure.storage.plan_storage_service import PlanStorageService
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.3'
+__version__ = '1.0.4'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -45,6 +47,7 @@ class PlanStorageServiceFactory:
             :methods:
                 | create - Assembles and instantiates a PlanStorageService with default ContextBundle.
                 | create_with_context - Assembles PlanStorageService with explicit ContextBundle.
+                | get_version - Returns factory module semantic version string.
     '''
 
     @classmethod
@@ -55,7 +58,7 @@ class PlanStorageServiceFactory:
             :return: Fully assembled PlanStorageService instance.
             :exceptions: None.
         '''
-        return PlanStorageService(context_bundle=ContextBundleFactory.create_bundle())
+        return cls.create_with_context(ContextBundleFactory.create_bundle())
 
     @classmethod
     def create_with_context(cls, context_bundle: ContextBundle) -> PlanStorageService:
@@ -66,4 +69,17 @@ class PlanStorageServiceFactory:
             :return: Fully assembled PlanStorageService instance.
             :exceptions: None.
         '''
-        return PlanStorageService(context_bundle=context_bundle)
+        loader = PlanLoader(context_bundle=context_bundle)
+        storer = PlanStorer(context_bundle=context_bundle)
+
+        return PlanStorageService(loader=loader, storer=storer)
+
+    @classmethod
+    def get_version(cls) -> str:
+        '''
+            Returns factory module semantic version string.
+
+            :return: Semantic version string (__version__).
+            :exceptions: None.
+        '''
+        return __version__

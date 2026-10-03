@@ -23,16 +23,18 @@ from __future__ import annotations
 
 from tkinter import Widget
 
-from scarajectory.core.service.trajectory.plan.itrajectory_plan import ITrajectoryPlan
-from scarajectory.infrastructure.gui.canvas.icanvas import ICanvas
-from scarajectory.infrastructure.gui.model.canvas_settings import CanvasSettings
 from scarajectory.infrastructure.gui.toolbar.toolbar import Toolbar
+from scarajectory.infrastructure.gui.toolbar.bundle import ToolbarBundle
+from scarajectory.infrastructure.gui.toolbar.parameter_inputs_bundle import ParameterInputsBundle
+from scarajectory.infrastructure.gui.toolbar.tool_selector_factory import ToolbarToolSelectorFactory
+from scarajectory.infrastructure.gui.toolbar.navigation_controls_factory import ToolbarNavigationControlsFactory
+from scarajectory.infrastructure.gui.toolbar.parameter_inputs_factory import ToolbarParameterInputsFactory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.3'
+__version__ = '1.0.4'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -46,39 +48,46 @@ class ToolbarFactory:
 
             :methods:
                 | create - Assembles and instantiates a Toolbar widget.
+                | get_version - Returns factory version string.
     '''
 
     @classmethod
-    def create(
-        cls,
-        parent: Widget,
-        *,
-        canvas: ICanvas,
-        plan: ITrajectoryPlan,
-        r_min: float,
-        r_max: float,
-        settings: CanvasSettings,
-        **kwargs: object,
-    ) -> Toolbar:
+    def create(cls, parent: Widget, bundle: ToolbarBundle) -> Toolbar:
         '''
-            Assembles and instantiates a Toolbar widget.
+            Assembles and instantiates a Toolbar widget using parameter bundle.
 
             :param parent: Parent container widget.
-            :param canvas: ICanvas interface instance.
-            :param plan: ITrajectoryPlan instance.
-            :param r_min: Minimum reach radius in mm.
-            :param r_max: Maximum reach radius in mm.
-            :param settings: CanvasSettings instance.
+            :param bundle: Injected ToolbarBundle collaborator and settings bundle.
             :return: Fully assembled Toolbar instance.
             :exceptions: None.
         '''
-        return Toolbar(
-            parent,
-            canvas,
-            plan,
-            r_min=r_min,
-            r_max=r_max,
-            settings=settings,
-            **kwargs,
+        toolbar = Toolbar(parent)
+        tool_selector = ToolbarToolSelectorFactory.create(toolbar, bundle.canvas)
+        nav_controls = ToolbarNavigationControlsFactory.create(
+            toolbar, bundle.navigator, bundle.history
+        )
+        param_bundle = ParameterInputsBundle(
+            canvas=bundle.canvas,
+            status_presenter=bundle.status_presenter,
+            r_min=bundle.r_min,
+            r_max=bundle.r_max,
+            settings=bundle.settings,
+        )
+        param_inputs = ToolbarParameterInputsFactory.create(toolbar, param_bundle)
+        toolbar.mount_controls(
+            tool_selector=tool_selector,
+            nav_controls=nav_controls,
+            param_inputs=param_inputs,
         )
 
+        return toolbar
+
+    @classmethod
+    def get_version(cls) -> str:
+        '''
+            Returns the factory version string.
+
+            :return: Factory version string.
+            :exceptions: None.
+        '''
+        return __version__

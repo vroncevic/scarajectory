@@ -1,21 +1,30 @@
 scarajectory.infrastructure.gui.canvas package
 ==============================================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   scarajectory.infrastructure.gui.canvas.handler
+   scarajectory.infrastructure.gui.canvas.navigation
+   scarajectory.infrastructure.gui.canvas.observer
+   scarajectory.infrastructure.gui.canvas.render
+   scarajectory.infrastructure.gui.canvas.status
+
 Submodules
 ----------
 
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.gui.canvas.canvas
-   scarajectory.infrastructure.gui.canvas.canvas_background_renderer
+   scarajectory.infrastructure.gui.canvas.bundle
    scarajectory.infrastructure.gui.canvas.canvas_event_binder
-   scarajectory.infrastructure.gui.canvas.canvas_mouse_handler
-   scarajectory.infrastructure.gui.canvas.canvas_preview_renderer
-   scarajectory.infrastructure.gui.canvas.canvas_renderer
-   scarajectory.infrastructure.gui.canvas.canvas_tool_handler
-   scarajectory.infrastructure.gui.canvas.canvas_trajectory_renderer
+   scarajectory.infrastructure.gui.canvas.canvas_event_binder_factory
    scarajectory.infrastructure.gui.canvas.icanvas
+   scarajectory.infrastructure.gui.canvas.trajectory_canvas
+   scarajectory.infrastructure.gui.canvas.trajectory_canvas_factory
 
 Module contents
 ---------------

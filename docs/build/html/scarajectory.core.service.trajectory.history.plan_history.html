@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="scarajectory.core.service.trajectory.history.plan_history_factory module" href="scarajectory.core.service.trajectory.history.plan_history_factory.html" />
-    <link rel="prev" title="scarajectory.core.service.trajectory.history.iplan_history module" href="scarajectory.core.service.trajectory.history.iplan_history.html" /> 
+    <link rel="prev" title="scarajectory.core.service.trajectory.history.iplan_history_saver module" href="scarajectory.core.service.trajectory.history.iplan_history_saver.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -31,7 +31,7 @@
           <a href="scarajectory.core.service.trajectory.history.plan_history_factory.html" title="scarajectory.core.service.trajectory.history.plan_history_factory module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.core.service.trajectory.history.iplan_history.html" title="scarajectory.core.service.trajectory.history.iplan_history module"
+          <a href="scarajectory.core.service.trajectory.history.iplan_history_saver.html" title="scarajectory.core.service.trajectory.history.iplan_history_saver module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
@@ -86,6 +86,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dt class="field-even">methods<span class="colon">:</span></dt>
 <dd class="field-even"><div class="line-block">
 <div class="line">__init__ - Initializes empty undo and redo stacks.</div>
+<div class="line">can_undo - Checks whether undo history is available.</div>
+<div class="line">can_redo - Checks whether redo history is available.</div>
 <div class="line">save_state - Pushes current snapshot onto undo stack.</div>
 <div class="line">undo - Pops last state from undo stack into redo stack.</div>
 <div class="line">redo - Pops last state from redo stack into undo stack.</div>
@@ -96,13 +98,41 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </div></blockquote>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="scarajectory.core.service.trajectory.history.plan_history.PlanHistory._redo_stack">
-<span class="sig-name descname"><span class="pre">_redo_stack</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.trajectory.waypoint.html#scarajectory.core.model.trajectory.waypoint.Waypoint" title="scarajectory.core.model.trajectory.waypoint.Waypoint"><span class="pre">Waypoint</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#scarajectory.core.service.trajectory.history.plan_history.PlanHistory._redo_stack" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_redo_stack</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Waypoint</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#scarajectory.core.service.trajectory.history.plan_history.PlanHistory._redo_stack" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="scarajectory.core.service.trajectory.history.plan_history.PlanHistory._undo_stack">
-<span class="sig-name descname"><span class="pre">_undo_stack</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.trajectory.waypoint.html#scarajectory.core.model.trajectory.waypoint.Waypoint" title="scarajectory.core.model.trajectory.waypoint.Waypoint"><span class="pre">Waypoint</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#scarajectory.core.service.trajectory.history.plan_history.PlanHistory._undo_stack" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_undo_stack</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Waypoint</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#scarajectory.core.service.trajectory.history.plan_history.PlanHistory._undo_stack" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.core.service.trajectory.history.plan_history.PlanHistory.can_redo">
+<span class="sig-name descname"><span class="pre">can_redo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/trajectory/history/plan_history.html#PlanHistory.can_redo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.trajectory.history.plan_history.PlanHistory.can_redo" title="Link to this definition">¶</a></dt>
+<dd><p>Checks whether redo history is available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if redo history exists, False otherwise.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.core.service.trajectory.history.plan_history.PlanHistory.can_undo">
+<span class="sig-name descname"><span class="pre">can_undo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/trajectory/history/plan_history.html#PlanHistory.can_undo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.trajectory.history.plan_history.PlanHistory.can_undo" title="Link to this definition">¶</a></dt>
+<dd><p>Checks whether undo history is available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if undo history exists, False otherwise.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.core.service.trajectory.history.plan_history.PlanHistory.clear">
@@ -117,14 +147,14 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.core.service.trajectory.history.plan_history.PlanHistory.redo">
-<span class="sig-name descname"><span class="pre">redo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.trajectory.waypoint.html#scarajectory.core.model.trajectory.waypoint.Waypoint" title="scarajectory.core.model.trajectory.waypoint.Waypoint"><span class="pre">Waypoint</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.trajectory.waypoint.html#scarajectory.core.model.trajectory.waypoint.Waypoint" title="scarajectory.core.model.trajectory.waypoint.Waypoint"><span class="pre">Waypoint</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/trajectory/history/plan_history.html#PlanHistory.redo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.trajectory.history.plan_history.PlanHistory.redo" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">redo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Waypoint</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Waypoint</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/trajectory/history/plan_history.html#PlanHistory.redo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.trajectory.history.plan_history.PlanHistory.redo" title="Link to this definition">¶</a></dt>
 <dd><p>Pops last state from redo stack into undo stack.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>current</strong> – Current list of waypoints.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Next waypoints state or None if empty.</p>
+<dd class="field-even"><p>Next waypoints state, or current state if empty.</p>
 </dd>
 <dt class="field-odd">Exceptions<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None.</p>
@@ -134,7 +164,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.core.service.trajectory.history.plan_history.PlanHistory.save_state">
-<span class="sig-name descname"><span class="pre">save_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.trajectory.waypoint.html#scarajectory.core.model.trajectory.waypoint.Waypoint" title="scarajectory.core.model.trajectory.waypoint.Waypoint"><span class="pre">Waypoint</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/trajectory/history/plan_history.html#PlanHistory.save_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.trajectory.history.plan_history.PlanHistory.save_state" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">save_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Waypoint</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/trajectory/history/plan_history.html#PlanHistory.save_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.trajectory.history.plan_history.PlanHistory.save_state" title="Link to this definition">¶</a></dt>
 <dd><p>Pushes current snapshot onto undo stack.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -148,14 +178,14 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.core.service.trajectory.history.plan_history.PlanHistory.undo">
-<span class="sig-name descname"><span class="pre">undo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.trajectory.waypoint.html#scarajectory.core.model.trajectory.waypoint.Waypoint" title="scarajectory.core.model.trajectory.waypoint.Waypoint"><span class="pre">Waypoint</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="scarajectory.core.model.trajectory.waypoint.html#scarajectory.core.model.trajectory.waypoint.Waypoint" title="scarajectory.core.model.trajectory.waypoint.Waypoint"><span class="pre">Waypoint</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/trajectory/history/plan_history.html#PlanHistory.undo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.trajectory.history.plan_history.PlanHistory.undo" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">undo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Waypoint</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Waypoint</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/trajectory/history/plan_history.html#PlanHistory.undo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.trajectory.history.plan_history.PlanHistory.undo" title="Link to this definition">¶</a></dt>
 <dd><p>Pops last state from undo stack into redo stack.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>current</strong> – Current list of waypoints.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Previous waypoints state or None if empty.</p>
+<dd class="field-even"><p>Previous waypoints state, or current state if empty.</p>
 </dd>
 <dt class="field-odd">Exceptions<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None.</p>
@@ -181,6 +211,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <li><a class="reference internal" href="#scarajectory.core.service.trajectory.history.plan_history.PlanHistory"><code class="docutils literal notranslate"><span class="pre">PlanHistory</span></code></a><ul>
 <li><a class="reference internal" href="#scarajectory.core.service.trajectory.history.plan_history.PlanHistory._redo_stack"><code class="docutils literal notranslate"><span class="pre">PlanHistory._redo_stack</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.core.service.trajectory.history.plan_history.PlanHistory._undo_stack"><code class="docutils literal notranslate"><span class="pre">PlanHistory._undo_stack</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.service.trajectory.history.plan_history.PlanHistory.can_redo"><code class="docutils literal notranslate"><span class="pre">PlanHistory.can_redo()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.service.trajectory.history.plan_history.PlanHistory.can_undo"><code class="docutils literal notranslate"><span class="pre">PlanHistory.can_undo()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.core.service.trajectory.history.plan_history.PlanHistory.clear"><code class="docutils literal notranslate"><span class="pre">PlanHistory.clear()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.core.service.trajectory.history.plan_history.PlanHistory.redo"><code class="docutils literal notranslate"><span class="pre">PlanHistory.redo()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.core.service.trajectory.history.plan_history.PlanHistory.save_state"><code class="docutils literal notranslate"><span class="pre">PlanHistory.save_state()</span></code></a></li>
@@ -194,8 +226,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.core.service.trajectory.history.iplan_history.html"
-                          title="previous chapter">scarajectory.core.service.trajectory.history.iplan_history module</a></p>
+    <p class="topless"><a href="scarajectory.core.service.trajectory.history.iplan_history_saver.html"
+                          title="previous chapter">scarajectory.core.service.trajectory.history.iplan_history_saver module</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -236,7 +268,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="scarajectory.core.service.trajectory.history.plan_history_factory.html" title="scarajectory.core.service.trajectory.history.plan_history_factory module"
              >next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.core.service.trajectory.history.iplan_history.html" title="scarajectory.core.service.trajectory.history.iplan_history module"
+          <a href="scarajectory.core.service.trajectory.history.iplan_history_saver.html" title="scarajectory.core.service.trajectory.history.iplan_history_saver module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>

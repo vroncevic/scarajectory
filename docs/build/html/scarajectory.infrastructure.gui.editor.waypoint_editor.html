@@ -15,8 +15,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="scarajectory.infrastructure.gui.menu package" href="scarajectory.infrastructure.gui.menu.html" />
-    <link rel="prev" title="scarajectory.infrastructure.gui.editor.validation_tab module" href="scarajectory.infrastructure.gui.editor.validation_tab.html" /> 
+    <link rel="next" title="scarajectory.infrastructure.gui.emulator package" href="scarajectory.infrastructure.gui.emulator.html" />
+    <link rel="prev" title="scarajectory.infrastructure.gui.editor.waypoint_edit_applier_factory module" href="scarajectory.infrastructure.gui.editor.waypoint_edit_applier_factory.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -28,10 +28,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.gui.menu.html" title="scarajectory.infrastructure.gui.menu package"
+          <a href="scarajectory.infrastructure.gui.emulator.html" title="scarajectory.infrastructure.gui.emulator package"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.gui.editor.validation_tab.html" title="scarajectory.infrastructure.gui.editor.validation_tab module"
+          <a href="scarajectory.infrastructure.gui.editor.waypoint_edit_applier_factory.html" title="scarajectory.infrastructure.gui.editor.waypoint_edit_applier_factory module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
@@ -70,7 +70,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.gui.editor.waypoint_editor.</span></span><span class="sig-name descname"><span class="pre">WaypointEditor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.plan.itrajectory_plan.html#scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan" title="scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan"><span class="pre">ITrajectoryPlan</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/editor/waypoint_editor.html#WaypointEditor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.gui.editor.waypoint_editor.</span></span><span class="sig-name descname"><span class="pre">WaypointEditor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bundle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.editor.table.bundle.html#scarajectory.infrastructure.gui.editor.table.bundle.TableBundle" title="scarajectory.infrastructure.gui.editor.table.bundle.TableBundle"><span class="pre">TableBundle</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/editor/waypoint_editor.html#WaypointEditor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Labelframe</span></code></p>
 <p>Waypoint table and inline coordinate editor panel.</p>
 <p>It defines:</p>
@@ -78,7 +78,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <div><dl class="field-list">
 <dt class="field-odd">attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><div class="line-block">
-<div class="line">_plan - ITrajectoryPlan instance.</div>
+<div class="line">_bundle - Injected table collaborator bundle.</div>
 <div class="line">_table - Tabular waypoint view widget.</div>
 <div class="line">_entry_x - Entry field for X coordinate.</div>
 <div class="line">_entry_y - Entry field for Y coordinate.</div>
@@ -90,6 +90,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dt class="field-even">methods<span class="colon">:</span></dt>
 <dd class="field-even"><div class="line-block">
 <div class="line">__init__ - Initializes waypoint editor container and widgets.</div>
+<div class="line">create_widgets - Builds table and bottom coordinate entry strip.</div>
+<div class="line">apply_point_edit - Applies coordinate edits to selected waypoint.</div>
 <div class="line">delete_selected - Deletes currently selected waypoint.</div>
 <div class="line">on_trajectory_updated - Populates coordinate entries on plan changes.</div>
 <div class="line">on_point_selected - Populates coordinate entries on waypoint selection.</div>
@@ -97,16 +99,10 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd>
 </dl>
 </div></blockquote>
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor._create_widgets">
-<span class="sig-name descname"><span class="pre">_create_widgets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/editor/waypoint_editor.html#WaypointEditor._create_widgets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor._create_widgets" title="Link to this definition">¶</a></dt>
-<dd><p>Builds table and bottom coordinate entry strip.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor._bundle">
+<span class="sig-name descname"><span class="pre">_bundle</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.editor.table.bundle.html#scarajectory.infrastructure.gui.editor.table.bundle.TableBundle" title="scarajectory.infrastructure.gui.editor.table.bundle.TableBundle"><span class="pre">TableBundle</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor._bundle" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor._entry_phi">
@@ -133,9 +129,14 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <span class="sig-name descname"><span class="pre">_entry_z</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Entry</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor._entry_z" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor._table">
+<span class="sig-name descname"><span class="pre">_table</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.editor.table.trajectory_table.html#scarajectory.infrastructure.gui.editor.table.trajectory_table.TrajectoryTable" title="scarajectory.infrastructure.gui.editor.table.trajectory_table.TrajectoryTable"><span class="pre">TrajectoryTable</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor._table" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor._on_apply_point_edit">
-<span class="sig-name descname"><span class="pre">_on_apply_point_edit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/editor/waypoint_editor.html#WaypointEditor._on_apply_point_edit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor._on_apply_point_edit" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor.apply_point_edit">
+<span class="sig-name descname"><span class="pre">apply_point_edit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/editor/waypoint_editor.html#WaypointEditor.apply_point_edit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor.apply_point_edit" title="Link to this definition">¶</a></dt>
 <dd><p>Applies coordinate edits to selected waypoint.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Exceptions<span class="colon">:</span></dt>
@@ -144,15 +145,16 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor._plan">
-<span class="sig-name descname"><span class="pre">_plan</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.trajectory.plan.itrajectory_plan.html#scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan" title="scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan"><span class="pre">ITrajectoryPlan</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor._plan" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor._table">
-<span class="sig-name descname"><span class="pre">_table</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.editor.table.html#scarajectory.infrastructure.gui.editor.table.TrajectoryTable" title="scarajectory.infrastructure.gui.editor.table.TrajectoryTable"><span class="pre">TrajectoryTable</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor._table" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor.create_widgets">
+<span class="sig-name descname"><span class="pre">create_widgets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/editor/waypoint_editor.html#WaypointEditor.create_widgets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor.create_widgets" title="Link to this definition">¶</a></dt>
+<dd><p>Builds table and bottom coordinate entry strip.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor.delete_selected">
@@ -190,6 +192,17 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor.refresh_table">
+<span class="sig-name descname"><span class="pre">refresh_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/editor/waypoint_editor.html#WaypointEditor.refresh_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor.refresh_table" title="Link to this definition">¶</a></dt>
+<dd><p>Refreshes table rows from active plan.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Exceptions<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -206,18 +219,19 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <ul>
 <li><a class="reference internal" href="#">scarajectory.infrastructure.gui.editor.waypoint_editor module</a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor"><code class="docutils literal notranslate"><span class="pre">WaypointEditor</span></code></a><ul>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor._create_widgets"><code class="docutils literal notranslate"><span class="pre">WaypointEditor._create_widgets()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor._bundle"><code class="docutils literal notranslate"><span class="pre">WaypointEditor._bundle</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor._entry_phi"><code class="docutils literal notranslate"><span class="pre">WaypointEditor._entry_phi</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor._entry_spd"><code class="docutils literal notranslate"><span class="pre">WaypointEditor._entry_spd</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor._entry_x"><code class="docutils literal notranslate"><span class="pre">WaypointEditor._entry_x</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor._entry_y"><code class="docutils literal notranslate"><span class="pre">WaypointEditor._entry_y</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor._entry_z"><code class="docutils literal notranslate"><span class="pre">WaypointEditor._entry_z</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor._on_apply_point_edit"><code class="docutils literal notranslate"><span class="pre">WaypointEditor._on_apply_point_edit()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor._plan"><code class="docutils literal notranslate"><span class="pre">WaypointEditor._plan</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor._table"><code class="docutils literal notranslate"><span class="pre">WaypointEditor._table</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor.apply_point_edit"><code class="docutils literal notranslate"><span class="pre">WaypointEditor.apply_point_edit()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor.create_widgets"><code class="docutils literal notranslate"><span class="pre">WaypointEditor.create_widgets()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor.delete_selected"><code class="docutils literal notranslate"><span class="pre">WaypointEditor.delete_selected()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor.on_point_selected"><code class="docutils literal notranslate"><span class="pre">WaypointEditor.on_point_selected()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor.on_trajectory_updated"><code class="docutils literal notranslate"><span class="pre">WaypointEditor.on_trajectory_updated()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor.refresh_table"><code class="docutils literal notranslate"><span class="pre">WaypointEditor.refresh_table()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -227,13 +241,13 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.gui.editor.validation_tab.html"
-                          title="previous chapter">scarajectory.infrastructure.gui.editor.validation_tab module</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.editor.waypoint_edit_applier_factory.html"
+                          title="previous chapter">scarajectory.infrastructure.gui.editor.waypoint_edit_applier_factory module</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.gui.menu.html"
-                          title="next chapter">scarajectory.infrastructure.gui.menu package</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.emulator.html"
+                          title="next chapter">scarajectory.infrastructure.gui.emulator package</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -266,10 +280,10 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.gui.menu.html" title="scarajectory.infrastructure.gui.menu package"
+          <a href="scarajectory.infrastructure.gui.emulator.html" title="scarajectory.infrastructure.gui.emulator package"
              >next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.gui.editor.validation_tab.html" title="scarajectory.infrastructure.gui.editor.validation_tab module"
+          <a href="scarajectory.infrastructure.gui.editor.waypoint_edit_applier_factory.html" title="scarajectory.infrastructure.gui.editor.waypoint_edit_applier_factory module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>

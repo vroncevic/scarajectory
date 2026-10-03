@@ -60,19 +60,19 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">BOTH</span><span class="p">,</span> <span class="n">END</span><span class="p">,</span> <span class="n">LEFT</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Widget</span>
-<span class="kn">from</span> <span class="nn">tkinter.messagebox</span> <span class="kn">import</span> <span class="n">showerror</span>
 <span class="kn">from</span> <span class="nn">tkinter.ttk</span> <span class="kn">import</span> <span class="n">Button</span><span class="p">,</span> <span class="n">Entry</span><span class="p">,</span> <span class="n">Frame</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">LabelFrame</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.waypoint</span> <span class="kn">import</span> <span class="n">Waypoint</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.itrajectory_plan</span> <span class="kn">import</span> <span class="n">ITrajectoryPlan</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.editor.table</span> <span class="kn">import</span> <span class="n">TrajectoryTable</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.editor.table.bundle</span> <span class="kn">import</span> <span class="n">TableBundle</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.editor.table.trajectory_table</span> <span class="kn">import</span> <span class="n">TrajectoryTable</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.editor.waypoint_coordinate_inputs</span> <span class="kn">import</span> <span class="n">WaypointCoordinateInputs</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.editor.waypoint_edit_applier</span> <span class="kn">import</span> <span class="n">WaypointEditApplier</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -87,7 +87,7 @@
 <span class="sd">        It defines:</span>
 
 <span class="sd">            :attributes:</span>
-<span class="sd">                | _plan - ITrajectoryPlan instance.</span>
+<span class="sd">                | _bundle - Injected table collaborator bundle.</span>
 <span class="sd">                | _table - Tabular waypoint view widget.</span>
 <span class="sd">                | _entry_x - Entry field for X coordinate.</span>
 <span class="sd">                | _entry_y - Entry field for Y coordinate.</span>
@@ -96,12 +96,14 @@
 <span class="sd">                | _entry_spd - Entry field for Speed.</span>
 <span class="sd">            :methods:</span>
 <span class="sd">                | __init__ - Initializes waypoint editor container and widgets.</span>
+<span class="sd">                | create_widgets - Builds table and bottom coordinate entry strip.</span>
+<span class="sd">                | apply_point_edit - Applies coordinate edits to selected waypoint.</span>
 <span class="sd">                | delete_selected - Deletes currently selected waypoint.</span>
 <span class="sd">                | on_trajectory_updated - Populates coordinate entries on plan changes.</span>
 <span class="sd">                | on_point_selected - Populates coordinate entries on waypoint selection.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="n">_plan</span><span class="p">:</span> <span class="n">ITrajectoryPlan</span>
+    <span class="n">_bundle</span><span class="p">:</span> <span class="n">TableBundle</span>
     <span class="n">_table</span><span class="p">:</span> <span class="n">TrajectoryTable</span>
     <span class="n">_entry_x</span><span class="p">:</span> <span class="n">Entry</span>
     <span class="n">_entry_y</span><span class="p">:</span> <span class="n">Entry</span>
@@ -109,26 +111,34 @@
     <span class="n">_entry_phi</span><span class="p">:</span> <span class="n">Entry</span>
     <span class="n">_entry_spd</span><span class="p">:</span> <span class="n">Entry</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n">Widget</span><span class="p">,</span> <span class="n">plan</span><span class="p">:</span> <span class="n">ITrajectoryPlan</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">parent</span><span class="p">:</span> <span class="n">Widget</span><span class="p">,</span>
+        <span class="n">bundle</span><span class="p">:</span> <span class="n">TableBundle</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Initializes waypoint editor container and widgets.</span>
 
 <span class="sd">            :param parent: Parent Tk widget.</span>
-<span class="sd">            :param plan: ITrajectoryPlan instance.</span>
+<span class="sd">            :param bundle: Injected TableBundle instance.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39; [ Trajectory Waypoints ] &#39;</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ITrajectoryPlan</span><span class="p">]</span> <span class="o">=</span> <span class="n">plan</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">add_observer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_create_widgets</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">parent</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39; [ Trajectory Waypoints ] &#39;</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">6</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bundle</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">TableBundle</span><span class="p">]</span> <span class="o">=</span> <span class="n">bundle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bundle</span><span class="o">.</span><span class="n">dispatcher</span><span class="o">.</span><span class="n">add_observer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_widgets</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_create_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="WaypointEditor.create_widgets">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.editor.waypoint_editor.html#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor.create_widgets">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Builds table and bottom coordinate entry strip.</span>
 
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_table</span> <span class="o">=</span> <span class="n">TrajectoryTable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plan</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_table</span> <span class="o">=</span> <span class="n">TrajectoryTable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bundle</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_bundle</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="n">edit_strip</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
@@ -154,8 +164,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_entry_spd</span> <span class="o">=</span> <span class="n">Entry</span><span class="p">(</span><span class="n">edit_strip</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_entry_spd</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-        <span class="n">Button</span><span class="p">(</span><span class="n">edit_strip</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Apply&#39;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_on_apply_point_edit</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-        <span class="n">Button</span><span class="p">(</span><span class="n">edit_strip</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Delete&#39;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">delete_selected</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">Button</span><span class="p">(</span><span class="n">edit_strip</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Apply&#39;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">apply_point_edit</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">Button</span><span class="p">(</span><span class="n">edit_strip</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Delete&#39;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">delete_selected</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="WaypointEditor.delete_selected">
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.editor.waypoint_editor.html#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor.delete_selected">[docs]</a>
@@ -168,28 +179,34 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">delete_selected</span><span class="p">()</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_on_apply_point_edit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="WaypointEditor.refresh_table">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.editor.waypoint_editor.html#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor.refresh_table">[docs]</a>
+    <span class="k">def</span> <span class="nf">refresh_table</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Refreshes table rows from active plan.</span>
+
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">refresh_table</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="WaypointEditor.apply_point_edit">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.editor.waypoint_editor.html#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor.apply_point_edit">[docs]</a>
+    <span class="k">def</span> <span class="nf">apply_point_edit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Applies coordinate edits to selected waypoint.</span>
 
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">selected_index</span>
-        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">count</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">cur</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">waypoints</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-                <span class="n">updated</span> <span class="o">=</span> <span class="n">Waypoint</span><span class="p">(</span>
-                    <span class="n">x</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_entry_x</span><span class="o">.</span><span class="n">get</span><span class="p">()),</span>
-                    <span class="n">y</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_entry_y</span><span class="o">.</span><span class="n">get</span><span class="p">()),</span>
-                    <span class="n">z</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_entry_z</span><span class="o">.</span><span class="n">get</span><span class="p">()),</span>
-                    <span class="n">phi</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_entry_phi</span><span class="o">.</span><span class="n">get</span><span class="p">()),</span>
-                    <span class="n">speed</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_entry_spd</span><span class="o">.</span><span class="n">get</span><span class="p">()),</span>
-                    <span class="n">name</span><span class="o">=</span><span class="n">cur</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                    <span class="n">command</span><span class="o">=</span><span class="n">cur</span><span class="o">.</span><span class="n">command</span><span class="p">,</span>
-                <span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">update_point</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">updated</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                <span class="n">showerror</span><span class="p">(</span><span class="s1">&#39;Input Error&#39;</span><span class="p">,</span> <span class="s1">&#39;Invalid numeric values.&#39;</span><span class="p">)</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">WaypointCoordinateInputs</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_entry_x</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_entry_y</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">z</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_entry_z</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">phi</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_entry_phi</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+            <span class="n">speed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_entry_spd</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+        <span class="p">)</span>
+        <span class="n">WaypointEditApplier</span><span class="o">.</span><span class="n">apply_edit</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bundle</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="WaypointEditor.on_trajectory_updated">
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.editor.waypoint_editor.html#scarajectory.infrastructure.gui.editor.waypoint_editor.WaypointEditor.on_trajectory_updated">[docs]</a>
@@ -199,15 +216,17 @@
 
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">selected_index</span>
-        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">count</span><span class="p">:</span>
-            <span class="n">pt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">waypoints</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bundle</span><span class="o">.</span><span class="n">selection</span><span class="o">.</span><span class="n">selected_index</span>
+
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bundle</span><span class="o">.</span><span class="n">store</span><span class="o">.</span><span class="n">count</span><span class="p">:</span>
+            <span class="n">pt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bundle</span><span class="o">.</span><span class="n">store</span><span class="o">.</span><span class="n">waypoints</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
             <span class="k">for</span> <span class="n">ent</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="p">(</span>
                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_entry_x</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">pt</span><span class="o">.</span><span class="n">x</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">),</span>
                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_entry_y</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">pt</span><span class="o">.</span><span class="n">y</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">),</span>
                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_entry_z</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">pt</span><span class="o">.</span><span class="n">z</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">),</span>
                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_entry_phi</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">pt</span><span class="o">.</span><span class="n">phi</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">),</span>
-                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_entry_spd</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">pt</span><span class="o">.</span><span class="n">speed</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_entry_spd</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">pt</span><span class="o">.</span><span class="n">speed</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">),</span>
             <span class="p">):</span>
                 <span class="n">ent</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
                 <span class="n">ent</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span></div>

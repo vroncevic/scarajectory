@@ -16,35 +16,24 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Factory instantiating ControlsPanel and coordinating child tab factories.
+    Factory service constructing ControlsPanel instances.
 '''
 
 from __future__ import annotations
 
 from tkinter import Widget
 
-from scarajectory.core.service.iservice import IService
-from scarajectory.core.service.communication.stream.itrajectory_streamer import ITrajectoryStreamer
-from scarajectory.core.service.communication.stream.config_factory import ConfigFactory
-from scaralang.core.service.dsl.iscara_dsl_service import IScaraDslService
-from scarajectory.core.service.trajectory.contract.iplan_storage_service import IPlanStorageService
-from scarajectory.core.service.trajectory.plan.itrajectory_plan import ITrajectoryPlan
-from scarajectory.core.service.trajectory.validation.itrajectory_validator import ITrajectoryValidator
-from scarajectory.infrastructure.communication.preferences.iconnection_repository import IConnectionRepository
-from scarajectory.infrastructure.gui.controls.controls import ControlsPanel
-from scarajectory.infrastructure.gui.dsl.dsl_editor_tab import DslEditorTab
-from scarajectory.infrastructure.gui.dsl.dsl_editor_tab_factory import DslEditorTabFactory
-from scarajectory.infrastructure.gui.editor.preview_tab import PreviewTab
-from scarajectory.infrastructure.gui.editor.preview_tab_factory import PreviewTabFactory
-from scarajectory.infrastructure.gui.editor.validation_tab import ValidationTab
-from scarajectory.infrastructure.gui.stream.jog_tab import JogTab
-from scarajectory.infrastructure.gui.stream.streamer_tab import StreamerTab
+from scarajectory.infrastructure.gui.controls.bundle import ControlsBundle
+from scarajectory.infrastructure.gui.controls.controls_panel import ControlsPanel
+from scarajectory.infrastructure.gui.controls.itabs_assembler import ITabsAssembler
+from scarajectory.infrastructure.gui.controls.tabs_assembler_factory import ControlsTabsAssemblerFactory
+from scarajectory.infrastructure.gui.controls.tabs_bundle import ControlsTabsBundle
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.3'
+__version__ = '1.0.4'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -52,59 +41,68 @@ __status__ = 'Updated'
 
 class ControlsPanelFactory:
     '''
-        Factory constructing ControlsPanel and hierarchically assembling child tabs.
+        Factory providing instantiation of ControlsPanel components.
+
+        It defines:
+
+            :methods:
+                | create - Constructs ControlsPanel and mounts child tabs.
+                | create_with_assembler - Constructs ControlsPanel with custom tabs assembler.
+                | get_version - Returns factory version string.
     '''
 
     @classmethod
     def create(
         cls,
         parent: Widget,
-        *,
-        plan: ITrajectoryPlan,
-        validator: ITrajectoryValidator,
-        streamer: ITrajectoryStreamer,
-        storage: IPlanStorageService,
-        dsl_service: IScaraDslService,
-        service: IService,
-        connection_repository: IConnectionRepository,
-        **kwargs: object
+        bundle: ControlsBundle,
     ) -> ControlsPanel:
-        panel = ControlsPanel(parent, **kwargs)
+        '''
+            Constructs ControlsPanel and mounts child tabs using default assembler.
 
-        dsl_tab: DslEditorTab = DslEditorTabFactory.create(
-            panel.notebook,
-            plan=plan,
-            dsl_service=dsl_service,
-            storage=storage,
-        )
-        stream_tab: StreamerTab = StreamerTab(
-            panel.notebook,
-            plan=plan,
-            validator=validator,
-            streamer=streamer,
-            connection_repository=connection_repository,
-            service=service,
-            stream_config_factory=ConfigFactory,
-        )
-        val_tab: ValidationTab = ValidationTab(
-            panel.notebook,
-            plan=plan,
-            validator=validator,
-            service=service,
-        )
-        jog_tab: JogTab = JogTab(panel.notebook, streamer=streamer)
-        prev_tab: PreviewTab = PreviewTabFactory.create(panel.notebook, plan=plan)
+            :param parent: Parent container widget.
+            :param bundle: Injected ControlsBundle dependency container.
+            :return: Assembled ControlsPanel instance.
+            :exceptions: None.
+        '''
+        assembler: ITabsAssembler = ControlsTabsAssemblerFactory.create()
 
-        panel.mount_tabs(
-            dsl_editor_tab=dsl_tab,
-            streamer_tab=stream_tab,
-            validation_tab=val_tab,
-            jog_tab=jog_tab,
-            preview_tab=prev_tab,
+        return cls.create_with_assembler(
+            parent=parent,
+            bundle=bundle,
+            assembler=assembler,
         )
+
+    @classmethod
+    def create_with_assembler(
+        cls,
+        parent: Widget,
+        bundle: ControlsBundle,
+        assembler: ITabsAssembler,
+    ) -> ControlsPanel:
+        '''
+            Constructs ControlsPanel and mounts child tabs using injected assembler.
+
+            :param parent: Parent container widget.
+            :param bundle: Injected ControlsBundle dependency container.
+            :param assembler: Injected ITabsAssembler strategy.
+            :return: Assembled ControlsPanel instance.
+            :exceptions: None.
+        '''
+        panel = ControlsPanel(parent)
+        tabs: ControlsTabsBundle = assembler.assemble_tabs(
+            panel.notebook, bundle
+        )
+        panel.mount_tabs(tabs)
 
         return panel
 
     @classmethod
     def get_version(cls) -> str:
+        '''
+            Returns component version string.
+
+            :return: Version string.
+            :exceptions: None.
+        '''
         return __version__

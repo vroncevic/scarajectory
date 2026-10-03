@@ -28,47 +28,28 @@ from ats_utilities.base.setup.factory import BaseBundleFactory
 from ats_utilities.base.setup.options import BaseBundleOptions
 from ats_utilities.context.bundle import ContextBundle
 from ats_utilities.context.factory import ContextBundleFactory
-
-from scarajectory.infrastructure.settings.config_loader_factory import ScaraConfigLoaderFactory
-from scarajectory.core.service.config.iscara_config_loader import IScaraConfigLoader
-from scarajectory.core.model.kinematics.scara_bounds import ScaraBounds
-from scarajectory.core.model.kinematics.transmission_parameters import TransmissionParameters
-from scarajectory.core.service.trajectory.plan.trajectory_plan import TrajectoryPlan
-from scarajectory.core.service.trajectory.plan.trajectory_plan_factory import TrajectoryPlanFactory
-from scarajectory.core.service.kinematics.ikinematics_service import IKinematicsService
-from scarajectory.core.service.kinematics.kinematics_service_factory import KinematicsServiceFactory
-from scarajectory.core.service.trajectory.validation.itrajectory_validator import ITrajectoryValidator
-from scarajectory.core.service.trajectory.validation.trajectory_validator_factory import TrajectoryValidatorFactory
-from scarajectory.infrastructure.communication.preferences.connection_repository import ConnectionRepository
-from scarajectory.infrastructure.communication.preferences.connection_repository_factory import ConnectionRepositoryFactory
-from scarajectory.infrastructure.storage.plan_storage_service import PlanStorageService
-from scarajectory.infrastructure.storage.plan_storage_service_factory import PlanStorageServiceFactory
-from scaralang.core.service.dsl.iscara_dsl_service import IScaraDslService
-from scaralang.core.service.dsl.scara_dsl_service_factory import ScaraDslServiceFactory
-from scarajectory.core.service.engine import Service
-from scarajectory.core.service.service_factory import ServiceFactory
-from scarajectory.infrastructure.communication.transport.itransport import ITransport
-from scarajectory.infrastructure.communication.transport.transport_factory import TransportFactory
-from scarajectory.core.service.communication.stream.itrajectory_streamer import ITrajectoryStreamer
-from scarajectory.infrastructure.communication.streamer.trajectory_streamer_factory import TrajectoryStreamerFactory
-from scarajectory.infrastructure.gui.engine import ScarajectoryGUI
-from scarajectory.infrastructure.gui.gui_factory import ScarajectoryGUIFactory
-from scarajectory.infrastructure.cli.engine import CLI
-from scarajectory.infrastructure.cli.setup.bundle import CLIBundle
-from scarajectory.infrastructure.cli.setup.options import CLIBundleOptions
-from scarajectory.infrastructure.cli.setup.factory import CLIBundleFactory
+from scaralang.core.model.kinematics.scara_bounds import ScaraBounds
+from scarajectory.core.service.settings.iscara_bounds_loader import IScaraBoundsLoader
+from scarajectory.infrastructure.settings.bounds.scara_bounds_loader_factory import ScaraBoundsLoaderFactory
+from scarajectory.infrastructure.settings.settings_reader import SettingsReader
+from scarajectory.infrastructure.settings.settings_reader_factory import SettingsReaderFactory
+from scarajectory.setup.assembly.app_core_assembler import AppCoreAssembler
+from scarajectory.setup.assembly.app_core_bundle import AppCoreBundle
+from scarajectory.setup.assembly.app_presentation_assembler import AppPresentationAssembler
+from scarajectory.setup.assembly.app_runtime_assembler import AppRuntimeAssembler
+from scarajectory.setup.assembly.app_runtime_bundle import AppRuntimeBundle
 from scarajectory.setup.bundle import SCARAjectoryBundle
-from scarajectory.setup.options import SCARAjectoryBundleOptions
-from scarajectory.setup.registry import SCARAjectoryBundleRegistry
-from scarajectory.setup.dependencies import SCARAjectoryBundleDependencies
-from scarajectory.setup.opt_validator import SCARAjectoryBundleOptionsValidator
 from scarajectory.setup.keys import SCARAjectoryBundleKeys
+from scarajectory.setup.opt_validator import SCARAjectoryBundleOptionsValidator
+from scarajectory.setup.options import SCARAjectoryBundleOptions
+from scarajectory.setup.pipeline.plan_pipeline_builder import PlanPipelineBuilder
+from scarajectory.setup.pipeline.plan_pipeline_bundle import PlanPipelineBundle
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.3'
+__version__ = '1.0.4'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -82,25 +63,17 @@ class SCARAjectoryBundleFactory:
 
             :attributes:
                 | _info_file - Path to the scarajectory info file.
-                | _geometry_config_file - Path to default robot geometry config file.
-                | _geometry_scheme_file - Path to robot geometry validation scheme.
             :methods:
-                | resolve_bounds - Resolves and constructs ScaraBounds from JSON config and options.
-                | create_bundle - Creates the scarajectory bundle with optional pre-configured options.
-                | get_version - Returns the factory version.
+                | resolve_bounds - Resolves ScaraBounds from config.
+                | resolve_bounds_with_options - Resolves bounds from options.
+                | create_bundle - Creates scarajectory bundle with defaults.
+                | create_bundle_with_options - Creates bundle with options.
+                | get_version - Returns the factory version string.
     '''
 
     _info_file: str = join(
         dirname(dirname(abspath(__file__))),
         'infrastructure', 'config', 'scarajectory.cfg'
-    )
-    _geometry_config_file: str = join(
-        dirname(dirname(abspath(__file__))),
-        'infrastructure', 'config', 'scara_geometry.json'
-    )
-    _geometry_scheme_file: str = join(
-        dirname(dirname(abspath(__file__))),
-        'infrastructure', 'config', 'scheme.json'
     )
 
     @classmethod
@@ -111,19 +84,22 @@ class SCARAjectoryBundleFactory:
             :return: ScaraBounds domain model.
             :exceptions: None.
         '''
-        loader: IScaraConfigLoader = ScaraConfigLoaderFactory.create()
-
-        return loader.load_bounds()
+        return cls.resolve_bounds_with_options(
+            options=SCARAjectoryBundleOptions({}),
+            context_bundle=ContextBundleFactory.create_bundle(),
+        )
 
     @classmethod
     def resolve_bounds_with_options(
         cls,
         options: SCARAjectoryBundleOptions,
+        context_bundle: ContextBundle,
     ) -> ScaraBounds:
         '''
-            Resolves and constructs ScaraBounds from JSON configuration and options.
+            Resolves ScaraBounds from JSON configuration and options.
 
             :param options: Bundle configuration options.
+            :param context_bundle: Shared ATS ContextBundle instance.
             :return: ScaraBounds domain model.
             :exceptions: None.
         '''
@@ -137,11 +113,20 @@ class SCARAjectoryBundleFactory:
         if SCARAjectoryBundleKeys.OPTION_Z_MAX in options:
             opts_dict['z_max'] = options[SCARAjectoryBundleKeys.OPTION_Z_MAX]
         if SCARAjectoryBundleKeys.OPTION_MIN_SPEED in options:
-            opts_dict['min_speed'] = options[SCARAjectoryBundleKeys.OPTION_MIN_SPEED]
+            opts_dict['min_speed'] = options[
+                SCARAjectoryBundleKeys.OPTION_MIN_SPEED
+            ]
         if SCARAjectoryBundleKeys.OPTION_MAX_SPEED in options:
-            opts_dict['max_speed'] = options[SCARAjectoryBundleKeys.OPTION_MAX_SPEED]
+            opts_dict['max_speed'] = options[
+                SCARAjectoryBundleKeys.OPTION_MAX_SPEED
+            ]
 
-        loader: IScaraConfigLoader = ScaraConfigLoaderFactory.create()
+        reader: SettingsReader = SettingsReaderFactory.create_with_context(
+            context_bundle=context_bundle
+        )
+        loader: IScaraBoundsLoader = ScaraBoundsLoaderFactory.create_with_reader(
+            reader=reader
+        )
 
         if opts_dict:
             return loader.load_bounds_with_options(options=opts_dict)
@@ -156,69 +141,8 @@ class SCARAjectoryBundleFactory:
             :return: The scarajectory bundle.
             :exceptions: None.
         '''
-        info_file: str = cls._info_file
-        base_bundle: BaseBundle = BaseBundleFactory.create_bundle(
-            options=BaseBundleOptions(
-                info_file=info_file,
-                use_generator=False,
-                context_bundle=ContextBundleFactory.create_bundle(),
-            )
-        )
-        context_bundle: ContextBundle = base_bundle.context_bundle
-        connection_repo: ConnectionRepository = ConnectionRepositoryFactory.create(
-            context_bundle=context_bundle
-        )
-
-        loader: IScaraConfigLoader = ScaraConfigLoaderFactory.create()
-        bounds: ScaraBounds = cls.resolve_bounds()
-        transmission: TransmissionParameters = loader.load_transmission()
-        kinematics: IKinematicsService = KinematicsServiceFactory.create(
-            bounds=bounds,
-        )
-        validator: ITrajectoryValidator = TrajectoryValidatorFactory.create(
-            kinematics=kinematics,
-        )
-        transport: ITransport = TransportFactory.create_default_transport()
-        streamer: ITrajectoryStreamer = TrajectoryStreamerFactory.create(
-            transport=transport
-        )
-        storage: PlanStorageService = PlanStorageServiceFactory.create_with_context(
-            context_bundle=context_bundle
-        )
-        plan: TrajectoryPlan = TrajectoryPlanFactory.create()
-        dsl_service: IScaraDslService = ScaraDslServiceFactory.create(
-            validator=validator,
-            kinematics=kinematics,
-            transmission=transmission,
-        )
-        service: Service = ServiceFactory.create(
-            validator=validator,
-            streamer=streamer,
-            storage=storage,
-            plan=plan,
-            dsl_service=dsl_service,
-        )
-        gui: ScarajectoryGUI = ScarajectoryGUIFactory.create(
-            service=service,
-            connection_repository=connection_repo,
-        )
-        cli_bundle: CLIBundle = CLIBundleFactory.create_bundle(
-            options=CLIBundleOptions(
-                service=service,
-                parser=base_bundle.option_manager,
-                gui=gui,
-            )
-        )
-        cli: CLI = CLI(bundle=cli_bundle)
-
-        return SCARAjectoryBundleRegistry.create_bundle(
-            dependencies=SCARAjectoryBundleDependencies(
-                base=base_bundle,
-                service=service,
-                gui=gui,
-                streamer=streamer,
-                cli=cli,
-            )
+        return cls.create_bundle_with_options(
+            options=SCARAjectoryBundleOptions({})
         )
 
     @classmethod
@@ -233,7 +157,7 @@ class SCARAjectoryBundleFactory:
             :return: The scarajectory bundle.
             :exceptions:
                 | ATSValueError: The options or dependencies must be valid.
-                | ATSTypeError: The options or dependencies must match types.
+                | ATSTypeError:  The options or dependencies must match types.
         '''
         SCARAjectoryBundleOptionsValidator.validate(options)
 
@@ -250,70 +174,30 @@ class SCARAjectoryBundleFactory:
                 context_bundle=ContextBundleFactory.create_bundle(),
             )
         )
-        context_bundle: ContextBundle = base_bundle.context_bundle
-        connection_repo: ConnectionRepository = ConnectionRepositoryFactory.create(
-            context_bundle=context_bundle
+        bounds: ScaraBounds = cls.resolve_bounds_with_options(
+            options=options,
+            context_bundle=base_bundle.context_bundle,
         )
-
-        loader: IScaraConfigLoader = ScaraConfigLoaderFactory.create()
-        bounds: ScaraBounds = cls.resolve_bounds_with_options(options=options)
-        transmission: TransmissionParameters = loader.load_transmission()
-        kinematics: IKinematicsService = KinematicsServiceFactory.create(
+        core_bundle: AppCoreBundle = AppCoreAssembler.assemble(
             bounds=bounds,
+            context_bundle=base_bundle.context_bundle,
         )
-        validator: ITrajectoryValidator = TrajectoryValidatorFactory.create(
-            kinematics=kinematics,
+        runtime_bundle: AppRuntimeBundle = AppRuntimeAssembler.assemble(
+            context_bundle=base_bundle.context_bundle
         )
-        transport: ITransport = TransportFactory.create_default_transport()
-        streamer: ITrajectoryStreamer = TrajectoryStreamerFactory.create(
-            transport=transport
-        )
-        storage: PlanStorageService = PlanStorageServiceFactory.create_with_context(
-            context_bundle=context_bundle
-        )
-        plan: TrajectoryPlan = TrajectoryPlanFactory.create()
-        dsl_service: IScaraDslService = ScaraDslServiceFactory.create(
-            validator=validator,
-            kinematics=kinematics,
-            transmission=transmission,
-        )
-        service: Service = ServiceFactory.create(
-            validator=validator,
-            streamer=streamer,
-            storage=storage,
-            plan=plan,
-            dsl_service=dsl_service,
-        )
-        gui: ScarajectoryGUI = ScarajectoryGUIFactory.create(
-            service=service,
-            connection_repository=connection_repo,
-        )
+        plan_bundle: PlanPipelineBundle = PlanPipelineBuilder.build()
 
-        cli_bundle: CLIBundle = CLIBundleFactory.create_bundle(
-            options=CLIBundleOptions(
-                service=service,
-                parser=base_bundle.option_manager,
-                gui=gui,
-            )
+        return AppPresentationAssembler.assemble(
+            base_bundle=base_bundle,
+            core_bundle=core_bundle,
+            runtime_bundle=runtime_bundle,
+            plan_bundle=plan_bundle,
         )
-
-        cli: CLI = CLI(bundle=cli_bundle)
-
-        return SCARAjectoryBundleRegistry.create_bundle(
-            dependencies=SCARAjectoryBundleDependencies(
-                base=base_bundle,
-                service=service,
-                gui=gui,
-                streamer=streamer,
-                cli=cli,
-            )
-        )
-
 
     @classmethod
     def get_version(cls) -> str:
         '''
-            Returns the factory version.
+            Returns the factory version string.
 
             :return: The factory version string.
             :exceptions: None.

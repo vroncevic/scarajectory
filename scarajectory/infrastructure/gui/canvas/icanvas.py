@@ -23,14 +23,14 @@ from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
-from scarajectory.infrastructure.gui.model.canvas_tool_mode import CanvasToolMode
 from scarajectory.infrastructure.gui.model.canvas_settings import CanvasSettings
+from scarajectory.infrastructure.gui.model.canvas_tool_mode import CanvasToolMode
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.3'
+__version__ = '1.0.4'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -46,10 +46,6 @@ class ICanvas(Protocol):
             :methods:
                 | set_tool_mode - Sets the active drawing/selection tool mode.
                 | update_settings - Updates default point properties.
-                | zoom_in - Scales canvas view in by 1.25x.
-                | zoom_out - Scales canvas view out by 0.8x.
-                | reset_view - Resets viewport zoom to 100%.
-                | fit_reach_view - Fits maximum reach circle to canvas view.
     '''
 
     def set_tool_mode(self, mode: CanvasToolMode) -> None:
@@ -64,24 +60,4 @@ class ICanvas(Protocol):
             Updates default point properties.
 
             :param settings: CanvasSettings instance.
-        '''
-
-    def zoom_in(self) -> None:
-        '''
-            Scales canvas view in by 1.25x.
-        '''
-
-    def zoom_out(self) -> None:
-        '''
-            Scales canvas view out by 0.8x.
-        '''
-
-    def reset_view(self) -> None:
-        '''
-            Resets viewport zoom to 100%.
-        '''
-
-    def fit_reach_view(self) -> None:
-        '''
-            Fits maximum reach circle to canvas view.
         '''

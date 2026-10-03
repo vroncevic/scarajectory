@@ -8,6 +8,7 @@ Submodules
    :maxdepth: 4
 
    scarajectory.core.service.trajectory.history.iplan_history
+   scarajectory.core.service.trajectory.history.iplan_history_saver
    scarajectory.core.service.trajectory.history.plan_history
    scarajectory.core.service.trajectory.history.plan_history_factory
 

@@ -23,19 +23,30 @@ from __future__ import annotations
 
 from tkinter import Widget
 
-from scarajectory.core.service.trajectory.plan.itrajectory_plan import ITrajectoryPlan
-from scaralang.core.service.dsl.iscara_dsl_service import IScaraDslService
-from scarajectory.core.service.trajectory.contract.iplan_storage_service import IPlanStorageService
-from scarajectory.infrastructure.gui.dsl.dsl_document_manager import DslDocumentManager
+from scarajectory.infrastructure.gui.dsl.bundle import DslEditorBundle
+from scarajectory.infrastructure.gui.dsl.code_editor import DslCodeEditor
+from scarajectory.infrastructure.gui.dsl.code_editor_factory import DslCodeEditorFactory
+from scarajectory.infrastructure.gui.dsl.console_view import DslConsoleView
+from scarajectory.infrastructure.gui.dsl.document.document_manager import DslDocumentManager
+from scarajectory.infrastructure.gui.dsl.document.document_manager_factory import DslDocumentManagerFactory
+from scarajectory.infrastructure.gui.dsl.document.example_catalog import DslExampleCatalog
+from scarajectory.infrastructure.gui.dsl.document.example_catalog_factory import DslExampleCatalogFactory
 from scarajectory.infrastructure.gui.dsl.dsl_editor_tab import DslEditorTab
-from scarajectory.infrastructure.gui.dsl.dsl_example_catalog import DslExampleCatalog
-from scarajectory.infrastructure.gui.dsl.iemulator_launcher import IEmulatorLauncher
+from scarajectory.infrastructure.gui.dsl.handler.execution_handler import DslEditorExecutionHandler
+from scarajectory.infrastructure.gui.dsl.handler.execution_handler_bundle import ExecutionHandlerBundle
+from scarajectory.infrastructure.gui.dsl.handler.execution_handler_factory import DslEditorExecutionHandlerFactory
+from scarajectory.infrastructure.gui.dsl.handler.file_handler import DslEditorFileHandler
+from scarajectory.infrastructure.gui.dsl.handler.file_handler_bundle import FileHandlerBundle
+from scarajectory.infrastructure.gui.dsl.handler.file_handler_factory import DslEditorFileHandlerFactory
+from scarajectory.infrastructure.gui.dsl.toolbar import DslEditorToolbar
+from scarajectory.infrastructure.gui.emulator.emulator_launcher_factory import EmulatorLauncherFactory
+from scarajectory.infrastructure.gui.emulator.iemulator_launcher import IEmulatorLauncher
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.3'
+__version__ = '1.0.4'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -48,72 +59,78 @@ class DslEditorTabFactory:
         It defines:
 
             :methods:
-                | create - Assembles and instantiates a DslEditorTab with standard collaborators.
-                | create_with_collaborators - Assembles a DslEditorTab with explicit collaborators.
+                | create - Assembles and instantiates a DslEditorTab with bundle.
+                | get_version - Returns factory version string.
     '''
 
     @classmethod
-    def create(
-        cls,
-        parent: Widget,
-        *,
-        plan: ITrajectoryPlan,
-        dsl_service: IScaraDslService,
-        storage: IPlanStorageService,
-        **kwargs: object,
-    ) -> DslEditorTab:
+    def create(cls, parent: Widget, *, bundle: DslEditorBundle) -> DslEditorTab:
         '''
             Assembles and instantiates a DslEditorTab with standard collaborators.
 
             :param parent: Parent container widget.
-            :param plan: Active ITrajectoryPlan instance.
-            :param dsl_service: Required IScaraDslService instance.
-            :param storage: Required IPlanStorageService instance.
+            :param bundle: Injected DslEditorBundle dependency bundle.
             :return: Fully assembled DslEditorTab.
             :exceptions: None.
         '''
-        return DslEditorTab(
-            parent,
-            plan=plan,
-            dsl_service=dsl_service,
-            storage=storage,
-            **kwargs,
+        tab: DslEditorTab = DslEditorTab(parent)
+
+        editor: DslCodeEditor = DslCodeEditorFactory.create_default(tab)
+        console: DslConsoleView = DslConsoleView(tab)
+
+        launcher: IEmulatorLauncher = EmulatorLauncherFactory.create()
+        catalog: DslExampleCatalog = DslExampleCatalogFactory.create_default(storage=bundle.storage)
+        document_manager: DslDocumentManager = DslDocumentManagerFactory.create(storage=bundle.storage)
+
+        exec_bundle: ExecutionHandlerBundle = ExecutionHandlerBundle(
+            store=bundle.store,
+            mutation=bundle.mutation,
+            dsl_service=bundle.dsl_service,
+            launcher=launcher,
+            editor=editor,
+            console=console,
+        )
+        execution_handler: DslEditorExecutionHandler = (
+            DslEditorExecutionHandlerFactory.create(bundle=exec_bundle)
         )
 
-    @classmethod
-    def create_with_collaborators(
-        cls,
-        parent: Widget,
-        *,
-        plan: ITrajectoryPlan,
-        dsl_service: IScaraDslService,
-        storage: IPlanStorageService,
-        launcher: IEmulatorLauncher,
-        catalog: DslExampleCatalog,
-        document_manager: DslDocumentManager,
-        **kwargs: object,
-    ) -> DslEditorTab:
-        '''
-            Assembles and instantiates a DslEditorTab with explicit collaborators.
-
-            :param parent: Parent container widget.
-            :param plan: Active ITrajectoryPlan instance.
-            :param dsl_service: Required IScaraDslService instance.
-            :param storage: Required IPlanStorageService instance.
-            :param launcher: Required IEmulatorLauncher instance.
-            :param catalog: Required DslExampleCatalog instance.
-            :param document_manager: Required DslDocumentManager instance.
-            :return: Fully assembled DslEditorTab.
-            :exceptions: None.
-        '''
-        return DslEditorTab(
-            parent,
-            plan=plan,
-            dsl_service=dsl_service,
-            storage=storage,
-            launcher=launcher,
+        file_bundle: FileHandlerBundle = FileHandlerBundle(
+            parent=tab,
+            editor=editor,
+            console=console,
             catalog=catalog,
             document_manager=document_manager,
-            **kwargs,
+        )
+        file_handler: DslEditorFileHandler = (
+            DslEditorFileHandlerFactory.create(bundle=file_bundle)
         )
 
+        toolbar: DslEditorToolbar = DslEditorToolbar(
+            tab,
+            execution_delegate=execution_handler,
+            file_delegate=file_handler,
+        )
+        example_files: list[str] = catalog.get_example_files()
+
+        if example_files:
+            toolbar.set_example_files(example_files)
+
+        tab.mount_views(toolbar=toolbar, editor=editor, console=console)
+        tab.mount_handlers(
+            execution_handler=execution_handler,
+            file_handler=file_handler,
+            store=bundle.store,
+        )
+        tab.load_initial_content()
+
+        return tab
+
+    @classmethod
+    def get_version(cls) -> str:
+        '''
+            Returns the factory version string.
+
+            :return: Factory version string.
+            :exceptions: None.
+        '''
+        return __version__

@@ -9,7 +9,6 @@ Submodules
 
    scarajectory.core.service.trajectory.contract.iplan_command_service
    scarajectory.core.service.trajectory.contract.iplan_persistence_service
-   scarajectory.core.service.trajectory.contract.iplan_storage_service
    scarajectory.core.service.trajectory.contract.iplan_validation_service
 
 Module contents

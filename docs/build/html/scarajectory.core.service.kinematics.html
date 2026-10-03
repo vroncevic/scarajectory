@@ -15,8 +15,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="scarajectory.core.service.kinematics.ikinematics_service module" href="scarajectory.core.service.kinematics.ikinematics_service.html" />
-    <link rel="prev" title="scarajectory.core.service.dsl.scara_dsl_service_factory module" href="scarajectory.core.service.dsl.scara_dsl_service_factory.html" /> 
+    <link rel="next" title="scarajectory.core.service.kinematics.iscara_deadzone_calculator module" href="scarajectory.core.service.kinematics.iscara_deadzone_calculator.html" />
+    <link rel="prev" title="scarajectory.core.service.event.ibinary_frame_handler module" href="scarajectory.core.service.event.ibinary_frame_handler.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -28,10 +28,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.core.service.kinematics.ikinematics_service.html" title="scarajectory.core.service.kinematics.ikinematics_service module"
+          <a href="scarajectory.core.service.kinematics.iscara_deadzone_calculator.html" title="scarajectory.core.service.kinematics.iscara_deadzone_calculator module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.core.service.dsl.scara_dsl_service_factory.html" title="scarajectory.core.service.dsl.scara_dsl_service_factory module"
+          <a href="scarajectory.core.service.event.ibinary_frame_handler.html" title="scarajectory.core.service.event.ibinary_frame_handler module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
@@ -53,42 +53,29 @@
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="scarajectory.core.service.kinematics.ikinematics_service.html">scarajectory.core.service.kinematics.ikinematics_service module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="scarajectory.core.service.kinematics.ikinematics_service.html#scarajectory.core.service.kinematics.ikinematics_service.IKinematicsService"><code class="docutils literal notranslate"><span class="pre">IKinematicsService</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.ikinematics_service.html#scarajectory.core.service.kinematics.ikinematics_service.IKinematicsService._abc_impl"><code class="docutils literal notranslate"><span class="pre">IKinematicsService._abc_impl</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.ikinematics_service.html#scarajectory.core.service.kinematics.ikinematics_service.IKinematicsService._is_protocol"><code class="docutils literal notranslate"><span class="pre">IKinematicsService._is_protocol</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.ikinematics_service.html#scarajectory.core.service.kinematics.ikinematics_service.IKinematicsService._is_runtime_protocol"><code class="docutils literal notranslate"><span class="pre">IKinematicsService._is_runtime_protocol</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.ikinematics_service.html#scarajectory.core.service.kinematics.ikinematics_service.IKinematicsService.bounds"><code class="docutils literal notranslate"><span class="pre">IKinematicsService.bounds</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.ikinematics_service.html#scarajectory.core.service.kinematics.ikinematics_service.IKinematicsService.is_in_workspace"><code class="docutils literal notranslate"><span class="pre">IKinematicsService.is_in_workspace()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.ikinematics_service.html#scarajectory.core.service.kinematics.ikinematics_service.IKinematicsService.is_joint_reachable"><code class="docutils literal notranslate"><span class="pre">IKinematicsService.is_joint_reachable()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.ikinematics_service.html#scarajectory.core.service.kinematics.ikinematics_service.IKinematicsService.r_max"><code class="docutils literal notranslate"><span class="pre">IKinematicsService.r_max</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.ikinematics_service.html#scarajectory.core.service.kinematics.ikinematics_service.IKinematicsService.r_min"><code class="docutils literal notranslate"><span class="pre">IKinematicsService.r_min</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.ikinematics_service.html#scarajectory.core.service.kinematics.ikinematics_service.IKinematicsService.solve_fk"><code class="docutils literal notranslate"><span class="pre">IKinematicsService.solve_fk()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.ikinematics_service.html#scarajectory.core.service.kinematics.ikinematics_service.IKinematicsService.solve_ik"><code class="docutils literal notranslate"><span class="pre">IKinematicsService.solve_ik()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="scarajectory.core.service.kinematics.iscara_deadzone_calculator.html">scarajectory.core.service.kinematics.iscara_deadzone_calculator module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.core.service.kinematics.iscara_deadzone_calculator.html#scarajectory.core.service.kinematics.iscara_deadzone_calculator.IScaraDeadzoneCalculator"><code class="docutils literal notranslate"><span class="pre">IScaraDeadzoneCalculator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.iscara_deadzone_calculator.html#scarajectory.core.service.kinematics.iscara_deadzone_calculator.IScaraDeadzoneCalculator._abc_impl"><code class="docutils literal notranslate"><span class="pre">IScaraDeadzoneCalculator._abc_impl</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.iscara_deadzone_calculator.html#scarajectory.core.service.kinematics.iscara_deadzone_calculator.IScaraDeadzoneCalculator._is_protocol"><code class="docutils literal notranslate"><span class="pre">IScaraDeadzoneCalculator._is_protocol</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.iscara_deadzone_calculator.html#scarajectory.core.service.kinematics.iscara_deadzone_calculator.IScaraDeadzoneCalculator._is_runtime_protocol"><code class="docutils literal notranslate"><span class="pre">IScaraDeadzoneCalculator._is_runtime_protocol</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.iscara_deadzone_calculator.html#scarajectory.core.service.kinematics.iscara_deadzone_calculator.IScaraDeadzoneCalculator.calculate_deadzone_radius"><code class="docutils literal notranslate"><span class="pre">IScaraDeadzoneCalculator.calculate_deadzone_radius()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.iscara_deadzone_calculator.html#scarajectory.core.service.kinematics.iscara_deadzone_calculator.IScaraDeadzoneCalculator.calculate_deadzone_radius_squared"><code class="docutils literal notranslate"><span class="pre">IScaraDeadzoneCalculator.calculate_deadzone_radius_squared()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="scarajectory.core.service.kinematics.kinematics_service.html">scarajectory.core.service.kinematics.kinematics_service module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="scarajectory.core.service.kinematics.kinematics_service.html#scarajectory.core.service.kinematics.kinematics_service.KinematicsService"><code class="docutils literal notranslate"><span class="pre">KinematicsService</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.kinematics_service.html#scarajectory.core.service.kinematics.kinematics_service.KinematicsService._bounds"><code class="docutils literal notranslate"><span class="pre">KinematicsService._bounds</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.kinematics_service.html#scarajectory.core.service.kinematics.kinematics_service.KinematicsService._r_max"><code class="docutils literal notranslate"><span class="pre">KinematicsService._r_max</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.kinematics_service.html#scarajectory.core.service.kinematics.kinematics_service.KinematicsService._r_min"><code class="docutils literal notranslate"><span class="pre">KinematicsService._r_min</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.kinematics_service.html#scarajectory.core.service.kinematics.kinematics_service.KinematicsService.bounds"><code class="docutils literal notranslate"><span class="pre">KinematicsService.bounds</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.kinematics_service.html#scarajectory.core.service.kinematics.kinematics_service.KinematicsService.is_in_workspace"><code class="docutils literal notranslate"><span class="pre">KinematicsService.is_in_workspace()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.kinematics_service.html#scarajectory.core.service.kinematics.kinematics_service.KinematicsService.is_joint_reachable"><code class="docutils literal notranslate"><span class="pre">KinematicsService.is_joint_reachable()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.kinematics_service.html#scarajectory.core.service.kinematics.kinematics_service.KinematicsService.r_max"><code class="docutils literal notranslate"><span class="pre">KinematicsService.r_max</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.kinematics_service.html#scarajectory.core.service.kinematics.kinematics_service.KinematicsService.r_min"><code class="docutils literal notranslate"><span class="pre">KinematicsService.r_min</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.kinematics_service.html#scarajectory.core.service.kinematics.kinematics_service.KinematicsService.solve_fk"><code class="docutils literal notranslate"><span class="pre">KinematicsService.solve_fk()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.kinematics_service.html#scarajectory.core.service.kinematics.kinematics_service.KinematicsService.solve_ik"><code class="docutils literal notranslate"><span class="pre">KinematicsService.solve_ik()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="scarajectory.core.service.kinematics.scara_deadzone_calculator.html">scarajectory.core.service.kinematics.scara_deadzone_calculator module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.core.service.kinematics.scara_deadzone_calculator.html#scarajectory.core.service.kinematics.scara_deadzone_calculator.ScaraDeadzoneCalculator"><code class="docutils literal notranslate"><span class="pre">ScaraDeadzoneCalculator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.scara_deadzone_calculator.html#scarajectory.core.service.kinematics.scara_deadzone_calculator.ScaraDeadzoneCalculator.calculate_deadzone_radius"><code class="docutils literal notranslate"><span class="pre">ScaraDeadzoneCalculator.calculate_deadzone_radius()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.scara_deadzone_calculator.html#scarajectory.core.service.kinematics.scara_deadzone_calculator.ScaraDeadzoneCalculator.calculate_deadzone_radius_squared"><code class="docutils literal notranslate"><span class="pre">ScaraDeadzoneCalculator.calculate_deadzone_radius_squared()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="scarajectory.core.service.kinematics.kinematics_service_factory.html">scarajectory.core.service.kinematics.kinematics_service_factory module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="scarajectory.core.service.kinematics.kinematics_service_factory.html#scarajectory.core.service.kinematics.kinematics_service_factory.KinematicsServiceFactory"><code class="docutils literal notranslate"><span class="pre">KinematicsServiceFactory</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.kinematics_service_factory.html#scarajectory.core.service.kinematics.kinematics_service_factory.KinematicsServiceFactory.create"><code class="docutils literal notranslate"><span class="pre">KinematicsServiceFactory.create()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.kinematics_service_factory.html#scarajectory.core.service.kinematics.kinematics_service_factory.KinematicsServiceFactory.get_version"><code class="docutils literal notranslate"><span class="pre">KinematicsServiceFactory.get_version()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="scarajectory.core.service.kinematics.scara_deadzone_calculator_factory.html">scarajectory.core.service.kinematics.scara_deadzone_calculator_factory module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.core.service.kinematics.scara_deadzone_calculator_factory.html#scarajectory.core.service.kinematics.scara_deadzone_calculator_factory.ScaraDeadzoneCalculatorFactory"><code class="docutils literal notranslate"><span class="pre">ScaraDeadzoneCalculatorFactory</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.scara_deadzone_calculator_factory.html#scarajectory.core.service.kinematics.scara_deadzone_calculator_factory.ScaraDeadzoneCalculatorFactory.create"><code class="docutils literal notranslate"><span class="pre">ScaraDeadzoneCalculatorFactory.create()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.core.service.kinematics.scara_deadzone_calculator_factory.html#scarajectory.core.service.kinematics.scara_deadzone_calculator_factory.ScaraDeadzoneCalculatorFactory.get_version"><code class="docutils literal notranslate"><span class="pre">ScaraDeadzoneCalculatorFactory.get_version()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -113,7 +100,7 @@ See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
 </dd>
-<dt>Info</dt><dd><p>Kinematics domain service package initialization.</p>
+<dt>Info</dt><dd><p>Kinematics domain services and interfaces for robot coordinate computations.</p>
 </dd>
 </dl>
 </section>
@@ -139,13 +126,13 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.core.service.dsl.scara_dsl_service_factory.html"
-                          title="previous chapter">scarajectory.core.service.dsl.scara_dsl_service_factory module</a></p>
+    <p class="topless"><a href="scarajectory.core.service.event.ibinary_frame_handler.html"
+                          title="previous chapter">scarajectory.core.service.event.ibinary_frame_handler module</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="scarajectory.core.service.kinematics.ikinematics_service.html"
-                          title="next chapter">scarajectory.core.service.kinematics.ikinematics_service module</a></p>
+    <p class="topless"><a href="scarajectory.core.service.kinematics.iscara_deadzone_calculator.html"
+                          title="next chapter">scarajectory.core.service.kinematics.iscara_deadzone_calculator module</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -178,10 +165,10 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.core.service.kinematics.ikinematics_service.html" title="scarajectory.core.service.kinematics.ikinematics_service module"
+          <a href="scarajectory.core.service.kinematics.iscara_deadzone_calculator.html" title="scarajectory.core.service.kinematics.iscara_deadzone_calculator module"
              >next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.core.service.dsl.scara_dsl_service_factory.html" title="scarajectory.core.service.dsl.scara_dsl_service_factory module"
+          <a href="scarajectory.core.service.event.ibinary_frame_handler.html" title="scarajectory.core.service.event.ibinary_frame_handler module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>

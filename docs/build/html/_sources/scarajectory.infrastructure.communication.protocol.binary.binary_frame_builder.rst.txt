@@ -1,8 +1,0 @@
-scarajectory.infrastructure.communication.protocol.binary.binary\_frame\_builder module
-=======================================================================================
-
-.. automodule:: scarajectory.infrastructure.communication.protocol.binary.binary_frame_builder
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   :private-members:

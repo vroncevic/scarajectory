@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler module &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=514cf933" />
+    
+    <script src="_static/documentation_options.js?v=57319df4"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="scarajectory.infrastructure.gui.canvas.handler.canvas_event_context module" href="scarajectory.infrastructure.gui.canvas.handler.canvas_event_context.html" />
+    <link rel="prev" title="scarajectory.infrastructure.gui.canvas.handler.selection.icanvas_selection_mouse_handler module" href="scarajectory.infrastructure.gui.canvas.handler.selection.icanvas_selection_mouse_handler.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.canvas.handler.canvas_event_context.html" title="scarajectory.infrastructure.gui.canvas.handler.canvas_event_context module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.canvas.handler.selection.icanvas_selection_mouse_handler.html" title="scarajectory.infrastructure.gui.canvas.handler.selection.icanvas_selection_mouse_handler module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.gui.html" >scarajectory.infrastructure.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.infrastructure.gui.canvas.html" >scarajectory.infrastructure.gui.canvas package</a> &#187;</li>
+          <li class="nav-item nav-item-6"><a href="scarajectory.infrastructure.gui.canvas.handler.html" accesskey="U">scarajectory.infrastructure.gui.canvas.handler package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="module-scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler">
+<span id="scarajectory-infrastructure-gui-canvas-handler-canvas-drag-handler-module"></span><h1>scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler module<a class="headerlink" href="#module-scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler" title="Link to this heading">¶</a></h1>
+<dl class="simple">
+<dt>Module</dt><dd><p>canvas_drag_handler.py</p>
+</dd>
+<dt>Copyright</dt><dd><p>Copyright (C) 2026 Vladimir Roncevic &lt;<a class="reference external" href="mailto:elektron&#46;ronca&#37;&#52;&#48;gmail&#46;com">elektron<span>&#46;</span>ronca<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;
+scarajectory is free software: you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+scarajectory is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along
+with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+</dd>
+<dt>Info</dt><dd><p>Dedicated handler translating interactive dragging events for selection and freehand tools.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.CanvasDragHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.</span></span><span class="sig-name descname"><span class="pre">CanvasDragHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.plan.store.iwaypoint_store.html#scarajectory.core.service.trajectory.plan.store.iwaypoint_store.IWaypointStore" title="scarajectory.core.service.trajectory.plan.store.iwaypoint_store.IWaypointStore"><span class="pre">IWaypointStore</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.plan.mutation.iplan_point_mutator.html#scarajectory.core.service.trajectory.plan.mutation.iplan_point_mutator.IPlanPointMutator" title="scarajectory.core.service.trajectory.plan.mutation.iplan_point_mutator.IPlanPointMutator"><span class="pre">IPlanPointMutator</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.model.canvas_interaction_state.html#scarajectory.infrastructure.gui.model.canvas_interaction_state.CanvasInteractionState" title="scarajectory.infrastructure.gui.model.canvas_interaction_state.CanvasInteractionState"><span class="pre">CanvasInteractionState</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape_handler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.canvas.handler.canvas_shape_handler.html#scarajectory.infrastructure.gui.canvas.handler.canvas_shape_handler.CanvasShapeHandler" title="scarajectory.infrastructure.gui.canvas.handler.canvas_shape_handler.CanvasShapeHandler"><span class="pre">CanvasShapeHandler</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas/handler/canvas_drag_handler.html#CanvasDragHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.CanvasDragHandler" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Handles dragging motion for waypoint relocation and freehand path sampling.</p>
+<p>It defines:</p>
+<blockquote>
+<div><dl class="field-list">
+<dt class="field-odd">attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><div class="line-block">
+<div class="line">FREEHAND_MIN_DISTANCE_MM - Minimum distance threshold in mm for freehand point sampling.</div>
+<div class="line">_store - Injected waypoint store query collaborator.</div>
+<div class="line">_mutation - Injected plan point mutator collaborator.</div>
+<div class="line">_state - Interactive mouse and selection state.</div>
+<div class="line">_shape_handler - Geometric shape handler for waypoint construction.</div>
+</div>
+</dd>
+<dt class="field-even">methods<span class="colon">:</span></dt>
+<dd class="field-even"><div class="line-block">
+<div class="line">__init__ - Initializes handler with injected collaborators.</div>
+<div class="line">handle_drag_select - Updates dragged waypoint position during selection drag.</div>
+<div class="line">handle_drag_freehand - Samples and appends waypoints along freehand motion path.</div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.CanvasDragHandler.FREEHAND_MIN_DISTANCE_MM">
+<span class="sig-name descname"><span class="pre">FREEHAND_MIN_DISTANCE_MM</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5.0</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.CanvasDragHandler.FREEHAND_MIN_DISTANCE_MM" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.CanvasDragHandler._mutation">
+<span class="sig-name descname"><span class="pre">_mutation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.trajectory.plan.mutation.iplan_point_mutator.html#scarajectory.core.service.trajectory.plan.mutation.iplan_point_mutator.IPlanPointMutator" title="scarajectory.core.service.trajectory.plan.mutation.iplan_point_mutator.IPlanPointMutator"><span class="pre">IPlanPointMutator</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.CanvasDragHandler._mutation" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.CanvasDragHandler._shape_handler">
+<span class="sig-name descname"><span class="pre">_shape_handler</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.canvas.handler.canvas_shape_handler.html#scarajectory.infrastructure.gui.canvas.handler.canvas_shape_handler.CanvasShapeHandler" title="scarajectory.infrastructure.gui.canvas.handler.canvas_shape_handler.CanvasShapeHandler"><span class="pre">CanvasShapeHandler</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.CanvasDragHandler._shape_handler" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.CanvasDragHandler._state">
+<span class="sig-name descname"><span class="pre">_state</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.model.canvas_interaction_state.html#scarajectory.infrastructure.gui.model.canvas_interaction_state.CanvasInteractionState" title="scarajectory.infrastructure.gui.model.canvas_interaction_state.CanvasInteractionState"><span class="pre">CanvasInteractionState</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.CanvasDragHandler._state" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.CanvasDragHandler._store">
+<span class="sig-name descname"><span class="pre">_store</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.trajectory.plan.store.iwaypoint_store.html#scarajectory.core.service.trajectory.plan.store.iwaypoint_store.IWaypointStore" title="scarajectory.core.service.trajectory.plan.store.iwaypoint_store.IWaypointStore"><span class="pre">IWaypointStore</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.CanvasDragHandler._store" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.CanvasDragHandler.handle_drag_freehand">
+<span class="sig-name descname"><span class="pre">handle_drag_freehand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.model.canvas_settings.html#scarajectory.infrastructure.gui.model.canvas_settings.CanvasSettings" title="scarajectory.infrastructure.gui.model.canvas_settings.CanvasSettings"><span class="pre">CanvasSettings</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas/handler/canvas_drag_handler.html#CanvasDragHandler.handle_drag_freehand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.CanvasDragHandler.handle_drag_freehand" title="Link to this definition">¶</a></dt>
+<dd><p>Samples and appends waypoints along freehand motion path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wx</strong> – World X coordinate.</p></li>
+<li><p><strong>wy</strong> – World Y coordinate.</p></li>
+<li><p><strong>settings</strong> – Active CanvasSettings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Always False (local redraw handled).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.CanvasDragHandler.handle_drag_select">
+<span class="sig-name descname"><span class="pre">handle_drag_select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas/handler/canvas_drag_handler.html#CanvasDragHandler.handle_drag_select"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.CanvasDragHandler.handle_drag_select" title="Link to this definition">¶</a></dt>
+<dd><p>Updates dragged waypoint position during select tool drag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wx</strong> – World X coordinate.</p></li>
+<li><p><strong>wy</strong> – World Y coordinate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Always False (local redraw handled).</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler module</a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.CanvasDragHandler"><code class="docutils literal notranslate"><span class="pre">CanvasDragHandler</span></code></a><ul>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.CanvasDragHandler.FREEHAND_MIN_DISTANCE_MM"><code class="docutils literal notranslate"><span class="pre">CanvasDragHandler.FREEHAND_MIN_DISTANCE_MM</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.CanvasDragHandler._mutation"><code class="docutils literal notranslate"><span class="pre">CanvasDragHandler._mutation</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.CanvasDragHandler._shape_handler"><code class="docutils literal notranslate"><span class="pre">CanvasDragHandler._shape_handler</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.CanvasDragHandler._state"><code class="docutils literal notranslate"><span class="pre">CanvasDragHandler._state</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.CanvasDragHandler._store"><code class="docutils literal notranslate"><span class="pre">CanvasDragHandler._store</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.CanvasDragHandler.handle_drag_freehand"><code class="docutils literal notranslate"><span class="pre">CanvasDragHandler.handle_drag_freehand()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.CanvasDragHandler.handle_drag_select"><code class="docutils literal notranslate"><span class="pre">CanvasDragHandler.handle_drag_select()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.canvas.handler.selection.icanvas_selection_mouse_handler.html"
+                          title="previous chapter">scarajectory.infrastructure.gui.canvas.handler.selection.icanvas_selection_mouse_handler module</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.canvas.handler.canvas_event_context.html"
+                          title="next chapter">scarajectory.infrastructure.gui.canvas.handler.canvas_event_context module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.canvas.handler.canvas_event_context.html" title="scarajectory.infrastructure.gui.canvas.handler.canvas_event_context module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="scarajectory.infrastructure.gui.canvas.handler.selection.icanvas_selection_mouse_handler.html" title="scarajectory.infrastructure.gui.canvas.handler.selection.icanvas_selection_mouse_handler module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="scarajectory.html" >scarajectory package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="scarajectory.infrastructure.html" >scarajectory.infrastructure package</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="scarajectory.infrastructure.gui.html" >scarajectory.infrastructure.gui package</a> &#187;</li>
+          <li class="nav-item nav-item-5"><a href="scarajectory.infrastructure.gui.canvas.html" >scarajectory.infrastructure.gui.canvas package</a> &#187;</li>
+          <li class="nav-item nav-item-6"><a href="scarajectory.infrastructure.gui.canvas.handler.html" >scarajectory.infrastructure.gui.canvas.handler package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>

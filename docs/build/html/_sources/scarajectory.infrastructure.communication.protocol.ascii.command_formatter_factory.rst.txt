@@ -1,8 +1,0 @@
-scarajectory.infrastructure.communication.protocol.ascii.command\_formatter\_factory module
-===========================================================================================
-
-.. automodule:: scarajectory.infrastructure.communication.protocol.ascii.command_formatter_factory
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   :private-members:

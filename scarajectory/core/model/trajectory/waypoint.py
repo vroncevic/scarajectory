@@ -27,7 +27,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.3'
+__version__ = '1.0.4'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -44,8 +44,8 @@ class Waypoint:
                 | x - X Cartesian coordinate in mm.
                 | y - Y Cartesian coordinate in mm.
                 | z - Z height coordinate in mm.
-                | phi - Tool orientation rotation angle in degrees.
                 | speed - Motion feedrate speed in mm/s.
+                | phi - Tool orientation rotation angle in degrees.
                 | name - Optional waypoint identifier.
                 | command - Optional raw protocol command string associated with point.
     '''
@@ -53,7 +53,7 @@ class Waypoint:
     x: float
     y: float
     z: float
-    phi: float
     speed: float
-    name: str
-    command: str
+    phi: float = 0.0
+    name: str = ''
+    command: str = ''

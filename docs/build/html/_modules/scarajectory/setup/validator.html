@@ -66,7 +66,7 @@
 
 <span class="kn">from</span> <span class="nn">scarajectory.setup.bundle</span> <span class="kn">import</span> <span class="n">SCARAjectoryBundle</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.iservice</span> <span class="kn">import</span> <span class="n">IService</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.communication.stream.itrajectory_streamer</span> <span class="kn">import</span> <span class="n">ITrajectoryStreamer</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.streaming.istream_playback_controller</span> <span class="kn">import</span> <span class="n">IStreamPlaybackController</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.igui</span> <span class="kn">import</span> <span class="n">IGUI</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.cli.icli</span> <span class="kn">import</span> <span class="n">ICLI</span>
 
@@ -74,7 +74,7 @@
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -116,7 +116,7 @@
         <span class="n">msg_base_istype</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;the base bundle must be an instance of BaseBundle&#39;</span>
         <span class="n">msg_service_istype</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;the service must be an instance of IService&#39;</span>
         <span class="n">msg_gui_istype</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;the gui must be an instance of IGUI&#39;</span>
-        <span class="n">msg_streamer_istype</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;the streamer must be an instance of ITrajectoryStreamer&#39;</span>
+        <span class="n">msg_streamer_istype</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;the streamer must be an instance of IStreamPlaybackController&#39;</span>
         <span class="n">msg_cli_istype</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;the cli must be an instance of ICLI&#39;</span>
 
         <span class="n">not_none</span><span class="p">(</span><span class="n">bundle</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">msg_bundle_none</span><span class="p">)</span>
@@ -131,7 +131,7 @@
         <span class="n">istype</span><span class="p">(</span><span class="n">bundle</span><span class="o">.</span><span class="n">base</span><span class="p">,</span> <span class="n">BaseBundle</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">msg_base_istype</span><span class="p">)</span>
         <span class="n">istype</span><span class="p">(</span><span class="n">bundle</span><span class="o">.</span><span class="n">service</span><span class="p">,</span> <span class="n">IService</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">msg_service_istype</span><span class="p">)</span>
         <span class="n">istype</span><span class="p">(</span><span class="n">bundle</span><span class="o">.</span><span class="n">gui</span><span class="p">,</span> <span class="n">IGUI</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">msg_gui_istype</span><span class="p">)</span>
-        <span class="n">istype</span><span class="p">(</span><span class="n">bundle</span><span class="o">.</span><span class="n">streamer</span><span class="p">,</span> <span class="n">ITrajectoryStreamer</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">msg_streamer_istype</span><span class="p">)</span>
+        <span class="n">istype</span><span class="p">(</span><span class="n">bundle</span><span class="o">.</span><span class="n">streamer</span><span class="p">,</span> <span class="n">IStreamPlaybackController</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">msg_streamer_istype</span><span class="p">)</span>
         <span class="n">istype</span><span class="p">(</span><span class="n">bundle</span><span class="o">.</span><span class="n">cli</span><span class="p">,</span> <span class="n">ICLI</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">msg_cli_istype</span><span class="p">)</span></div>
 
 
@@ -149,6 +149,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">bundle</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">True</span>
+
         <span class="k">except</span> <span class="p">(</span><span class="n">ATSValueError</span><span class="p">,</span> <span class="n">ATSTypeError</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">False</span></div>
 </div>

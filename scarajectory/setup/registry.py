@@ -24,7 +24,7 @@ from __future__ import annotations
 from ats_utilities.base.setup.bundle import BaseBundle
 
 from scarajectory.core.service.iservice import IService
-from scarajectory.core.service.communication.stream.itrajectory_streamer import ITrajectoryStreamer
+from scarajectory.core.service.streaming.istream_playback_controller import IStreamPlaybackController
 from scarajectory.infrastructure.gui.igui import IGUI
 from scarajectory.infrastructure.cli.icli import ICLI
 from scarajectory.setup.bundle import SCARAjectoryBundle
@@ -37,7 +37,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.3'
+__version__ = '1.0.4'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -70,7 +70,7 @@ class SCARAjectoryBundleRegistry:
         base: BaseBundle | None = dependencies.get(SCARAjectoryBundleKeys.DEPENDENCY_BASE) if dependencies else None
         service: IService | None = dependencies.get(SCARAjectoryBundleKeys.DEPENDENCY_SERVICE) if dependencies else None
         gui: IGUI | None = dependencies.get(SCARAjectoryBundleKeys.DEPENDENCY_GUI) if dependencies else None
-        streamer: ITrajectoryStreamer | None = dependencies.get(SCARAjectoryBundleKeys.DEPENDENCY_STREAMER) if dependencies else None
+        streamer: IStreamPlaybackController | None = dependencies.get(SCARAjectoryBundleKeys.DEPENDENCY_STREAMER) if dependencies else None
         cli: ICLI | None = dependencies.get(SCARAjectoryBundleKeys.DEPENDENCY_CLI) if dependencies else None
 
         bundle: SCARAjectoryBundle = SCARAjectoryBundle(

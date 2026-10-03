@@ -54,21 +54,24 @@
 <span class="sd">    You should have received a copy of the GNU General Public License along</span>
 <span class="sd">    with this program. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 <span class="sd">Info</span>
-<span class="sd">    Dedicated Tk event binder for canvas mouse interactions, zooming, and panning.</span>
+<span class="sd">    Dedicated Tk event binder for canvas mouse interactions, zoom, and pan.</span>
 <span class="sd">&#39;&#39;&#39;</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">Event</span>
+<span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">Event</span><span class="p">,</span> <span class="n">Widget</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Final</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.canvas.canvas_mouse_handler</span> <span class="kn">import</span> <span class="n">CanvasMouseHandler</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.canvas.handler.canvas_event_context</span> <span class="kn">import</span> <span class="n">CanvasEventContext</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.canvas.handler.icanvas_mouse_handler</span> <span class="kn">import</span> <span class="n">ICanvasMouseHandler</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.canvas.status.icanvas_status_presenter</span> <span class="kn">import</span> <span class="n">ICanvasStatusPresenter</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.canvas.navigation.icanvas_view_navigator</span> <span class="kn">import</span> <span class="n">ICanvasViewNavigator</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -78,35 +81,52 @@
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.canvas.canvas_event_binder.html#scarajectory.infrastructure.gui.canvas.canvas_event_binder.CanvasEventBinder">[docs]</a>
 <span class="k">class</span> <span class="nc">CanvasEventBinder</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Binds and coordinates low-level Tk canvas mouse events with high-level CAD operations.</span>
+<span class="sd">        Binds low-level Tk canvas mouse events with high-level CAD operations.</span>
 
 <span class="sd">        It defines:</span>
 
 <span class="sd">            :attributes:</span>
 <span class="sd">                | _canvas - Target Tkinter canvas widget.</span>
-<span class="sd">                | _mouse_handler - Interactive CAD mouse action translator.</span>
+<span class="sd">                | _mouse_handler - Interactive CAD mouse action translator interface.</span>
+<span class="sd">                | _navigator - Viewport zoom, pan, and framing coordinator interface.</span>
+<span class="sd">                | _status_presenter - Cursor status presenter interface.</span>
 <span class="sd">            :methods:</span>
-<span class="sd">                | __init__ - Initializes the binder with canvas and mouse handler.</span>
-<span class="sd">                | bind_events - Registers all Tkinter event listeners on the canvas.</span>
+<span class="sd">                | __init__ - Initializes binder with canvas and collaborators.</span>
+<span class="sd">                | bind_events - Registers Tkinter event listeners on canvas.</span>
 <span class="sd">                | on_mouse_down - Dispatches mouse click press event.</span>
 <span class="sd">                | on_mouse_drag - Dispatches mouse drag motion event.</span>
 <span class="sd">                | on_mouse_up - Dispatches mouse button release event.</span>
-<span class="sd">                | on_mouse_wheel_or_move - Handles zooming and coordinate readout.</span>
+<span class="sd">                | on_mouse_wheel_or_move - Handles zoom and coordinate readout.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="n">_canvas</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span>
-    <span class="n">_mouse_handler</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">CanvasMouseHandler</span><span class="p">]</span>
+    <span class="n">_canvas</span><span class="p">:</span> <span class="n">Widget</span>
+    <span class="n">_mouse_handler</span><span class="p">:</span> <span class="n">ICanvasMouseHandler</span>
+    <span class="n">_navigator</span><span class="p">:</span> <span class="n">ICanvasViewNavigator</span>
+    <span class="n">_status_presenter</span><span class="p">:</span> <span class="n">ICanvasStatusPresenter</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">canvas</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">mouse_handler</span><span class="p">:</span> <span class="n">CanvasMouseHandler</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">canvas</span><span class="p">:</span> <span class="n">Widget</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">mouse_handler</span><span class="p">:</span> <span class="n">ICanvasMouseHandler</span><span class="p">,</span>
+        <span class="n">navigator</span><span class="p">:</span> <span class="n">ICanvasViewNavigator</span><span class="p">,</span>
+        <span class="n">status_presenter</span><span class="p">:</span> <span class="n">ICanvasStatusPresenter</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Initializes the binder with canvas and mouse handler.</span>
+<span class="sd">            Initializes the binder with canvas and collaborators.</span>
 
-<span class="sd">            :param canvas: Target canvas instance.</span>
-<span class="sd">            :param mouse_handler: CanvasMouseHandler instance.</span>
+<span class="sd">            :param canvas: Target canvas widget instance.</span>
+<span class="sd">            :param mouse_handler: ICanvasMouseHandler interface.</span>
+<span class="sd">            :param navigator: ICanvasViewNavigator interface.</span>
+<span class="sd">            :param status_presenter: ICanvasStatusPresenter interface.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span> <span class="o">=</span> <span class="n">canvas</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_mouse_handler</span> <span class="o">=</span> <span class="n">mouse_handler</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">Widget</span><span class="p">]</span> <span class="o">=</span> <span class="n">canvas</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mouse_handler</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ICanvasMouseHandler</span><span class="p">]</span> <span class="o">=</span> <span class="n">mouse_handler</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_navigator</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ICanvasViewNavigator</span><span class="p">]</span> <span class="o">=</span> <span class="n">navigator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_status_presenter</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ICanvasStatusPresenter</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">status_presenter</span>
+        <span class="p">)</span>
 
 <div class="viewcode-block" id="CanvasEventBinder.bind_events">
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.canvas.canvas_event_binder.html#scarajectory.infrastructure.gui.canvas.canvas_event_binder.CanvasEventBinder.bind_events">[docs]</a>
@@ -116,7 +136,7 @@
 
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;Configure&gt;&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">redraw</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;Configure&gt;&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">_e</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">redraw</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;ButtonPress-1&gt;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_mouse_down</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;ButtonPress-2&gt;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_mouse_down</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;ButtonPress-3&gt;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_mouse_down</span><span class="p">)</span>
@@ -132,63 +152,63 @@
 
 <div class="viewcode-block" id="CanvasEventBinder.on_mouse_down">
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.canvas.canvas_event_binder.html#scarajectory.infrastructure.gui.canvas.canvas_event_binder.CanvasEventBinder.on_mouse_down">[docs]</a>
-    <span class="k">def</span> <span class="nf">on_mouse_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">Event</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">on_mouse_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">Event</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Dispatches mouse click press event.</span>
 
 <span class="sd">            :param event: Tkinter Event.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_mouse_handler</span><span class="o">.</span><span class="n">handle_mouse_down</span><span class="p">(</span>
-            <span class="n">event</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">winfo_width</span><span class="p">(),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">winfo_height</span><span class="p">(),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">_tool_mode</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">_settings</span><span class="p">,</span>
-        <span class="p">)</span></div>
+        <span class="n">context</span> <span class="o">=</span> <span class="n">CanvasEventContext</span><span class="p">(</span>
+            <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">winfo_width</span><span class="p">(),</span>
+            <span class="n">height</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">winfo_height</span><span class="p">(),</span>
+            <span class="n">tool_mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">tool_mode</span><span class="p">,</span>
+            <span class="n">settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">settings</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mouse_handler</span><span class="o">.</span><span class="n">handle_mouse_down</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="CanvasEventBinder.on_mouse_drag">
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.canvas.canvas_event_binder.html#scarajectory.infrastructure.gui.canvas.canvas_event_binder.CanvasEventBinder.on_mouse_drag">[docs]</a>
-    <span class="k">def</span> <span class="nf">on_mouse_drag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">Event</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">on_mouse_drag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">Event</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Dispatches mouse drag motion event.</span>
 
 <span class="sd">            :param event: Tkinter Event.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mouse_handler</span><span class="o">.</span><span class="n">handle_mouse_drag</span><span class="p">(</span>
-            <span class="n">event</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">winfo_width</span><span class="p">(),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">winfo_height</span><span class="p">(),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">_tool_mode</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">_settings</span><span class="p">,</span>
-        <span class="p">):</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="n">CanvasEventContext</span><span class="p">(</span>
+            <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">winfo_width</span><span class="p">(),</span>
+            <span class="n">height</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">winfo_height</span><span class="p">(),</span>
+            <span class="n">tool_mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">tool_mode</span><span class="p">,</span>
+            <span class="n">settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">settings</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mouse_handler</span><span class="o">.</span><span class="n">handle_mouse_drag</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="CanvasEventBinder.on_mouse_up">
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.canvas.canvas_event_binder.html#scarajectory.infrastructure.gui.canvas.canvas_event_binder.CanvasEventBinder.on_mouse_up">[docs]</a>
-    <span class="k">def</span> <span class="nf">on_mouse_up</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">Event</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">on_mouse_up</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">Event</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Dispatches mouse button release event.</span>
 
 <span class="sd">            :param event: Tkinter Event.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_mouse_handler</span><span class="o">.</span><span class="n">handle_mouse_up</span><span class="p">(</span>
-            <span class="n">event</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">winfo_width</span><span class="p">(),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">winfo_height</span><span class="p">(),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">_tool_mode</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">_settings</span><span class="p">,</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="n">CanvasEventContext</span><span class="p">(</span>
+            <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">winfo_width</span><span class="p">(),</span>
+            <span class="n">height</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">winfo_height</span><span class="p">(),</span>
+            <span class="n">tool_mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">tool_mode</span><span class="p">,</span>
+            <span class="n">settings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">settings</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mouse_handler</span><span class="o">.</span><span class="n">handle_mouse_up</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="CanvasEventBinder.on_mouse_wheel_or_move">
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.canvas.canvas_event_binder.html#scarajectory.infrastructure.gui.canvas.canvas_event_binder.CanvasEventBinder.on_mouse_wheel_or_move">[docs]</a>
-    <span class="k">def</span> <span class="nf">on_mouse_wheel_or_move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">Event</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">on_mouse_wheel_or_move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">Event</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Handles zooming and coordinate readout.</span>
 
@@ -197,17 +217,17 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="s1">&#39;delta&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">delta</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">delta</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">zoom_in</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_navigator</span><span class="o">.</span><span class="n">zoom_in</span><span class="p">()</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">zoom_out</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_navigator</span><span class="o">.</span><span class="n">zoom_out</span><span class="p">()</span>
             <span class="k">return</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">_hover_label</span><span class="p">:</span>
-            <span class="n">w</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">winfo_width</span><span class="p">()</span>
-            <span class="n">h</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">winfo_height</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">_hover_label</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_mouse_handler</span><span class="o">.</span><span class="n">format_cursor_status</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
-            <span class="p">)</span></div>
+        <span class="n">w</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">winfo_width</span><span class="p">()</span>
+        <span class="n">h</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">winfo_height</span><span class="p">()</span>
+        <span class="n">status_text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mouse_handler</span><span class="o">.</span><span class="n">format_cursor_status</span><span class="p">(</span>
+            <span class="n">event</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_status_presenter</span><span class="o">.</span><span class="n">update_cursor_status</span><span class="p">(</span><span class="n">status_text</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

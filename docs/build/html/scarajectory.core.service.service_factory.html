@@ -78,22 +78,22 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dt class="field-odd">methods<span class="colon">:</span></dt>
 <dd class="field-odd"><div class="line-block">
 <div class="line">create - Assembles and instantiates a Service instance.</div>
+<div class="line">get_version - Returns factory version string.</div>
 </div>
 </dd>
 </dl>
 </div></blockquote>
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.core.service.service_factory.ServiceFactory.create">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">validator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.validation.itrajectory_validator.html#scarajectory.core.service.trajectory.validation.itrajectory_validator.ITrajectoryValidator" title="scarajectory.core.service.trajectory.validation.itrajectory_validator.ITrajectoryValidator"><span class="pre">ITrajectoryValidator</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">streamer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.communication.stream.itrajectory_streamer.html#scarajectory.core.service.communication.stream.itrajectory_streamer.ITrajectoryStreamer" title="scarajectory.core.service.communication.stream.itrajectory_streamer.ITrajectoryStreamer"><span class="pre">ITrajectoryStreamer</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.contract.iplan_storage_service.html#scarajectory.core.service.trajectory.contract.iplan_storage_service.IPlanStorageService" title="scarajectory.core.service.trajectory.contract.iplan_storage_service.IPlanStorageService"><span class="pre">IPlanStorageService</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">plan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.plan.itrajectory_plan.html#scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan" title="scarajectory.core.service.trajectory.plan.itrajectory_plan.ITrajectoryPlan"><span class="pre">ITrajectoryPlan</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dsl_service</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IScaraDslService</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.core.service.engine.html#scarajectory.core.service.engine.Service" title="scarajectory.core.service.engine.Service"><span class="pre">Service</span></a></span></span><a class="reference internal" href="_modules/scarajectory/core/service/service_factory.html#ServiceFactory.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.service_factory.ServiceFactory.create" title="Link to this definition">¶</a></dt>
-<dd><p>Assembles and instantiates a Service facade instance.</p>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">validator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ITrajectoryValidator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.storage.iplan_storage_service.html#scarajectory.core.service.storage.iplan_storage_service.IPlanStorageService" title="scarajectory.core.service.storage.iplan_storage_service.IPlanStorageService"><span class="pre">IPlanStorageService</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">store</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.plan.store.iwaypoint_store.html#scarajectory.core.service.trajectory.plan.store.iwaypoint_store.IWaypointStore" title="scarajectory.core.service.trajectory.plan.store.iwaypoint_store.IWaypointStore"><span class="pre">IWaypointStore</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.plan.mutation.iplan_bulk_mutator.html#scarajectory.core.service.trajectory.plan.mutation.iplan_bulk_mutator.IPlanBulkMutator" title="scarajectory.core.service.trajectory.plan.mutation.iplan_bulk_mutator.IPlanBulkMutator"><span class="pre">IPlanBulkMutator</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.core.service.engine.html#scarajectory.core.service.engine.Service" title="scarajectory.core.service.engine.Service"><span class="pre">Service</span></a></span></span><a class="reference internal" href="_modules/scarajectory/core/service/service_factory.html#ServiceFactory.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.service_factory.ServiceFactory.create" title="Link to this definition">¶</a></dt>
+<dd><p>Assembles and instantiates a Service instance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>validator</strong> – ITrajectoryValidator instance.</p></li>
-<li><p><strong>streamer</strong> – ITrajectoryStreamer instance.</p></li>
 <li><p><strong>storage</strong> – IPlanStorageService instance.</p></li>
-<li><p><strong>plan</strong> – ITrajectoryPlan instance.</p></li>
-<li><p><strong>dsl_service</strong> – IScaraDslService instance.</p></li>
+<li><p><strong>store</strong> – IWaypointStore instance.</p></li>
+<li><p><strong>mutation</strong> – IPlanBulkMutator instance.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -101,6 +101,20 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dd>
 <dt class="field-odd">Exceptions<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.core.service.service_factory.ServiceFactory.get_version">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/service_factory.html#ServiceFactory.get_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.service_factory.ServiceFactory.get_version" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the factory version string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Factory version string.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -122,6 +136,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <li><a class="reference internal" href="#">scarajectory.core.service.service_factory module</a><ul>
 <li><a class="reference internal" href="#scarajectory.core.service.service_factory.ServiceFactory"><code class="docutils literal notranslate"><span class="pre">ServiceFactory</span></code></a><ul>
 <li><a class="reference internal" href="#scarajectory.core.service.service_factory.ServiceFactory.create"><code class="docutils literal notranslate"><span class="pre">ServiceFactory.create()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.service.service_factory.ServiceFactory.get_version"><code class="docutils literal notranslate"><span class="pre">ServiceFactory.get_version()</span></code></a></li>
 </ul>
 </li>
 </ul>

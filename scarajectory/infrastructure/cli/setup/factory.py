@@ -31,7 +31,7 @@ from scarajectory.infrastructure.cli.setup.bundle import CLIBundle
 from scarajectory.infrastructure.cli.setup.keys import CLIBundleKeys
 from scarajectory.infrastructure.cli.setup.registry import CLIBundleRegistry
 from scarajectory.infrastructure.cli.setup.dependencies import CLIBundleDependencies
-from scarajectory.infrastructure.command.command import CommandBundle
+from scarajectory.infrastructure.command.command_bundle import CommandBundle
 from scarajectory.infrastructure.command.icommand_definition import ICommandDefinition
 from scarajectory.infrastructure.command.icommand_executor import ICommandExecutor
 from scarajectory.infrastructure.command.studio_command_definition import StudioCommandDefinition
@@ -41,7 +41,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.3'
+__version__ = '1.0.4'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'

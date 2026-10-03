@@ -61,16 +61,18 @@
 
 <span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">Widget</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.itrajectory_plan</span> <span class="kn">import</span> <span class="n">ITrajectoryPlan</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.canvas.icanvas</span> <span class="kn">import</span> <span class="n">ICanvas</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.model.canvas_settings</span> <span class="kn">import</span> <span class="n">CanvasSettings</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.toolbar.toolbar</span> <span class="kn">import</span> <span class="n">Toolbar</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.toolbar.bundle</span> <span class="kn">import</span> <span class="n">ToolbarBundle</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.toolbar.parameter_inputs_bundle</span> <span class="kn">import</span> <span class="n">ParameterInputsBundle</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.toolbar.tool_selector_factory</span> <span class="kn">import</span> <span class="n">ToolbarToolSelectorFactory</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.toolbar.navigation_controls_factory</span> <span class="kn">import</span> <span class="n">ToolbarNavigationControlsFactory</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.toolbar.parameter_inputs_factory</span> <span class="kn">import</span> <span class="n">ToolbarParameterInputsFactory</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -86,45 +88,55 @@
 
 <span class="sd">            :methods:</span>
 <span class="sd">                | create - Assembles and instantiates a Toolbar widget.</span>
+<span class="sd">                | get_version - Returns factory version string.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
 <div class="viewcode-block" id="ToolbarFactory.create">
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.toolbar.toolbar_factory.html#scarajectory.infrastructure.gui.toolbar.toolbar_factory.ToolbarFactory.create">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span>
-        <span class="bp">cls</span><span class="p">,</span>
-        <span class="n">parent</span><span class="p">:</span> <span class="n">Widget</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">canvas</span><span class="p">:</span> <span class="n">ICanvas</span><span class="p">,</span>
-        <span class="n">plan</span><span class="p">:</span> <span class="n">ITrajectoryPlan</span><span class="p">,</span>
-        <span class="n">r_min</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">r_max</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">settings</span><span class="p">:</span> <span class="n">CanvasSettings</span><span class="p">,</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Toolbar</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n">Widget</span><span class="p">,</span> <span class="n">bundle</span><span class="p">:</span> <span class="n">ToolbarBundle</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Toolbar</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Assembles and instantiates a Toolbar widget.</span>
+<span class="sd">            Assembles and instantiates a Toolbar widget using parameter bundle.</span>
 
 <span class="sd">            :param parent: Parent container widget.</span>
-<span class="sd">            :param canvas: ICanvas interface instance.</span>
-<span class="sd">            :param plan: ITrajectoryPlan instance.</span>
-<span class="sd">            :param r_min: Minimum reach radius in mm.</span>
-<span class="sd">            :param r_max: Maximum reach radius in mm.</span>
-<span class="sd">            :param settings: CanvasSettings instance.</span>
+<span class="sd">            :param bundle: Injected ToolbarBundle collaborator and settings bundle.</span>
 <span class="sd">            :return: Fully assembled Toolbar instance.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">Toolbar</span><span class="p">(</span>
-            <span class="n">parent</span><span class="p">,</span>
-            <span class="n">canvas</span><span class="p">,</span>
-            <span class="n">plan</span><span class="p">,</span>
-            <span class="n">r_min</span><span class="o">=</span><span class="n">r_min</span><span class="p">,</span>
-            <span class="n">r_max</span><span class="o">=</span><span class="n">r_max</span><span class="p">,</span>
-            <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-        <span class="p">)</span></div>
-</div>
+        <span class="n">toolbar</span> <span class="o">=</span> <span class="n">Toolbar</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="n">tool_selector</span> <span class="o">=</span> <span class="n">ToolbarToolSelectorFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">toolbar</span><span class="p">,</span> <span class="n">bundle</span><span class="o">.</span><span class="n">canvas</span><span class="p">)</span>
+        <span class="n">nav_controls</span> <span class="o">=</span> <span class="n">ToolbarNavigationControlsFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">toolbar</span><span class="p">,</span> <span class="n">bundle</span><span class="o">.</span><span class="n">navigator</span><span class="p">,</span> <span class="n">bundle</span><span class="o">.</span><span class="n">history</span>
+        <span class="p">)</span>
+        <span class="n">param_bundle</span> <span class="o">=</span> <span class="n">ParameterInputsBundle</span><span class="p">(</span>
+            <span class="n">canvas</span><span class="o">=</span><span class="n">bundle</span><span class="o">.</span><span class="n">canvas</span><span class="p">,</span>
+            <span class="n">status_presenter</span><span class="o">=</span><span class="n">bundle</span><span class="o">.</span><span class="n">status_presenter</span><span class="p">,</span>
+            <span class="n">r_min</span><span class="o">=</span><span class="n">bundle</span><span class="o">.</span><span class="n">r_min</span><span class="p">,</span>
+            <span class="n">r_max</span><span class="o">=</span><span class="n">bundle</span><span class="o">.</span><span class="n">r_max</span><span class="p">,</span>
+            <span class="n">settings</span><span class="o">=</span><span class="n">bundle</span><span class="o">.</span><span class="n">settings</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">param_inputs</span> <span class="o">=</span> <span class="n">ToolbarParameterInputsFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">toolbar</span><span class="p">,</span> <span class="n">param_bundle</span><span class="p">)</span>
+        <span class="n">toolbar</span><span class="o">.</span><span class="n">mount_controls</span><span class="p">(</span>
+            <span class="n">tool_selector</span><span class="o">=</span><span class="n">tool_selector</span><span class="p">,</span>
+            <span class="n">nav_controls</span><span class="o">=</span><span class="n">nav_controls</span><span class="p">,</span>
+            <span class="n">param_inputs</span><span class="o">=</span><span class="n">param_inputs</span><span class="p">,</span>
+        <span class="p">)</span>
 
+        <span class="k">return</span> <span class="n">toolbar</span></div>
+
+
+<div class="viewcode-block" id="ToolbarFactory.get_version">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.toolbar.toolbar_factory.html#scarajectory.infrastructure.gui.toolbar.toolbar_factory.ToolbarFactory.get_version">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_version</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Returns the factory version string.</span>
+
+<span class="sd">            :return: Factory version string.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">__version__</span></div>
+</div>
 
 </pre></div>
 

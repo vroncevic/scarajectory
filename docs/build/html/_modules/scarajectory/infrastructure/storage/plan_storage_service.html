@@ -54,30 +54,24 @@
 <span class="sd">    You should have received a copy of the GNU General Public License along</span>
 <span class="sd">    with this program. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 <span class="sd">Info</span>
-<span class="sd">    Infrastructure storage adapter for trajectory plan serialization and file persistence using ats_utilities.</span>
+<span class="sd">    Infrastructure storage coordinator delegating trajectory plan loading and storing.</span>
 <span class="sd">&#39;&#39;&#39;</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span>
 
-<span class="kn">from</span> <span class="nn">ats_utilities.config_io.loader.engine</span> <span class="kn">import</span> <span class="n">Loader</span>
-<span class="kn">from</span> <span class="nn">ats_utilities.config_io.setup.factory</span> <span class="kn">import</span> <span class="n">ConfigIOBundleFactory</span>
-<span class="kn">from</span> <span class="nn">ats_utilities.config_io.setup.options</span> <span class="kn">import</span> <span class="n">ConfigIOBundleOptions</span>
-<span class="kn">from</span> <span class="nn">ats_utilities.config_io.storer.engine</span> <span class="kn">import</span> <span class="n">Storer</span>
-<span class="kn">from</span> <span class="nn">ats_utilities.context.bundle</span> <span class="kn">import</span> <span class="n">ContextBundle</span>
-<span class="kn">from</span> <span class="nn">ats_utilities.context.factory</span> <span class="kn">import</span> <span class="n">ContextBundleFactory</span>
-
+<span class="kn">from</span> <span class="nn">scaralang.core.model.dsl.binary.program</span> <span class="kn">import</span> <span class="n">BinaryProgram</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.waypoint</span> <span class="kn">import</span> <span class="n">Waypoint</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.itrajectory_plan</span> <span class="kn">import</span> <span class="n">ITrajectoryPlan</span>
-<span class="kn">from</span> <span class="nn">scaralang.core.model.dsl.binary.program</span> <span class="kn">import</span> <span class="n">Program</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.storage.trajectory_serializer</span> <span class="kn">import</span> <span class="n">TrajectorySerializer</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.storage.iplan_loader</span> <span class="kn">import</span> <span class="n">IPlanLoader</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.storage.iplan_storer</span> <span class="kn">import</span> <span class="n">IPlanStorer</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.itrajectory_read_only</span> <span class="kn">import</span> <span class="n">ITrajectoryReadOnly</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -87,81 +81,58 @@
 <a class="viewcode-back" href="../../../../scarajectory.infrastructure.storage.plan_storage_service.html#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService">[docs]</a>
 <span class="k">class</span> <span class="nc">PlanStorageService</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Infrastructure storage adapter handling JSON trajectory persistence and text/binary file I/O operations.</span>
-<span class="sd">        Integrates ats_utilities Loader and Storer for JSON configuration management.</span>
+<span class="sd">        Infrastructure storage adapter coordinating JSON trajectory persistence and file I/O operations.</span>
 
 <span class="sd">        It defines:</span>
 
 <span class="sd">            :attributes:</span>
-<span class="sd">                | _context - The ContextBundle for ATS configuration I/O operations.</span>
+<span class="sd">                | _loader - Dedicated plan and file reader collaborator.</span>
+<span class="sd">                | _storer - Dedicated plan and file writer collaborator.</span>
 <span class="sd">            :methods:</span>
-<span class="sd">                | __init__ - Initializes the plan storage service.</span>
-<span class="sd">                | save_plan - Saves trajectory plan waypoints to JSON file path using ATS Storer.</span>
-<span class="sd">                | load_plan - Loads and deserializes waypoints from JSON file path using ATS Loader.</span>
+<span class="sd">                | __init__ - Initializes the plan storage service with injected loader and storer.</span>
+<span class="sd">                | save_plan - Saves trajectory plan waypoints to JSON file path.</span>
+<span class="sd">                | load_plan - Loads and deserializes waypoints from JSON file path.</span>
 <span class="sd">                | save_text_file - Writes string content to file path using UTF-8 encoding.</span>
 <span class="sd">                | load_text_file - Reads string content from file path using UTF-8 encoding.</span>
 <span class="sd">                | save_binary_program - Writes compiled binary program payload to destination file path.</span>
 <span class="sd">                | load_binary_file - Reads binary file content from destination file path.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="n">_context</span><span class="p">:</span> <span class="n">ContextBundle</span>
+    <span class="n">_loader</span><span class="p">:</span> <span class="n">IPlanLoader</span>
+    <span class="n">_storer</span><span class="p">:</span> <span class="n">IPlanStorer</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context_bundle</span><span class="p">:</span> <span class="n">ContextBundle</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loader</span><span class="p">:</span> <span class="n">IPlanLoader</span><span class="p">,</span> <span class="n">storer</span><span class="p">:</span> <span class="n">IPlanStorer</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Initializes the plan storage service with optional context bundle.</span>
+<span class="sd">            Initializes the plan storage service with injected loader and storer.</span>
 
-<span class="sd">            :param context_bundle: Optional ATS ContextBundle instance.</span>
+<span class="sd">            :param loader: Injected IPlanLoader collaborator.</span>
+<span class="sd">            :param storer: Injected IPlanStorer collaborator.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_context</span> <span class="o">=</span> <span class="n">context_bundle</span> <span class="ow">or</span> <span class="n">ContextBundleFactory</span><span class="o">.</span><span class="n">create_bundle</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IPlanLoader</span><span class="p">]</span> <span class="o">=</span> <span class="n">loader</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_storer</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IPlanStorer</span><span class="p">]</span> <span class="o">=</span> <span class="n">storer</span>
 
 <div class="viewcode-block" id="PlanStorageService.save_plan">
 <a class="viewcode-back" href="../../../../scarajectory.infrastructure.storage.plan_storage_service.html#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService.save_plan">[docs]</a>
-    <span class="k">def</span> <span class="nf">save_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plan</span><span class="p">:</span> <span class="n">ITrajectoryPlan</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">save_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plan</span><span class="p">:</span> <span class="n">ITrajectoryReadOnly</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Saves trajectory plan waypoints to JSON file path using ATS Storer.</span>
+<span class="sd">            Saves trajectory plan waypoints to JSON file path.</span>
 
-<span class="sd">            :param plan: ITrajectoryPlan instance.</span>
+<span class="sd">            :param plan: ITrajectoryReadOnly instance.</span>
 <span class="sd">            :param filepath: Target file path.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">target_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
-        <span class="n">target_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">target_path</span><span class="o">.</span><span class="n">touch</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-        <span class="n">bundle</span> <span class="o">=</span> <span class="n">ConfigIOBundleFactory</span><span class="o">.</span><span class="n">create_bundle</span><span class="p">(</span>
-            <span class="n">ConfigIOBundleOptions</span><span class="p">(</span>
-                <span class="n">file_path</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">target_path</span><span class="p">),</span>
-                <span class="n">context_bundle</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
-        <span class="n">storer</span> <span class="o">=</span> <span class="n">Storer</span><span class="p">(</span><span class="n">bundle</span><span class="p">)</span>
-        <span class="n">payload</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]</span> <span class="o">=</span> <span class="n">TrajectorySerializer</span><span class="o">.</span><span class="n">serialize_to_dict</span><span class="p">(</span><span class="n">plan</span><span class="o">.</span><span class="n">waypoints</span><span class="p">)</span>
-        <span class="n">storer</span><span class="o">.</span><span class="n">store_configuration</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_storer</span><span class="o">.</span><span class="n">save_plan</span><span class="p">(</span><span class="n">plan</span><span class="p">,</span> <span class="n">filepath</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PlanStorageService.load_plan">
 <a class="viewcode-back" href="../../../../scarajectory.infrastructure.storage.plan_storage_service.html#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService.load_plan">[docs]</a>
     <span class="k">def</span> <span class="nf">load_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Waypoint</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Loads and deserializes waypoints from JSON file path using ATS Loader.</span>
+<span class="sd">            Loads and deserializes waypoints from JSON file path.</span>
 
 <span class="sd">            :param filepath: Source file path.</span>
 <span class="sd">            :return: List of loaded Waypoint instances.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">target_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">target_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
-            <span class="k">return</span> <span class="p">[]</span>
-
-        <span class="n">bundle</span> <span class="o">=</span> <span class="n">ConfigIOBundleFactory</span><span class="o">.</span><span class="n">create_bundle</span><span class="p">(</span>
-            <span class="n">ConfigIOBundleOptions</span><span class="p">(</span>
-                <span class="n">file_path</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">target_path</span><span class="p">),</span>
-                <span class="n">context_bundle</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
-        <span class="n">loader</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span><span class="n">bundle</span><span class="p">)</span>
-        <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_configuration</span><span class="p">()</span>
-
-        <span class="k">return</span> <span class="n">TrajectorySerializer</span><span class="o">.</span><span class="n">deserialize_from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">load_plan</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PlanStorageService.save_text_file">
@@ -173,11 +144,7 @@
 <span class="sd">            :param content: String text to write.</span>
 <span class="sd">            :param filepath: Destination file path.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">target_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
-        <span class="n">target_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">target_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_handle</span><span class="p">:</span>
-            <span class="n">file_handle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_storer</span><span class="o">.</span><span class="n">save_text_file</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">filepath</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PlanStorageService.load_text_file">
@@ -189,26 +156,19 @@
 <span class="sd">            :param filepath: Source file path.</span>
 <span class="sd">            :return: File text content string.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">target_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
-
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">target_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_handle</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">file_handle</span><span class="o">.</span><span class="n">read</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">load_text_file</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PlanStorageService.save_binary_program">
 <a class="viewcode-back" href="../../../../scarajectory.infrastructure.storage.plan_storage_service.html#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService.save_binary_program">[docs]</a>
-    <span class="k">def</span> <span class="nf">save_binary_program</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">save_binary_program</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">BinaryProgram</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Writes compiled binary program payload to destination file path.</span>
 
-<span class="sd">            :param program: Program instance.</span>
+<span class="sd">            :param program: BinaryProgram instance.</span>
 <span class="sd">            :param filepath: Destination file path.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">target_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
-        <span class="n">target_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">target_path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_handle</span><span class="p">:</span>
-            <span class="n">file_handle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">program</span><span class="o">.</span><span class="n">raw_bytes</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_storer</span><span class="o">.</span><span class="n">save_binary_program</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">filepath</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PlanStorageService.load_binary_file">
@@ -220,10 +180,7 @@
 <span class="sd">            :param filepath: Source file path.</span>
 <span class="sd">            :return: File bytes content.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">target_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
-
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">target_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_handle</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">file_handle</span><span class="o">.</span><span class="n">read</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">load_binary_file</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

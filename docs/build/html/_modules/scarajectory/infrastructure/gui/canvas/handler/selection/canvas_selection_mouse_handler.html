@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>scarajectory.infrastructure.gui.canvas.handler.selection.canvas_selection_mouse_handler &#8212; scarajectory https://github.com/vroncevic/scarajectory/releases documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../../_static/classic.css?v=514cf933" />
+    
+    <script src="../../../../../../../_static/documentation_options.js?v=57319df4"></script>
+    <script src="../../../../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    
+    <link rel="index" title="Index" href="../../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../../../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.canvas.handler.selection.canvas_selection_mouse_handler</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for scarajectory.infrastructure.gui.canvas.handler.selection.canvas_selection_mouse_handler</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Module</span>
+<span class="sd">    canvas_selection_mouse_handler.py</span>
+<span class="sd">Copyright</span>
+<span class="sd">    Copyright (C) 2026 Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;</span>
+<span class="sd">    scarajectory is free software: you can redistribute it and/or modify it</span>
+<span class="sd">    under the terms of the GNU General Public License as published by the</span>
+<span class="sd">    Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">    (at your option) any later version.</span>
+<span class="sd">    scarajectory is distributed in the hope that it will be useful, but</span>
+<span class="sd">    WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
+<span class="sd">    See the GNU General Public License for more details.</span>
+<span class="sd">    You should have received a copy of the GNU General Public License along</span>
+<span class="sd">    with this program. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">Info</span>
+<span class="sd">    Dedicated handler translating mouse interaction into waypoint selection</span>
+<span class="sd">    and dragging.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">ClassVar</span><span class="p">,</span> <span class="n">Final</span>
+
+<span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.waypoint</span> <span class="kn">import</span> <span class="n">Waypoint</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.mutation.iplan_point_mutator</span> <span class="kn">import</span> <span class="n">IPlanPointMutator</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.selection.iplan_selection_coordinator</span> <span class="kn">import</span> <span class="n">IPlanSelectionCoordinator</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.store.iwaypoint_store</span> <span class="kn">import</span> <span class="n">IWaypointStore</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.canvas.handler.canvas_tool_handler</span> <span class="kn">import</span> <span class="n">CanvasToolHandler</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.model.canvas_interaction_state</span> <span class="kn">import</span> <span class="n">CanvasInteractionState</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.model.viewport_transform</span> <span class="kn">import</span> <span class="n">ViewportTransform</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
+<span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
+
+
+<div class="viewcode-block" id="CanvasSelectionMouseHandler">
+<a class="viewcode-back" href="../../../../../../../scarajectory.infrastructure.gui.canvas.handler.selection.canvas_selection_mouse_handler.html#scarajectory.infrastructure.gui.canvas.handler.selection.canvas_selection_mouse_handler.CanvasSelectionMouseHandler">[docs]</a>
+<span class="k">class</span> <span class="nc">CanvasSelectionMouseHandler</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Handles hit detection, selection toggle, and waypoint drag updates.</span>
+
+<span class="sd">        It defines:</span>
+
+<span class="sd">            :attributes:</span>
+<span class="sd">                | SELECT_HIT_RADIUS_PX - Hit detection pixel radius.</span>
+<span class="sd">                | _store - Injected waypoint store query collaborator.</span>
+<span class="sd">                | _selection - Injected selection coordinator collaborator.</span>
+<span class="sd">                | _mutation - Injected plan mutation service collaborator.</span>
+<span class="sd">                | _vp - Viewport transformation matrix.</span>
+<span class="sd">                | _state - Interactive mouse pan, drag, and selection state.</span>
+<span class="sd">            :methods:</span>
+<span class="sd">                | __init__ - Initializes handler with injected collaborators.</span>
+<span class="sd">                | handle_select_down - Processes mouse down for hit detection.</span>
+<span class="sd">                | handle_select_drag - Updates dragged point during motion.</span>
+<span class="sd">                | find_hit_index - Computes nearest index within hit radius.</span>
+<span class="sd">                | clear_selection - Clears active selection and dragged index.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">SELECT_HIT_RADIUS_PX</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">12.0</span>
+
+    <span class="n">_store</span><span class="p">:</span> <span class="n">IWaypointStore</span>
+    <span class="n">_selection</span><span class="p">:</span> <span class="n">IPlanSelectionCoordinator</span>
+    <span class="n">_mutation</span><span class="p">:</span> <span class="n">IPlanPointMutator</span>
+    <span class="n">_vp</span><span class="p">:</span> <span class="n">ViewportTransform</span>
+    <span class="n">_state</span><span class="p">:</span> <span class="n">CanvasInteractionState</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">store</span><span class="p">:</span> <span class="n">IWaypointStore</span><span class="p">,</span>
+        <span class="n">selection</span><span class="p">:</span> <span class="n">IPlanSelectionCoordinator</span><span class="p">,</span>
+        <span class="n">mutation</span><span class="p">:</span> <span class="n">IPlanPointMutator</span><span class="p">,</span>
+        <span class="n">vp</span><span class="p">:</span> <span class="n">ViewportTransform</span><span class="p">,</span>
+        <span class="n">state</span><span class="p">:</span> <span class="n">CanvasInteractionState</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Initializes selection handler with injected collaborators.</span>
+
+<span class="sd">            :param store: Injected IWaypointStore instance.</span>
+<span class="sd">            :param selection: Injected IPlanSelectionCoordinator instance.</span>
+<span class="sd">            :param mutation: Injected IPlanPointMutator instance.</span>
+<span class="sd">            :param vp: ViewportTransform instance.</span>
+<span class="sd">            :param state: CanvasInteractionState instance.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IWaypointStore</span><span class="p">]</span> <span class="o">=</span> <span class="n">store</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_selection</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IPlanSelectionCoordinator</span><span class="p">]</span> <span class="o">=</span> <span class="n">selection</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mutation</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IPlanPointMutator</span><span class="p">]</span> <span class="o">=</span> <span class="n">mutation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vp</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ViewportTransform</span><span class="p">]</span> <span class="o">=</span> <span class="n">vp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">CanvasInteractionState</span><span class="p">]</span> <span class="o">=</span> <span class="n">state</span>
+
+<div class="viewcode-block" id="CanvasSelectionMouseHandler.handle_select_down">
+<a class="viewcode-back" href="../../../../../../../scarajectory.infrastructure.gui.canvas.handler.selection.canvas_selection_mouse_handler.html#scarajectory.infrastructure.gui.canvas.handler.selection.canvas_selection_mouse_handler.CanvasSelectionMouseHandler.handle_select_down">[docs]</a>
+    <span class="k">def</span> <span class="nf">handle_select_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">wy</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Processes mouse down for selection hit detection.</span>
+
+<span class="sd">            :param wx: World X coordinate in mm.</span>
+<span class="sd">            :param wy: World Y coordinate in mm.</span>
+<span class="sd">            :return: Hit waypoint index, or -1 if no waypoint hit.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">hit_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_hit_index</span><span class="p">(</span><span class="n">wx</span><span class="p">,</span> <span class="n">wy</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">hit_idx</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">dragged_node_idx</span> <span class="o">=</span> <span class="n">hit_idx</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_selection</span><span class="o">.</span><span class="n">set_selected_index</span><span class="p">(</span><span class="n">hit_idx</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">dragged_node_idx</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_selection</span><span class="o">.</span><span class="n">set_selected_index</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">hit_idx</span></div>
+
+
+<div class="viewcode-block" id="CanvasSelectionMouseHandler.handle_select_drag">
+<a class="viewcode-back" href="../../../../../../../scarajectory.infrastructure.gui.canvas.handler.selection.canvas_selection_mouse_handler.html#scarajectory.infrastructure.gui.canvas.handler.selection.canvas_selection_mouse_handler.CanvasSelectionMouseHandler.handle_select_drag">[docs]</a>
+    <span class="k">def</span> <span class="nf">handle_select_drag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">wy</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Updates dragged waypoint during selection motion.</span>
+
+<span class="sd">            :param wx: World X coordinate in mm.</span>
+<span class="sd">            :param wy: World Y coordinate in mm.</span>
+<span class="sd">            :return: True if canvas redraw requested, False otherwise.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">dragged_node_idx</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">cur_pt</span><span class="p">:</span> <span class="n">Waypoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="o">.</span><span class="n">waypoints</span><span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">dragged_node_idx</span>
+            <span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mutation</span><span class="o">.</span><span class="n">update_point</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">dragged_node_idx</span><span class="p">,</span>
+                <span class="n">Waypoint</span><span class="p">(</span>
+                    <span class="n">x</span><span class="o">=</span><span class="n">wx</span><span class="p">,</span>
+                    <span class="n">y</span><span class="o">=</span><span class="n">wy</span><span class="p">,</span>
+                    <span class="n">z</span><span class="o">=</span><span class="n">cur_pt</span><span class="o">.</span><span class="n">z</span><span class="p">,</span>
+                    <span class="n">phi</span><span class="o">=</span><span class="n">cur_pt</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span>
+                    <span class="n">speed</span><span class="o">=</span><span class="n">cur_pt</span><span class="o">.</span><span class="n">speed</span><span class="p">,</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">cur_pt</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                    <span class="n">command</span><span class="o">=</span><span class="n">cur_pt</span><span class="o">.</span><span class="n">command</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="CanvasSelectionMouseHandler.find_hit_index">
+<a class="viewcode-back" href="../../../../../../../scarajectory.infrastructure.gui.canvas.handler.selection.canvas_selection_mouse_handler.html#scarajectory.infrastructure.gui.canvas.handler.selection.canvas_selection_mouse_handler.CanvasSelectionMouseHandler.find_hit_index">[docs]</a>
+    <span class="k">def</span> <span class="nf">find_hit_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">wy</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Computes nearest waypoint index within hit radius.</span>
+
+<span class="sd">            :param wx: World X coordinate in mm.</span>
+<span class="sd">            :param wy: World Y coordinate in mm.</span>
+<span class="sd">            :return: Hit waypoint index, or -1 if none found.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">hit_r_world</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SELECT_HIT_RADIUS_PX</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vp</span><span class="o">.</span><span class="n">scale</span>
+
+        <span class="k">return</span> <span class="n">CanvasToolHandler</span><span class="o">.</span><span class="n">find_hit_index</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="o">.</span><span class="n">waypoints</span><span class="p">,</span> <span class="n">wx</span><span class="p">,</span> <span class="n">wy</span><span class="p">,</span> <span class="n">hit_r_world</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CanvasSelectionMouseHandler.clear_selection">
+<a class="viewcode-back" href="../../../../../../../scarajectory.infrastructure.gui.canvas.handler.selection.canvas_selection_mouse_handler.html#scarajectory.infrastructure.gui.canvas.handler.selection.canvas_selection_mouse_handler.CanvasSelectionMouseHandler.clear_selection">[docs]</a>
+    <span class="k">def</span> <span class="nf">clear_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Clears active selection and dragged index.</span>
+
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">dragged_node_idx</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_selection</span><span class="o">.</span><span class="n">set_selected_index</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../../../../index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../../../../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">scarajectory.infrastructure.gui.canvas.handler.selection.canvas_selection_mouse_handler</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2026, Vladimir Roncevic &lt;elektron.ronca@gmail.com&gt;.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    </div>
+  </body>
+</html>
