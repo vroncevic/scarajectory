@@ -33,7 +33,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -49,6 +49,7 @@ class TestDslEditorFileHandler(TestCase):
         self.mock_editor = MagicMock()
         self.mock_console = MagicMock()
         self.mock_catalog = MagicMock()
+        self.mock_catalog.examples_dir = '/path/to/workspace'
         self.mock_doc_manager = MagicMock()
 
         bundle = FileHandlerBundle(
@@ -67,6 +68,7 @@ class TestDslEditorFileHandler(TestCase):
             Tests structural protocol conformance against IDslFileDelegate.
         '''
         self.assertIsInstance(self.handler, IDslFileDelegate)
+        self.assertIsInstance(DslEditorFileHandlerFactory.get_version(), str)
 
     def test_open_file_success(self) -> None:
         '''
@@ -80,7 +82,8 @@ class TestDslEditorFileHandler(TestCase):
         self.handler.open_file()
 
         self.mock_doc_manager.open_document.assert_called_once_with(
-            parent=self.mock_parent
+            parent=self.mock_parent,
+            initial_dir='/path/to/workspace',
         )
         self.mock_editor.set_text.assert_called_once_with('CONTENT_FROM_FILE')
         self.mock_console.log.assert_called_once_with(
@@ -111,6 +114,7 @@ class TestDslEditorFileHandler(TestCase):
         self.mock_doc_manager.save_document.assert_called_once_with(
             parent=self.mock_parent,
             content='CODE_TO_SAVE',
+            initial_dir='/path/to/workspace',
         )
         self.mock_console.log.assert_called_once_with(
             'ℹ️ Saved file: /path/to/saved.scara',

@@ -69,7 +69,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.storage.plan_storer.PlanStorer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.storage.plan_storer.</span></span><span class="sig-name descname"><span class="pre">PlanStorer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context_bundle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ContextBundle</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/storage/plan_storer.html#PlanStorer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.storage.plan_storer.PlanStorer" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.storage.plan_storer.</span></span><span class="sig-name descname"><span class="pre">PlanStorer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">io_factory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.storage.config_io.iconfig_io_factory.html#scarajectory.infrastructure.storage.config_io.iconfig_io_factory.IConfigIOFactory" title="scarajectory.infrastructure.storage.config_io.iconfig_io_factory.IConfigIOFactory"><span class="pre">IConfigIOFactory</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/storage/plan_storer.html#PlanStorer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.storage.plan_storer.PlanStorer" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Infrastructure adapter handling JSON trajectory plan saving and text/binary file writing.</p>
 <p>It defines:</p>
@@ -77,32 +77,32 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <div><dl class="field-list">
 <dt class="field-odd">attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><div class="line-block">
-<div class="line">_context - The ContextBundle for ATS configuration I/O operations.</div>
+<div class="line">_io_factory - Configuration I/O factory constructing storers.</div>
 </div>
 </dd>
 <dt class="field-even">methods<span class="colon">:</span></dt>
 <dd class="field-even"><div class="line-block">
-<div class="line">__init__ - Initializes the plan storer with context bundle.</div>
-<div class="line">save_plan - Saves trajectory plan waypoints to JSON file path using ATS Storer.</div>
+<div class="line">__init__ - Initializes the plan storer with I/O factory.</div>
+<div class="line">save_plan - Saves trajectory plan waypoints to JSON file path.</div>
 <div class="line">save_text_file - Writes string content to file path using UTF-8 encoding.</div>
-<div class="line">save_binary_program - Writes compiled binary program payload to destination file path.</div>
+<div class="line">save_binary_file - Writes compiled binary program payload to destination file path.</div>
 </div>
 </dd>
 </dl>
 </div></blockquote>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.storage.plan_storer.PlanStorer._context">
-<span class="sig-name descname"><span class="pre">_context</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ContextBundle</span></em><a class="headerlink" href="#scarajectory.infrastructure.storage.plan_storer.PlanStorer._context" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="scarajectory.infrastructure.storage.plan_storer.PlanStorer._io_factory">
+<span class="sig-name descname"><span class="pre">_io_factory</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.storage.config_io.iconfig_io_factory.html#scarajectory.infrastructure.storage.config_io.iconfig_io_factory.IConfigIOFactory" title="scarajectory.infrastructure.storage.config_io.iconfig_io_factory.IConfigIOFactory"><span class="pre">IConfigIOFactory</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.storage.plan_storer.PlanStorer._io_factory" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.storage.plan_storer.PlanStorer.save_binary_program">
-<span class="sig-name descname"><span class="pre">save_binary_program</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">program</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BinaryProgram</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/storage/plan_storer.html#PlanStorer.save_binary_program"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.storage.plan_storer.PlanStorer.save_binary_program" title="Link to this definition">¶</a></dt>
-<dd><p>Writes compiled binary program payload to destination file path.</p>
+<dt class="sig sig-object py" id="scarajectory.infrastructure.storage.plan_storer.PlanStorer.save_binary_file">
+<span class="sig-name descname"><span class="pre">save_binary_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/storage/plan_storer.html#PlanStorer.save_binary_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.storage.plan_storer.PlanStorer.save_binary_file" title="Link to this definition">¶</a></dt>
+<dd><p>Writes compiled binary payload to destination file path.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>program</strong> – BinaryProgram instance.</p></li>
+<li><p><strong>content</strong> – Raw bytes payload.</p></li>
 <li><p><strong>filepath</strong> – Destination file path.</p></li>
 </ul>
 </dd>
@@ -112,7 +112,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.storage.plan_storer.PlanStorer.save_plan">
 <span class="sig-name descname"><span class="pre">save_plan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.trajectory.plan.itrajectory_read_only.html#scarajectory.core.service.trajectory.plan.itrajectory_read_only.ITrajectoryReadOnly" title="scarajectory.core.service.trajectory.plan.itrajectory_read_only.ITrajectoryReadOnly"><span class="pre">ITrajectoryReadOnly</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/storage/plan_storer.html#PlanStorer.save_plan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.storage.plan_storer.PlanStorer.save_plan" title="Link to this definition">¶</a></dt>
-<dd><p>Saves trajectory plan waypoints to JSON file path using ATS Storer.</p>
+<dd><p>Saves trajectory plan waypoints to JSON file path using configuration storer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -153,8 +153,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <ul>
 <li><a class="reference internal" href="#">scarajectory.infrastructure.storage.plan_storer module</a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.storage.plan_storer.PlanStorer"><code class="docutils literal notranslate"><span class="pre">PlanStorer</span></code></a><ul>
-<li><a class="reference internal" href="#scarajectory.infrastructure.storage.plan_storer.PlanStorer._context"><code class="docutils literal notranslate"><span class="pre">PlanStorer._context</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.storage.plan_storer.PlanStorer.save_binary_program"><code class="docutils literal notranslate"><span class="pre">PlanStorer.save_binary_program()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.storage.plan_storer.PlanStorer._io_factory"><code class="docutils literal notranslate"><span class="pre">PlanStorer._io_factory</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.storage.plan_storer.PlanStorer.save_binary_file"><code class="docutils literal notranslate"><span class="pre">PlanStorer.save_binary_file()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.storage.plan_storer.PlanStorer.save_plan"><code class="docutils literal notranslate"><span class="pre">PlanStorer.save_plan()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.storage.plan_storer.PlanStorer.save_text_file"><code class="docutils literal notranslate"><span class="pre">PlanStorer.save_text_file()</span></code></a></li>
 </ul>

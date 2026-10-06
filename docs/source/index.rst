@@ -1,3 +1,7 @@
+.. image:: https://raw.githubusercontent.com/vroncevic/scarajectory/dev/docs/scarajectory_logo.png
+   :align: right
+   :width: 25%
+
 SCARA Motion Trajectory Studio & Streamer
 -----------------------------------------
 
@@ -154,7 +158,6 @@ Tool structure
          │   │   │   └── stream_pacing_config.py
          │   │   ├── telemetry/
          │   │   │   ├── diagnostics_bundle.py
-         │   │   │   ├── diagnostics_snapshot.py
          │   │   │   ├── fault_event.py
          │   │   │   ├── __init__.py
          │   │   │   ├── move_event.py
@@ -162,65 +165,21 @@ Tool structure
          │   │   │   ├── stream_progress.py
          │   │   │   └── stream_summary.py
          │   │   └── trajectory/
-         │   │       ├── plan_metrics.py
-         │   │       ├── validation_report.py
          │   │       └── waypoint.py
          │   └── service/
-         │       ├── barrier/
-         │       │   ├── iflow_barrier.py
-         │       │   ├── iflow_barrier_coordinator.py
-         │       │   └── __init__.py
-         │       ├── classifier/
-         │       │   ├── iflow_status_classifier.py
-         │       │   ├── ihoming_status_classifier.py
-         │       │   ├── imotion_status_classifier.py
-         │       │   ├── __init__.py
-         │       │   └── iresponse_parser.py
-         │       ├── connection/
-         │       │   ├── ichannel_dispatcher.py
-         │       │   ├── iconnection.py
-         │       │   ├── __init__.py
-         │       │   ├── iraw_channel.py
-         │       │   └── istream_connection.py
          │       ├── engine.py
-         │       ├── event/
-         │       │   ├── ibinary_frame_dispatcher.py
-         │       │   ├── ibinary_frame_handler.py
-         │       │   └── __init__.py
          │       ├── __init__.py
          │       ├── iservice.py
-         │       ├── kinematics/
-         │       │   ├── __init__.py
-         │       │   ├── iscara_deadzone_calculator.py
-         │       │   ├── scara_deadzone_calculator.py
-         │       │   └── scara_deadzone_calculator_factory.py
          │       ├── manipulator/
          │       │   ├── ijog_controller.py
          │       │   ├── imotion_controller.py
          │       │   ├── __init__.py
          │       │   └── iquery_controller.py
-         │       ├── pacing/
-         │       │   ├── iflow_pacing_controller.py
-         │       │   └── __init__.py
-         │       ├── packet/
-         │       │   ├── __init__.py
-         │       │   └── ipacket_strategy.py
          │       ├── preferences/
          │       │   ├── connection_preference_factory.py
          │       │   ├── iconnection_repository.py
          │       │   └── __init__.py
          │       ├── service_factory.py
-         │       ├── settings/
-         │       │   ├── __init__.py
-         │       │   ├── iscara_bounds_loader.py
-         │       │   ├── iscara_bounds_parser.py
-         │       │   ├── iscara_transmission_loader.py
-         │       │   └── istream_config_loader.py
-         │       ├── state/
-         │       │   ├── __init__.py
-         │       │   ├── istream_state_controller.py
-         │       │   ├── istream_state_machine.py
-         │       │   └── session_factory.py
          │       ├── storage/
          │       │   ├── __init__.py
          │       │   ├── iplan_loader.py
@@ -228,7 +187,6 @@ Tool structure
          │       │   └── iplan_storer.py
          │       ├── streaming/
          │       │   ├── config_factory.py
-         │       │   ├── ibinary_program_streamer.py
          │       │   ├── imotion_streamer.py
          │       │   ├── __init__.py
          │       │   ├── istream_control_transmitter.py
@@ -239,9 +197,9 @@ Tool structure
          │       │   │   ├── iobservable.py
          │       │   │   ├── iobserver.py
          │       │   │   └── istream_observer_dispatcher.py
+         │       │   ├── session_factory.py
          │       │   └── stream_pacing_config_factory.py
          │       ├── telemetry/
-         │       │   ├── diagnostics_snapshot_factory.py
          │       │   ├── fault_event_factory.py
          │       │   ├── __init__.py
          │       │   └── move_event_factory.py
@@ -249,87 +207,79 @@ Tool structure
          │       │   ├── __init__.py
          │       │   ├── ipurge_valve_actuator.py
          │       │   └── itool_controller.py
-         │       ├── trajectory/
-         │       │   ├── contract/
-         │       │   │   ├── __init__.py
-         │       │   │   ├── iplan_command_service.py
-         │       │   │   ├── iplan_persistence_service.py
-         │       │   │   └── iplan_validation_service.py
-         │       │   ├── history/
-         │       │   │   ├── __init__.py
-         │       │   │   ├── iplan_history.py
-         │       │   │   ├── iplan_history_saver.py
-         │       │   │   ├── plan_history.py
-         │       │   │   └── plan_history_factory.py
-         │       │   ├── __init__.py
-         │       │   └── plan/
-         │       │       ├── history/
-         │       │       │   ├── __init__.py
-         │       │       │   ├── plan_history_service.py
-         │       │       │   └── plan_history_service_factory.py
-         │       │       ├── __init__.py
-         │       │       ├── itrajectory_history.py
-         │       │       ├── itrajectory_mutable.py
-         │       │       ├── itrajectory_read_only.py
-         │       │       ├── mutation/
-         │       │       │   ├── __init__.py
-         │       │       │   ├── iplan_bulk_mutator.py
-         │       │       │   ├── iplan_mutation_service.py
-         │       │       │   ├── iplan_point_mutator.py
-         │       │       │   ├── plan_mutation_service.py
-         │       │       │   └── plan_mutation_service_factory.py
-         │       │       ├── observer/
-         │       │       │   ├── __init__.py
-         │       │       │   ├── iplan_observer_dispatcher.py
-         │       │       │   ├── itrajectory_observer.py
-         │       │       │   ├── plan_observer_dispatcher.py
-         │       │       │   └── plan_observer_dispatcher_factory.py
-         │       │       ├── selection/
-         │       │       │   ├── __init__.py
-         │       │       │   ├── iplan_selection_coordinator.py
-         │       │       │   ├── iplan_selection_manager.py
-         │       │       │   ├── iplan_selection_navigator.py
-         │       │       │   ├── iplan_selection_state.py
-         │       │       │   ├── plan_selection_coordinator.py
-         │       │       │   ├── plan_selection_coordinator_factory.py
-         │       │       │   ├── plan_selection_manager.py
-         │       │       │   ├── plan_selection_manager_factory.py
-         │       │       │   ├── plan_selection_navigator.py
-         │       │       │   ├── plan_selection_navigator_factory.py
-         │       │       │   └── plan_selection_state.py
-         │       │       └── store/
-         │       │           ├── __init__.py
-         │       │           ├── iwaypoint_bulk_mutator.py
-         │       │           ├── iwaypoint_mutator.py
-         │       │           ├── iwaypoint_query.py
-         │       │           ├── iwaypoint_store.py
-         │       │           ├── waypoint_bulk_mutator.py
-         │       │           ├── waypoint_mutator.py
-         │       │           ├── waypoint_query.py
-         │       │           ├── waypoint_store.py
-         │       │           └── waypoint_store_factory.py
-         │       ├── transmission/
-         │       │   ├── __init__.py
-         │       │   └── itransmission_step_calculator.py
-         │       └── worker/
-         │           ├── ibyte_sender.py
-         │           ├── icommand_formatter.py
-         │           ├── icommand_sender.py
-         │           ├── iexecution_service.py
-         │           ├── iexecution_worker.py
+         │       └── trajectory/
+         │           ├── contract/
+         │           │   ├── __init__.py
+         │           │   ├── iplan_command_service.py
+         │           │   ├── iplan_persistence_service.py
+         │           │   └── iplan_validation_service.py
+         │           ├── history/
+         │           │   ├── __init__.py
+         │           │   ├── iplan_history.py
+         │           │   ├── iplan_history_saver.py
+         │           │   ├── plan_history.py
+         │           │   └── plan_history_factory.py
          │           ├── __init__.py
-         │           ├── istream_bytes_receiver.py
-         │           ├── istream_line_receiver.py
-         │           └── istream_loop_runner.py
+         │           ├── plan/
+         │           │   ├── history/
+         │           │   │   ├── __init__.py
+         │           │   │   ├── plan_history_service.py
+         │           │   │   └── plan_history_service_factory.py
+         │           │   ├── __init__.py
+         │           │   ├── itrajectory_history.py
+         │           │   ├── itrajectory_mutable.py
+         │           │   ├── itrajectory_read_only.py
+         │           │   ├── mutation/
+         │           │   │   ├── __init__.py
+         │           │   │   ├── iplan_bulk_mutator.py
+         │           │   │   ├── iplan_mutation_service.py
+         │           │   │   ├── iplan_point_mutator.py
+         │           │   │   ├── plan_mutation_service.py
+         │           │   │   └── plan_mutation_service_factory.py
+         │           │   ├── observer/
+         │           │   │   ├── __init__.py
+         │           │   │   ├── iplan_observer_dispatcher.py
+         │           │   │   ├── itrajectory_observer.py
+         │           │   │   ├── plan_observer_dispatcher.py
+         │           │   │   └── plan_observer_dispatcher_factory.py
+         │           │   ├── selection/
+         │           │   │   ├── __init__.py
+         │           │   │   ├── iplan_selection_coordinator.py
+         │           │   │   ├── iplan_selection_manager.py
+         │           │   │   ├── iplan_selection_navigator.py
+         │           │   │   ├── iplan_selection_state.py
+         │           │   │   ├── plan_selection_coordinator.py
+         │           │   │   ├── plan_selection_coordinator_factory.py
+         │           │   │   ├── plan_selection_manager.py
+         │           │   │   ├── plan_selection_manager_factory.py
+         │           │   │   ├── plan_selection_navigator.py
+         │           │   │   ├── plan_selection_navigator_factory.py
+         │           │   │   └── plan_selection_state.py
+         │           │   └── store/
+         │           │       ├── __init__.py
+         │           │       ├── iwaypoint_bulk_mutator.py
+         │           │       ├── iwaypoint_mutator.py
+         │           │       ├── iwaypoint_query.py
+         │           │       ├── iwaypoint_store.py
+         │           │       ├── waypoint_bulk_mutator.py
+         │           │       ├── waypoint_mutator.py
+         │           │       ├── waypoint_query.py
+         │           │       ├── waypoint_store.py
+         │           │       └── waypoint_store_factory.py
+         │           └── validation/
+         │               └── itrajectory_validator.py
          ├── engine.py
          ├── infrastructure/
          │   ├── barrier/
          │   │   ├── flow_barrier.py
          │   │   ├── flow_barrier_factory.py
+         │   │   ├── iflow_barrier.py
          │   │   └── __init__.py
          │   ├── classifier/
          │   │   ├── __init__.py
+         │   │   ├── iresponse_classification_registry.py
          │   │   ├── iresponse_classification_rule.py
+         │   │   ├── iresponse_parser.py
          │   │   ├── response_classification_registry.py
          │   │   ├── response_classification_registry_factory.py
          │   │   ├── response_classification_rule.py
@@ -340,6 +290,9 @@ Tool structure
          │   │       ├── flow_status_classifier_factory.py
          │   │       ├── homing_status_classifier.py
          │   │       ├── homing_status_classifier_factory.py
+         │   │       ├── iflow_status_classifier.py
+         │   │       ├── ihoming_status_classifier.py
+         │   │       ├── imotion_status_classifier.py
          │   │       ├── __init__.py
          │   │       ├── motion_status_classifier.py
          │   │       └── motion_status_classifier_factory.py
@@ -366,6 +319,7 @@ Tool structure
          │   │   ├── studio_command_definition.py
          │   │   └── studio_command_executor.py
          │   ├── config/
+         │   │   ├── examples.tgz
          │   │   ├── scara_geometry.json
          │   │   ├── scarajectory.cfg
          │   │   ├── scarajectory.logo
@@ -373,7 +327,15 @@ Tool structure
          │   ├── connection/
          │   │   ├── channel_dispatcher.py
          │   │   ├── channel_dispatcher_factory.py
+         │   │   ├── ibyte_sender.py
+         │   │   ├── ichannel_dispatcher.py
+         │   │   ├── icommand_sender.py
+         │   │   ├── iconnection.py
          │   │   ├── __init__.py
+         │   │   ├── iraw_channel.py
+         │   │   ├── istream_bytes_receiver.py
+         │   │   ├── istream_connection.py
+         │   │   ├── istream_line_receiver.py
          │   │   ├── istream_raw_transceiver.py
          │   │   ├── stream_connection_manager.py
          │   │   ├── stream_connection_manager_factory.py
@@ -382,6 +344,8 @@ Tool structure
          │   ├── event/
          │   │   ├── binary_frame_dispatcher.py
          │   │   ├── binary_frame_dispatcher_factory.py
+         │   │   ├── ibinary_frame_dispatcher.py
+         │   │   ├── ibinary_frame_handler.py
          │   │   └── __init__.py
          │   ├── formatter/
          │   │   ├── command/
@@ -395,6 +359,7 @@ Tool structure
          │   │   ├── command_formatter.py
          │   │   ├── command_formatter_factory.py
          │   │   ├── command_templates.py
+         │   │   ├── icommand_formatter.py
          │   │   └── __init__.py
          │   ├── gui/
          │   │   ├── canvas/
@@ -409,6 +374,7 @@ Tool structure
          │   │   │   │   ├── canvas_shape_handler.py
          │   │   │   │   ├── canvas_tool_handler.py
          │   │   │   │   ├── icanvas_mouse_handler.py
+         │   │   │   │   ├── icanvas_waypoint_builder.py
          │   │   │   │   ├── __init__.py
          │   │   │   │   ├── mouse_handler_bundle.py
          │   │   │   │   ├── mouse_handler_init_bundle.py
@@ -456,6 +422,7 @@ Tool structure
          │   │   ├── connection/
          │   │   │   ├── __init__.py
          │   │   │   ├── iport_connection_delegate.py
+         │   │   │   ├── iport_connection_panel.py
          │   │   │   ├── null_port_connection_delegate.py
          │   │   │   └── port_connection_panel.py
          │   │   ├── console/
@@ -489,12 +456,16 @@ Tool structure
          │   │   │   ├── dsl_editor_tab.py
          │   │   │   ├── dsl_editor_tab_factory.py
          │   │   │   ├── handler/
+         │   │   │   │   ├── binary_handler.py
+         │   │   │   │   ├── binary_handler_bundle.py
+         │   │   │   │   ├── binary_handler_factory.py
          │   │   │   │   ├── execution_handler.py
          │   │   │   │   ├── execution_handler_bundle.py
          │   │   │   │   ├── execution_handler_factory.py
          │   │   │   │   ├── file_handler.py
          │   │   │   │   ├── file_handler_bundle.py
          │   │   │   │   ├── file_handler_factory.py
+         │   │   │   │   ├── ibinary_delegate.py
          │   │   │   │   ├── iexecution_delegate.py
          │   │   │   │   ├── ifile_delegate.py
          │   │   │   │   └── __init__.py
@@ -547,6 +518,7 @@ Tool structure
          │   │   │   └── toolbar_layout_builder_factory.py
          │   │   ├── manipulator/
          │   │   │   ├── imanipulator_action_delegate.py
+         │   │   │   ├── imanipulator_override_panel.py
          │   │   │   ├── __init__.py
          │   │   │   ├── jog/
          │   │   │   │   ├── axis_grid_panel.py
@@ -607,6 +579,7 @@ Tool structure
          │   │   │   ├── panel/
          │   │   │   │   ├── __init__.py
          │   │   │   │   ├── istream_control_delegate.py
+         │   │   │   │   ├── istream_status_bar.py
          │   │   │   │   ├── stream_control_panel.py
          │   │   │   │   ├── stream_progress_adapter.py
          │   │   │   │   └── stream_status_bar.py
@@ -654,11 +627,14 @@ Tool structure
          │   │   ├── flow_pacing_bundle_factory.py
          │   │   ├── flow_pacing_controller.py
          │   │   ├── flow_pacing_controller_factory.py
+         │   │   ├── iflow_barrier_coordinator.py
+         │   │   ├── iflow_pacing_controller.py
          │   │   └── __init__.py
          │   ├── packet/
          │   │   ├── binary_packet_strategy.py
          │   │   ├── binary_packet_strategy_factory.py
-         │   │   └── __init__.py
+         │   │   ├── __init__.py
+         │   │   └── ipacket_strategy.py
          │   ├── preferences/
          │   │   ├── connection_repository.py
          │   │   ├── connection_repository_factory.py
@@ -666,6 +642,8 @@ Tool structure
          │   ├── settings/
          │   │   ├── bounds/
          │   │   │   ├── __init__.py
+         │   │   │   ├── iscara_bounds_loader.py
+         │   │   │   ├── iscara_bounds_parser.py
          │   │   │   ├── scara_bounds_loader.py
          │   │   │   ├── scara_bounds_loader_factory.py
          │   │   │   ├── scara_bounds_parser.py
@@ -676,23 +654,39 @@ Tool structure
          │   │   ├── settings_reader_factory.py
          │   │   ├── stream/
          │   │   │   ├── __init__.py
+         │   │   │   ├── istream_config_loader.py
          │   │   │   ├── stream_config_loader.py
          │   │   │   └── stream_config_loader_factory.py
          │   │   └── transmission/
          │   │       ├── __init__.py
+         │   │       ├── iscara_transmission_loader.py
          │   │       ├── scara_transmission_loader.py
          │   │       └── scara_transmission_loader_factory.py
          │   ├── state/
          │   │   ├── __init__.py
+         │   │   ├── istream_state_controller.py
+         │   │   ├── istream_state_machine.py
          │   │   ├── stream_state_machine.py
          │   │   └── stream_state_machine_factory.py
          │   ├── storage/
+         │   │   ├── config_io/
+         │   │   │   ├── config_io_factory.py
+         │   │   │   ├── iconfig_io_factory.py
+         │   │   │   ├── iconfig_loader.py
+         │   │   │   ├── iconfig_storer.py
+         │   │   │   └── __init__.py
          │   │   ├── __init__.py
          │   │   ├── plan_loader.py
          │   │   ├── plan_storage_service.py
          │   │   ├── plan_storage_service_factory.py
          │   │   ├── plan_storer.py
-         │   │   └── trajectory_serializer.py
+         │   │   ├── trajectory_serializer.py
+         │   │   └── workspace/
+         │   │       ├── __init__.py
+         │   │       ├── iworkspace_service.py
+         │   │       ├── workspace_constants.py
+         │   │       ├── workspace_service.py
+         │   │       └── workspace_service_factory.py
          │   ├── streaming/
          │   │   ├── assembly/
          │   │   │   ├── __init__.py
@@ -704,6 +698,7 @@ Tool structure
          │   │   ├── binary_program_streamer.py
          │   │   ├── binary_program_streamer_factory.py
          │   │   ├── bundle.py
+         │   │   ├── ibinary_program_streamer.py
          │   │   ├── __init__.py
          │   │   ├── observer/
          │   │   │   ├── __init__.py
@@ -725,10 +720,6 @@ Tool structure
          │   │   ├── tool_controller_factory.py
          │   │   ├── valve_pulse_worker.py
          │   │   └── valve_pulse_worker_factory.py
-         │   ├── transmission/
-         │   │   ├── __init__.py
-         │   │   ├── transmission_step_calculator.py
-         │   │   └── transmission_step_calculator_factory.py
          │   ├── transport/
          │   │   ├── bundle.py
          │   │   ├── driver/
@@ -763,27 +754,46 @@ Tool structure
          │   │       ├── transport_reader_worker.py
          │   │       └── transport_reader_worker_factory.py
          │   └── worker/
+         │       ├── ascii/
+         │       │   ├── __init__.py
+         │       │   ├── istream_loop_runner.py
+         │       │   ├── istream_queue_drainer.py
+         │       │   ├── istream_step_dispatcher.py
+         │       │   ├── stream_execution_worker.py
+         │       │   ├── stream_execution_worker_factory.py
+         │       │   ├── stream_loop_runner.py
+         │       │   ├── stream_loop_runner_factory.py
+         │       │   ├── stream_queue_drainer.py
+         │       │   ├── stream_queue_drainer_factory.py
+         │       │   ├── stream_step_dispatcher.py
+         │       │   └── stream_step_dispatcher_factory.py
          │       ├── binary/
+         │       │   ├── binary_loop_runner_bundle.py
+         │       │   ├── binary_queue_drainer.py
+         │       │   ├── binary_queue_drainer_factory.py
+         │       │   ├── binary_step_bundle.py
+         │       │   ├── binary_step_dispatcher.py
+         │       │   ├── binary_step_dispatcher_factory.py
          │       │   ├── binary_stream_execution_worker.py
          │       │   ├── binary_stream_execution_worker_factory.py
          │       │   ├── binary_stream_frame_handler.py
          │       │   ├── binary_stream_frame_handler_factory.py
          │       │   ├── binary_stream_loop_runner.py
          │       │   ├── binary_stream_loop_runner_factory.py
+         │       │   ├── binary_stream_runner_bundle.py
+         │       │   ├── ibinary_queue_drainer.py
+         │       │   ├── ibinary_step_dispatcher.py
          │       │   ├── ibinary_stream_frame_handler.py
          │       │   ├── ibinary_stream_loop_runner.py
          │       │   └── __init__.py
+         │       ├── iexecution_service.py
+         │       ├── iexecution_worker.py
          │       ├── __init__.py
-         │       ├── istream_queue_drainer.py
-         │       ├── istream_step_dispatcher.py
-         │       ├── stream_execution_worker.py
-         │       ├── stream_execution_worker_factory.py
-         │       ├── stream_loop_runner.py
-         │       ├── stream_loop_runner_factory.py
-         │       ├── stream_queue_drainer.py
-         │       ├── stream_queue_drainer_factory.py
-         │       ├── stream_step_dispatcher.py
-         │       └── stream_step_dispatcher_factory.py
+         │       └── thread/
+         │           ├── __init__.py
+         │           ├── iworker_thread_coordinator.py
+         │           ├── worker_thread_coordinator.py
+         │           └── worker_thread_coordinator_factory.py
          ├── __init__.py
          ├── py.typed
          └── setup/
@@ -803,7 +813,9 @@ Tool structure
              ├── opt_validator.py
              ├── options.py
              ├── pipeline/
+             │   ├── dsl_diagnostic_bundle.py
              │   ├── dsl_pipeline_builder.py
+             │   ├── dsl_pipeline_bundle.py
              │   ├── __init__.py
              │   ├── plan_pipeline_builder.py
              │   ├── plan_pipeline_bundle.py
@@ -812,7 +824,7 @@ Tool structure
              ├── registry.py
              └── validator.py
 
-     106 directories, 578 files
+     99 directories, 593 files
 
 ✨ Features
 -----------
@@ -862,6 +874,348 @@ The robot dimensions and physical boundaries can be customized in ``scara_geomet
    * - **max_speed**
      - ``100.0 mm/s``
      - Maximum allowable safe feedrate speed.
+
+📜 SCARA Domain-Specific Language (DSL) & .scara Programs
+---------------------------------------------------------
+
+**scarajectory** includes a dedicated, industrial-grade Domain-Specific Language designed specifically for SCARA robotic manipulators. Programs are written in plain text files with the ``.scara`` extension and compiled into validated Cartesian trajectories via a clean AST pipeline:
+
+.. code-block:: text
+
+                    ┌─────────────────────────┐
+                    │      .scara Source      │
+                    └────────────┬────────────┘
+                                 │ ScaraLexer
+                                 ▼
+                    ┌─────────────────────────┐
+                    │      Token Stream       │
+                    └────────────┬────────────┘
+                                 │ ScaraParser
+                                 ▼
+                    ┌─────────────────────────┐
+                    │      Abstract AST       │
+                    └────────────┬────────────┘
+                                 │ ScaraCompiler (Macros + Kinematics)
+                                 ▼
+                    ┌─────────────────────────┐
+                    │     TrajectoryPlan      │ (Waypoints & Protocols)
+                    └─────────────────────────┘
+
+SCARA DSL Instruction Reference
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. list-table:: SCARA DSL Instruction Reference
+   :widths: 15 35 25 35
+   :header-rows: 1
+
+   * - Category
+     - Instruction & Syntax
+     - Parameters
+     - Description
+   * - **Motion**
+     - ``MOVE_J X <x> Y <y> Z <z> [P <phi>]``
+     - ``X, Y, Z`` (mm), ``P`` (deg)
+     - Rapid Cartesian point-to-point motion.
+   * - 
+     - ``MOVE_L X <x> Y <y> Z <z> [P <phi>]``
+     - ``X, Y, Z`` (mm), ``P`` (deg)
+     - Linear interpolated Cartesian path.
+   * - 
+     - ``ARC_CW X <x> Y <y> I <i> J <j> [Z <z>]``
+     - ``X, Y`` target, ``I, J`` center offset
+     - Clockwise circular arc interpolation.
+   * - 
+     - ``ARC_CCW X <x> Y <y> I <i> J <j> [Z <z>]``
+     - ``X, Y`` target, ``I, J`` center offset
+     - Counter-clockwise circular arc interpolation.
+   * - 
+     - ``APPROACH DIST <d>``
+     - ``DIST`` (mm)
+     - Vertical descent towards workpiece along Z.
+   * - 
+     - ``RETRACT DIST <d>``
+     - ``DIST`` (mm)
+     - Vertical clearance ascent along Z.
+   * - **Macros**
+     - ``JUMP X <x> Y <y> Z <z> [ARCH <h>]``
+     - ``X, Y, Z``, ``ARCH`` apex clearance
+     - Smooth 3D parabolic pick-and-place arch motion.
+   * - 
+     - ``PALLET ROWS <r> COLS <c> DX <dx> DY <dy>``
+     - Grid dimensions & spacing
+     - Generates structured 2D Cartesian pallet matrix.
+   * - 
+     - ``TANGENT_ARC RADIUS <r> ANGLE <a>``
+     - ``RADIUS`` (mm), ``ANGLE`` (deg)
+     - Smooth tangential curve blending into path.
+   * - **Actuators**
+     - ``PUMP <ON|OFF>``
+     - ``ON`` or ``OFF``
+     - Actuates end-effector vacuum pump.
+   * - 
+     - ``VALVE <ON|OFF>``
+     - ``ON`` or ``OFF``
+     - Opens or closes pneumatic release blow-off valve.
+   * - 
+     - ``WAIT <ms>``
+     - ``ms`` (milliseconds)
+     - Dwells execution for specified hardware duration.
+   * - 
+     - ``HOME``
+     - None
+     - Triggers complete multi-axis homing routine.
+   * - **Dynamics**
+     - ``SPEED <RAPID|WORK> <val>``
+     - ``RAPID`` or ``WORK``, feedrate (mm/s)
+     - Configures travel or working linear feedrate.
+   * - 
+     - ``ACCEL <val>``
+     - ``val`` (mm/s²)
+     - Configures linear path acceleration limit.
+   * - 
+     - ``OVERRIDE <percent>``
+     - ``percent`` (10% - 200%)
+     - Scales path execution velocity dynamically.
+   * - 
+     - ``ZONE <OFF|FINE|Z1..Z50>``
+     - Corner rounding tolerance
+     - Corner tolerance zone for trajectory smoothing.
+   * - **Config**
+     - ``CONFIG ELBOW <LEFT|RIGHT>``
+     - ``LEFT`` or ``RIGHT``
+     - Sets arm kinematic inverse solution branch.
+   * - 
+     - ``FRAME X <x> Y <y> Z <z> [PHI <p>]``
+     - Cartesian offset coordinates
+     - Defines user workpiece reference coordinate frame.
+   * - 
+     - ``PROBE AXIS <Z> FEED <f>``
+     - Axis identifier, search feedrate
+     - Probes touch switch / surface sensor.
+
+Example .scara Program: Industrial Pick & Place
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: text
+
+    # ----------------------------------------------------
+    # Industrial Pick-and-Place Cycle with Pneumatic Grip
+    # ----------------------------------------------------
+    CONFIG ELBOW LEFT
+    SPEED RAPID 180.0
+    SPEED WORK 60.0
+    ACCEL 400.0
+    OVERRIDE 100
+
+    # Home robot to reference position
+    HOME
+
+    # Rapid move above pick feeder station
+    MOVE_J X 140.0 Y -30.0 Z 35.0
+    APPROACH DIST 30.0
+
+    # Engage suction cup and pause for vacuum seal
+    PUMP ON
+    WAIT 200
+
+    # Retract with part
+    RETRACT DIST 30.0
+
+    # Smooth 3D parabolic arch transfer to drop location
+    JUMP X 180.0 Y 30.0 Z 5.0 ARCH 40.0
+
+    # Release part with air pulse
+    PUMP OFF
+    VALVE ON
+    WAIT 100
+    VALVE OFF
+
+    # Retract to safe transit altitude
+    RETRACT DIST 30.0
+    HOME
+
+Bundled Industrial .scara Demonstration Programs
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**scarajectory** includes a comprehensive suite of 12 industrial-grade ``.scara`` demonstration programs showcasing the full capabilities of the DSL syntax, kinematics, trajectory smoothing, and pneumatic tool sequencing:
+
+.. list-table:: Bundled Industrial Demonstration Programs
+   :widths: 22 20 28 40
+   :header-rows: 1
+
+   * - File Name
+     - Functional Category
+     - Primary DSL Instructions
+     - Description
+   * - **01_homing.scara**
+     - Calibration & Safety
+     - ``ENABLE``, ``HOME``
+     - Coordinated multi-axis homing sequence (Z limit switch, J2 elbow, J1 shoulder) and zero-reference calibration.
+   * - **02_linear_motion.scara**
+     - Cartesian Interpolation
+     - ``SPEED WORK/RAPID``, ``MOVE_L``
+     - Continuous linear interpolated path between Cartesian coordinates with configurable working and rapid feedrates.
+   * - **03_joint_rapid.scara**
+     - Rapid Transit
+     - ``MOVE_J``
+     - High-speed joint-interpolated transit across workspace quadrants, prioritizing transition speed over straight-line paths.
+   * - **04_circular_arc.scara**
+     - Planar Contouring
+     - ``ARC_CW``, ``ARC_CCW``
+     - Clockwise and counter-clockwise circular arc interpolation using relative center offsets (``I``, ``J``).
+   * - **05_jump_arch.scara**
+     - 3D Pick & Place
+     - ``JUMP``, ``ARCH``
+     - Parabolic 3D clearance arch: vertical ascent, horizontal transit, and descent with configurable clearance height.
+   * - **06_pneumatics.scara**
+     - Actuator Sequencing
+     - ``PUMP ON/OFF``, ``VALVE ON/OFF``, ``WAIT_MS``
+     - Pneumatic vacuum pump and blow-off valve actuation with safety interlocks preventing simultaneous engagement.
+   * - **07_approach_retract.scara**
+     - Z-Axis Tooling
+     - ``APPROACH DIST``, ``RETRACT DIST``
+     - Relative descent to workpiece at controlled creep speed and fast clearance ascent along the Z-axis.
+   * - **08_work_frames.scara**
+     - Coordinate Systems
+     - ``FRAME_SET``, ``FRAME_RESET``
+     - User Work Coordinate System (WCS) shifting and rotated reference systems for inclined assembly stations.
+   * - **09_pallet_matrix.scara**
+     - Parametric Palletizing
+     - ``PALLET_DEF``, ``MOVE_PALLET``
+     - 2D pallet grid matrix indexing by row, column, pitch (``DX``, ``DY``), and zero-based cell index.
+   * - **10_tangent_orientation.scara**
+     - 4th-Axis Tool Control
+     - ``TOOL_ORIENT TANGENTIAL/FIXED``
+     - Automatic continuous rotation of the 4th axis (:math:`\Phi`) tangential to trajectory heading (knife cutting, dispensing).
+   * - **11_zone_blending.scara**
+     - Trajectory Smoothing
+     - ``ZONE BLEND``, ``ZONE FINE``
+     - Continuous curvature trajectory blending and corner rounding radius for high-speed continuous motion.
+   * - **12_industrial_pick_place.scara**
+     - Full Automation Cycle
+     - ``FRAME_SET``, ``MOVE_J``, ``ZONE BLEND``, ``PUMP``, ``VALVE``, ``RETRACT``
+     - Comprehensive production pick-and-place cycle combining homing, frames, blended transit, vacuum grip, and blow-off release.
+
+User Workspace Auto-Provisioning (~/.scarajectory/workspace/)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To allow users to modify, test, and develop custom routines without modifying the installed package assets, **scarajectory** implements an automated personal workspace architecture:
+
+* **Automatic Archive Extraction:** All 12 demonstration scripts are packaged inside ``examples.tgz`` within the package configuration. Upon application launch or when initializing the DSL Editor tab, ``WorkspaceService`` verifies that the workspace directory (``~/.scarajectory/workspace/``) exists. If the folder does not exist or contains no ``.scara`` files, the archive is unpacked automatically into the user's workspace.
+* **Integrated Examples Catalog:** The **Examples:** dropdown combobox on the DSL Editor toolbar dynamically discovers and lists all ``.scara`` files present in the user workspace. Selecting an example and clicking **📂 Load Demo** immediately populates the syntax-highlighted editor with the script.
+* **Streamlined File Dialogs:** File operations such as **📂 Open...** (``Ctrl+O``) and **💾 Save As...** (``Ctrl+S``) default directly to ``~/.scarajectory/workspace/``, enabling quick access to user scripts and personal templates.
+* **Safe User Customization:** Users can freely edit existing examples, save variations, or create new industrial programs directly in ``~/.scarajectory/workspace/`` with full persistence.
+
+📡 Unified Serial ASCII Communication Protocol
+----------------------------------------------
+
+All communication between **scarajectory**, the physical **scara_base** firmware, and the **scaraemu** digital twin is governed by a packetized ASCII streaming protocol:
+
+Command Packets (PC to Robot)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. list-table:: Command Packets
+   :widths: 35 35 40
+   :header-rows: 1
+
+   * - Command Packet
+     - Description
+     - Response Handshake
+   * - ``<pt#X#Y#Z#PHI#SPEED#end>``
+     - Push Cartesian trajectory point to FIFO motion buffer
+     - ``<RESP:ACK#QUEUE=n>`` then ``<RESP:MOVE_DONE#...>``
+   * - ``<CMD:JOG#axis#step>``
+     - Incremental manual jog (``X``, ``Y``, ``Z``, ``P``) by ``step`` mm/deg
+     - ``<RESP:ACK#JOG_QUEUED#QUEUE=n>``
+   * - ``<CMD:OVERRIDE#percent>``
+     - Real-time feedrate override scaling (``10`` to ``200`` %)
+     - ``<RESP:ACK#OVERRIDE=percent>``
+   * - ``<CMD:WAIT#ms>``
+     - Synchronous dwell delay pause on motion controller
+     - ``<RESP:ACK#WAIT_DONE#MS=ms>``
+   * - ``<CMD:PUMP#1>`` / ``<CMD:PUMP#0>``
+     - Energize / de-energize vacuum pump actuator
+     - ``<RESP:ACK#PUMP_ON>`` / ``<RESP:ACK#PUMP_OFF>``
+   * - ``<CMD:VALVE#1>`` / ``<CMD:VALVE#0>``
+     - Open / close pneumatic air release valve
+     - ``<RESP:ACK#VALVE_ON>`` / ``<RESP:ACK#VALVE_OFF>``
+   * - ``<CMD:HOME>``
+     - Execute multi-axis homing and calibrate zero
+     - ``<RESP:ACK#HOMING_STARTED>`` then ``<RESP:HOMED_SUCCESS#...>``
+   * - ``<CMD:ENABLE>`` / ``<CMD:DISABLE>``
+     - Energize / de-energize stepper driver stages
+     - ``<RESP:ACK#MOTORS_ENABLED>`` / ``<RESP:ACK#MOTORS_DISABLED>``
+   * - ``<CMD:ESTOP>``
+     - Instant emergency stop and motion queue abort
+     - ``<RESP:ACK#ESTOP_TRIGGERED>``
+   * - ``<CMD:HOLD>`` / ``<CMD:RESUME>``
+     - Decelerate to feed hold / resume paused trajectory
+     - ``<RESP:ACK#FEED_HOLD_ACTIVE>`` / ``<RESP:ACK#MOTION_RESUMED>``
+   * - ``<CMD:STATUS>``
+     - Query operational machine state and endstop flags
+     - ``<RESP:STATUS#STATE=...#ENDSTOPS=...>``
+   * - ``<CMD:GETPOS>``
+     - Read active Cartesian tool coordinates and orientation
+     - ``<RESP:POS#X=...#Y=...#Z=...#PHI=...>``
+   * - ``<CMD:SET_ELBOW#LEFT|RIGHT>``
+     - Select inverse kinematic arm solution branch
+     - ``<RESP:ACK#ELBOW=LEFT|RIGHT>``
+   * - ``<CMD:GET_ELBOW>``
+     - Query active elbow configuration branch
+     - ``<RESP:ELBOW#CONFIG=LEFT|RIGHT>``
+   * - ``<CMD:GET_CONFIG>``
+     - Read persisted geometry, dynamics, and stroke bounds
+     - ``<RESP:CONFIG#L1=...#L2=...#MIN_SPD=...>``
+   * - ``<CMD:SET_CONFIG#...>``
+     - Update robot link lengths, stroke, and speed bounds
+     - ``<RESP:ACK#CONFIG_STORED...>``
+   * - ``<CMD:SAVE_CONFIG>``
+     - Commit active configuration to RP2040 Flash (CRC32)
+     - ``<RESP:ACK#CONFIG_SAVED>``
+   * - ``<CMD:RESET_CONFIG>``
+     - Restore factory default geometry and kinematic bounds
+     - ``<RESP:ACK#CONFIG_RESET>``
+
+Microcontroller Response Packets (Robot to PC)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. list-table:: Response Packets
+   :widths: 35 25 50
+   :header-rows: 1
+
+   * - Response Packet
+     - Category
+     - Streamer Meaning
+   * - ``<RESP:ACK#QUEUE=n>``
+     - Acknowledgment
+     - Waypoint accepted into ring buffer; ``n`` slots remaining.
+   * - ``<RESP:MOVE_DONE#X=..#Y=..#Z=..#PHI=..>``
+     - Move Complete
+     - Physical execution of waypoint completed. Advances done counter.
+   * - ``<RESP:ACK#WAIT_DONE#...>``
+     - Action Complete
+     - Hardware dwell delay elapsed. Advances streamer progress.
+   * - ``<RESP:ACK#PUMP_ON|OFF>``
+     - Action Complete
+     - Tool actuation complete. Advances streamer progress.
+   * - ``<RESP:ACK#VALVE_ON|OFF>``
+     - Action Complete
+     - Valve actuation complete. Advances streamer progress.
+   * - ``<RESP:HOMED_SUCCESS#...>``
+     - Homing Complete
+     - Machine homed and zero-reference established.
+   * - ``<RESP:NACK_BUFFER_FULL>``
+     - Flow Control
+     - Microcontroller queue full; streamer enters auto-pause.
+   * - ``<RESP:NACK_ESTOP_ACTIVE>``
+     - Error / Safety
+     - E-Stop asserted; all motions rejected until reset.
+   * - ``<RESP:NACK_OUT_OF_REACH>``
+     - Kinematic Rejection
+     - Target coordinate outside reachable arm envelope (:math:`R_{max}`).
+   * - ``<RESP:NACK_SINGULARITY_LIMIT>``
+     - Kinematic Rejection
+     - Target inside inner deadzone (:math:`R_{min} = |L_1 - L_2|`).
 
 📊 Code coverage
 ----------------
@@ -953,7 +1307,7 @@ Mode 1: One-Click Simulation from DSL Editor
 """"""""""""""""""""""""""""""""""""""""""""
 
 1. In **scarajectory**, open the **SCARA DSL Editor** tab.
-2. Write or load any ``.scara`` program (or select from bundled examples in ``examples/``).
+2. Write or load any ``.scara`` program (or select from bundled examples in ``~/.scarajectory/workspace/`` via the **Examples** dropdown).
 3. Click the **🚀 Preview in SCARAEmu** button located at the bottom toolbar.
 4. **scarajectory** automatically launches **scaraemu** in a background subprocess, passing the active trajectory file via ``--file``.
 5. The 2D Planar and 3D Z-Tower canvases immediately render the robot arm executing the trajectory.
@@ -991,7 +1345,7 @@ Mode 3: Direct File Loading in SCARAEmu
 """""""""""""""""""""""""""""""""""""""
 
 * Open **scaraemu** and navigate to the **Trajectories** tab.
-* In the **SCARA DSL Script** dropdown, select any of the 12 bundled programs (e.g. ``pick_and_place.scara``, ``engrave_spiral.scara``, ``pallet_matrix.scara``).
+* In the **SCARA DSL Script** dropdown, select any of the 12 bundled programs from the user workspace (e.g. ``12_industrial_pick_place.scara``, ``04_circular_arc.scara``, ``09_pallet_matrix.scara``).
 * Or click **📂 Load** to load any custom ``.scara`` script or exported ``plan.json`` file.
 
 📚 Docs

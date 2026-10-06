@@ -24,14 +24,14 @@ from __future__ import annotations
 from typing import Final
 
 from scarajectory.core.model.telemetry.stream_progress import StreamProgress
-from scarajectory.infrastructure.gui.connection.port_connection_panel import PortConnectionPanel
-from scarajectory.infrastructure.gui.streaming.panel.stream_status_bar import StreamStatusBar
+from scarajectory.infrastructure.gui.connection.iport_connection_panel import IPortConnectionPanel
+from scarajectory.infrastructure.gui.streaming.panel.istream_status_bar import IStreamStatusBar
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -44,8 +44,8 @@ class StreamProgressAdapter:
         It defines:
 
             :attributes:
-                | _port_panel - Port connection control panel.
-                | _status_bar - Streaming status and metrics bar.
+                | _port_panel - Port connection control panel protocol.
+                | _status_bar - Streaming status and metrics bar protocol.
             :methods:
                 | __init__ - Initializes the adapter with port panel and status bar.
                 | update_progress - Forwards progress data model to the status bar widget.
@@ -54,23 +54,23 @@ class StreamProgressAdapter:
                 | set_disconnected - Synchronizes UI controls to disconnected state.
     '''
 
-    _port_panel: PortConnectionPanel
-    _status_bar: StreamStatusBar
+    _port_panel: IPortConnectionPanel
+    _status_bar: IStreamStatusBar
 
     def __init__(
         self,
-        port_panel: PortConnectionPanel,
-        status_bar: StreamStatusBar,
+        port_panel: IPortConnectionPanel,
+        status_bar: IStreamStatusBar,
     ) -> None:
         '''
             Initializes the adapter with port panel and status bar.
 
-            :param port_panel: PortConnectionPanel instance.
-            :param status_bar: StreamStatusBar instance.
+            :param port_panel: IPortConnectionPanel instance.
+            :param status_bar: IStreamStatusBar instance.
             :exceptions: None.
         '''
-        self._port_panel: Final[PortConnectionPanel] = port_panel
-        self._status_bar: Final[StreamStatusBar] = status_bar
+        self._port_panel: Final[IPortConnectionPanel] = port_panel
+        self._status_bar: Final[IStreamStatusBar] = status_bar
 
     def update_progress(self, progress: StreamProgress) -> None:
         '''

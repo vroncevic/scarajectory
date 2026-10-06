@@ -25,6 +25,7 @@ from tkinter import LEFT, VERTICAL, Widget, X, Y
 from tkinter.ttk import Button, Combobox, Frame, Label, Separator
 from typing import Final
 
+from scarajectory.infrastructure.gui.dsl.handler.ibinary_delegate import IDslBinaryDelegate
 from scarajectory.infrastructure.gui.dsl.handler.iexecution_delegate import IDslExecutionDelegate
 from scarajectory.infrastructure.gui.dsl.handler.ifile_delegate import IDslFileDelegate
 
@@ -32,7 +33,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -48,6 +49,7 @@ class DslEditorToolbar(Frame):
                 | _cbo_examples - Combobox dropdown listing available example scripts.
                 | _execution_delegate - Action delegate handling DSL execution, compilation, and validation.
                 | _file_delegate - Action delegate handling DSL file loading, saving, and example selection.
+                | _binary_delegate - Action delegate handling binary program export and decompilation.
             :methods:
                 | __init__ - Initializes the toolbar layout and mounts action buttons.
                 | handle_example_change - Handles selection event on example dropdown.
@@ -59,6 +61,7 @@ class DslEditorToolbar(Frame):
     _cbo_examples: Combobox
     _execution_delegate: IDslExecutionDelegate
     _file_delegate: IDslFileDelegate
+    _binary_delegate: IDslBinaryDelegate
 
     def __init__(
         self,
@@ -66,6 +69,7 @@ class DslEditorToolbar(Frame):
         *,
         execution_delegate: IDslExecutionDelegate,
         file_delegate: IDslFileDelegate,
+        binary_delegate: IDslBinaryDelegate,
     ) -> None:
         '''
             Initializes the toolbar layout and mounts action buttons.
@@ -73,11 +77,13 @@ class DslEditorToolbar(Frame):
             :param parent: Parent container widget.
             :param execution_delegate: Action delegate handling DSL execution, compilation, and validation.
             :param file_delegate: Action delegate handling DSL file loading, saving, and example selection.
+            :param binary_delegate: Action delegate handling binary program export and decompilation.
             :exceptions: None.
         '''
         super().__init__(parent)
         self._execution_delegate: Final[IDslExecutionDelegate] = execution_delegate
         self._file_delegate: Final[IDslFileDelegate] = file_delegate
+        self._binary_delegate: Final[IDslBinaryDelegate] = binary_delegate
 
         row_actions: Frame = Frame(self)
         row_actions.pack(fill=X, pady=(0, 2))
@@ -124,6 +130,22 @@ class DslEditorToolbar(Frame):
             row_files,
             text='💾 Save...',
             command=self._file_delegate.save_file,
+        ).pack(side=LEFT, padx=2)
+
+        Separator(row_files, orient=VERTICAL).pack(
+            side=LEFT, fill=Y, padx=4
+        )
+
+        Button(
+            row_files,
+            text='💾 Export .bin...',
+            command=self._binary_delegate.export_binary_file,
+        ).pack(side=LEFT, padx=2)
+
+        Button(
+            row_files,
+            text='📂 Import .bin...',
+            command=self._binary_delegate.import_binary_file,
         ).pack(side=LEFT, padx=2)
 
         Separator(row_files, orient=VERTICAL).pack(

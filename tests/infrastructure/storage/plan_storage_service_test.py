@@ -26,8 +26,6 @@ from os.path import exists
 from tempfile import NamedTemporaryFile
 from unittest import TestCase, main
 
-from scaralang.core.model.dsl.binary.binary_program_telemetry import BinaryProgramTelemetry
-from scaralang.core.model.dsl.binary.program import BinaryProgram
 from scarajectory.core.model.trajectory.waypoint import Waypoint
 from scarajectory.core.service.trajectory.plan.store.waypoint_store_factory import WaypointStoreFactory
 from scarajectory.infrastructure.storage.plan_storage_service_factory import PlanStorageServiceFactory
@@ -36,7 +34,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -107,34 +105,15 @@ class TestPlanStorageService(TestCase):
 
     def test_save_and_load_binary_file(self) -> None:
         '''
-            Tests writing and reading binary program data.
+            Tests writing and reading binary data.
         '''
         storage = PlanStorageServiceFactory.create()
         raw_bytes = b'\x01\x02\x03\x04\x05'
-        telemetry = BinaryProgramTelemetry(
-            source_instructions=1,
-            compiled_steps=0,
-            duration_us=1000,
-            duration_s=0.001,
-            peak_j1_steps=0,
-            peak_j2_steps=0,
-            peak_z_steps=0,
-            peak_j4_steps=0,
-            total_wire_bytes=5,
-        )
-        program = BinaryProgram(
-            steps=(),
-            raw_bytes=raw_bytes,
-            total_duration_us=1000,
-            instruction_count=1,
-            step_counts=(0, 0, 0, 0),
-            telemetry=telemetry,
-        )
         with NamedTemporaryFile(suffix='.bin', delete=False) as tf:
             tmp_path = tf.name
 
         try:
-            storage.save_binary_program(program, tmp_path)
+            storage.save_binary_file(raw_bytes, tmp_path)
             read_back = storage.load_binary_file(tmp_path)
             self.assertEqual(read_back, raw_bytes)
         finally:

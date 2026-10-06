@@ -16,6 +16,7 @@ Submodules
    :maxdepth: 4
 
    scarajectory.infrastructure.gui.manipulator.imanipulator_action_delegate
+   scarajectory.infrastructure.gui.manipulator.imanipulator_override_panel
    scarajectory.infrastructure.gui.manipulator.manipulator_override_panel
    scarajectory.infrastructure.gui.manipulator.null_manipulator_action_delegate
 

@@ -65,6 +65,7 @@
 <span class="kn">from</span> <span class="nn">scaralang.core.model.kinematics.point_2d</span> <span class="kn">import</span> <span class="n">Point2D</span>
 <span class="kn">from</span> <span class="nn">scaralang.core.model.trajectory.circle_geometry</span> <span class="kn">import</span> <span class="n">CircleGeometry</span>
 <span class="kn">from</span> <span class="nn">scaralang.core.service.trajectory.discretization.ishape_discretizer</span> <span class="kn">import</span> <span class="n">IShapeDiscretizer</span>
+
 <span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.waypoint</span> <span class="kn">import</span> <span class="n">Waypoint</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.itrajectory_mutable</span> <span class="kn">import</span> <span class="n">ITrajectoryMutable</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.model.canvas_settings</span> <span class="kn">import</span> <span class="n">CanvasSettings</span>
@@ -74,7 +75,7 @@
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -96,10 +97,8 @@
 <span class="sd">            :methods:</span>
 <span class="sd">                | __init__ - Initializes handler with injected plan and discretizer.</span>
 <span class="sd">                | create_waypoint_at - Builds a Waypoint at given world coordinates.</span>
+<span class="sd">                | create_relocated_waypoint - Builds updated Waypoint with relocated coordinates.</span>
 <span class="sd">                | commit_point - Commits a single waypoint to the trajectory plan.</span>
-<span class="sd">                | commit_line - Discretizes and commits straight line segment to plan.</span>
-<span class="sd">                | commit_circle - Discretizes and commits circular trajectory to plan.</span>
-<span class="sd">                | commit_rectangle - Discretizes and commits rectangular perimeter to plan.</span>
 <span class="sd">                | commit_shape - Dispatches shape commitment based on active tool mode.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
@@ -152,6 +151,34 @@
         <span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="CanvasShapeHandler.create_relocated_waypoint">
+<a class="viewcode-back" href="../../../../../../scarajectory.infrastructure.gui.canvas.handler.canvas_shape_handler.html#scarajectory.infrastructure.gui.canvas.handler.canvas_shape_handler.CanvasShapeHandler.create_relocated_waypoint">[docs]</a>
+    <span class="k">def</span> <span class="nf">create_relocated_waypoint</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">current</span><span class="p">:</span> <span class="n">Waypoint</span><span class="p">,</span>
+        <span class="n">wx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">wy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Waypoint</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Builds updated Waypoint with relocated coordinates and preserved properties.</span>
+
+<span class="sd">            :param current: Current Waypoint instance.</span>
+<span class="sd">            :param wx: New world X coordinate.</span>
+<span class="sd">            :param wy: New world Y coordinate.</span>
+<span class="sd">            :return: Updated Waypoint object.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">Waypoint</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">wx</span><span class="p">,</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">wy</span><span class="p">,</span>
+            <span class="n">z</span><span class="o">=</span><span class="n">current</span><span class="o">.</span><span class="n">z</span><span class="p">,</span>
+            <span class="n">phi</span><span class="o">=</span><span class="n">current</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span>
+            <span class="n">speed</span><span class="o">=</span><span class="n">current</span><span class="o">.</span><span class="n">speed</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">current</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">command</span><span class="o">=</span><span class="n">current</span><span class="o">.</span><span class="n">command</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="CanvasShapeHandler.commit_point">
 <a class="viewcode-back" href="../../../../../../scarajectory.infrastructure.gui.canvas.handler.canvas_shape_handler.html#scarajectory.infrastructure.gui.canvas.handler.canvas_shape_handler.CanvasShapeHandler.commit_point">[docs]</a>
     <span class="k">def</span> <span class="nf">commit_point</span><span class="p">(</span>
@@ -171,9 +198,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">create_waypoint_at</span><span class="p">(</span><span class="n">wx</span><span class="p">,</span> <span class="n">wy</span><span class="p">,</span> <span class="n">settings</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="CanvasShapeHandler.commit_line">
-<a class="viewcode-back" href="../../../../../../scarajectory.infrastructure.gui.canvas.handler.canvas_shape_handler.html#scarajectory.infrastructure.gui.canvas.handler.canvas_shape_handler.CanvasShapeHandler.commit_line">[docs]</a>
-    <span class="k">def</span> <span class="nf">commit_line</span><span class="p">(</span>
+<div class="viewcode-block" id="CanvasShapeHandler._commit_line">
+<a class="viewcode-back" href="../../../../../../scarajectory.infrastructure.gui.canvas.handler.canvas_shape_handler.html#scarajectory.infrastructure.gui.canvas.handler.canvas_shape_handler.CanvasShapeHandler._commit_line">[docs]</a>
+    <span class="k">def</span> <span class="nf">_commit_line</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">x0</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">y0</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -201,9 +228,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">set_waypoints</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">waypoints</span><span class="p">)</span> <span class="o">+</span> <span class="n">line_pts</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="CanvasShapeHandler.commit_circle">
-<a class="viewcode-back" href="../../../../../../scarajectory.infrastructure.gui.canvas.handler.canvas_shape_handler.html#scarajectory.infrastructure.gui.canvas.handler.canvas_shape_handler.CanvasShapeHandler.commit_circle">[docs]</a>
-    <span class="k">def</span> <span class="nf">commit_circle</span><span class="p">(</span>
+<div class="viewcode-block" id="CanvasShapeHandler._commit_circle">
+<a class="viewcode-back" href="../../../../../../scarajectory.infrastructure.gui.canvas.handler.canvas_shape_handler.html#scarajectory.infrastructure.gui.canvas.handler.canvas_shape_handler.CanvasShapeHandler._commit_circle">[docs]</a>
+    <span class="k">def</span> <span class="nf">_commit_circle</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">x0</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">y0</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -235,9 +262,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">set_waypoints</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="o">.</span><span class="n">waypoints</span><span class="p">)</span> <span class="o">+</span> <span class="n">circle_pts</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="CanvasShapeHandler.commit_rectangle">
-<a class="viewcode-back" href="../../../../../../scarajectory.infrastructure.gui.canvas.handler.canvas_shape_handler.html#scarajectory.infrastructure.gui.canvas.handler.canvas_shape_handler.CanvasShapeHandler.commit_rectangle">[docs]</a>
-    <span class="k">def</span> <span class="nf">commit_rectangle</span><span class="p">(</span>
+<div class="viewcode-block" id="CanvasShapeHandler._commit_rectangle">
+<a class="viewcode-back" href="../../../../../../scarajectory.infrastructure.gui.canvas.handler.canvas_shape_handler.html#scarajectory.infrastructure.gui.canvas.handler.canvas_shape_handler.CanvasShapeHandler._commit_rectangle">[docs]</a>
+    <span class="k">def</span> <span class="nf">_commit_rectangle</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">x0</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">y0</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -291,11 +318,11 @@
             <span class="k">case</span> <span class="n">CanvasToolMode</span><span class="o">.</span><span class="n">POINT</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">commit_point</span><span class="p">(</span><span class="n">wx</span><span class="p">,</span> <span class="n">wy</span><span class="p">,</span> <span class="n">settings</span><span class="p">)</span>
             <span class="k">case</span> <span class="n">CanvasToolMode</span><span class="o">.</span><span class="n">LINE</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">commit_line</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">wx</span><span class="p">,</span> <span class="n">wy</span><span class="p">,</span> <span class="n">settings</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_commit_line</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">wx</span><span class="p">,</span> <span class="n">wy</span><span class="p">,</span> <span class="n">settings</span><span class="p">)</span>
             <span class="k">case</span> <span class="n">CanvasToolMode</span><span class="o">.</span><span class="n">CIRCLE</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">commit_circle</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">wx</span><span class="p">,</span> <span class="n">wy</span><span class="p">,</span> <span class="n">settings</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_commit_circle</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">wx</span><span class="p">,</span> <span class="n">wy</span><span class="p">,</span> <span class="n">settings</span><span class="p">)</span>
             <span class="k">case</span> <span class="n">CanvasToolMode</span><span class="o">.</span><span class="n">RECTANGLE</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">commit_rectangle</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">wx</span><span class="p">,</span> <span class="n">wy</span><span class="p">,</span> <span class="n">settings</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_commit_rectangle</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">wx</span><span class="p">,</span> <span class="n">wy</span><span class="p">,</span> <span class="n">settings</span><span class="p">)</span>
             <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
                 <span class="k">pass</span></div>
 </div>

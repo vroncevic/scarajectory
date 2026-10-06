@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="scarajectory.infrastructure.settings.bounds.scara_bounds_loader_factory module" href="scarajectory.infrastructure.settings.bounds.scara_bounds_loader_factory.html" />
-    <link rel="prev" title="scarajectory.infrastructure.settings.bounds package" href="scarajectory.infrastructure.settings.bounds.html" /> 
+    <link rel="prev" title="scarajectory.infrastructure.settings.bounds.iscara_bounds_parser module" href="scarajectory.infrastructure.settings.bounds.iscara_bounds_parser.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -31,7 +31,7 @@
           <a href="scarajectory.infrastructure.settings.bounds.scara_bounds_loader_factory.html" title="scarajectory.infrastructure.settings.bounds.scara_bounds_loader_factory module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.settings.bounds.html" title="scarajectory.infrastructure.settings.bounds package"
+          <a href="scarajectory.infrastructure.settings.bounds.iscara_bounds_parser.html" title="scarajectory.infrastructure.settings.bounds.iscara_bounds_parser module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
@@ -70,7 +70,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.settings.bounds.scara_bounds_loader.ScaraBoundsLoader">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.settings.bounds.scara_bounds_loader.</span></span><span class="sig-name descname"><span class="pre">ScaraBoundsLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reader</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.settings.isettings_reader.html#scarajectory.infrastructure.settings.isettings_reader.ISettingsReader" title="scarajectory.infrastructure.settings.isettings_reader.ISettingsReader"><span class="pre">ISettingsReader</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">deadzone_calculator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.kinematics.iscara_deadzone_calculator.html#scarajectory.core.service.kinematics.iscara_deadzone_calculator.IScaraDeadzoneCalculator" title="scarajectory.core.service.kinematics.iscara_deadzone_calculator.IScaraDeadzoneCalculator"><span class="pre">IScaraDeadzoneCalculator</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">parser</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.settings.iscara_bounds_parser.html#scarajectory.core.service.settings.iscara_bounds_parser.IScaraBoundsParser" title="scarajectory.core.service.settings.iscara_bounds_parser.IScaraBoundsParser"><span class="pre">IScaraBoundsParser</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/settings/bounds/scara_bounds_loader.html#ScaraBoundsLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.settings.bounds.scara_bounds_loader.ScaraBoundsLoader" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.settings.bounds.scara_bounds_loader.</span></span><span class="sig-name descname"><span class="pre">ScaraBoundsLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reader</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.settings.isettings_reader.html#scarajectory.infrastructure.settings.isettings_reader.ISettingsReader" title="scarajectory.infrastructure.settings.isettings_reader.ISettingsReader"><span class="pre">ISettingsReader</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">parser</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.settings.bounds.iscara_bounds_parser.html#scarajectory.infrastructure.settings.bounds.iscara_bounds_parser.IScaraBoundsParser" title="scarajectory.infrastructure.settings.bounds.iscara_bounds_parser.IScaraBoundsParser"><span class="pre">IScaraBoundsParser</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/settings/bounds/scara_bounds_loader.html#ScaraBoundsLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.settings.bounds.scara_bounds_loader.ScaraBoundsLoader" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Settings adapter loading and constructing ScaraBounds domain models.</p>
 <p>It defines:</p>
@@ -79,7 +79,6 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dt class="field-odd">attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><div class="line-block">
 <div class="line">_reader - Injected ISettingsReader providing configuration key-values.</div>
-<div class="line">_deadzone_calculator - Injected domain calculator for kinematic deadzones.</div>
 <div class="line">_parser - Injected parser component for bounds options.</div>
 </div>
 </dd>
@@ -94,13 +93,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dl>
 </div></blockquote>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.settings.bounds.scara_bounds_loader.ScaraBoundsLoader._deadzone_calculator">
-<span class="sig-name descname"><span class="pre">_deadzone_calculator</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.kinematics.iscara_deadzone_calculator.html#scarajectory.core.service.kinematics.iscara_deadzone_calculator.IScaraDeadzoneCalculator" title="scarajectory.core.service.kinematics.iscara_deadzone_calculator.IScaraDeadzoneCalculator"><span class="pre">IScaraDeadzoneCalculator</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.settings.bounds.scara_bounds_loader.ScaraBoundsLoader._deadzone_calculator" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.settings.bounds.scara_bounds_loader.ScaraBoundsLoader._parser">
-<span class="sig-name descname"><span class="pre">_parser</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.settings.iscara_bounds_parser.html#scarajectory.core.service.settings.iscara_bounds_parser.IScaraBoundsParser" title="scarajectory.core.service.settings.iscara_bounds_parser.IScaraBoundsParser"><span class="pre">IScaraBoundsParser</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.settings.bounds.scara_bounds_loader.ScaraBoundsLoader._parser" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_parser</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.settings.bounds.iscara_bounds_parser.html#scarajectory.infrastructure.settings.bounds.iscara_bounds_parser.IScaraBoundsParser" title="scarajectory.infrastructure.settings.bounds.iscara_bounds_parser.IScaraBoundsParser"><span class="pre">IScaraBoundsParser</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.settings.bounds.scara_bounds_loader.ScaraBoundsLoader._parser" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -110,7 +104,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.settings.bounds.scara_bounds_loader.ScaraBoundsLoader.get_version">
-<span class="sig-name descname"><span class="pre">get_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/settings/bounds/scara_bounds_loader.html#ScaraBoundsLoader.get_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.settings.bounds.scara_bounds_loader.ScaraBoundsLoader.get_version" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/settings/bounds/scara_bounds_loader.html#ScaraBoundsLoader.get_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.settings.bounds.scara_bounds_loader.ScaraBoundsLoader.get_version" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the adapter version string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -169,7 +163,6 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <ul>
 <li><a class="reference internal" href="#">scarajectory.infrastructure.settings.bounds.scara_bounds_loader module</a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.settings.bounds.scara_bounds_loader.ScaraBoundsLoader"><code class="docutils literal notranslate"><span class="pre">ScaraBoundsLoader</span></code></a><ul>
-<li><a class="reference internal" href="#scarajectory.infrastructure.settings.bounds.scara_bounds_loader.ScaraBoundsLoader._deadzone_calculator"><code class="docutils literal notranslate"><span class="pre">ScaraBoundsLoader._deadzone_calculator</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.settings.bounds.scara_bounds_loader.ScaraBoundsLoader._parser"><code class="docutils literal notranslate"><span class="pre">ScaraBoundsLoader._parser</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.settings.bounds.scara_bounds_loader.ScaraBoundsLoader._reader"><code class="docutils literal notranslate"><span class="pre">ScaraBoundsLoader._reader</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.settings.bounds.scara_bounds_loader.ScaraBoundsLoader.get_version"><code class="docutils literal notranslate"><span class="pre">ScaraBoundsLoader.get_version()</span></code></a></li>
@@ -184,8 +177,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.settings.bounds.html"
-                          title="previous chapter">scarajectory.infrastructure.settings.bounds package</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.settings.bounds.iscara_bounds_parser.html"
+                          title="previous chapter">scarajectory.infrastructure.settings.bounds.iscara_bounds_parser module</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -226,7 +219,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="scarajectory.infrastructure.settings.bounds.scara_bounds_loader_factory.html" title="scarajectory.infrastructure.settings.bounds.scara_bounds_loader_factory module"
              >next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.settings.bounds.html" title="scarajectory.infrastructure.settings.bounds package"
+          <a href="scarajectory.infrastructure.settings.bounds.iscara_bounds_parser.html" title="scarajectory.infrastructure.settings.bounds.iscara_bounds_parser module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>

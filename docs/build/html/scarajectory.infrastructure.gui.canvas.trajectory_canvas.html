@@ -83,14 +83,14 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <div class="line">_tool_mode - Active interactive drawing tool.</div>
 <div class="line">_vp - Viewport transformation matrix.</div>
 <div class="line">_state - Interactive mouse pan, drag and selection state.</div>
-<div class="line">_navigator - Viewport zoom, pan, and framing coordinator interface.</div>
-<div class="line">_status_presenter - Cursor status presenter collaborator interface.</div>
+<div class="line">_navigator - Canvas view navigator controller.</div>
+<div class="line">_status_presenter - Canvas status presenter.</div>
 </div>
 </dd>
 <dt class="field-even">methods<span class="colon">:</span></dt>
 <dd class="field-even"><div class="line-block">
 <div class="line">__init__ - Initializes vector CAD canvas widget and assigns dependencies.</div>
-<div class="line">mount_navigation - Mounts view navigator and status presenter interfaces.</div>
+<div class="line">attach_presentation - Associates navigator and status presenter with canvas.</div>
 <div class="line">get_view_dimensions - Returns current width and height in pixels.</div>
 <div class="line">redraw - Clears and redraws entire vector scene.</div>
 <div class="line">set_tool_mode - Changes active drawing/selection tool.</div>
@@ -135,6 +135,23 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.trajectory_canvas.TrajectoryCanvas.attach_presentation">
+<span class="sig-name descname"><span class="pre">attach_presentation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">navigator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.canvas.navigation.icanvas_view_navigator.html#scarajectory.infrastructure.gui.canvas.navigation.icanvas_view_navigator.ICanvasViewNavigator" title="scarajectory.infrastructure.gui.canvas.navigation.icanvas_view_navigator.ICanvasViewNavigator"><span class="pre">ICanvasViewNavigator</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_presenter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.canvas.status.icanvas_status_presenter.html#scarajectory.infrastructure.gui.canvas.status.icanvas_status_presenter.ICanvasStatusPresenter" title="scarajectory.infrastructure.gui.canvas.status.icanvas_status_presenter.ICanvasStatusPresenter"><span class="pre">ICanvasStatusPresenter</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas/trajectory_canvas.html#TrajectoryCanvas.attach_presentation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.trajectory_canvas.TrajectoryCanvas.attach_presentation" title="Link to this definition">¶</a></dt>
+<dd><p>Associates view navigator and status presenter with this canvas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>navigator</strong> – ICanvasViewNavigator collaborator.</p></li>
+<li><p><strong>status_presenter</strong> – ICanvasStatusPresenter collaborator.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.trajectory_canvas.TrajectoryCanvas.get_view_dimensions">
 <span class="sig-name descname"><span class="pre">get_view_dimensions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas/trajectory_canvas.html#TrajectoryCanvas.get_view_dimensions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.trajectory_canvas.TrajectoryCanvas.get_view_dimensions" title="Link to this definition">¶</a></dt>
 <dd><p>Returns current width and height of canvas viewport in pixels.</p>
@@ -148,30 +165,13 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.trajectory_canvas.TrajectoryCanvas.mount_navigation">
-<span class="sig-name descname"><span class="pre">mount_navigation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">navigator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.canvas.navigation.icanvas_view_navigator.html#scarajectory.infrastructure.gui.canvas.navigation.icanvas_view_navigator.ICanvasViewNavigator" title="scarajectory.infrastructure.gui.canvas.navigation.icanvas_view_navigator.ICanvasViewNavigator"><span class="pre">ICanvasViewNavigator</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_presenter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.gui.canvas.status.icanvas_status_presenter.html#scarajectory.infrastructure.gui.canvas.status.icanvas_status_presenter.ICanvasStatusPresenter" title="scarajectory.infrastructure.gui.canvas.status.icanvas_status_presenter.ICanvasStatusPresenter"><span class="pre">ICanvasStatusPresenter</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/canvas/trajectory_canvas.html#TrajectoryCanvas.mount_navigation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.trajectory_canvas.TrajectoryCanvas.mount_navigation" title="Link to this definition">¶</a></dt>
-<dd><p>Mounts injected navigation and status presentation collaborators.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>navigator</strong> – Injected ICanvasViewNavigator interface.</p></li>
-<li><p><strong>status_presenter</strong> – Injected ICanvasStatusPresenter interface.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Exceptions<span class="colon">:</span></dt>
-<dd class="field-even"><p>None.</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.trajectory_canvas.TrajectoryCanvas.navigator">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">navigator</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.canvas.navigation.icanvas_view_navigator.html#scarajectory.infrastructure.gui.canvas.navigation.icanvas_view_navigator.ICanvasViewNavigator" title="scarajectory.infrastructure.gui.canvas.navigation.icanvas_view_navigator.ICanvasViewNavigator"><span class="pre">ICanvasViewNavigator</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.trajectory_canvas.TrajectoryCanvas.navigator" title="Link to this definition">¶</a></dt>
-<dd><p>Returns viewport navigation coordinator.</p>
+<dd><p>Returns active canvas view navigator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ICanvasViewNavigator interface.</p>
+<dd class="field-odd"><p>ICanvasViewNavigator instance.</p>
 </dd>
 <dt class="field-even">Exceptions<span class="colon">:</span></dt>
 <dd class="field-even"><p>None.</p>
@@ -221,10 +221,10 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dl class="py property">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.canvas.trajectory_canvas.TrajectoryCanvas.status_presenter">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">status_presenter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.gui.canvas.status.icanvas_status_presenter.html#scarajectory.infrastructure.gui.canvas.status.icanvas_status_presenter.ICanvasStatusPresenter" title="scarajectory.infrastructure.gui.canvas.status.icanvas_status_presenter.ICanvasStatusPresenter"><span class="pre">ICanvasStatusPresenter</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.canvas.trajectory_canvas.TrajectoryCanvas.status_presenter" title="Link to this definition">¶</a></dt>
-<dd><p>Returns cursor status presenter component.</p>
+<dd><p>Returns active canvas status presenter.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ICanvasStatusPresenter interface.</p>
+<dd class="field-odd"><p>ICanvasStatusPresenter instance.</p>
 </dd>
 <dt class="field-even">Exceptions<span class="colon">:</span></dt>
 <dd class="field-even"><p>None.</p>
@@ -283,8 +283,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.trajectory_canvas.TrajectoryCanvas._status_presenter"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas._status_presenter</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.trajectory_canvas.TrajectoryCanvas._tool_mode"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas._tool_mode</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.trajectory_canvas.TrajectoryCanvas._vp"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas._vp</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.trajectory_canvas.TrajectoryCanvas.attach_presentation"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas.attach_presentation()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.trajectory_canvas.TrajectoryCanvas.get_view_dimensions"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas.get_view_dimensions()</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.trajectory_canvas.TrajectoryCanvas.mount_navigation"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas.mount_navigation()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.trajectory_canvas.TrajectoryCanvas.navigator"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas.navigator</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.trajectory_canvas.TrajectoryCanvas.redraw"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas.redraw()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.canvas.trajectory_canvas.TrajectoryCanvas.set_tool_mode"><code class="docutils literal notranslate"><span class="pre">TrajectoryCanvas.set_tool_mode()</span></code></a></li>

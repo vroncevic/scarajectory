@@ -33,7 +33,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -48,7 +48,7 @@ class TestWaypointEditApplier(TestCase):
         '''
             Verifies applier version string.
         '''
-        self.assertEqual(WaypointEditApplier.get_version(), '1.0.4')
+        self.assertEqual(WaypointEditApplier.get_version(), '1.0.3')
 
     def test_apply_edit_success(self) -> None:
         '''
@@ -125,6 +125,30 @@ class TestWaypointEditApplier(TestCase):
 
         self.assertFalse(result)
         self.assertTrue(mock_showerror.called)
+
+    def test_apply_edit_no_selection_returns_false(self) -> None:
+        '''
+            Verifies apply_edit returns False when no waypoint is selected.
+        '''
+        mock_store = MagicMock()
+        mock_store.count = 1
+        mock_selection = MagicMock()
+        mock_selection.selected_index = -1
+        mock_mutation = MagicMock()
+        mock_dispatcher = MagicMock()
+
+        bundle = TableBundle(
+            store=mock_store,
+            selection=mock_selection,
+            mutation=mock_mutation,
+            dispatcher=mock_dispatcher,
+        )
+        inputs = WaypointCoordinateInputs(
+            x='10.0', y='20.0', z='0.0', phi='0.0', speed='50.0'
+        )
+        applier = WaypointEditApplier()
+        result = applier.apply_edit(inputs, bundle)
+        self.assertFalse(result)
 
 
 if __name__ == '__main__':

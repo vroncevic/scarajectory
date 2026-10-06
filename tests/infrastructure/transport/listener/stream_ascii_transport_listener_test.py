@@ -25,7 +25,7 @@ from unittest import TestCase, main
 from unittest.mock import MagicMock
 
 from scarajectory.core.service.streaming.observer.istream_observer_dispatcher import IStreamObserverDispatcher
-from scarajectory.core.service.worker.istream_line_receiver import IStreamLineReceiver
+from scarajectory.infrastructure.connection.istream_line_receiver import IStreamLineReceiver
 from scarajectory.infrastructure.transport.listener.itransport_listener import ITransportListener
 from scarajectory.infrastructure.transport.listener.stream_ascii_transport_listener import StreamAsciiTransportListener
 from scarajectory.infrastructure.transport.listener.stream_ascii_transport_listener_factory import StreamAsciiTransportListenerFactory
@@ -34,7 +34,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -107,7 +107,7 @@ class StreamAsciiTransportListenerTestCase(TestCase):
         )
         self.assertIsInstance(instance, StreamAsciiTransportListener)
         self.assertEqual(
-            StreamAsciiTransportListenerFactory.get_version(), '1.0.4'
+            StreamAsciiTransportListenerFactory.get_version(), '1.0.3'
         )
 
 

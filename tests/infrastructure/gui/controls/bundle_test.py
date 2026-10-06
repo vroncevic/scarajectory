@@ -25,30 +25,20 @@ from dataclasses import FrozenInstanceError
 from unittest import TestCase, main
 from unittest.mock import MagicMock
 
-from scaralang.core.service.dsl.iscara_dsl_service import IScaraDslService
-from scaralang.core.service.trajectory.validation.itrajectory_validator import (
-    ITrajectoryValidator,
-)
-from scarajectory.core.service.preferences.iconnection_repository import (
-    IConnectionRepository,
-)
-from scarajectory.core.service.storage.iplan_storage_service import (
-    IPlanStorageService,
-)
-from scarajectory.core.service.trajectory.plan.mutation.iplan_mutation_service import (
-    IPlanMutationService,
-)
-from scarajectory.core.service.trajectory.plan.store.iwaypoint_store import (
-    IWaypointStore,
-)
+from scaralang.core.service.trajectory.validation.itrajectory_validator import ITrajectoryValidator
+from scarajectory.core.service.preferences.iconnection_repository import IConnectionRepository
+from scarajectory.core.service.storage.iplan_storage_service import IPlanStorageService
+from scarajectory.core.service.trajectory.plan.mutation.iplan_mutation_service import IPlanMutationService
+from scarajectory.core.service.trajectory.plan.store.iwaypoint_store import IWaypointStore
 from scarajectory.infrastructure.gui.controls.bundle import ControlsBundle
 from scarajectory.infrastructure.streaming.bundle import StreamingBundle
+from scarajectory.setup.pipeline.dsl_pipeline_bundle import DslPipelineBundle
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -72,7 +62,7 @@ class ControlsBundleTestCase(TestCase):
         mock_validator = MagicMock(spec=ITrajectoryValidator)
         mock_streaming = MagicMock(spec=StreamingBundle)
         mock_storage = MagicMock(spec=IPlanStorageService)
-        mock_dsl = MagicMock(spec=IScaraDslService)
+        mock_dsl = MagicMock(spec=DslPipelineBundle)
         mock_repo = MagicMock(spec=IConnectionRepository)
 
         bundle = ControlsBundle(
@@ -81,7 +71,7 @@ class ControlsBundleTestCase(TestCase):
             validator=mock_validator,
             streaming=mock_streaming,
             storage=mock_storage,
-            dsl_service=mock_dsl,
+            dsl=mock_dsl,
             connection_repository=mock_repo,
         )
 
@@ -90,7 +80,7 @@ class ControlsBundleTestCase(TestCase):
         self.assertIs(bundle.validator, mock_validator)
         self.assertIs(bundle.streaming, mock_streaming)
         self.assertIs(bundle.storage, mock_storage)
-        self.assertIs(bundle.dsl_service, mock_dsl)
+        self.assertIs(bundle.dsl, mock_dsl)
         self.assertIs(bundle.connection_repository, mock_repo)
         self.assertIs(bundle.streamer, mock_streaming)
 
@@ -102,7 +92,7 @@ class ControlsBundleTestCase(TestCase):
             validator=MagicMock(spec=ITrajectoryValidator),
             streaming=MagicMock(spec=StreamingBundle),
             storage=MagicMock(spec=IPlanStorageService),
-            dsl_service=MagicMock(spec=IScaraDslService),
+            dsl=MagicMock(spec=DslPipelineBundle),
             connection_repository=MagicMock(spec=IConnectionRepository),
         )
 

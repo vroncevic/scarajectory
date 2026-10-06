@@ -28,7 +28,7 @@ from scaralang.core.service.kinematics.kinematics_service_factory import Kinemat
 
 from scarajectory.core.model.protocol.protocol_mode import ProtocolMode
 from scarajectory.core.service.streaming.stream_pacing_config_factory import StreamPacingConfigFactory
-from scarajectory.core.service.worker.iexecution_worker import IExecutionWorker
+from scarajectory.infrastructure.worker.iexecution_worker import IExecutionWorker
 from scarajectory.infrastructure.packet.binary_packet_strategy import BinaryPacketStrategy
 from scarajectory.infrastructure.packet.binary_packet_strategy_factory import BinaryPacketStrategyFactory
 from scarajectory.infrastructure.settings.bounds.scara_bounds_loader_factory import ScaraBoundsLoaderFactory
@@ -40,13 +40,14 @@ from scarajectory.infrastructure.transport.listener.stream_ascii_transport_liste
 from scarajectory.infrastructure.transport.listener.stream_binary_transport_listener import StreamBinaryTransportListener
 from scarajectory.infrastructure.transport.listener.stream_binary_transport_listener_factory import StreamBinaryTransportListenerFactory
 from scarajectory.infrastructure.worker.binary.binary_stream_execution_worker_factory import BinaryStreamExecutionWorkerFactory
-from scarajectory.infrastructure.worker.stream_execution_worker_factory import StreamExecutionWorkerFactory
+from scarajectory.infrastructure.worker.binary.binary_stream_runner_bundle import BinaryStreamRunnerBundle
+from scarajectory.infrastructure.worker.ascii.stream_execution_worker_factory import StreamExecutionWorkerFactory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -93,13 +94,16 @@ class StreamWorkerAssembler:
             )
         )
         pacing_config = StreamPacingConfigFactory.create_binary()
-        worker: IExecutionWorker = BinaryStreamExecutionWorkerFactory.create(
+        runner_bundle: BinaryStreamRunnerBundle = BinaryStreamRunnerBundle(
             pacing_bundle=bundle.pacing_bundle,
             packet_strategy=packet_strategy,
             byte_sender=bundle.raw_transceiver,
             state_controller=bundle.state_machine,
             observer_dispatcher=bundle.dispatcher,
             pacing_config=pacing_config,
+        )
+        worker: IExecutionWorker = BinaryStreamExecutionWorkerFactory.create(
+            runner_bundle
         )
         binary_listener: StreamBinaryTransportListener = (
             StreamBinaryTransportListenerFactory.create(

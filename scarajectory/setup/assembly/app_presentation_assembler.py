@@ -22,7 +22,6 @@ Info
 from __future__ import annotations
 
 from ats_utilities.base.setup.bundle import BaseBundle
-from scaralang.core.service.dsl.iscara_dsl_service import IScaraDslService
 from scarajectory.core.service.engine import Service
 from scarajectory.core.service.service_factory import ServiceFactory
 from scarajectory.infrastructure.cli.engine import CLI
@@ -37,6 +36,7 @@ from scarajectory.setup.assembly.app_runtime_bundle import AppRuntimeBundle
 from scarajectory.setup.bundle import SCARAjectoryBundle
 from scarajectory.setup.dependencies import SCARAjectoryBundleDependencies
 from scarajectory.setup.pipeline.dsl_pipeline_builder import DslPipelineBuilder
+from scarajectory.setup.pipeline.dsl_pipeline_bundle import DslPipelineBundle
 from scarajectory.setup.pipeline.plan_pipeline_bundle import PlanPipelineBundle
 from scarajectory.setup.registry import SCARAjectoryBundleRegistry
 
@@ -44,7 +44,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -79,10 +79,8 @@ class AppPresentationAssembler:
             :return: Fully assembled SCARAjectoryBundle instance.
             :exceptions: None.
         '''
-        dsl_service: IScaraDslService = DslPipelineBuilder.build(
+        dsl_bundle: DslPipelineBundle = DslPipelineBuilder.build(
             validator=core_bundle.validator,
-            kinematics=core_bundle.kinematics,
-            transmission=core_bundle.transmission,
         )
         service: Service = ServiceFactory.create(
             validator=core_bundle.validator,
@@ -96,7 +94,7 @@ class AppPresentationAssembler:
                 validator=core_bundle.validator,
                 streaming=runtime_bundle.streaming,
                 storage=runtime_bundle.storage,
-                dsl_service=dsl_service,
+                dsl=dsl_bundle,
                 connection_repository=runtime_bundle.connection_repo,
             )
         )

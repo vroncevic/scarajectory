@@ -23,14 +23,19 @@ from __future__ import annotations
 
 from unittest import TestCase, main
 
+from scaralang.core.model.kinematics.joint_angle_bounds import JointAngleBounds
+from scaralang.core.model.kinematics.link_dimensions import LinkDimensions
 from scaralang.core.model.kinematics.scara_bounds import ScaraBounds
+from scaralang.core.model.kinematics.singularity_margins import SingularityMargins
+from scaralang.core.model.kinematics.speed_limits import SpeedLimits
+from scaralang.core.model.kinematics.vertical_bounds import VerticalBounds
 from scarajectory.infrastructure.formatter.command.config_command_formatter import ConfigCommandFormatter
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -52,23 +57,27 @@ class ConfigCommandFormatterTestCase(TestCase):
     def test_format_set_config(self) -> None:
         '''Verifies format_set_config renders bounds attributes accurately.'''
         bounds = ScaraBounds(
-            l1=225.0,
-            l2=175.0,
-            z_min=0.0,
-            z_max=150.0,
-            min_speed=5.0,
-            max_speed=250.0,
-            default_speed=50.0,
-            default_accel=100.0,
-            max_accel=500.0,
-            j1_min_rad=-1.57,
-            j1_max_rad=1.57,
-            j2_min_rad=-2.61,
-            j2_max_rad=2.61,
-            singularity_outer_margin_mm=10.0,
-            singularity_inner_margin_mm=5.0,
-            singularity_theta2_min_rad=0.05,
-            deadzone_r_min=50.0,
+            links=LinkDimensions(l1=225.0, l2=175.0),
+            vertical=VerticalBounds(z_min=0.0, z_max=150.0),
+            speeds=SpeedLimits(
+                min_speed=5.0,
+                max_speed=250.0,
+                default_speed=50.0,
+                default_accel=100.0,
+                max_accel=500.0,
+            ),
+            joints=JointAngleBounds(
+                j1_min_rad=-1.57,
+                j1_max_rad=1.57,
+                j2_min_rad=-2.61,
+                j2_max_rad=2.61,
+            ),
+            singularity=SingularityMargins(
+                singularity_outer_margin_mm=10.0,
+                singularity_inner_margin_mm=5.0,
+                singularity_theta2_min_rad=0.05,
+                deadzone_r_min=50.0,
+            ),
         )
         cmd: str = ConfigCommandFormatter.format_set_config(bounds)
         expected: str = (

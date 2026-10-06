@@ -15,8 +15,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker module" href="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.html" />
-    <link rel="prev" title="scarajectory.infrastructure.worker package" href="scarajectory.infrastructure.worker.html" /> 
+    <link rel="next" title="scarajectory.infrastructure.worker.binary.binary_loop_runner_bundle module" href="scarajectory.infrastructure.worker.binary.binary_loop_runner_bundle.html" />
+    <link rel="prev" title="scarajectory.infrastructure.worker.ascii.stream_step_dispatcher_factory module" href="scarajectory.infrastructure.worker.ascii.stream_step_dispatcher_factory.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -28,10 +28,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.html" title="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker module"
+          <a href="scarajectory.infrastructure.worker.binary.binary_loop_runner_bundle.html" title="scarajectory.infrastructure.worker.binary.binary_loop_runner_bundle module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.worker.html" title="scarajectory.infrastructure.worker package"
+          <a href="scarajectory.infrastructure.worker.ascii.stream_step_dispatcher_factory.html" title="scarajectory.infrastructure.worker.ascii.stream_step_dispatcher_factory module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
@@ -53,15 +53,70 @@
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_loop_runner_bundle.html">scarajectory.infrastructure.worker.binary.binary_loop_runner_bundle module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_loop_runner_bundle.html#scarajectory.infrastructure.worker.binary.binary_loop_runner_bundle.BinaryLoopRunnerBundle"><code class="docutils literal notranslate"><span class="pre">BinaryLoopRunnerBundle</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_loop_runner_bundle.html#scarajectory.infrastructure.worker.binary.binary_loop_runner_bundle.BinaryLoopRunnerBundle.frame_handler"><code class="docutils literal notranslate"><span class="pre">BinaryLoopRunnerBundle.frame_handler</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_loop_runner_bundle.html#scarajectory.infrastructure.worker.binary.binary_loop_runner_bundle.BinaryLoopRunnerBundle.frame_parser"><code class="docutils literal notranslate"><span class="pre">BinaryLoopRunnerBundle.frame_parser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_loop_runner_bundle.html#scarajectory.infrastructure.worker.binary.binary_loop_runner_bundle.BinaryLoopRunnerBundle.pacing_config"><code class="docutils literal notranslate"><span class="pre">BinaryLoopRunnerBundle.pacing_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_loop_runner_bundle.html#scarajectory.infrastructure.worker.binary.binary_loop_runner_bundle.BinaryLoopRunnerBundle.queue_drainer"><code class="docutils literal notranslate"><span class="pre">BinaryLoopRunnerBundle.queue_drainer</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_loop_runner_bundle.html#scarajectory.infrastructure.worker.binary.binary_loop_runner_bundle.BinaryLoopRunnerBundle.step_dispatcher"><code class="docutils literal notranslate"><span class="pre">BinaryLoopRunnerBundle.step_dispatcher</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_queue_drainer.html">scarajectory.infrastructure.worker.binary.binary_queue_drainer module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_queue_drainer.html#scarajectory.infrastructure.worker.binary.binary_queue_drainer.BinaryQueueDrainer"><code class="docutils literal notranslate"><span class="pre">BinaryQueueDrainer</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_queue_drainer.html#scarajectory.infrastructure.worker.binary.binary_queue_drainer.BinaryQueueDrainer._observer_dispatcher"><code class="docutils literal notranslate"><span class="pre">BinaryQueueDrainer._observer_dispatcher</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_queue_drainer.html#scarajectory.infrastructure.worker.binary.binary_queue_drainer.BinaryQueueDrainer._pacing_config"><code class="docutils literal notranslate"><span class="pre">BinaryQueueDrainer._pacing_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_queue_drainer.html#scarajectory.infrastructure.worker.binary.binary_queue_drainer.BinaryQueueDrainer._state_controller"><code class="docutils literal notranslate"><span class="pre">BinaryQueueDrainer._state_controller</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_queue_drainer.html#scarajectory.infrastructure.worker.binary.binary_queue_drainer.BinaryQueueDrainer.drain_queue"><code class="docutils literal notranslate"><span class="pre">BinaryQueueDrainer.drain_queue()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_queue_drainer.html#scarajectory.infrastructure.worker.binary.binary_queue_drainer.BinaryQueueDrainer.is_queue_empty"><code class="docutils literal notranslate"><span class="pre">BinaryQueueDrainer.is_queue_empty()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_queue_drainer_factory.html">scarajectory.infrastructure.worker.binary.binary_queue_drainer_factory module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_queue_drainer_factory.html#scarajectory.infrastructure.worker.binary.binary_queue_drainer_factory.BinaryQueueDrainerFactory"><code class="docutils literal notranslate"><span class="pre">BinaryQueueDrainerFactory</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_queue_drainer_factory.html#scarajectory.infrastructure.worker.binary.binary_queue_drainer_factory.BinaryQueueDrainerFactory.create"><code class="docutils literal notranslate"><span class="pre">BinaryQueueDrainerFactory.create()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_queue_drainer_factory.html#scarajectory.infrastructure.worker.binary.binary_queue_drainer_factory.BinaryQueueDrainerFactory.get_version"><code class="docutils literal notranslate"><span class="pre">BinaryQueueDrainerFactory.get_version()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_step_bundle.html">scarajectory.infrastructure.worker.binary.binary_step_bundle module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_step_bundle.html#scarajectory.infrastructure.worker.binary.binary_step_bundle.BinaryStepBundle"><code class="docutils literal notranslate"><span class="pre">BinaryStepBundle</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_step_bundle.html#scarajectory.infrastructure.worker.binary.binary_step_bundle.BinaryStepBundle.byte_sender"><code class="docutils literal notranslate"><span class="pre">BinaryStepBundle.byte_sender</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_step_bundle.html#scarajectory.infrastructure.worker.binary.binary_step_bundle.BinaryStepBundle.flow_pacing"><code class="docutils literal notranslate"><span class="pre">BinaryStepBundle.flow_pacing</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_step_bundle.html#scarajectory.infrastructure.worker.binary.binary_step_bundle.BinaryStepBundle.observer_dispatcher"><code class="docutils literal notranslate"><span class="pre">BinaryStepBundle.observer_dispatcher</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_step_bundle.html#scarajectory.infrastructure.worker.binary.binary_step_bundle.BinaryStepBundle.packet_strategy"><code class="docutils literal notranslate"><span class="pre">BinaryStepBundle.packet_strategy</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_step_bundle.html#scarajectory.infrastructure.worker.binary.binary_step_bundle.BinaryStepBundle.state_controller"><code class="docutils literal notranslate"><span class="pre">BinaryStepBundle.state_controller</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_step_dispatcher.html">scarajectory.infrastructure.worker.binary.binary_step_dispatcher module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_step_dispatcher.html#scarajectory.infrastructure.worker.binary.binary_step_dispatcher.BinaryStepDispatcher"><code class="docutils literal notranslate"><span class="pre">BinaryStepDispatcher</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_step_dispatcher.html#scarajectory.infrastructure.worker.binary.binary_step_dispatcher.BinaryStepDispatcher._bundle"><code class="docutils literal notranslate"><span class="pre">BinaryStepDispatcher._bundle</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_step_dispatcher.html#scarajectory.infrastructure.worker.binary.binary_step_dispatcher.BinaryStepDispatcher.can_dispatch_step"><code class="docutils literal notranslate"><span class="pre">BinaryStepDispatcher.can_dispatch_step()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_step_dispatcher.html#scarajectory.infrastructure.worker.binary.binary_step_dispatcher.BinaryStepDispatcher.dispatch_binary_step"><code class="docutils literal notranslate"><span class="pre">BinaryStepDispatcher.dispatch_binary_step()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_step_dispatcher.html#scarajectory.infrastructure.worker.binary.binary_step_dispatcher.BinaryStepDispatcher.dispatch_waypoint"><code class="docutils literal notranslate"><span class="pre">BinaryStepDispatcher.dispatch_waypoint()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_step_dispatcher_factory.html">scarajectory.infrastructure.worker.binary.binary_step_dispatcher_factory module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_step_dispatcher_factory.html#scarajectory.infrastructure.worker.binary.binary_step_dispatcher_factory.BinaryStepDispatcherFactory"><code class="docutils literal notranslate"><span class="pre">BinaryStepDispatcherFactory</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_step_dispatcher_factory.html#scarajectory.infrastructure.worker.binary.binary_step_dispatcher_factory.BinaryStepDispatcherFactory.create"><code class="docutils literal notranslate"><span class="pre">BinaryStepDispatcherFactory.create()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_step_dispatcher_factory.html#scarajectory.infrastructure.worker.binary.binary_step_dispatcher_factory.BinaryStepDispatcherFactory.get_version"><code class="docutils literal notranslate"><span class="pre">BinaryStepDispatcherFactory.get_version()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.html">scarajectory.infrastructure.worker.binary.binary_stream_execution_worker module</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.html#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker"><code class="docutils literal notranslate"><span class="pre">BinaryStreamExecutionWorker</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.html#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._barrier_coordinator"><code class="docutils literal notranslate"><span class="pre">BinaryStreamExecutionWorker._barrier_coordinator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.html#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._is_running"><code class="docutils literal notranslate"><span class="pre">BinaryStreamExecutionWorker._is_running</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.html#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._coordinator"><code class="docutils literal notranslate"><span class="pre">BinaryStreamExecutionWorker._coordinator</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.html#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._loop_runner"><code class="docutils literal notranslate"><span class="pre">BinaryStreamExecutionWorker._loop_runner</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.html#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._pause_event"><code class="docutils literal notranslate"><span class="pre">BinaryStreamExecutionWorker._pause_event</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.html#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._session"><code class="docutils literal notranslate"><span class="pre">BinaryStreamExecutionWorker._session</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.html#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._stop_event"><code class="docutils literal notranslate"><span class="pre">BinaryStreamExecutionWorker._stop_event</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.html#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._worker_thread"><code class="docutils literal notranslate"><span class="pre">BinaryStreamExecutionWorker._worker_thread</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.html#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker.handle_incoming_bytes"><code class="docutils literal notranslate"><span class="pre">BinaryStreamExecutionWorker.handle_incoming_bytes()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.html#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker.is_running"><code class="docutils literal notranslate"><span class="pre">BinaryStreamExecutionWorker.is_running()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.html#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker.pause"><code class="docutils literal notranslate"><span class="pre">BinaryStreamExecutionWorker.pause()</span></code></a></li>
@@ -103,14 +158,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.html">scarajectory.infrastructure.worker.binary.binary_stream_loop_runner module</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.html#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunner</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.html#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._byte_sender"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunner._byte_sender</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.html#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._flow_pacing"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunner._flow_pacing</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.html#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._frame_handler"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunner._frame_handler</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.html#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._frame_parser"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunner._frame_parser</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.html#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._observer_dispatcher"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunner._observer_dispatcher</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.html#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._pacing_config"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunner._pacing_config</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.html#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._packet_strategy"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunner._packet_strategy</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.html#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._state_controller"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunner._state_controller</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.html#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner._bundle"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunner._bundle</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.html#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner.handle_incoming_bytes"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunner.handle_incoming_bytes()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.html#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner.run_program_loop"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunner.run_program_loop()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.html#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner.run_waypoints_loop"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunner.run_waypoints_loop()</span></code></a></li>
@@ -123,6 +171,41 @@
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner_factory.html#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner_factory.BinaryStreamLoopRunnerFactory.create"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunnerFactory.create()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner_factory.html#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner_factory.BinaryStreamLoopRunnerFactory.create_with_parser"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunnerFactory.create_with_parser()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_loop_runner_factory.html#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner_factory.BinaryStreamLoopRunnerFactory.get_version"><code class="docutils literal notranslate"><span class="pre">BinaryStreamLoopRunnerFactory.get_version()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_runner_bundle.html">scarajectory.infrastructure.worker.binary.binary_stream_runner_bundle module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_runner_bundle.html#scarajectory.infrastructure.worker.binary.binary_stream_runner_bundle.BinaryStreamRunnerBundle"><code class="docutils literal notranslate"><span class="pre">BinaryStreamRunnerBundle</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_runner_bundle.html#scarajectory.infrastructure.worker.binary.binary_stream_runner_bundle.BinaryStreamRunnerBundle.byte_sender"><code class="docutils literal notranslate"><span class="pre">BinaryStreamRunnerBundle.byte_sender</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_runner_bundle.html#scarajectory.infrastructure.worker.binary.binary_stream_runner_bundle.BinaryStreamRunnerBundle.observer_dispatcher"><code class="docutils literal notranslate"><span class="pre">BinaryStreamRunnerBundle.observer_dispatcher</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_runner_bundle.html#scarajectory.infrastructure.worker.binary.binary_stream_runner_bundle.BinaryStreamRunnerBundle.pacing_bundle"><code class="docutils literal notranslate"><span class="pre">BinaryStreamRunnerBundle.pacing_bundle</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_runner_bundle.html#scarajectory.infrastructure.worker.binary.binary_stream_runner_bundle.BinaryStreamRunnerBundle.pacing_config"><code class="docutils literal notranslate"><span class="pre">BinaryStreamRunnerBundle.pacing_config</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_runner_bundle.html#scarajectory.infrastructure.worker.binary.binary_stream_runner_bundle.BinaryStreamRunnerBundle.packet_strategy"><code class="docutils literal notranslate"><span class="pre">BinaryStreamRunnerBundle.packet_strategy</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.binary_stream_runner_bundle.html#scarajectory.infrastructure.worker.binary.binary_stream_runner_bundle.BinaryStreamRunnerBundle.state_controller"><code class="docutils literal notranslate"><span class="pre">BinaryStreamRunnerBundle.state_controller</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.ibinary_queue_drainer.html">scarajectory.infrastructure.worker.binary.ibinary_queue_drainer module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.ibinary_queue_drainer.html#scarajectory.infrastructure.worker.binary.ibinary_queue_drainer.IBinaryQueueDrainer"><code class="docutils literal notranslate"><span class="pre">IBinaryQueueDrainer</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.ibinary_queue_drainer.html#scarajectory.infrastructure.worker.binary.ibinary_queue_drainer.IBinaryQueueDrainer._abc_impl"><code class="docutils literal notranslate"><span class="pre">IBinaryQueueDrainer._abc_impl</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.ibinary_queue_drainer.html#scarajectory.infrastructure.worker.binary.ibinary_queue_drainer.IBinaryQueueDrainer._is_protocol"><code class="docutils literal notranslate"><span class="pre">IBinaryQueueDrainer._is_protocol</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.ibinary_queue_drainer.html#scarajectory.infrastructure.worker.binary.ibinary_queue_drainer.IBinaryQueueDrainer._is_runtime_protocol"><code class="docutils literal notranslate"><span class="pre">IBinaryQueueDrainer._is_runtime_protocol</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.ibinary_queue_drainer.html#scarajectory.infrastructure.worker.binary.ibinary_queue_drainer.IBinaryQueueDrainer.drain_queue"><code class="docutils literal notranslate"><span class="pre">IBinaryQueueDrainer.drain_queue()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.ibinary_queue_drainer.html#scarajectory.infrastructure.worker.binary.ibinary_queue_drainer.IBinaryQueueDrainer.is_queue_empty"><code class="docutils literal notranslate"><span class="pre">IBinaryQueueDrainer.is_queue_empty()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.ibinary_step_dispatcher.html">scarajectory.infrastructure.worker.binary.ibinary_step_dispatcher module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.ibinary_step_dispatcher.html#scarajectory.infrastructure.worker.binary.ibinary_step_dispatcher.IBinaryStepDispatcher"><code class="docutils literal notranslate"><span class="pre">IBinaryStepDispatcher</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.ibinary_step_dispatcher.html#scarajectory.infrastructure.worker.binary.ibinary_step_dispatcher.IBinaryStepDispatcher._abc_impl"><code class="docutils literal notranslate"><span class="pre">IBinaryStepDispatcher._abc_impl</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.ibinary_step_dispatcher.html#scarajectory.infrastructure.worker.binary.ibinary_step_dispatcher.IBinaryStepDispatcher._is_protocol"><code class="docutils literal notranslate"><span class="pre">IBinaryStepDispatcher._is_protocol</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.ibinary_step_dispatcher.html#scarajectory.infrastructure.worker.binary.ibinary_step_dispatcher.IBinaryStepDispatcher._is_runtime_protocol"><code class="docutils literal notranslate"><span class="pre">IBinaryStepDispatcher._is_runtime_protocol</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.ibinary_step_dispatcher.html#scarajectory.infrastructure.worker.binary.ibinary_step_dispatcher.IBinaryStepDispatcher.can_dispatch_step"><code class="docutils literal notranslate"><span class="pre">IBinaryStepDispatcher.can_dispatch_step()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.ibinary_step_dispatcher.html#scarajectory.infrastructure.worker.binary.ibinary_step_dispatcher.IBinaryStepDispatcher.dispatch_binary_step"><code class="docutils literal notranslate"><span class="pre">IBinaryStepDispatcher.dispatch_binary_step()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.ibinary_step_dispatcher.html#scarajectory.infrastructure.worker.binary.ibinary_step_dispatcher.IBinaryStepDispatcher.dispatch_waypoint"><code class="docutils literal notranslate"><span class="pre">IBinaryStepDispatcher.dispatch_waypoint()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -196,13 +279,13 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.worker.html"
-                          title="previous chapter">scarajectory.infrastructure.worker package</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.worker.ascii.stream_step_dispatcher_factory.html"
+                          title="previous chapter">scarajectory.infrastructure.worker.ascii.stream_step_dispatcher_factory module</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.html"
-                          title="next chapter">scarajectory.infrastructure.worker.binary.binary_stream_execution_worker module</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.worker.binary.binary_loop_runner_bundle.html"
+                          title="next chapter">scarajectory.infrastructure.worker.binary.binary_loop_runner_bundle module</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -235,10 +318,10 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.html" title="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker module"
+          <a href="scarajectory.infrastructure.worker.binary.binary_loop_runner_bundle.html" title="scarajectory.infrastructure.worker.binary.binary_loop_runner_bundle module"
              >next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.worker.html" title="scarajectory.infrastructure.worker package"
+          <a href="scarajectory.infrastructure.worker.ascii.stream_step_dispatcher_factory.html" title="scarajectory.infrastructure.worker.ascii.stream_step_dispatcher_factory module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>

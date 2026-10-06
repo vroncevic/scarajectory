@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="scarajectory.infrastructure.classifier.status.motion_status_classifier_factory module" href="scarajectory.infrastructure.classifier.status.motion_status_classifier_factory.html" />
-    <link rel="prev" title="scarajectory.infrastructure.classifier.status.homing_status_classifier_factory module" href="scarajectory.infrastructure.classifier.status.homing_status_classifier_factory.html" /> 
+    <link rel="prev" title="scarajectory.infrastructure.classifier.status.imotion_status_classifier module" href="scarajectory.infrastructure.classifier.status.imotion_status_classifier.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -31,7 +31,7 @@
           <a href="scarajectory.infrastructure.classifier.status.motion_status_classifier_factory.html" title="scarajectory.infrastructure.classifier.status.motion_status_classifier_factory module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.classifier.status.homing_status_classifier_factory.html" title="scarajectory.infrastructure.classifier.status.homing_status_classifier_factory module"
+          <a href="scarajectory.infrastructure.classifier.status.imotion_status_classifier.html" title="scarajectory.infrastructure.classifier.status.imotion_status_classifier module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
@@ -70,7 +70,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.classifier.status.motion_status_classifier.MotionStatusClassifier">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.classifier.status.motion_status_classifier.</span></span><span class="sig-name descname"><span class="pre">MotionStatusClassifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response_parser</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.classifier.iresponse_parser.html#scarajectory.core.service.classifier.iresponse_parser.IResponseParser" title="scarajectory.core.service.classifier.iresponse_parser.IResponseParser"><span class="pre">IResponseParser</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/classifier/status/motion_status_classifier.html#MotionStatusClassifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.classifier.status.motion_status_classifier.MotionStatusClassifier" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.classifier.status.motion_status_classifier.</span></span><span class="sig-name descname"><span class="pre">MotionStatusClassifier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">response_parser</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.classifier.iresponse_parser.html#scarajectory.infrastructure.classifier.iresponse_parser.IResponseParser" title="scarajectory.infrastructure.classifier.iresponse_parser.IResponseParser"><span class="pre">IResponseParser</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/classifier/status/motion_status_classifier.html#MotionStatusClassifier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.classifier.status.motion_status_classifier.MotionStatusClassifier" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Evaluates ASCII protocol packets against waypoint motion and action execution criteria.</p>
 <p>It defines:</p>
@@ -94,7 +94,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </div></blockquote>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.classifier.status.motion_status_classifier.MotionStatusClassifier._response_parser">
-<span class="sig-name descname"><span class="pre">_response_parser</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.classifier.iresponse_parser.html#scarajectory.core.service.classifier.iresponse_parser.IResponseParser" title="scarajectory.core.service.classifier.iresponse_parser.IResponseParser"><span class="pre">IResponseParser</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.classifier.status.motion_status_classifier.MotionStatusClassifier._response_parser" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">_response_parser</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.classifier.iresponse_parser.html#scarajectory.infrastructure.classifier.iresponse_parser.IResponseParser" title="scarajectory.infrastructure.classifier.iresponse_parser.IResponseParser"><span class="pre">IResponseParser</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.classifier.status.motion_status_classifier.MotionStatusClassifier._response_parser" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -195,8 +195,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.classifier.status.homing_status_classifier_factory.html"
-                          title="previous chapter">scarajectory.infrastructure.classifier.status.homing_status_classifier_factory module</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.classifier.status.imotion_status_classifier.html"
+                          title="previous chapter">scarajectory.infrastructure.classifier.status.imotion_status_classifier module</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -237,7 +237,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="scarajectory.infrastructure.classifier.status.motion_status_classifier_factory.html" title="scarajectory.infrastructure.classifier.status.motion_status_classifier_factory module"
              >next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.classifier.status.homing_status_classifier_factory.html" title="scarajectory.infrastructure.classifier.status.homing_status_classifier_factory module"
+          <a href="scarajectory.infrastructure.classifier.status.imotion_status_classifier.html" title="scarajectory.infrastructure.classifier.status.imotion_status_classifier module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>

@@ -28,7 +28,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -78,10 +78,10 @@ class ConfigCommandFormatter:
         template: str = CommandTemplates.SET_CONFIG_TEMPLATE
 
         return template.format(
-            l1=bounds.l1,
-            l2=bounds.l2,
-            z_min=bounds.z_min,
-            z_max=bounds.z_max,
-            min_speed=bounds.min_speed,
-            max_speed=bounds.max_speed
+            l1=bounds.links.l1,
+            l2=bounds.links.l2,
+            z_min=bounds.vertical.z_min,
+            z_max=bounds.vertical.z_max,
+            min_speed=bounds.speeds.min_speed,
+            max_speed=bounds.speeds.max_speed,
         )

@@ -23,16 +23,13 @@ from __future__ import annotations
 
 from tkinter import BOTH, RIGHT, Text, X
 from tkinter.ttk import Button, Frame
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from scarajectory.infrastructure.gui.console.serial_console import SerialConsole
+from typing import Any
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -49,7 +46,7 @@ class SerialConsoleBuilder:
     '''
 
     @classmethod
-    def build_widgets(cls, console: SerialConsole) -> Text:
+    def build_widgets(cls, console: Any) -> Text:
         '''
             Builds scrollable log text area and clear button.
 

@@ -25,18 +25,14 @@ from threading import Event
 from unittest import TestCase, main
 from unittest.mock import MagicMock
 
-from scarajectory.infrastructure.transport.worker.transport_reader_worker import (
-    TransportReaderWorker,
-)
-from scarajectory.infrastructure.transport.worker.transport_reader_worker_factory import (
-    TransportReaderWorkerFactory,
-)
+from scarajectory.infrastructure.transport.worker.transport_reader_worker import TransportReaderWorker
+from scarajectory.infrastructure.transport.worker.transport_reader_worker_factory import TransportReaderWorkerFactory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -68,7 +64,7 @@ class TransportReaderWorkerFactoryTestCase(TestCase):
     def test_get_version(self) -> None:
         '''Verifies factory exposes semantic version string matching package.'''
         self.assertEqual(
-            TransportReaderWorkerFactory.get_version(), '1.0.4'
+            TransportReaderWorkerFactory.get_version(), '1.0.3'
         )
 
 

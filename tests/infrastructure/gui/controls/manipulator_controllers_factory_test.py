@@ -24,31 +24,21 @@ from __future__ import annotations
 from unittest import TestCase, main
 from unittest.mock import MagicMock, patch
 
-from scaralang.core.service.protocol.ibinary_frame_builder import (
-    IBinaryFrameBuilder,
-)
+from scaralang.core.service.protocol.ibinary_frame_builder import IBinaryFrameBuilder
 from scarajectory.core.model.protocol.protocol_mode import ProtocolMode
-from scarajectory.core.service.connection.iraw_channel import IRawChannel
-from scarajectory.infrastructure.gui.controls.manipulator_controllers_bundle import (
-    ManipulatorControllersBundle,
-)
-from scarajectory.infrastructure.gui.controls.manipulator_controllers_factory import (
-    ManipulatorControllersFactory,
-)
+from scarajectory.infrastructure.connection.iraw_channel import IRawChannel
+from scarajectory.infrastructure.gui.controls.manipulator_controllers_bundle import ManipulatorControllersBundle
+from scarajectory.infrastructure.gui.controls.manipulator_controllers_factory import ManipulatorControllersFactory
 from scarajectory.infrastructure.manipulator.jog_controller import JogController
-from scarajectory.infrastructure.manipulator.motion_controller import (
-    MotionController,
-)
-from scarajectory.infrastructure.manipulator.query_controller import (
-    QueryController,
-)
+from scarajectory.infrastructure.manipulator.motion_controller import MotionController
+from scarajectory.infrastructure.manipulator.query_controller import QueryController
 from scarajectory.infrastructure.tool.tool_controller import ToolController
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -68,7 +58,7 @@ class ManipulatorControllersFactoryTestCase(TestCase):
 
     def test_factory_version_and_structure(self) -> None:
         '''Verifies factory version string and create callable.'''
-        self.assertEqual(ManipulatorControllersFactory.get_version(), '1.0.4')
+        self.assertEqual(ManipulatorControllersFactory.get_version(), '1.0.3')
         self.assertTrue(hasattr(ManipulatorControllersFactory, 'create'))
         self.assertTrue(callable(ManipulatorControllersFactory.create))
 

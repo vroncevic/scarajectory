@@ -59,14 +59,14 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">BOTH</span><span class="p">,</span> <span class="n">DISABLED</span><span class="p">,</span> <span class="n">END</span><span class="p">,</span> <span class="n">NORMAL</span><span class="p">,</span> <span class="n">Widget</span><span class="p">,</span> <span class="n">Text</span>
+<span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">BOTH</span><span class="p">,</span> <span class="n">DISABLED</span><span class="p">,</span> <span class="n">END</span><span class="p">,</span> <span class="n">NORMAL</span><span class="p">,</span> <span class="n">Text</span><span class="p">,</span> <span class="n">Widget</span>
 <span class="kn">from</span> <span class="nn">tkinter.ttk</span> <span class="kn">import</span> <span class="n">LabelFrame</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -76,7 +76,7 @@
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.dsl.console_view.html#scarajectory.infrastructure.gui.dsl.console_view.DslConsoleView">[docs]</a>
 <span class="k">class</span> <span class="nc">DslConsoleView</span><span class="p">(</span><span class="n">LabelFrame</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Compiler diagnostic log console displaying formatted success and error messages.</span>
+<span class="sd">        Compiler diagnostic log console displaying multi-level formatted messages.</span>
 
 <span class="sd">        It defines:</span>
 
@@ -84,8 +84,10 @@
 <span class="sd">                | _txt_console - Read-only Text console widget.</span>
 <span class="sd">            :methods:</span>
 <span class="sd">                | __init__ - Initializes console layout and text buffer.</span>
-<span class="sd">                | log - Logs message string with success/error color formatting.</span>
+<span class="sd">                | append_log - Appends message string with syntax-colored level tag.</span>
+<span class="sd">                | log - Backward-compatible log call delegating to append_log.</span>
 <span class="sd">                | clear - Clears the console output.</span>
+<span class="sd">                | get_text - Returns current console buffer content.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="n">_txt_console</span><span class="p">:</span> <span class="n">Text</span>
@@ -102,14 +104,38 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_txt_console</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-            <span class="n">height</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+            <span class="n">height</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
             <span class="n">bg</span><span class="o">=</span><span class="s1">&#39;#1a1d23&#39;</span><span class="p">,</span>
-            <span class="n">fg</span><span class="o">=</span><span class="s1">&#39;#98c379&#39;</span><span class="p">,</span>
+            <span class="n">fg</span><span class="o">=</span><span class="s1">&#39;#abb2bf&#39;</span><span class="p">,</span>
             <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;DejaVu Sans Mono&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
             <span class="n">wrap</span><span class="o">=</span><span class="s1">&#39;word&#39;</span><span class="p">,</span>
             <span class="n">state</span><span class="o">=</span><span class="n">DISABLED</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_txt_console</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_console</span><span class="o">.</span><span class="n">tag_config</span><span class="p">(</span><span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="s1">&#39;#61afef&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_console</span><span class="o">.</span><span class="n">tag_config</span><span class="p">(</span><span class="s1">&#39;success&#39;</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="s1">&#39;#98c379&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_console</span><span class="o">.</span><span class="n">tag_config</span><span class="p">(</span><span class="s1">&#39;warning&#39;</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="s1">&#39;#e5c07b&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_console</span><span class="o">.</span><span class="n">tag_config</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="s1">&#39;#e06c75&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_console</span><span class="o">.</span><span class="n">tag_config</span><span class="p">(</span><span class="s1">&#39;neutral&#39;</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="s1">&#39;#abb2bf&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DslConsoleView.append_log">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.dsl.console_view.html#scarajectory.infrastructure.gui.dsl.console_view.DslConsoleView.append_log">[docs]</a>
+    <span class="k">def</span> <span class="nf">append_log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;info&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Appends message string with syntax-colored level tag and auto-scrolls.</span>
+
+<span class="sd">            :param text: Message string to log.</span>
+<span class="sd">            :param level: Severity level tag (&#39;info&#39;, &#39;success&#39;, &#39;warning&#39;, &#39;error&#39;, &#39;neutral&#39;).</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">valid_tags</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="s1">&#39;success&#39;</span><span class="p">,</span> <span class="s1">&#39;warning&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="s1">&#39;neutral&#39;</span><span class="p">)</span>
+        <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">level</span> <span class="k">if</span> <span class="n">level</span> <span class="ow">in</span> <span class="n">valid_tags</span> <span class="k">else</span> <span class="s1">&#39;info&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_console</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">NORMAL</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_console</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">END</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_console</span><span class="o">.</span><span class="n">see</span><span class="p">(</span><span class="n">END</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_console</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">DISABLED</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="DslConsoleView.log">
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.dsl.console_view.html#scarajectory.infrastructure.gui.dsl.console_view.DslConsoleView.log">[docs]</a>
@@ -121,11 +147,8 @@
 <span class="sd">            :param is_error: True if message indicates failure.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_console</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">NORMAL</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_console</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;1.0&#39;</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_console</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">fg</span><span class="o">=</span><span class="s1">&#39;#e06c75&#39;</span> <span class="k">if</span> <span class="n">is_error</span> <span class="k">else</span> <span class="s1">&#39;#98c379&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_console</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">END</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_console</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">DISABLED</span><span class="p">)</span></div>
+        <span class="n">level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;error&#39;</span> <span class="k">if</span> <span class="n">is_error</span> <span class="k">else</span> <span class="s1">&#39;success&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">append_log</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">level</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="DslConsoleView.clear">
@@ -139,6 +162,18 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_txt_console</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">NORMAL</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_txt_console</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;1.0&#39;</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_txt_console</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">DISABLED</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DslConsoleView.get_text">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.dsl.console_view.html#scarajectory.infrastructure.gui.dsl.console_view.DslConsoleView.get_text">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_text</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Returns current console buffer content.</span>
+
+<span class="sd">            :return: String content of the console buffer.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_txt_console</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;1.0&#39;</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
 </div>
 
 </pre></div>

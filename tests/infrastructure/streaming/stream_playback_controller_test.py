@@ -25,66 +25,34 @@ from unittest import TestCase, main
 from unittest.mock import MagicMock
 
 from scaralang.core.model.dsl.binary.program import BinaryProgram
-from scaralang.infrastructure.communication.protocol.binary.builder.binary_frame_builder_factory import (
-    BinaryFrameBuilderFactory,
-)
+from scaralang.infrastructure.communication.protocol.binary.builder.binary_frame_builder_factory import BinaryFrameBuilderFactory
 from scarajectory.core.model.protocol.protocol_mode import ProtocolMode
 from scarajectory.core.model.state.stream_session import StreamSession
 from scarajectory.core.model.state.stream_state import StreamState
 from scarajectory.core.model.trajectory.waypoint import Waypoint
-from scarajectory.core.service.state.session_factory import SessionFactory
-from scarajectory.core.service.streaming.istream_playback_controller import (
-    IStreamPlaybackController,
-)
-from scarajectory.infrastructure.barrier.flow_barrier_factory import (
-    FlowBarrierFactory,
-)
-from scarajectory.infrastructure.connection.stream_connection_manager import (
-    StreamConnectionManager,
-)
-from scarajectory.infrastructure.connection.stream_connection_manager_factory import (
-    StreamConnectionManagerFactory,
-)
-from scarajectory.infrastructure.connection.stream_raw_transceiver import (
-    StreamRawTransceiver,
-)
-from scarajectory.infrastructure.connection.stream_raw_transceiver_factory import (
-    StreamRawTransceiverFactory,
-)
-from scarajectory.infrastructure.state.stream_state_machine import (
-    StreamStateMachine,
-)
-from scarajectory.infrastructure.state.stream_state_machine_factory import (
-    StreamStateMachineFactory,
-)
-from scarajectory.infrastructure.streaming.observer.stream_observer_dispatcher import (
-    StreamObserverDispatcher,
-)
-from scarajectory.infrastructure.streaming.observer.stream_observer_dispatcher_factory import (
-    StreamObserverDispatcherFactory,
-)
-from scarajectory.infrastructure.streaming.stream_control_transmitter import (
-    StreamControlTransmitter,
-)
-from scarajectory.infrastructure.streaming.stream_control_transmitter_factory import (
-    StreamControlTransmitterFactory,
-)
-from scarajectory.infrastructure.streaming.stream_playback_controller import (
-    StreamPlaybackController,
-)
-from scarajectory.infrastructure.streaming.stream_playback_controller_factory import (
-    StreamPlaybackControllerFactory,
-)
+from scarajectory.core.service.streaming.session_factory import SessionFactory
+from scarajectory.core.service.streaming.istream_playback_controller import IStreamPlaybackController
+from scarajectory.infrastructure.barrier.flow_barrier_factory import FlowBarrierFactory
+from scarajectory.infrastructure.connection.stream_connection_manager import StreamConnectionManager
+from scarajectory.infrastructure.connection.stream_connection_manager_factory import StreamConnectionManagerFactory
+from scarajectory.infrastructure.connection.stream_raw_transceiver import StreamRawTransceiver
+from scarajectory.infrastructure.connection.stream_raw_transceiver_factory import StreamRawTransceiverFactory
+from scarajectory.infrastructure.state.stream_state_machine import StreamStateMachine
+from scarajectory.infrastructure.state.stream_state_machine_factory import StreamStateMachineFactory
+from scarajectory.infrastructure.streaming.observer.stream_observer_dispatcher import StreamObserverDispatcher
+from scarajectory.infrastructure.streaming.observer.stream_observer_dispatcher_factory import StreamObserverDispatcherFactory
+from scarajectory.infrastructure.streaming.stream_control_transmitter import StreamControlTransmitter
+from scarajectory.infrastructure.streaming.stream_control_transmitter_factory import StreamControlTransmitterFactory
+from scarajectory.infrastructure.streaming.stream_playback_controller import StreamPlaybackController
+from scarajectory.infrastructure.streaming.stream_playback_controller_factory import StreamPlaybackControllerFactory
 from scarajectory.infrastructure.transport.bundle import TransportBundle
-from scarajectory.infrastructure.transport.transport_factory import (
-    TransportFactory,
-)
+from scarajectory.infrastructure.transport.transport_factory import TransportFactory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'

@@ -24,18 +24,18 @@ from __future__ import annotations
 from tkinter.messagebox import showinfo
 from typing import Final
 
-from scarajectory.core.service.connection.istream_connection import IStreamConnection
+from scarajectory.infrastructure.connection.istream_connection import IStreamConnection
 from scarajectory.core.service.manipulator.ijog_controller import IJogController
 from scarajectory.core.service.manipulator.imotion_controller import IMotionController
 from scarajectory.core.service.tool.itool_controller import IToolController
-from scarajectory.infrastructure.gui.manipulator.manipulator_override_panel import ManipulatorOverridePanel
+from scarajectory.infrastructure.gui.manipulator.imanipulator_override_panel import IManipulatorOverridePanel
 from scarajectory.infrastructure.gui.streaming.streamer_controllers_bundle import StreamerControllersBundle
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -52,7 +52,7 @@ class StreamToolActionHandler:
                 | _motion_controller - Motion controller interface.
                 | _jog_controller - Jog and speed override controller interface.
                 | _tool_controller - Tool actuation controller interface.
-                | _override_panel - Manipulator actuators and override subpanel.
+                | _override_panel - Manipulator override panel protocol.
                 | _pump_state - Flag storing end-effector vacuum pump active state.
             :methods:
                 | __init__ - Initializes tool action handler with collaborators.
@@ -66,7 +66,7 @@ class StreamToolActionHandler:
     _motion_controller: IMotionController
     _jog_controller: IJogController
     _tool_controller: IToolController
-    _override_panel: ManipulatorOverridePanel
+    _override_panel: IManipulatorOverridePanel
     _pump_state: bool
 
     def __init__(
@@ -74,21 +74,21 @@ class StreamToolActionHandler:
         *,
         connection: IStreamConnection,
         controllers: StreamerControllersBundle,
-        override_panel: ManipulatorOverridePanel,
+        override_panel: IManipulatorOverridePanel,
     ) -> None:
         '''
             Initializes tool action handler with hardware collaborators.
 
             :param connection: Injected IStreamConnection instance.
             :param controllers: Injected StreamerControllersBundle instance.
-            :param override_panel: ManipulatorOverridePanel instance.
+            :param override_panel: Injected IManipulatorOverridePanel instance.
             :exceptions: None.
         '''
         self._connection: Final[IStreamConnection] = connection
         self._motion_controller: Final[IMotionController] = controllers.motion_controller
         self._jog_controller: Final[IJogController] = controllers.jog_controller
         self._tool_controller: Final[IToolController] = controllers.tool_controller
-        self._override_panel: Final[ManipulatorOverridePanel] = override_panel
+        self._override_panel: Final[IManipulatorOverridePanel] = override_panel
         self._pump_state = False
 
     def on_home_robot(self) -> None:

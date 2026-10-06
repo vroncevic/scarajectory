@@ -22,12 +22,13 @@ Info
 from __future__ import annotations
 
 from collections.abc import Mapping
+from math import cos, pi
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -142,6 +143,14 @@ class ScaraBoundsParser:
             :return: Dictionary containing singularity parameter values.
             :exceptions: None.
         '''
+        j2_max: float = float(
+            options.get('j2_max_rad', cfg.get('j2_max_rad', 2.530727))
+        )
+        l1: float = float(options.get('l1', cfg.get('l1', 150.0)))
+        l2: float = float(options.get('l2', cfg.get('l2', 120.0)))
+        computed_deadzone: float = (
+            max(0.0, l1**2 + l2**2 - 2.0 * l1 * l2 * cos(pi - j2_max)) ** 0.5
+        )
         return {
             'singularity_outer_margin_mm': float(
                 options.get(
@@ -159,6 +168,12 @@ class ScaraBoundsParser:
                 options.get(
                     'singularity_theta2_min_rad',
                     cfg.get('singularity_theta2_min_rad', 0.087266),
+                )
+            ),
+            'deadzone_r_min': float(
+                options.get(
+                    'deadzone_r_min',
+                    cfg.get('deadzone_r_min', computed_deadzone),
                 )
             ),
         }

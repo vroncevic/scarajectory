@@ -63,14 +63,14 @@
 <span class="kn">from</span> <span class="nn">tkinter.ttk</span> <span class="kn">import</span> <span class="n">Button</span><span class="p">,</span> <span class="n">Frame</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span>
 
-<span class="kn">from</span> <span class="nn">scaralang.core.service.trajectory.validation.itrajectory_validator</span> <span class="kn">import</span> <span class="n">ITrajectoryValidator</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.validation.itrajectory_validator</span> <span class="kn">import</span> <span class="n">ITrajectoryValidator</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.itrajectory_read_only</span> <span class="kn">import</span> <span class="n">ITrajectoryReadOnly</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -144,7 +144,11 @@
             <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;DejaVu Sans Mono&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
             <span class="n">wrap</span><span class="o">=</span><span class="s1">&#39;word&#39;</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_val</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_val</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_val</span><span class="o">.</span><span class="n">tag_config</span><span class="p">(</span><span class="s1">&#39;pass&#39;</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="s1">&#39;#98c379&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_val</span><span class="o">.</span><span class="n">tag_config</span><span class="p">(</span><span class="s1">&#39;fail&#39;</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="s1">&#39;#e06c75&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_val</span><span class="o">.</span><span class="n">tag_config</span><span class="p">(</span><span class="s1">&#39;warn&#39;</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="s1">&#39;#e5c07b&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_val</span><span class="o">.</span><span class="n">tag_config</span><span class="p">(</span><span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="s1">&#39;#61afef&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ValidationTab.run_validation">
@@ -155,12 +159,25 @@
 
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">msgs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validator</span><span class="o">.</span><span class="n">validate_plan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_txt_val</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;1.0&#39;</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">msgs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validator</span><span class="o">.</span><span class="n">validate_plan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_plan</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_txt_val</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;1.0&#39;</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">msgs</span><span class="p">:</span>
-            <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;✅ &#39;</span> <span class="k">if</span> <span class="s1">&#39;PASSED&#39;</span> <span class="ow">in</span> <span class="n">msg</span> <span class="k">else</span> <span class="s1">&#39;❌ &#39;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_txt_val</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">END</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}{</span><span class="n">msg</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+            <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">msgs</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;PASSED&#39;</span> <span class="ow">in</span> <span class="n">msg</span><span class="p">:</span>
+                    <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;✅ &#39;</span>
+                    <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;pass&#39;</span>
+                <span class="k">elif</span> <span class="s1">&#39;WARNING&#39;</span> <span class="ow">in</span> <span class="n">msg</span><span class="p">:</span>
+                    <span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;⚠️ &#39;</span>
+                    <span class="n">tag</span> <span class="o">=</span> <span class="s1">&#39;warn&#39;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;❌ &#39;</span>
+                    <span class="n">tag</span> <span class="o">=</span> <span class="s1">&#39;fail&#39;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_txt_val</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">END</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}{</span><span class="n">msg</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_txt_val</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;1.0&#39;</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_txt_val</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">END</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;❌ Validation error: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;fail&#39;</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

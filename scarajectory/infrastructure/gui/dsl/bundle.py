@@ -23,22 +23,22 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from scaralang.core.service.dsl.iscara_dsl_service import IScaraDslService
 from scarajectory.core.service.storage.iplan_storage_service import IPlanStorageService
 from scarajectory.core.service.trajectory.plan.mutation.iplan_bulk_mutator import IPlanBulkMutator
 from scarajectory.core.service.trajectory.plan.store.iwaypoint_store import IWaypointStore
+from scarajectory.setup.pipeline.dsl_pipeline_bundle import DslPipelineBundle
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-@dataclass(frozen=True)
+@dataclass(slots=True, frozen=True)
 class DslEditorBundle:
     '''
         Immutable container holding core dependencies for the SCARA DSL script editor.
@@ -48,11 +48,11 @@ class DslEditorBundle:
             :attributes:
                 | store - Active waypoint query and storage service.
                 | mutation - Plan bulk mutation service.
-                | dsl_service - SCARA DSL interpretation and serialization service.
+                | dsl - SCARA DSL pipeline role services bundle.
                 | storage - File storage service for script persistence.
     '''
 
     store: IWaypointStore
     mutation: IPlanBulkMutator
-    dsl_service: IScaraDslService
+    dsl: DslPipelineBundle
     storage: IPlanStorageService

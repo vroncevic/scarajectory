@@ -26,28 +26,20 @@ from unittest import TestCase, main
 from unittest.mock import MagicMock, patch
 
 from scarajectory.infrastructure.gui.controls.bundle import ControlsBundle
-from scarajectory.infrastructure.gui.controls.manipulator_controllers_bundle import (
-    ManipulatorControllersBundle,
-)
-from scarajectory.infrastructure.gui.controls.tabs_assembler import (
-    ControlsTabsAssembler,
-)
-from scarajectory.infrastructure.gui.controls.tabs_bundle import (
-    ControlsTabsBundle,
-)
+from scarajectory.infrastructure.gui.controls.manipulator_controllers_bundle import ManipulatorControllersBundle
+from scarajectory.infrastructure.gui.controls.tabs_assembler import ControlsTabsAssembler
+from scarajectory.infrastructure.gui.controls.tabs_bundle import ControlsTabsBundle
 from scarajectory.infrastructure.gui.dsl.dsl_editor_tab import DslEditorTab
 from scarajectory.infrastructure.gui.manipulator.jog.jog_tab import JogTab
 from scarajectory.infrastructure.gui.preview.preview_tab import PreviewTab
 from scarajectory.infrastructure.gui.streaming.streamer_tab import StreamerTab
-from scarajectory.infrastructure.gui.validation.validation_tab import (
-    ValidationTab,
-)
+from scarajectory.infrastructure.gui.validation.validation_tab import ValidationTab
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -67,7 +59,7 @@ class ControlsTabsAssemblerTestCase(TestCase):
     def test_assembler_version(self) -> None:
         '''Verifies version string reported by assembler.'''
         assembler = ControlsTabsAssembler()
-        self.assertEqual(assembler.get_version(), '1.0.4')
+        self.assertEqual(assembler.get_version(), '1.0.3')
 
     def test_assemble_tabs(self) -> None:
         '''Verifies all tabs are assembled and bundled correctly.'''

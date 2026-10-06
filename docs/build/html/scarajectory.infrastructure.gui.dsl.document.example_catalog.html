@@ -87,6 +87,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dt class="field-even">methods<span class="colon">:</span></dt>
 <dd class="field-even"><div class="line-block">
 <div class="line">__init__ - Initializes the catalog with directory and storage service.</div>
+<div class="line">examples_dir - Returns filesystem path to examples directory.</div>
 <div class="line">get_default_script - Returns standard demonstration SCARA DSL script.</div>
 <div class="line">get_example_files - Returns sorted list of .scara files found in examples directory.</div>
 <div class="line">load_example_content - Reads and returns content of specified example script.</div>
@@ -108,6 +109,20 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.document.example_catalog.DslExampleCatalog._storage">
 <span class="sig-name descname"><span class="pre">_storage</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.storage.iplan_storage_service.html#scarajectory.core.service.storage.iplan_storage_service.IPlanStorageService" title="scarajectory.core.service.storage.iplan_storage_service.IPlanStorageService"><span class="pre">IPlanStorageService</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.document.example_catalog.DslExampleCatalog._storage" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.document.example_catalog.DslExampleCatalog.examples_dir">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">examples_dir</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.document.example_catalog.DslExampleCatalog.examples_dir" title="Link to this definition">¶</a></dt>
+<dd><p>Returns filesystem path to examples directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Path instance.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.document.example_catalog.DslExampleCatalog.get_default_script">
@@ -173,6 +188,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.document.example_catalog.DslExampleCatalog._DEFAULT_DEMO_SCRIPT"><code class="docutils literal notranslate"><span class="pre">DslExampleCatalog._DEFAULT_DEMO_SCRIPT</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.document.example_catalog.DslExampleCatalog._examples_dir"><code class="docutils literal notranslate"><span class="pre">DslExampleCatalog._examples_dir</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.document.example_catalog.DslExampleCatalog._storage"><code class="docutils literal notranslate"><span class="pre">DslExampleCatalog._storage</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.document.example_catalog.DslExampleCatalog.examples_dir"><code class="docutils literal notranslate"><span class="pre">DslExampleCatalog.examples_dir</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.document.example_catalog.DslExampleCatalog.get_default_script"><code class="docutils literal notranslate"><span class="pre">DslExampleCatalog.get_default_script()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.document.example_catalog.DslExampleCatalog.get_example_files"><code class="docutils literal notranslate"><span class="pre">DslExampleCatalog.get_example_files()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.document.example_catalog.DslExampleCatalog.load_example_content"><code class="docutils literal notranslate"><span class="pre">DslExampleCatalog.load_example_content()</span></code></a></li>

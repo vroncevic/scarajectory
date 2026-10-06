@@ -24,19 +24,16 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Final
 
-from ats_utilities.config_io.loader.engine import Loader
-from ats_utilities.config_io.setup.factory import ConfigIOBundleFactory
-from ats_utilities.config_io.setup.options import ConfigIOBundleOptions
-from ats_utilities.context.bundle import ContextBundle
 from scarajectory.core.model.trajectory.waypoint import Waypoint
-
+from scarajectory.infrastructure.storage.config_io.iconfig_io_factory import IConfigIOFactory
+from scarajectory.infrastructure.storage.config_io.iconfig_loader import IConfigLoader
 from scarajectory.infrastructure.storage.trajectory_serializer import TrajectorySerializer
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -49,31 +46,31 @@ class PlanLoader:
         It defines:
 
             :attributes:
-                | _context - The ContextBundle for ATS configuration I/O operations.
+                | _io_factory - Configuration I/O factory constructing loaders.
             :methods:
-                | __init__ - Initializes the plan loader with context bundle.
-                | load_plan - Loads and deserializes waypoints from JSON file path using ATS Loader.
+                | __init__ - Initializes the plan loader with I/O factory.
+                | load_plan - Loads and deserializes waypoints from JSON file path.
                 | load_text_file - Reads string content from file path using UTF-8 encoding.
                 | load_binary_file - Reads binary file content from destination file path.
     '''
 
-    _context: ContextBundle
+    _io_factory: IConfigIOFactory
 
     def __init__(
         self,
         *,
-        context_bundle: ContextBundle,
+        io_factory: IConfigIOFactory,
     ) -> None:
         '''
-            Initializes the plan loader with injected context bundle.
+            Initializes the plan loader with injected configuration I/O factory.
 
-            :param context_bundle: ATS ContextBundle instance.
+            :param io_factory: IConfigIOFactory instance.
         '''
-        self._context: Final[ContextBundle] = context_bundle
+        self._io_factory: Final[IConfigIOFactory] = io_factory
 
     def load_plan(self, filepath: str) -> list[Waypoint]:
         '''
-            Loads and deserializes waypoints from JSON file path using ATS Loader.
+            Loads and deserializes waypoints from JSON file path using configuration loader.
 
             :param filepath: Source file path.
             :return: List of loaded Waypoint instances.
@@ -83,13 +80,7 @@ class PlanLoader:
         if not target_path.is_file():
             return []
 
-        bundle = ConfigIOBundleFactory.create_bundle(
-            ConfigIOBundleOptions(
-                file_path=str(target_path),
-                context_bundle=self._context
-            )
-        )
-        loader = Loader(bundle)
+        loader: IConfigLoader = self._io_factory.create_loader(str(target_path))
         data: dict[str, object] = loader.load_configuration()
 
         return TrajectorySerializer.deserialize_from_dict(data)

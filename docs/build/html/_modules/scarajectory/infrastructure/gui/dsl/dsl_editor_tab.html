@@ -65,6 +65,7 @@
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.store.iwaypoint_store</span> <span class="kn">import</span> <span class="n">IWaypointStore</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.dsl.code_editor</span> <span class="kn">import</span> <span class="n">DslCodeEditor</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.dsl.console_view</span> <span class="kn">import</span> <span class="n">DslConsoleView</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.dsl.handler.ibinary_delegate</span> <span class="kn">import</span> <span class="n">IDslBinaryDelegate</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.dsl.handler.iexecution_delegate</span> <span class="kn">import</span> <span class="n">IDslExecutionDelegate</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.dsl.handler.ifile_delegate</span> <span class="kn">import</span> <span class="n">IDslFileDelegate</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.dsl.toolbar</span> <span class="kn">import</span> <span class="n">DslEditorToolbar</span>
@@ -73,7 +74,7 @@
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -94,10 +95,11 @@
 <span class="sd">                | _console - Diagnostic console view subcomponent.</span>
 <span class="sd">                | _execution_handler - Fine-grained delegate for DSL execution actions.</span>
 <span class="sd">                | _file_handler - Fine-grained delegate for DSL file and example actions.</span>
+<span class="sd">                | _binary_handler - Fine-grained delegate for DSL binary compilation and decompile actions.</span>
 <span class="sd">            :methods:</span>
 <span class="sd">                | __init__ - Initializes the editor tab container frame.</span>
 <span class="sd">                | mount_views - Mounts toolbar, editor, and console subcomponents.</span>
-<span class="sd">                | mount_handlers - Injects execution and file delegates.</span>
+<span class="sd">                | mount_handlers - Injects execution, file, and binary delegates.</span>
 <span class="sd">                | load_initial_content - Loads exported plan or demonstration script.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
@@ -107,6 +109,7 @@
     <span class="n">_console</span><span class="p">:</span> <span class="n">DslConsoleView</span>
     <span class="n">_execution_handler</span><span class="p">:</span> <span class="n">IDslExecutionDelegate</span>
     <span class="n">_file_handler</span><span class="p">:</span> <span class="n">IDslFileDelegate</span>
+    <span class="n">_binary_handler</span><span class="p">:</span> <span class="n">IDslBinaryDelegate</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n">Widget</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
@@ -151,6 +154,7 @@
         <span class="o">*</span><span class="p">,</span>
         <span class="n">execution_handler</span><span class="p">:</span> <span class="n">IDslExecutionDelegate</span><span class="p">,</span>
         <span class="n">file_handler</span><span class="p">:</span> <span class="n">IDslFileDelegate</span><span class="p">,</span>
+        <span class="n">binary_handler</span><span class="p">:</span> <span class="n">IDslBinaryDelegate</span><span class="p">,</span>
         <span class="n">store</span><span class="p">:</span> <span class="n">IWaypointStore</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
@@ -158,11 +162,13 @@
 
 <span class="sd">            :param execution_handler: Delegate handling compilation and execution.</span>
 <span class="sd">            :param file_handler: Delegate handling file persistence and demo loading.</span>
+<span class="sd">            :param binary_handler: Delegate handling binary program export and decompilation.</span>
 <span class="sd">            :param store: Waypoint query store.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_execution_handler</span> <span class="o">=</span> <span class="n">execution_handler</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_file_handler</span> <span class="o">=</span> <span class="n">file_handler</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_binary_handler</span> <span class="o">=</span> <span class="n">binary_handler</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_store</span> <span class="o">=</span> <span class="n">store</span></div>
 
 
@@ -179,57 +185,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">selected</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_toolbar</span><span class="o">.</span><span class="n">get_selected_example</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_file_handler</span><span class="o">.</span><span class="n">on_example_selected</span><span class="p">(</span><span class="n">selected</span><span class="p">)</span></div>
-
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">editor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DslCodeEditor</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Returns the code editor subcomponent.</span>
-
-<span class="sd">            :return: DslCodeEditor instance.</span>
-<span class="sd">            :exceptions: None.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_editor</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">console</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DslConsoleView</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Returns the diagnostic console view subcomponent.</span>
-
-<span class="sd">            :return: DslConsoleView instance.</span>
-<span class="sd">            :exceptions: None.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_console</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">toolbar</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DslEditorToolbar</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Returns the action toolbar subcomponent.</span>
-
-<span class="sd">            :return: DslEditorToolbar instance.</span>
-<span class="sd">            :exceptions: None.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_toolbar</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">execution_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IDslExecutionDelegate</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Returns the execution delegate.</span>
-
-<span class="sd">            :return: IDslExecutionDelegate instance.</span>
-<span class="sd">            :exceptions: None.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execution_handler</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">file_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IDslFileDelegate</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Returns the file delegate.</span>
-
-<span class="sd">            :return: IDslFileDelegate instance.</span>
-<span class="sd">            :exceptions: None.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_handler</span></div>
+</div>
 
 </pre></div>
 

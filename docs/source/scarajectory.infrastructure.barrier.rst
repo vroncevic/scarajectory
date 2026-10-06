@@ -9,6 +9,7 @@ Submodules
 
    scarajectory.infrastructure.barrier.flow_barrier
    scarajectory.infrastructure.barrier.flow_barrier_factory
+   scarajectory.infrastructure.barrier.iflow_barrier
 
 Module contents
 ---------------

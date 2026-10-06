@@ -32,6 +32,7 @@ from ats_utilities.config_io.storer.engine import Storer
 from ats_utilities.context.bundle import ContextBundle
 from ats_utilities.context.factory import ContextBundleFactory
 from scarajectory.core.model.trajectory.waypoint import Waypoint
+from scarajectory.infrastructure.storage.config_io.config_io_factory import ConfigIOFactory
 from scarajectory.infrastructure.storage.plan_loader import PlanLoader
 from scarajectory.infrastructure.storage.trajectory_serializer import TrajectorySerializer
 
@@ -39,7 +40,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -64,10 +65,11 @@ class TestPlanLoader(TestCase):
 
     def setUp(self) -> None:
         '''
-            Sets up test fixture initializing PlanLoader with context bundle.
+            Sets up test fixture initializing PlanLoader with I/O factory.
         '''
         self.context_bundle = ContextBundleFactory.create_bundle()
-        self.loader = PlanLoader(context_bundle=self.context_bundle)
+        io_factory = ConfigIOFactory.create(self.context_bundle)
+        self.loader = PlanLoader(io_factory=io_factory)
 
     def test_load_plan_missing_file(self) -> None:
         '''

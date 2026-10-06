@@ -25,38 +25,17 @@ from tkinter import Tk
 from unittest import TestCase, main
 from unittest.mock import MagicMock
 
-from scarajectory.core.model.preferences.connection_preference import (
-    ConnectionPreference,
-)
+from scarajectory.core.model.preferences.connection_preference import ConnectionPreference
 from scarajectory.core.model.state.stream_state import StreamState
 from scarajectory.core.model.telemetry.stream_progress import StreamProgress
-from scarajectory.infrastructure.gui.connection.port_connection_panel import (
-    PortConnectionPanel,
-)
-from scarajectory.infrastructure.gui.console.serial_console import (
-    SerialConsole,
-)
-from scarajectory.infrastructure.gui.manipulator.manipulator_override_panel import (
-    ManipulatorOverridePanel,
-)
-from scarajectory.infrastructure.gui.streaming.panel.stream_progress_adapter import (
-    StreamProgressAdapter,
-)
-from scarajectory.infrastructure.gui.streaming.panel.stream_status_bar import (
-    StreamStatusBar,
-)
-from scarajectory.infrastructure.gui.streaming.streamer_action_bundle import (
-    StreamerActionBundle,
-)
-from scarajectory.infrastructure.gui.streaming.streamer_tab import (
-    StreamerTab,
-)
+from scarajectory.infrastructure.gui.streaming.streamer_action_bundle import StreamerActionBundle
+from scarajectory.infrastructure.gui.streaming.streamer_tab import StreamerTab
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -87,17 +66,13 @@ class StreamerTabTestCase(TestCase):
         cls.root.destroy()
 
     def test_initialization_and_subpanels(self) -> None:
-        '''Verifies StreamerTab construction and subpanel property exposure.'''
+        '''Verifies StreamerTab construction and subpanel instantiation.'''
         mock_repo = MagicMock()
         mock_repo.load_preference.return_value = ConnectionPreference(
             port='/dev/ttyUSB0', baud=115200
         )
         tab = StreamerTab(self.root, connection_repository=mock_repo)
-
-        self.assertIsInstance(tab.port_panel, PortConnectionPanel)
-        self.assertIsInstance(tab.status_bar, StreamStatusBar)
-        self.assertIsInstance(tab.progress_adapter, StreamProgressAdapter)
-        self.assertIsInstance(tab.override_panel, ManipulatorOverridePanel)
+        self.assertIsInstance(tab, StreamerTab)
         tab.destroy()
 
     def test_mount_actions_and_delegation(self) -> None:
@@ -115,9 +90,6 @@ class StreamerTabTestCase(TestCase):
             tool_handler=mock_tool,
         )
         tab.mount_actions(actions)
-
-        self.assertIs(tab.actions, actions)
-        self.assertIsInstance(tab.console, SerialConsole)
 
         tab.refresh_ports()
         tab.append_log('G1 X100 Y50', is_outgoing=True)

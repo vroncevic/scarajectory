@@ -22,16 +22,10 @@ Info
 from __future__ import annotations
 
 from scaralang.core.service.protocol.ibinary_frame_builder import IBinaryFrameBuilder
-from scaralang.infrastructure.communication.protocol.binary.builder.\
-    binary_frame_builder_factory import (
-        BinaryFrameBuilderFactory,
-    )
+from scaralang.infrastructure.communication.protocol.binary.builder.binary_frame_builder_factory import BinaryFrameBuilderFactory
 from scarajectory.core.model.protocol.protocol_mode import ProtocolMode
-from scarajectory.core.service.connection.iraw_channel import IRawChannel
-from scarajectory.infrastructure.gui.controls.\
-    manipulator_controllers_bundle import (
-        ManipulatorControllersBundle,
-    )
+from scarajectory.infrastructure.connection.iraw_channel import IRawChannel
+from scarajectory.infrastructure.gui.controls.manipulator_controllers_bundle import ManipulatorControllersBundle
 from scarajectory.infrastructure.manipulator.jog_controller import JogController
 from scarajectory.infrastructure.manipulator.jog_controller_factory import JogControllerFactory
 from scarajectory.infrastructure.manipulator.motion_controller import MotionController
@@ -45,7 +39,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'

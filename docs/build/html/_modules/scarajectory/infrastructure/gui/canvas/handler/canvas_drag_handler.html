@@ -64,8 +64,8 @@
 <span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.waypoint</span> <span class="kn">import</span> <span class="n">Waypoint</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.mutation.iplan_point_mutator</span> <span class="kn">import</span> <span class="n">IPlanPointMutator</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.plan.store.iwaypoint_store</span> <span class="kn">import</span> <span class="n">IWaypointStore</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.canvas.handler.canvas_shape_handler</span> <span class="kn">import</span> <span class="n">CanvasShapeHandler</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.canvas.handler.canvas_tool_handler</span> <span class="kn">import</span> <span class="n">CanvasToolHandler</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.canvas.handler.icanvas_waypoint_builder</span> <span class="kn">import</span> <span class="n">ICanvasWaypointBuilder</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.model.canvas_interaction_state</span> <span class="kn">import</span> <span class="n">CanvasInteractionState</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.model.canvas_settings</span> <span class="kn">import</span> <span class="n">CanvasSettings</span>
 
@@ -73,7 +73,7 @@
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -92,7 +92,7 @@
 <span class="sd">                | _store - Injected waypoint store query collaborator.</span>
 <span class="sd">                | _mutation - Injected plan point mutator collaborator.</span>
 <span class="sd">                | _state - Interactive mouse and selection state.</span>
-<span class="sd">                | _shape_handler - Geometric shape handler for waypoint construction.</span>
+<span class="sd">                | _shape_handler - Injected waypoint builder for canvas geometry.</span>
 <span class="sd">            :methods:</span>
 <span class="sd">                | __init__ - Initializes handler with injected collaborators.</span>
 <span class="sd">                | handle_drag_select - Updates dragged waypoint position during selection drag.</span>
@@ -104,7 +104,7 @@
     <span class="n">_store</span><span class="p">:</span> <span class="n">IWaypointStore</span>
     <span class="n">_mutation</span><span class="p">:</span> <span class="n">IPlanPointMutator</span>
     <span class="n">_state</span><span class="p">:</span> <span class="n">CanvasInteractionState</span>
-    <span class="n">_shape_handler</span><span class="p">:</span> <span class="n">CanvasShapeHandler</span>
+    <span class="n">_shape_handler</span><span class="p">:</span> <span class="n">ICanvasWaypointBuilder</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -112,7 +112,7 @@
         <span class="n">store</span><span class="p">:</span> <span class="n">IWaypointStore</span><span class="p">,</span>
         <span class="n">mutation</span><span class="p">:</span> <span class="n">IPlanPointMutator</span><span class="p">,</span>
         <span class="n">state</span><span class="p">:</span> <span class="n">CanvasInteractionState</span><span class="p">,</span>
-        <span class="n">shape_handler</span><span class="p">:</span> <span class="n">CanvasShapeHandler</span><span class="p">,</span>
+        <span class="n">shape_handler</span><span class="p">:</span> <span class="n">ICanvasWaypointBuilder</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Initializes drag handler with injected collaborators.</span>
@@ -120,12 +120,12 @@
 <span class="sd">            :param store: Injected IWaypointStore instance.</span>
 <span class="sd">            :param mutation: Injected IPlanPointMutator instance.</span>
 <span class="sd">            :param state: CanvasInteractionState instance.</span>
-<span class="sd">            :param shape_handler: Injected CanvasShapeHandler instance.</span>
+<span class="sd">            :param shape_handler: Injected ICanvasWaypointBuilder instance.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IWaypointStore</span><span class="p">]</span> <span class="o">=</span> <span class="n">store</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mutation</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IPlanPointMutator</span><span class="p">]</span> <span class="o">=</span> <span class="n">mutation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">CanvasInteractionState</span><span class="p">]</span> <span class="o">=</span> <span class="n">state</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_shape_handler</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">CanvasShapeHandler</span><span class="p">]</span> <span class="o">=</span> <span class="n">shape_handler</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_shape_handler</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ICanvasWaypointBuilder</span><span class="p">]</span> <span class="o">=</span> <span class="n">shape_handler</span>
 
 <div class="viewcode-block" id="CanvasDragHandler.handle_drag_select">
 <a class="viewcode-back" href="../../../../../../scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.html#scarajectory.infrastructure.gui.canvas.handler.canvas_drag_handler.CanvasDragHandler.handle_drag_select">[docs]</a>
@@ -141,15 +141,7 @@
             <span class="n">cur_pt</span><span class="p">:</span> <span class="n">Waypoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="o">.</span><span class="n">waypoints</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">dragged_node_idx</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_mutation</span><span class="o">.</span><span class="n">update_point</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">dragged_node_idx</span><span class="p">,</span>
-                <span class="n">Waypoint</span><span class="p">(</span>
-                    <span class="n">x</span><span class="o">=</span><span class="n">wx</span><span class="p">,</span>
-                    <span class="n">y</span><span class="o">=</span><span class="n">wy</span><span class="p">,</span>
-                    <span class="n">z</span><span class="o">=</span><span class="n">cur_pt</span><span class="o">.</span><span class="n">z</span><span class="p">,</span>
-                    <span class="n">phi</span><span class="o">=</span><span class="n">cur_pt</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span>
-                    <span class="n">speed</span><span class="o">=</span><span class="n">cur_pt</span><span class="o">.</span><span class="n">speed</span><span class="p">,</span>
-                    <span class="n">name</span><span class="o">=</span><span class="n">cur_pt</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                    <span class="n">command</span><span class="o">=</span><span class="n">cur_pt</span><span class="o">.</span><span class="n">command</span><span class="p">,</span>
-                <span class="p">),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_shape_handler</span><span class="o">.</span><span class="n">create_relocated_waypoint</span><span class="p">(</span><span class="n">cur_pt</span><span class="p">,</span> <span class="n">wx</span><span class="p">,</span> <span class="n">wy</span><span class="p">),</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span></div>
 

@@ -26,18 +26,15 @@ from unittest.mock import MagicMock, patch
 
 from scaralang.core.model.dsl.binary.program import BinaryProgram
 from scarajectory.core.model.state.stream_session import StreamSession
-from scarajectory.infrastructure.worker.binary.binary_stream_execution_worker import (
-    BinaryStreamExecutionWorker,
-)
-from scarajectory.infrastructure.worker.binary.binary_stream_execution_worker_factory import (
-    BinaryStreamExecutionWorkerFactory,
-)
+from scarajectory.infrastructure.worker.binary.binary_stream_execution_worker import BinaryStreamExecutionWorker
+from scarajectory.infrastructure.worker.binary.binary_stream_execution_worker_factory import BinaryStreamExecutionWorkerFactory
+from scarajectory.infrastructure.worker.binary.binary_stream_runner_bundle import BinaryStreamRunnerBundle
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -49,10 +46,10 @@ class BinaryStreamExecutionWorkerTestCase(TestCase):
     def test_worker_waypoints_lifecycle(self) -> None:
         '''Verifies start, pause, resume, and stop lifecycle for waypoint streaming.'''
         mock_loop_runner = MagicMock()
-        mock_barrier = MagicMock()
+        mock_coordinator = MagicMock()
         worker = BinaryStreamExecutionWorker(
             loop_runner=mock_loop_runner,
-            barrier_coordinator=mock_barrier,
+            coordinator=mock_coordinator,
         )
 
         session = StreamSession(
@@ -64,25 +61,26 @@ class BinaryStreamExecutionWorkerTestCase(TestCase):
             start_time=0.0,
         )
 
-        with patch('scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.Thread') as mock_thread_cls:
-            mock_thread = MagicMock()
-            mock_thread_cls.return_value = mock_thread
+        worker.start(session=session)
+        mock_coordinator.start_thread.assert_called_once()
 
-            worker.start(session=session)
-            mock_thread.start.assert_called_once()
+        worker.pause()
+        mock_coordinator.set_paused.assert_called_with(paused=True)
 
-            worker.pause()
-            worker.resume()
-            worker.stop()
-            mock_barrier.reset.assert_called_once()
+        worker.resume()
+        mock_coordinator.set_paused.assert_called_with(paused=False)
+
+        worker.stop()
+        mock_coordinator.stop.assert_called_once()
 
     def test_worker_program_lifecycle(self) -> None:
         '''Verifies start_program launches loop runner for pre-compiled binary steps.'''
         mock_loop_runner = MagicMock()
-        mock_barrier = MagicMock()
+        mock_coordinator = MagicMock()
+        mock_coordinator.is_running.return_value = True
         worker = BinaryStreamExecutionWorker(
             loop_runner=mock_loop_runner,
-            barrier_coordinator=mock_barrier,
+            coordinator=mock_coordinator,
         )
 
         session = StreamSession(
@@ -95,33 +93,26 @@ class BinaryStreamExecutionWorkerTestCase(TestCase):
         )
         mock_program = MagicMock(spec=BinaryProgram)
 
-        with patch(
-            'scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.Thread'
-        ) as mock_thread_cls:
-            mock_thread = MagicMock()
-            mock_thread.is_alive.return_value = True
-            mock_thread_cls.return_value = mock_thread
-
-            worker.start_program(program=mock_program, session=session)
-            mock_thread.start.assert_called_once()
-            self.assertTrue(worker.is_running())
+        worker.start_program(program=mock_program, session=session)
+        mock_coordinator.start_thread.assert_called_once()
+        self.assertTrue(worker.is_running())
 
     def test_handle_incoming_bytes(self) -> None:
         '''Verifies handle_incoming_bytes delegates and triggers stop on fault.'''
         mock_loop_runner = MagicMock()
-        mock_barrier = MagicMock()
+        mock_coordinator = MagicMock()
         worker = BinaryStreamExecutionWorker(
             loop_runner=mock_loop_runner,
-            barrier_coordinator=mock_barrier,
+            coordinator=mock_coordinator,
         )
 
         mock_loop_runner.handle_incoming_bytes.return_value = False
         worker.handle_incoming_bytes(b'\xAA\x01')
-        mock_barrier.reset.assert_not_called()
+        mock_coordinator.stop.assert_not_called()
 
         mock_loop_runner.handle_incoming_bytes.return_value = True
         worker.handle_incoming_bytes(b'\xEE\xFF')
-        mock_barrier.reset.assert_called_once()
+        mock_coordinator.stop.assert_called_once()
 
     def test_factory_methods_and_version(self) -> None:
         '''Verifies factory creation with default or injected parser and version string.'''
@@ -140,7 +131,7 @@ class BinaryStreamExecutionWorkerTestCase(TestCase):
             mock_lr_create.return_value = MagicMock()
             mock_lr_create_parser.return_value = MagicMock()
 
-            worker1 = BinaryStreamExecutionWorkerFactory.create(
+            runner_bundle = BinaryStreamRunnerBundle(
                 pacing_bundle=mock_bundle,
                 packet_strategy=mock_strategy,
                 byte_sender=mock_sender,
@@ -148,21 +139,18 @@ class BinaryStreamExecutionWorkerTestCase(TestCase):
                 observer_dispatcher=mock_dispatcher,
                 pacing_config=mock_pacing,
             )
+
+            worker1 = BinaryStreamExecutionWorkerFactory.create(runner_bundle)
             self.assertIsInstance(worker1, BinaryStreamExecutionWorker)
 
             mock_parser = MagicMock()
             worker2 = BinaryStreamExecutionWorkerFactory.create_with_parser(
-                pacing_bundle=mock_bundle,
-                packet_strategy=mock_strategy,
-                frame_parser=mock_parser,
-                byte_sender=mock_sender,
-                state_controller=mock_state,
-                observer_dispatcher=mock_dispatcher,
-                pacing_config=mock_pacing,
+                runner_bundle,
+                mock_parser,
             )
             self.assertIsInstance(worker2, BinaryStreamExecutionWorker)
 
-        self.assertEqual(BinaryStreamExecutionWorkerFactory.get_version(), '1.0.4')
+        self.assertEqual(BinaryStreamExecutionWorkerFactory.get_version(), '1.0.3')
 
 
 if __name__ == '__main__':

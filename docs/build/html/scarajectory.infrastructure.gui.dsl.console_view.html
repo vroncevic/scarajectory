@@ -72,7 +72,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.console_view.DslConsoleView">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.gui.dsl.console_view.</span></span><span class="sig-name descname"><span class="pre">DslConsoleView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Widget</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/dsl/console_view.html#DslConsoleView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.console_view.DslConsoleView" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Labelframe</span></code></p>
-<p>Compiler diagnostic log console displaying formatted success and error messages.</p>
+<p>Compiler diagnostic log console displaying multi-level formatted messages.</p>
 <p>It defines:</p>
 <blockquote>
 <div><dl class="field-list">
@@ -84,8 +84,10 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dt class="field-even">methods<span class="colon">:</span></dt>
 <dd class="field-even"><div class="line-block">
 <div class="line">__init__ - Initializes console layout and text buffer.</div>
-<div class="line">log - Logs message string with success/error color formatting.</div>
+<div class="line">append_log - Appends message string with syntax-colored level tag.</div>
+<div class="line">log - Backward-compatible log call delegating to append_log.</div>
 <div class="line">clear - Clears the console output.</div>
+<div class="line">get_text - Returns current console buffer content.</div>
 </div>
 </dd>
 </dl>
@@ -96,12 +98,43 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.console_view.DslConsoleView.append_log">
+<span class="sig-name descname"><span class="pre">append_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'info'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/dsl/console_view.html#DslConsoleView.append_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.console_view.DslConsoleView.append_log" title="Link to this definition">¶</a></dt>
+<dd><p>Appends message string with syntax-colored level tag and auto-scrolls.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> – Message string to log.</p></li>
+<li><p><strong>level</strong> – Severity level tag (‘info’, ‘success’, ‘warning’, ‘error’, ‘neutral’).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.console_view.DslConsoleView.clear">
 <span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/dsl/console_view.html#DslConsoleView.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.console_view.DslConsoleView.clear" title="Link to this definition">¶</a></dt>
 <dd><p>Clears the console output.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Exceptions<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.console_view.DslConsoleView.get_text">
+<span class="sig-name descname"><span class="pre">get_text</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/gui/dsl/console_view.html#DslConsoleView.get_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.console_view.DslConsoleView.get_text" title="Link to this definition">¶</a></dt>
+<dd><p>Returns current console buffer content.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String content of the console buffer.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -140,7 +173,9 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <li><a class="reference internal" href="#">scarajectory.infrastructure.gui.dsl.console_view module</a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.console_view.DslConsoleView"><code class="docutils literal notranslate"><span class="pre">DslConsoleView</span></code></a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.console_view.DslConsoleView._txt_console"><code class="docutils literal notranslate"><span class="pre">DslConsoleView._txt_console</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.console_view.DslConsoleView.append_log"><code class="docutils literal notranslate"><span class="pre">DslConsoleView.append_log()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.console_view.DslConsoleView.clear"><code class="docutils literal notranslate"><span class="pre">DslConsoleView.clear()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.console_view.DslConsoleView.get_text"><code class="docutils literal notranslate"><span class="pre">DslConsoleView.get_text()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.console_view.DslConsoleView.log"><code class="docutils literal notranslate"><span class="pre">DslConsoleView.log()</span></code></a></li>
 </ul>
 </li>

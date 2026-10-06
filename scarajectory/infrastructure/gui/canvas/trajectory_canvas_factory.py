@@ -43,7 +43,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -94,9 +94,7 @@ class TrajectoryCanvasFactory:
         status_presenter: CanvasStatusPresenter = (
             CanvasStatusPresenterFactory.create()
         )
-        canvas.mount_navigation(
-            navigator=navigator, status_presenter=status_presenter
-        )
+        canvas.attach_presentation(navigator, status_presenter)
         observer_bridge: CanvasPlanObserverBridge = (
             CanvasPlanObserverBridgeFactory.create(canvas.redraw)
         )

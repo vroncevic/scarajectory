@@ -64,12 +64,12 @@ See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
 </dd>
-<dt>Info</dt><dd><p>Infrastructure reader for caching raw SCARA JSON configuration settings using ATS Loader.</p>
+<dt>Info</dt><dd><p>Infrastructure reader for caching raw SCARA JSON configuration settings.</p>
 </dd>
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.settings.settings_reader.SettingsReader">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.settings.settings_reader.</span></span><span class="sig-name descname"><span class="pre">SettingsReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheme_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context_bundle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ContextBundle</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/settings/settings_reader.html#SettingsReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.settings.settings_reader.SettingsReader" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.settings.settings_reader.</span></span><span class="sig-name descname"><span class="pre">SettingsReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheme_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">io_factory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.storage.config_io.iconfig_io_factory.html#scarajectory.infrastructure.storage.config_io.iconfig_io_factory.IConfigIOFactory" title="scarajectory.infrastructure.storage.config_io.iconfig_io_factory.IConfigIOFactory"><span class="pre">IConfigIOFactory</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/settings/settings_reader.html#SettingsReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.settings.settings_reader.SettingsReader" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Reader adapter caching raw robot settings from JSON schema and config files.</p>
 <p>It defines:</p>
@@ -81,13 +81,13 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <div class="line">DEFAULT_SCHEME_CONFIG - Default absolute path to scheme.json.</div>
 <div class="line">_config_path - Absolute path to scara_geometry.json.</div>
 <div class="line">_scheme_path - Absolute path to scheme.json.</div>
-<div class="line">_context - The ContextBundle for ATS configuration I/O operations.</div>
+<div class="line">_io_factory - The configuration I/O factory constructing loaders.</div>
 <div class="line">_cached_config - Cached raw configuration dictionary.</div>
 </div>
 </dd>
 <dt class="field-even">methods<span class="colon">:</span></dt>
 <dd class="field-even"><div class="line-block">
-<div class="line">__init__ - Initializes SettingsReader with configuration file paths and context bundle.</div>
+<div class="line">__init__ - Initializes SettingsReader with configuration file paths and I/O factory.</div>
 <div class="line">read_settings - Loads and caches raw dictionary of settings.</div>
 <div class="line">get_setting - Retrieves setting value by key with required fallback value.</div>
 </div>
@@ -115,8 +115,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.settings.settings_reader.SettingsReader._context">
-<span class="sig-name descname"><span class="pre">_context</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ContextBundle</span></em><a class="headerlink" href="#scarajectory.infrastructure.settings.settings_reader.SettingsReader._context" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="scarajectory.infrastructure.settings.settings_reader.SettingsReader._io_factory">
+<span class="sig-name descname"><span class="pre">_io_factory</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.storage.config_io.iconfig_io_factory.html#scarajectory.infrastructure.storage.config_io.iconfig_io_factory.IConfigIOFactory" title="scarajectory.infrastructure.storage.config_io.iconfig_io_factory.IConfigIOFactory"><span class="pre">IConfigIOFactory</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.settings.settings_reader.SettingsReader._io_factory" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -144,7 +144,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.settings.settings_reader.SettingsReader.read_settings">
 <span class="sig-name descname"><span class="pre">read_settings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/settings/settings_reader.html#SettingsReader.read_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.settings.settings_reader.SettingsReader.read_settings" title="Link to this definition">¶</a></dt>
-<dd><p>Reads and returns configuration parameters dictionary using ATS Loader.</p>
+<dd><p>Reads and returns configuration parameters dictionary using configuration loader.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Dictionary of configuration keys to float values.</p>
@@ -172,7 +172,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <li><a class="reference internal" href="#scarajectory.infrastructure.settings.settings_reader.SettingsReader.DEFAULT_SCHEME_CONFIG"><code class="docutils literal notranslate"><span class="pre">SettingsReader.DEFAULT_SCHEME_CONFIG</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.settings.settings_reader.SettingsReader._cached_config"><code class="docutils literal notranslate"><span class="pre">SettingsReader._cached_config</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.settings.settings_reader.SettingsReader._config_path"><code class="docutils literal notranslate"><span class="pre">SettingsReader._config_path</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.settings.settings_reader.SettingsReader._context"><code class="docutils literal notranslate"><span class="pre">SettingsReader._context</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.settings.settings_reader.SettingsReader._io_factory"><code class="docutils literal notranslate"><span class="pre">SettingsReader._io_factory</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.settings.settings_reader.SettingsReader._scheme_path"><code class="docutils literal notranslate"><span class="pre">SettingsReader._scheme_path</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.settings.settings_reader.SettingsReader.get_setting"><code class="docutils literal notranslate"><span class="pre">SettingsReader.get_setting()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.settings.settings_reader.SettingsReader.read_settings"><code class="docutils literal notranslate"><span class="pre">SettingsReader.read_settings()</span></code></a></li>

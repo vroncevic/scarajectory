@@ -21,23 +21,25 @@ Info
 
 from __future__ import annotations
 
-from scaralang.infrastructure.communication.protocol.binary.parser.binary_frame_parser import BinaryFrameParser
+from scaralang.core.service.protocol.ibinary_frame_parser import IBinaryFrameParser
 from scaralang.infrastructure.communication.protocol.binary.parser.binary_frame_parser_factory import BinaryFrameParserFactory
-from scarajectory.core.model.streaming.stream_pacing_config import StreamPacingConfig
-from scarajectory.core.service.pacing.iflow_pacing_controller import IFlowPacingController
-from scarajectory.core.service.packet.ipacket_strategy import IPacketStrategy
-from scarajectory.core.service.state.istream_state_controller import IStreamStateController
-from scarajectory.core.service.streaming.observer.istream_observer_dispatcher import IStreamObserverDispatcher
-from scarajectory.core.service.worker.ibyte_sender import IByteSender
+
+from scarajectory.infrastructure.worker.binary.binary_loop_runner_bundle import BinaryLoopRunnerBundle
+from scarajectory.infrastructure.worker.binary.binary_queue_drainer_factory import BinaryQueueDrainerFactory
+from scarajectory.infrastructure.worker.binary.binary_step_bundle import BinaryStepBundle
+from scarajectory.infrastructure.worker.binary.binary_step_dispatcher_factory import BinaryStepDispatcherFactory
 from scarajectory.infrastructure.worker.binary.binary_stream_frame_handler_factory import BinaryStreamFrameHandlerFactory
 from scarajectory.infrastructure.worker.binary.binary_stream_loop_runner import BinaryStreamLoopRunner
+from scarajectory.infrastructure.worker.binary.binary_stream_runner_bundle import BinaryStreamRunnerBundle
+from scarajectory.infrastructure.worker.binary.ibinary_queue_drainer import IBinaryQueueDrainer
+from scarajectory.infrastructure.worker.binary.ibinary_step_dispatcher import IBinaryStepDispatcher
 from scarajectory.infrastructure.worker.binary.ibinary_stream_frame_handler import IBinaryStreamFrameHandler
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -56,90 +58,89 @@ class BinaryStreamLoopRunnerFactory:
     '''
 
     @classmethod
-    def create(
-        cls,
-        *,
-        flow_pacing: IFlowPacingController,
-        packet_strategy: IPacketStrategy,
-        byte_sender: IByteSender,
-        state_controller: IStreamStateController,
-        observer_dispatcher: IStreamObserverDispatcher,
-        pacing_config: StreamPacingConfig,
-    ) -> BinaryStreamLoopRunner:
+    def create(cls, bundle: BinaryStreamRunnerBundle) -> BinaryStreamLoopRunner:
         '''
             Constructs BinaryStreamLoopRunner with internal frame parser.
 
-            :param flow_pacing: IFlowPacingController managing buffer queue.
-            :param packet_strategy: IPacketStrategy encoding waypoints.
-            :param byte_sender: IByteSender transmitting raw byte stream.
-            :param state_controller: IStreamStateController managing stream lifecycle.
-            :param observer_dispatcher: IStreamObserverDispatcher emitting progress and logs.
-            :param pacing_config: StreamPacingConfig with loop pacing delays.
+            :param bundle: BinaryStreamRunnerBundle containing collaborators.
             :return: BinaryStreamLoopRunner instance.
             :exceptions: None.
         '''
+        step_bundle: BinaryStepBundle = BinaryStepBundle(
+            flow_pacing=bundle.pacing_bundle.pacing_controller,
+            packet_strategy=bundle.packet_strategy,
+            byte_sender=bundle.byte_sender,
+            state_controller=bundle.state_controller,
+            observer_dispatcher=bundle.observer_dispatcher,
+        )
+        step_dispatcher: IBinaryStepDispatcher = (
+            BinaryStepDispatcherFactory.create(step_bundle)
+        )
+        queue_drainer: IBinaryQueueDrainer = BinaryQueueDrainerFactory.create(
+            state_controller=bundle.state_controller,
+            observer_dispatcher=bundle.observer_dispatcher,
+            pacing_config=bundle.pacing_config,
+        )
         frame_handler: IBinaryStreamFrameHandler = (
             BinaryStreamFrameHandlerFactory.create(
-                flow_pacing=flow_pacing,
-                state_controller=state_controller,
-                observer_dispatcher=observer_dispatcher,
+                flow_pacing=bundle.pacing_bundle.pacing_controller,
+                state_controller=bundle.state_controller,
+                observer_dispatcher=bundle.observer_dispatcher,
             )
         )
-
-        return BinaryStreamLoopRunner(
-            flow_pacing=flow_pacing,
-            packet_strategy=packet_strategy,
+        loop_bundle: BinaryLoopRunnerBundle = BinaryLoopRunnerBundle(
+            step_dispatcher=step_dispatcher,
+            queue_drainer=queue_drainer,
             frame_parser=BinaryFrameParserFactory.create(),
             frame_handler=frame_handler,
-            byte_sender=byte_sender,
-            state_controller=state_controller,
-            observer_dispatcher=observer_dispatcher,
-            pacing_config=pacing_config,
+            pacing_config=bundle.pacing_config,
         )
+        return BinaryStreamLoopRunner(loop_bundle)
 
     @classmethod
     def create_with_parser(
         cls,
-        *,
-        flow_pacing: IFlowPacingController,
-        packet_strategy: IPacketStrategy,
-        frame_parser: BinaryFrameParser,
-        byte_sender: IByteSender,
-        state_controller: IStreamStateController,
-        observer_dispatcher: IStreamObserverDispatcher,
-        pacing_config: StreamPacingConfig,
+        bundle: BinaryStreamRunnerBundle,
+        frame_parser: IBinaryFrameParser,
     ) -> BinaryStreamLoopRunner:
         '''
             Constructs BinaryStreamLoopRunner with injected frame parser.
 
-            :param flow_pacing: IFlowPacingController managing buffer queue.
-            :param packet_strategy: IPacketStrategy encoding waypoints.
-            :param frame_parser: BinaryFrameParser decoding inbound frames.
-            :param byte_sender: IByteSender transmitting raw byte stream.
-            :param state_controller: IStreamStateController managing stream lifecycle.
-            :param observer_dispatcher: IStreamObserverDispatcher emitting progress and logs.
-            :param pacing_config: StreamPacingConfig with loop pacing delays.
+            :param bundle: BinaryStreamRunnerBundle containing collaborators.
+            :param frame_parser: IBinaryFrameParser decoding inbound frames.
             :return: BinaryStreamLoopRunner instance.
             :exceptions: None.
         '''
+        step_bundle: BinaryStepBundle = BinaryStepBundle(
+            flow_pacing=bundle.pacing_bundle.pacing_controller,
+            packet_strategy=bundle.packet_strategy,
+            byte_sender=bundle.byte_sender,
+            state_controller=bundle.state_controller,
+            observer_dispatcher=bundle.observer_dispatcher,
+        )
+        step_dispatcher: IBinaryStepDispatcher = (
+            BinaryStepDispatcherFactory.create(step_bundle)
+        )
+        queue_drainer: IBinaryQueueDrainer = BinaryQueueDrainerFactory.create(
+            state_controller=bundle.state_controller,
+            observer_dispatcher=bundle.observer_dispatcher,
+            pacing_config=bundle.pacing_config,
+        )
         frame_handler: IBinaryStreamFrameHandler = (
             BinaryStreamFrameHandlerFactory.create(
-                flow_pacing=flow_pacing,
-                state_controller=state_controller,
-                observer_dispatcher=observer_dispatcher,
+                flow_pacing=bundle.pacing_bundle.pacing_controller,
+                state_controller=bundle.state_controller,
+                observer_dispatcher=bundle.observer_dispatcher,
             )
         )
-
-        return BinaryStreamLoopRunner(
-            flow_pacing=flow_pacing,
-            packet_strategy=packet_strategy,
+        loop_bundle: BinaryLoopRunnerBundle = BinaryLoopRunnerBundle(
+            step_dispatcher=step_dispatcher,
+            queue_drainer=queue_drainer,
             frame_parser=frame_parser,
             frame_handler=frame_handler,
-            byte_sender=byte_sender,
-            state_controller=state_controller,
-            observer_dispatcher=observer_dispatcher,
-            pacing_config=pacing_config,
+            pacing_config=bundle.pacing_config,
         )
+        return BinaryStreamLoopRunner(loop_bundle)
 
     @classmethod
     def get_version(cls) -> str:

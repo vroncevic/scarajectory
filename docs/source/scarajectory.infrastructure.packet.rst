@@ -9,6 +9,7 @@ Submodules
 
    scarajectory.infrastructure.packet.binary_packet_strategy
    scarajectory.infrastructure.packet.binary_packet_strategy_factory
+   scarajectory.infrastructure.packet.ipacket_strategy
 
 Module contents
 ---------------

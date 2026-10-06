@@ -33,7 +33,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -79,6 +79,18 @@ class PreviewTabTestCase(TestCase):
         text_widgets = [w for w in tab.winfo_children() if isinstance(w, Text)]
         self.assertEqual(text_widgets[0].get('1.0', END).strip(), 'M100\nM101')
 
+    def test_preview_tab_generate_preview_error(self) -> None:
+        '''Verifies generate_preview handles export failure gracefully.'''
+        mock_plan = MagicMock()
+        mock_exporter = MagicMock()
+        mock_exporter.export_plan.side_effect = RuntimeError('Export failure')
+
+        tab = PreviewTab(self.root, plan=mock_plan, exporter=mock_exporter)
+        tab.generate_preview()
+
+        text_widgets = [w for w in tab.winfo_children() if isinstance(w, Text)]
+        self.assertIn('[ERROR] Plan export failed', text_widgets[0].get('1.0', END))
+
     def test_preview_tab_factory_create(self) -> None:
         '''Verifies PreviewTabFactory creates a valid PreviewTab instance.'''
         mock_plan = MagicMock()
@@ -89,7 +101,7 @@ class PreviewTabTestCase(TestCase):
 
     def test_preview_tab_factory_version(self) -> None:
         '''Verifies factory returns semantic version string.'''
-        self.assertEqual(PreviewTabFactory.get_version(), '1.0.4')
+        self.assertEqual(PreviewTabFactory.get_version(), '1.0.3')
 
 
 if __name__ == '__main__':

@@ -54,29 +54,42 @@
 <span class="sd">    You should have received a copy of the GNU General Public License along</span>
 <span class="sd">    with this program. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 <span class="sd">Info</span>
-<span class="sd">    Builder assembling binary frame codecs and constructing IScaraDslService pipeline.</span>
+<span class="sd">    Builder assembling fine-grained DSL role services into DslPipelineBundle.</span>
 <span class="sd">&#39;&#39;&#39;</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">scaralang.core.model.kinematics.transmission_parameters</span> <span class="kn">import</span> <span class="n">TransmissionParameters</span>
-<span class="kn">from</span> <span class="nn">scaralang.core.service.dsl.iscara_dsl_service</span> <span class="kn">import</span> <span class="n">IScaraDslService</span>
-<span class="kn">from</span> <span class="nn">scaralang.core.service.dsl.scara_dsl_pipeline_bundle</span> <span class="kn">import</span> <span class="n">ScaraDslPipelineBundle</span>
-<span class="kn">from</span> <span class="nn">scaralang.core.service.dsl.scara_dsl_service_factory</span> <span class="kn">import</span> <span class="n">ScaraDslServiceFactory</span>
-<span class="kn">from</span> <span class="nn">scaralang.core.service.kinematics.ikinematics_service</span> <span class="kn">import</span> <span class="n">IKinematicsService</span>
-<span class="kn">from</span> <span class="nn">scaralang.core.service.protocol.ibinary_frame_builder</span> <span class="kn">import</span> <span class="n">IBinaryFrameBuilder</span>
-<span class="kn">from</span> <span class="nn">scaralang.core.service.protocol.ibinary_frame_parser</span> <span class="kn">import</span> <span class="n">IBinaryFrameParser</span>
-<span class="kn">from</span> <span class="nn">scaralang.core.service.protocol.ibinary_payload_unpacker</span> <span class="kn">import</span> <span class="n">IBinaryPayloadUnpacker</span>
-<span class="kn">from</span> <span class="nn">scaralang.core.service.trajectory.validation.itrajectory_validator</span> <span class="kn">import</span> <span class="n">ITrajectoryValidator</span>
-<span class="kn">from</span> <span class="nn">scaralang.infrastructure.communication.protocol.binary.builder.binary_frame_builder_factory</span> <span class="kn">import</span> <span class="n">BinaryFrameBuilderFactory</span>
-<span class="kn">from</span> <span class="nn">scaralang.infrastructure.communication.protocol.binary.parser.binary_frame_parser_factory</span> <span class="kn">import</span> <span class="n">BinaryFrameParserFactory</span>
-<span class="kn">from</span> <span class="nn">scaralang.infrastructure.communication.protocol.binary.parser.binary_payload_unpacker_factory</span> <span class="kn">import</span> <span class="n">BinaryPayloadUnpackerFactory</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.compiler.iscara_compiler</span> <span class="kn">import</span> <span class="n">IScaraCompiler</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.compiler.plan.iscara_plan_compiler</span> <span class="kn">import</span> <span class="n">IScaraPlanCompiler</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.compiler.plan.itrajectory_plan_compiler</span> <span class="kn">import</span> <span class="n">ITrajectoryPlanCompiler</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.compiler.plan.scara_plan_compiler_factory</span> <span class="kn">import</span> <span class="n">ScaraPlanCompilerFactory</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.compiler.plan.trajectory_plan_compiler_factory</span> <span class="kn">import</span> <span class="n">TrajectoryPlanCompilerFactory</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.compiler.scara_compiler_factory</span> <span class="kn">import</span> <span class="n">ScaraCompilerFactory</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.decompiler.iscara_decompiler</span> <span class="kn">import</span> <span class="n">IScaraDecompiler</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.decompiler.scara_decompiler_factory</span> <span class="kn">import</span> <span class="n">ScaraDecompilerFactory</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.exporter.scara.iscara_plan_exporter</span> <span class="kn">import</span> <span class="n">IScaraPlanExporter</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.exporter.scara.scara_plan_exporter_factory</span> <span class="kn">import</span> <span class="n">ScaraPlanExporterFactory</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.linter.diagnostic.scara_diagnostic_formatter_factory</span> <span class="kn">import</span> <span class="n">ScaraDiagnosticFormatterFactory</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.linter.iscara_linter</span> <span class="kn">import</span> <span class="n">IScaraLinter</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.linter.scara_linter_factory</span> <span class="kn">import</span> <span class="n">ScaraLinterFactory</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.linter.script.iscara_dsl_validator</span> <span class="kn">import</span> <span class="n">IScaraDslValidator</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.linter.script.scara_script_validator_factory</span> <span class="kn">import</span> <span class="n">ScaraScriptValidatorFactory</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.parser.iscara_parser</span> <span class="kn">import</span> <span class="n">IScaraParser</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.parser.lexer.scara_lexer_factory</span> <span class="kn">import</span> <span class="n">ScaraLexerFactory</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.parser.scara_parser_factory</span> <span class="kn">import</span> <span class="n">ScaraParserFactory</span>
+<span class="kn">from</span> <span class="nn">scaralang.infrastructure.command.compile.error.compile_error_handler_factory</span> <span class="kn">import</span> <span class="n">CompileErrorHandlerFactory</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.validation.itrajectory_validator</span> <span class="kn">import</span> <span class="n">ITrajectoryValidator</span>
+<span class="kn">from</span> <span class="nn">scaralang.infrastructure.command.decompile.error.decompile_error_handler_factory</span> <span class="kn">import</span> <span class="n">DecompileErrorHandlerFactory</span>
+<span class="kn">from</span> <span class="nn">scaralang.infrastructure.command.export.error.export_error_handler_factory</span> <span class="kn">import</span> <span class="n">ExportErrorHandlerFactory</span>
+<span class="kn">from</span> <span class="nn">scaralang.infrastructure.command.lint.error.lint_error_handler_factory</span> <span class="kn">import</span> <span class="n">LintErrorHandlerFactory</span>
+<span class="kn">from</span> <span class="nn">scarajectory.setup.pipeline.dsl_diagnostic_bundle</span> <span class="kn">import</span> <span class="n">DslDiagnosticBundle</span>
+<span class="kn">from</span> <span class="nn">scarajectory.setup.pipeline.dsl_pipeline_bundle</span> <span class="kn">import</span> <span class="n">DslPipelineBundle</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -86,12 +99,13 @@
 <a class="viewcode-back" href="../../../../scarajectory.setup.pipeline.dsl_pipeline_builder.html#scarajectory.setup.pipeline.dsl_pipeline_builder.DslPipelineBuilder">[docs]</a>
 <span class="k">class</span> <span class="nc">DslPipelineBuilder</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Builder assembling binary frame codecs and constructing IScaraDslService pipeline.</span>
+<span class="sd">        Builder assembling fine-grained DSL role services into DslPipelineBundle.</span>
 
 <span class="sd">        It defines:</span>
 
 <span class="sd">            :methods:</span>
-<span class="sd">                | build - Assembles DSL pipeline bundle and instantiates ScaraDslService.</span>
+<span class="sd">                | build - Assembles DSL compiler, validator, and exporter services.</span>
+<span class="sd">                | get_version - Returns builder version string.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
 <div class="viewcode-block" id="DslPipelineBuilder.build">
@@ -101,33 +115,71 @@
         <span class="bp">cls</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">validator</span><span class="p">:</span> <span class="n">ITrajectoryValidator</span><span class="p">,</span>
-        <span class="n">kinematics</span><span class="p">:</span> <span class="n">IKinematicsService</span><span class="p">,</span>
-        <span class="n">transmission</span><span class="p">:</span> <span class="n">TransmissionParameters</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IScaraDslService</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DslPipelineBundle</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Assembles binary codecs, creates pipeline bundle, and returns IScaraDslService.</span>
+<span class="sd">            Assembles parser, compiler, linter, validator and exporter services.</span>
 
 <span class="sd">            :param validator: Injected ITrajectoryValidator instance.</span>
-<span class="sd">            :param kinematics: Injected IKinematicsService instance.</span>
-<span class="sd">            :param transmission: Injected TransmissionParameters domain model.</span>
-<span class="sd">            :return: Fully assembled IScaraDslService instance.</span>
+<span class="sd">            :return: Fully assembled DslPipelineBundle instance.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">frame_builder</span><span class="p">:</span> <span class="n">IBinaryFrameBuilder</span> <span class="o">=</span> <span class="n">BinaryFrameBuilderFactory</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
-        <span class="n">frame_parser</span><span class="p">:</span> <span class="n">IBinaryFrameParser</span> <span class="o">=</span> <span class="n">BinaryFrameParserFactory</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
-        <span class="n">payload_unpacker</span><span class="p">:</span> <span class="n">IBinaryPayloadUnpacker</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">BinaryPayloadUnpackerFactory</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+        <span class="n">parser</span><span class="p">:</span> <span class="n">IScaraParser</span> <span class="o">=</span> <span class="n">ScaraParserFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">lexer</span><span class="o">=</span><span class="n">ScaraLexerFactory</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
         <span class="p">)</span>
-        <span class="n">dsl_bundle</span> <span class="o">=</span> <span class="n">ScaraDslPipelineBundle</span><span class="p">(</span>
-            <span class="n">validator</span><span class="o">=</span><span class="n">validator</span><span class="p">,</span>
-            <span class="n">kinematics</span><span class="o">=</span><span class="n">kinematics</span><span class="p">,</span>
-            <span class="n">transmission</span><span class="o">=</span><span class="n">transmission</span><span class="p">,</span>
-            <span class="n">frame_builder</span><span class="o">=</span><span class="n">frame_builder</span><span class="p">,</span>
-            <span class="n">frame_parser</span><span class="o">=</span><span class="n">frame_parser</span><span class="p">,</span>
-            <span class="n">payload_unpacker</span><span class="o">=</span><span class="n">payload_unpacker</span><span class="p">,</span>
+        <span class="n">compiler</span><span class="p">:</span> <span class="n">ITrajectoryPlanCompiler</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">TrajectoryPlanCompilerFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">validator</span><span class="o">=</span><span class="n">validator</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">linter</span><span class="p">:</span> <span class="n">IScaraLinter</span> <span class="o">=</span> <span class="n">ScaraLinterFactory</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+
+        <span class="n">plan_compiler</span><span class="p">:</span> <span class="n">IScaraPlanCompiler</span> <span class="o">=</span> <span class="n">ScaraPlanCompilerFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">parser</span><span class="o">=</span><span class="n">parser</span><span class="p">,</span>
+            <span class="n">compiler</span><span class="o">=</span><span class="n">compiler</span><span class="p">,</span>
+            <span class="n">linter</span><span class="o">=</span><span class="n">linter</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">dsl_validator</span><span class="p">:</span> <span class="n">IScaraDslValidator</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">ScaraScriptValidatorFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="n">parser</span><span class="o">=</span><span class="n">parser</span><span class="p">,</span>
+                <span class="n">compiler</span><span class="o">=</span><span class="n">compiler</span><span class="p">,</span>
+                <span class="n">linter</span><span class="o">=</span><span class="n">linter</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">plan_exporter</span><span class="p">:</span> <span class="n">IScaraPlanExporter</span> <span class="o">=</span> <span class="n">ScaraPlanExporterFactory</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+
+        <span class="n">wire_compiler</span><span class="p">:</span> <span class="n">IScaraCompiler</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">ScaraCompilerFactory</span><span class="o">.</span><span class="n">create_default</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">decompiler</span><span class="p">:</span> <span class="n">IScaraDecompiler</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">ScaraDecompilerFactory</span><span class="o">.</span><span class="n">create_default</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">diagnostics</span> <span class="o">=</span> <span class="n">DslDiagnosticBundle</span><span class="p">(</span>
+            <span class="n">compile_error_handler</span><span class="o">=</span><span class="n">CompileErrorHandlerFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(),</span>
+            <span class="n">lint_error_handler</span><span class="o">=</span><span class="n">LintErrorHandlerFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(),</span>
+            <span class="n">decompile_error_handler</span><span class="o">=</span><span class="n">DecompileErrorHandlerFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(),</span>
+            <span class="n">export_error_handler</span><span class="o">=</span><span class="n">ExportErrorHandlerFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(),</span>
+            <span class="n">diagnostic_formatter</span><span class="o">=</span><span class="n">ScaraDiagnosticFormatterFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(),</span>
         <span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">ScaraDslServiceFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">bundle</span><span class="o">=</span><span class="n">dsl_bundle</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">DslPipelineBundle</span><span class="p">(</span>
+            <span class="n">compiler</span><span class="o">=</span><span class="n">wire_compiler</span><span class="p">,</span>
+            <span class="n">decompiler</span><span class="o">=</span><span class="n">decompiler</span><span class="p">,</span>
+            <span class="n">plan_compiler</span><span class="o">=</span><span class="n">plan_compiler</span><span class="p">,</span>
+            <span class="n">plan_exporter</span><span class="o">=</span><span class="n">plan_exporter</span><span class="p">,</span>
+            <span class="n">validator</span><span class="o">=</span><span class="n">dsl_validator</span><span class="p">,</span>
+            <span class="n">diagnostics</span><span class="o">=</span><span class="n">diagnostics</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DslPipelineBuilder.get_version">
+<a class="viewcode-back" href="../../../../scarajectory.setup.pipeline.dsl_pipeline_builder.html#scarajectory.setup.pipeline.dsl_pipeline_builder.DslPipelineBuilder.get_version">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_version</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Returns the builder version string representation.</span>
+
+<span class="sd">            :return: Builder version string.</span>
+<span class="sd">            :exceptions: None.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">__version__</span></div>
 </div>
 
 </pre></div>

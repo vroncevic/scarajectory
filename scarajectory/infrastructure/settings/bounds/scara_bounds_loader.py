@@ -24,16 +24,21 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Final
 
+from scaralang.core.model.kinematics.joint_angle_bounds import JointAngleBounds
+from scaralang.core.model.kinematics.link_dimensions import LinkDimensions
 from scaralang.core.model.kinematics.scara_bounds import ScaraBounds
-from scarajectory.core.service.kinematics.iscara_deadzone_calculator import IScaraDeadzoneCalculator
-from scarajectory.core.service.settings.iscara_bounds_parser import IScaraBoundsParser
+from scaralang.core.model.kinematics.singularity_margins import SingularityMargins
+from scaralang.core.model.kinematics.speed_limits import SpeedLimits
+from scaralang.core.model.kinematics.vertical_bounds import VerticalBounds
+
+from scarajectory.infrastructure.settings.bounds.iscara_bounds_parser import IScaraBoundsParser
 from scarajectory.infrastructure.settings.isettings_reader import ISettingsReader
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -47,7 +52,6 @@ class ScaraBoundsLoader:
 
             :attributes:
                 | _reader - Injected ISettingsReader providing configuration key-values.
-                | _deadzone_calculator - Injected domain calculator for kinematic deadzones.
                 | _parser - Injected parser component for bounds options.
 
             :methods:
@@ -58,28 +62,22 @@ class ScaraBoundsLoader:
     '''
 
     _reader: ISettingsReader
-    _deadzone_calculator: IScaraDeadzoneCalculator
     _parser: IScaraBoundsParser
 
     def __init__(
         self,
         *,
         reader: ISettingsReader,
-        deadzone_calculator: IScaraDeadzoneCalculator,
         parser: IScaraBoundsParser,
     ) -> None:
         '''
             Initializes ScaraBoundsLoader with injected collaborators.
 
             :param reader: ISettingsReader instance.
-            :param deadzone_calculator: Domain kinematic deadzone calculator instance.
             :param parser: Bounds options parser component implementing IScaraBoundsParser.
             :exceptions: None.
         '''
         self._reader: Final[ISettingsReader] = reader
-        self._deadzone_calculator: Final[IScaraDeadzoneCalculator] = (
-            deadzone_calculator
-        )
         self._parser: Final[IScaraBoundsParser] = parser
 
     def load_bounds(self) -> ScaraBounds:
@@ -116,31 +114,33 @@ class ScaraBoundsLoader:
         sings: dict[str, float] = self._parser.parse_singularities(
             options=options, cfg=cfg
         )
-        deadzone_r: float = self._deadzone_calculator.calculate_deadzone_radius(
-            geom['l1'], geom['l2'], joints['j2_max_rad']
-        )
 
         return ScaraBounds(
-            l1=geom['l1'],
-            l2=geom['l2'],
-            z_min=geom['z_min'],
-            z_max=geom['z_max'],
-            min_speed=motion['min_speed'],
-            max_speed=motion['max_speed'],
-            default_speed=motion['default_speed'],
-            default_accel=motion['default_accel'],
-            max_accel=motion['max_accel'],
-            j1_min_rad=joints['j1_min_rad'],
-            j1_max_rad=joints['j1_max_rad'],
-            j2_min_rad=joints['j2_min_rad'],
-            j2_max_rad=joints['j2_max_rad'],
-            singularity_outer_margin_mm=sings['singularity_outer_margin_mm'],
-            singularity_inner_margin_mm=sings['singularity_inner_margin_mm'],
-            singularity_theta2_min_rad=sings['singularity_theta2_min_rad'],
-            deadzone_r_min=deadzone_r,
+            links=LinkDimensions(l1=geom['l1'], l2=geom['l2']),
+            vertical=VerticalBounds(z_min=geom['z_min'], z_max=geom['z_max']),
+            speeds=SpeedLimits(
+                min_speed=motion['min_speed'],
+                max_speed=motion['max_speed'],
+                default_speed=motion['default_speed'],
+                default_accel=motion['default_accel'],
+                max_accel=motion['max_accel'],
+            ),
+            joints=JointAngleBounds(
+                j1_min_rad=joints['j1_min_rad'],
+                j1_max_rad=joints['j1_max_rad'],
+                j2_min_rad=joints['j2_min_rad'],
+                j2_max_rad=joints['j2_max_rad'],
+            ),
+            singularity=SingularityMargins(
+                singularity_outer_margin_mm=sings['singularity_outer_margin_mm'],
+                singularity_inner_margin_mm=sings['singularity_inner_margin_mm'],
+                singularity_theta2_min_rad=sings['singularity_theta2_min_rad'],
+                deadzone_r_min=sings['deadzone_r_min'],
+            ),
         )
 
-    def get_version(self) -> str:
+    @classmethod
+    def get_version(cls) -> str:
         '''
             Returns the adapter version string.
 

@@ -36,7 +36,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -76,6 +76,8 @@ class TestPlanSelectionManager(TestCase):
         self.assertEqual(self.selection.selected_index, -1)
         self.selection.select_index(3)
         self.assertEqual(self.selection.selected_index, 3)
+        self.selection.set_index_direct(5)
+        self.assertEqual(self.selection.selected_index, 5)
         self.selection.reset()
         self.assertEqual(self.selection.selected_index, -1)
 
@@ -138,6 +140,7 @@ class TestPlanSelectionManager(TestCase):
         '''
         mgr = PlanSelectionManagerFactory.create_with_index(2)
         self.assertEqual(mgr.selected_index, 2)
+        self.assertTrue(isinstance(PlanSelectionManagerFactory.get_version(), str))
 
     def test_protocol_conformance(self) -> None:
         '''
@@ -160,7 +163,7 @@ class TestPlanSelectionManager(TestCase):
 
         self.assertIsInstance(state, IPlanSelectionState)
         self.assertIsInstance(nav, IPlanSelectionNavigator)
-        self.assertEqual(PlanSelectionNavigatorFactory.get_version(), '1.0.4')
+        self.assertEqual(PlanSelectionNavigatorFactory.get_version(), '1.0.3')
 
         self.assertEqual(state.selected_index, -1)
         self.assertTrue(state.set_selected_index(2, 5))

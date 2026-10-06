@@ -8,7 +8,6 @@ Submodules
    :maxdepth: 4
 
    scarajectory.core.model.telemetry.diagnostics_bundle
-   scarajectory.core.model.telemetry.diagnostics_snapshot
    scarajectory.core.model.telemetry.fault_event
    scarajectory.core.model.telemetry.move_event
    scarajectory.core.model.telemetry.scara_status

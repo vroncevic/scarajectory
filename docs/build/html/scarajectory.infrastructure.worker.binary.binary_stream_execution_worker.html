@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker_factory module" href="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker_factory.html" />
-    <link rel="prev" title="scarajectory.infrastructure.worker.binary package" href="scarajectory.infrastructure.worker.binary.html" /> 
+    <link rel="prev" title="scarajectory.infrastructure.worker.binary.binary_step_dispatcher_factory module" href="scarajectory.infrastructure.worker.binary.binary_step_dispatcher_factory.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -31,7 +31,7 @@
           <a href="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker_factory.html" title="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker_factory module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.worker.binary.html" title="scarajectory.infrastructure.worker.binary package"
+          <a href="scarajectory.infrastructure.worker.binary.binary_step_dispatcher_factory.html" title="scarajectory.infrastructure.worker.binary.binary_step_dispatcher_factory module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
@@ -70,7 +70,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.</span></span><span class="sig-name descname"><span class="pre">BinaryStreamExecutionWorker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop_runner</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.ibinary_stream_loop_runner.html#scarajectory.infrastructure.worker.binary.ibinary_stream_loop_runner.IBinaryStreamLoopRunner" title="scarajectory.infrastructure.worker.binary.ibinary_stream_loop_runner.IBinaryStreamLoopRunner"><span class="pre">IBinaryStreamLoopRunner</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">barrier_coordinator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.barrier.iflow_barrier_coordinator.html#scarajectory.core.service.barrier.iflow_barrier_coordinator.IFlowBarrierCoordinator" title="scarajectory.core.service.barrier.iflow_barrier_coordinator.IFlowBarrierCoordinator"><span class="pre">IFlowBarrierCoordinator</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/worker/binary/binary_stream_execution_worker.html#BinaryStreamExecutionWorker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.</span></span><span class="sig-name descname"><span class="pre">BinaryStreamExecutionWorker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop_runner</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.worker.binary.ibinary_stream_loop_runner.html#scarajectory.infrastructure.worker.binary.ibinary_stream_loop_runner.IBinaryStreamLoopRunner" title="scarajectory.infrastructure.worker.binary.ibinary_stream_loop_runner.IBinaryStreamLoopRunner"><span class="pre">IBinaryStreamLoopRunner</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.worker.thread.iworker_thread_coordinator.html#scarajectory.infrastructure.worker.thread.iworker_thread_coordinator.IWorkerThreadCoordinator" title="scarajectory.infrastructure.worker.thread.iworker_thread_coordinator.IWorkerThreadCoordinator"><span class="pre">IWorkerThreadCoordinator</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/worker/binary/binary_stream_execution_worker.html#BinaryStreamExecutionWorker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Background worker thread managing binary streaming concurrency lifecycle.</p>
 <p>It defines:</p>
@@ -79,17 +79,13 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dt class="field-odd">attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><div class="line-block">
 <div class="line">_loop_runner - IBinaryStreamLoopRunner managing step execution loops.</div>
-<div class="line">_barrier_coordinator - IFlowBarrierCoordinator managing synchronization barriers.</div>
-<div class="line">_worker_thread - Active background worker thread.</div>
-<div class="line">_stop_event - Event signaling streaming loop termination.</div>
-<div class="line">_pause_event - Event signaling transmission pause.</div>
+<div class="line">_coordinator - IWorkerThreadCoordinator managing background thread execution.</div>
 <div class="line">_session - Active trajectory streaming session metrics.</div>
-<div class="line">_is_running - Flag indicating whether worker thread is actively executing.</div>
 </div>
 </dd>
 <dt class="field-even">methods<span class="colon">:</span></dt>
 <dd class="field-even"><div class="line-block">
-<div class="line">__init__ - Initializes worker with injected loop runner and barrier coordinator.</div>
+<div class="line">__init__ - Initializes worker with injected loop runner and thread coordinator.</div>
 <div class="line">start - Spawns background worker thread for waypoint sequence.</div>
 <div class="line">start_program - Spawns background worker thread for binary program.</div>
 <div class="line">pause - Signals transmission pause.</div>
@@ -102,13 +98,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dl>
 </div></blockquote>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._barrier_coordinator">
-<span class="sig-name descname"><span class="pre">_barrier_coordinator</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.barrier.iflow_barrier_coordinator.html#scarajectory.core.service.barrier.iflow_barrier_coordinator.IFlowBarrierCoordinator" title="scarajectory.core.service.barrier.iflow_barrier_coordinator.IFlowBarrierCoordinator"><span class="pre">IFlowBarrierCoordinator</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._barrier_coordinator" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._is_running">
-<span class="sig-name descname"><span class="pre">_is_running</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._is_running" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._coordinator">
+<span class="sig-name descname"><span class="pre">_coordinator</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.worker.thread.iworker_thread_coordinator.html#scarajectory.infrastructure.worker.thread.iworker_thread_coordinator.IWorkerThreadCoordinator" title="scarajectory.infrastructure.worker.thread.iworker_thread_coordinator.IWorkerThreadCoordinator"><span class="pre">IWorkerThreadCoordinator</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._coordinator" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -117,23 +108,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._pause_event">
-<span class="sig-name descname"><span class="pre">_pause_event</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Event</span></em><a class="headerlink" href="#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._pause_event" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._session">
 <span class="sig-name descname"><span class="pre">_session</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.model.state.stream_session.html#scarajectory.core.model.state.stream_session.StreamSession" title="scarajectory.core.model.state.stream_session.StreamSession"><span class="pre">StreamSession</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._session" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._stop_event">
-<span class="sig-name descname"><span class="pre">_stop_event</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Event</span></em><a class="headerlink" href="#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._stop_event" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._worker_thread">
-<span class="sig-name descname"><span class="pre">_worker_thread</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Thread</span></em><a class="headerlink" href="#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._worker_thread" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -244,13 +220,9 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <ul>
 <li><a class="reference internal" href="#">scarajectory.infrastructure.worker.binary.binary_stream_execution_worker module</a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker"><code class="docutils literal notranslate"><span class="pre">BinaryStreamExecutionWorker</span></code></a><ul>
-<li><a class="reference internal" href="#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._barrier_coordinator"><code class="docutils literal notranslate"><span class="pre">BinaryStreamExecutionWorker._barrier_coordinator</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._is_running"><code class="docutils literal notranslate"><span class="pre">BinaryStreamExecutionWorker._is_running</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._coordinator"><code class="docutils literal notranslate"><span class="pre">BinaryStreamExecutionWorker._coordinator</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._loop_runner"><code class="docutils literal notranslate"><span class="pre">BinaryStreamExecutionWorker._loop_runner</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._pause_event"><code class="docutils literal notranslate"><span class="pre">BinaryStreamExecutionWorker._pause_event</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._session"><code class="docutils literal notranslate"><span class="pre">BinaryStreamExecutionWorker._session</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._stop_event"><code class="docutils literal notranslate"><span class="pre">BinaryStreamExecutionWorker._stop_event</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker._worker_thread"><code class="docutils literal notranslate"><span class="pre">BinaryStreamExecutionWorker._worker_thread</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker.handle_incoming_bytes"><code class="docutils literal notranslate"><span class="pre">BinaryStreamExecutionWorker.handle_incoming_bytes()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker.is_running"><code class="docutils literal notranslate"><span class="pre">BinaryStreamExecutionWorker.is_running()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker.pause"><code class="docutils literal notranslate"><span class="pre">BinaryStreamExecutionWorker.pause()</span></code></a></li>
@@ -267,8 +239,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.worker.binary.html"
-                          title="previous chapter">scarajectory.infrastructure.worker.binary package</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.worker.binary.binary_step_dispatcher_factory.html"
+                          title="previous chapter">scarajectory.infrastructure.worker.binary.binary_step_dispatcher_factory module</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -309,7 +281,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker_factory.html" title="scarajectory.infrastructure.worker.binary.binary_stream_execution_worker_factory module"
              >next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.worker.binary.html" title="scarajectory.infrastructure.worker.binary package"
+          <a href="scarajectory.infrastructure.worker.binary.binary_step_dispatcher_factory.html" title="scarajectory.infrastructure.worker.binary.binary_step_dispatcher_factory module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>

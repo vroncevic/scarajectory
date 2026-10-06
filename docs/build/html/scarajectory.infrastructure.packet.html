@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="scarajectory.infrastructure.packet.binary_packet_strategy module" href="scarajectory.infrastructure.packet.binary_packet_strategy.html" />
-    <link rel="prev" title="scarajectory.infrastructure.pacing.flow_pacing_controller_factory module" href="scarajectory.infrastructure.pacing.flow_pacing_controller_factory.html" /> 
+    <link rel="prev" title="scarajectory.infrastructure.pacing.iflow_pacing_controller module" href="scarajectory.infrastructure.pacing.iflow_pacing_controller.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -31,7 +31,7 @@
           <a href="scarajectory.infrastructure.packet.binary_packet_strategy.html" title="scarajectory.infrastructure.packet.binary_packet_strategy module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.pacing.flow_pacing_controller_factory.html" title="scarajectory.infrastructure.pacing.flow_pacing_controller_factory module"
+          <a href="scarajectory.infrastructure.pacing.iflow_pacing_controller.html" title="scarajectory.infrastructure.pacing.iflow_pacing_controller module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
@@ -55,9 +55,8 @@
 <li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.packet.binary_packet_strategy.html">scarajectory.infrastructure.packet.binary_packet_strategy module</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.packet.binary_packet_strategy.html#scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy"><code class="docutils literal notranslate"><span class="pre">BinaryPacketStrategy</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.packet.binary_packet_strategy.html#scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy._builder"><code class="docutils literal notranslate"><span class="pre">BinaryPacketStrategy._builder</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.packet.binary_packet_strategy.html#scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy._calculator"><code class="docutils literal notranslate"><span class="pre">BinaryPacketStrategy._calculator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.packet.binary_packet_strategy.html#scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy._kinematics"><code class="docutils literal notranslate"><span class="pre">BinaryPacketStrategy._kinematics</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.packet.binary_packet_strategy.html#scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy._transmission"><code class="docutils literal notranslate"><span class="pre">BinaryPacketStrategy._transmission</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.packet.binary_packet_strategy.html#scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy._discretizer"><code class="docutils literal notranslate"><span class="pre">BinaryPacketStrategy._discretizer</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.packet.binary_packet_strategy.html#scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy._prev_angles"><code class="docutils literal notranslate"><span class="pre">BinaryPacketStrategy._prev_angles</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.packet.binary_packet_strategy.html#scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy.format_waypoint_packet"><code class="docutils literal notranslate"><span class="pre">BinaryPacketStrategy.format_waypoint_packet()</span></code></a></li>
 </ul>
 </li>
@@ -68,6 +67,16 @@
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.packet.binary_packet_strategy_factory.html#scarajectory.infrastructure.packet.binary_packet_strategy_factory.BinaryPacketStrategyFactory.create"><code class="docutils literal notranslate"><span class="pre">BinaryPacketStrategyFactory.create()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.packet.binary_packet_strategy_factory.html#scarajectory.infrastructure.packet.binary_packet_strategy_factory.BinaryPacketStrategyFactory.create_with_frame_builder"><code class="docutils literal notranslate"><span class="pre">BinaryPacketStrategyFactory.create_with_frame_builder()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.packet.binary_packet_strategy_factory.html#scarajectory.infrastructure.packet.binary_packet_strategy_factory.BinaryPacketStrategyFactory.get_version"><code class="docutils literal notranslate"><span class="pre">BinaryPacketStrategyFactory.get_version()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.packet.ipacket_strategy.html">scarajectory.infrastructure.packet.ipacket_strategy module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.packet.ipacket_strategy.html#scarajectory.infrastructure.packet.ipacket_strategy.IPacketStrategy"><code class="docutils literal notranslate"><span class="pre">IPacketStrategy</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.packet.ipacket_strategy.html#scarajectory.infrastructure.packet.ipacket_strategy.IPacketStrategy._abc_impl"><code class="docutils literal notranslate"><span class="pre">IPacketStrategy._abc_impl</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.packet.ipacket_strategy.html#scarajectory.infrastructure.packet.ipacket_strategy.IPacketStrategy._is_protocol"><code class="docutils literal notranslate"><span class="pre">IPacketStrategy._is_protocol</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.packet.ipacket_strategy.html#scarajectory.infrastructure.packet.ipacket_strategy.IPacketStrategy._is_runtime_protocol"><code class="docutils literal notranslate"><span class="pre">IPacketStrategy._is_runtime_protocol</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.packet.ipacket_strategy.html#scarajectory.infrastructure.packet.ipacket_strategy.IPacketStrategy.format_waypoint_packet"><code class="docutils literal notranslate"><span class="pre">IPacketStrategy.format_waypoint_packet()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -118,8 +127,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.pacing.flow_pacing_controller_factory.html"
-                          title="previous chapter">scarajectory.infrastructure.pacing.flow_pacing_controller_factory module</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.pacing.iflow_pacing_controller.html"
+                          title="previous chapter">scarajectory.infrastructure.pacing.iflow_pacing_controller module</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -160,7 +169,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="scarajectory.infrastructure.packet.binary_packet_strategy.html" title="scarajectory.infrastructure.packet.binary_packet_strategy module"
              >next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.pacing.flow_pacing_controller_factory.html" title="scarajectory.infrastructure.pacing.flow_pacing_controller_factory module"
+          <a href="scarajectory.infrastructure.pacing.iflow_pacing_controller.html" title="scarajectory.infrastructure.pacing.iflow_pacing_controller module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>

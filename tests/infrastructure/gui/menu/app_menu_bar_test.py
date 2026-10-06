@@ -28,12 +28,14 @@ from unittest.mock import MagicMock, patch
 from scarajectory.infrastructure.gui.menu.app_menu_bar import AppMenuBar
 from scarajectory.infrastructure.gui.menu.builders_bundle import MenuBuildersBundle
 from scarajectory.infrastructure.gui.menu.bundle import MenuBundle
+from scarajectory.setup.pipeline.dsl_diagnostic_bundle import DslDiagnosticBundle
+from scarajectory.setup.pipeline.dsl_pipeline_bundle import DslPipelineBundle
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -69,18 +71,29 @@ class AppMenuBarTestCase(TestCase):
             mutation=MagicMock(),
             history=MagicMock(),
             storage=MagicMock(),
-            dsl=MagicMock(),
+            compiler=MagicMock(),
+            decompiler=MagicMock(),
+            plan_compiler=MagicMock(),
+            plan_exporter=MagicMock(),
             nav=MagicMock(),
             table=MagicMock(),
             layout=MagicMock(),
             hotkey=MagicMock(),
+        )
+        dsl_bundle = DslPipelineBundle(
+            compiler=mocks.compiler,
+            decompiler=mocks.decompiler,
+            plan_compiler=mocks.plan_compiler,
+            plan_exporter=mocks.plan_exporter,
+            validator=MagicMock(),
+            diagnostics=MagicMock(spec=DslDiagnosticBundle),
         )
         bundle = MenuBundle(
             store=mocks.store,
             mutation=mocks.mutation,
             history=mocks.history,
             storage=mocks.storage,
-            dsl_service=mocks.dsl,
+            dsl=dsl_bundle,
             navigator=mocks.nav,
             table=mocks.table,
         )
@@ -197,10 +210,10 @@ class AppMenuBarTestCase(TestCase):
         mock_askopen.return_value = '/tmp/script.scara'
         self.mocks.storage.load_text_file.return_value = 'MOVE TO 10, 20'
         mock_plan = SimpleNamespace(waypoints=['wpA'], count=1)
-        self.mocks.dsl.compile_script.return_value = mock_plan
+        self.mocks.plan_compiler.compile_script.return_value = mock_plan
         self.menu_bar.import_dsl_dialog()
         self.mocks.storage.load_text_file.assert_called_once_with('/tmp/script.scara')
-        self.mocks.dsl.compile_script.assert_called_once_with(
+        self.mocks.plan_compiler.compile_script.assert_called_once_with(
             source='MOVE TO 10, 20'
         )
         self.mocks.mutation.set_waypoints.assert_called_once_with(['wpA'])
@@ -208,7 +221,7 @@ class AppMenuBarTestCase(TestCase):
         mock_showinfo.assert_called_once()
 
         # Case 3: Compilation error handling
-        self.mocks.dsl.compile_script.side_effect = ValueError('Syntax error')
+        self.mocks.plan_compiler.compile_script.side_effect = ValueError('Syntax error')
         self.menu_bar.import_dsl_dialog()
         mock_showerror.assert_called_once()
 
@@ -229,13 +242,13 @@ class AppMenuBarTestCase(TestCase):
         # Case 1: Cancel dialog
         mock_asksave.return_value = ''
         self.menu_bar.export_dsl_dialog()
-        self.mocks.dsl.export_plan.assert_not_called()
+        self.mocks.plan_exporter.export_plan.assert_not_called()
 
         # Case 2: Export success
         mock_asksave.return_value = '/tmp/out.scara'
-        self.mocks.dsl.export_plan.return_value = 'MOVE TO 5, 5'
+        self.mocks.plan_exporter.export_plan.return_value = 'MOVE TO 5, 5'
         self.menu_bar.export_dsl_dialog()
-        self.mocks.dsl.export_plan.assert_called_once_with(
+        self.mocks.plan_exporter.export_plan.assert_called_once_with(
             plan=self.mocks.store
         )
         self.mocks.storage.save_text_file.assert_called_once_with(

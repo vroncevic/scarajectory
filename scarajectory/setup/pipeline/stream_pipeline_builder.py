@@ -25,7 +25,7 @@ from scaralang.infrastructure.communication.protocol.binary.builder.binary_frame
 
 from scarajectory.core.model.protocol.protocol_mode import ProtocolMode
 from scarajectory.core.model.state.stream_session import StreamSession
-from scarajectory.core.service.state.session_factory import SessionFactory
+from scarajectory.core.service.streaming.session_factory import SessionFactory
 from scarajectory.core.service.streaming.stream_pacing_config_factory import StreamPacingConfigFactory
 from scarajectory.infrastructure.barrier.flow_barrier import FlowBarrier
 from scarajectory.infrastructure.barrier.flow_barrier_factory import FlowBarrierFactory
@@ -47,15 +47,15 @@ from scarajectory.infrastructure.streaming.stream_playback_controller import Str
 from scarajectory.infrastructure.streaming.stream_playback_controller_factory import StreamPlaybackControllerFactory
 from scarajectory.infrastructure.transport.bundle import TransportBundle
 from scarajectory.infrastructure.transport.transport_factory import TransportFactory
-from scarajectory.infrastructure.worker.stream_execution_worker import StreamExecutionWorker
-from scarajectory.infrastructure.worker.stream_execution_worker_factory import StreamExecutionWorkerFactory
+from scarajectory.infrastructure.worker.ascii.stream_execution_worker import StreamExecutionWorker
+from scarajectory.infrastructure.worker.ascii.stream_execution_worker_factory import StreamExecutionWorkerFactory
 from scarajectory.setup.pipeline.stream_pipeline_bundle import StreamPipelineBundle
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'

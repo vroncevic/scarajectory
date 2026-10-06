@@ -25,7 +25,6 @@ from tkinter import Tk
 from unittest import TestCase, main
 from unittest.mock import MagicMock
 
-from scaralang.core.service.dsl.iscara_dsl_service import IScaraDslService
 from scaralang.core.service.trajectory.validation.itrajectory_validator import ITrajectoryValidator
 from scarajectory.core.model.preferences.connection_preference import ConnectionPreference
 from scarajectory.core.service.preferences.iconnection_repository import IConnectionRepository
@@ -36,12 +35,13 @@ from scarajectory.infrastructure.gui.controls.bundle import ControlsBundle
 from scarajectory.infrastructure.gui.controls.controls_panel import ControlsPanel
 from scarajectory.infrastructure.gui.controls.controls_panel_factory import ControlsPanelFactory
 from scarajectory.infrastructure.streaming.bundle import StreamingBundle
+from scarajectory.setup.pipeline.dsl_pipeline_bundle import DslPipelineBundle
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -76,7 +76,7 @@ class ControlsPanelFactoryTestCase(TestCase):
             binary_streamer=MagicMock(),
         )
         self.mock_storage = MagicMock(spec=IPlanStorageService)
-        self.mock_dsl_service = MagicMock(spec=IScaraDslService)
+        self.mock_dsl = MagicMock(spec=DslPipelineBundle)
         self.mock_connection_repo = MagicMock(spec=IConnectionRepository)
         self.mock_connection_repo.load_preference.return_value = (
             ConnectionPreference(port='', baud=115200)
@@ -86,7 +86,7 @@ class ControlsPanelFactoryTestCase(TestCase):
         '''
             Tests factory version string.
         '''
-        self.assertEqual(ControlsPanelFactory.get_version(), '1.0.4')
+        self.assertEqual(ControlsPanelFactory.get_version(), '1.0.3')
 
     def test_create_controls_panel(self) -> None:
         '''
@@ -98,7 +98,7 @@ class ControlsPanelFactoryTestCase(TestCase):
             validator=self.mock_validator,
             streaming=self.mock_streaming,
             storage=self.mock_storage,
-            dsl_service=self.mock_dsl_service,
+            dsl=self.mock_dsl,
             connection_repository=self.mock_connection_repo,
         )
         panel: ControlsPanel = ControlsPanelFactory.create(

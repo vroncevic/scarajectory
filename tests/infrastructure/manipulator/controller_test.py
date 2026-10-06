@@ -43,7 +43,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -104,6 +104,7 @@ class ControllerTest(TestCase):
             protocol_mode=ProtocolMode.ASCII,
         )
         self.assertIsInstance(jog_ctrl, IJogController)
+        self.assertFalse(jog_ctrl.is_connected())
         self.assertFalse(jog_ctrl.jog('X', 5.0))
         self.assertFalse(jog_ctrl.set_feedrate_override(120))
 
@@ -142,6 +143,7 @@ class ControllerTest(TestCase):
             protocol_mode=ProtocolMode.ASCII,
         )
         self.assertIsInstance(query_ctrl, IQueryController)
+        self.assertFalse(query_ctrl.is_connected())
         self.assertFalse(query_ctrl.query_status())
         self.assertFalse(query_ctrl.query_position())
 

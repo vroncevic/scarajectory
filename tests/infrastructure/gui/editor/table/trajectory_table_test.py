@@ -28,15 +28,13 @@ from unittest.mock import MagicMock
 from scarajectory.core.model.trajectory.waypoint import Waypoint
 from scarajectory.infrastructure.gui.editor.table.bundle import TableBundle
 from scarajectory.infrastructure.gui.editor.table.itable import ITable
-from scarajectory.infrastructure.gui.editor.table.trajectory_table import (
-    TrajectoryTable,
-)
+from scarajectory.infrastructure.gui.editor.table.trajectory_table import TrajectoryTable
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -96,8 +94,8 @@ class TrajectoryTableTestCase(TestCase):
         self.mock_selection.selected_index = 0
 
         self.table.refresh_table()
-        self.table.on_point_selected(0)
         self.table.on_point_selected(-1)
+        self.table.on_point_selected(0)
         self.table.on_trajectory_updated()
 
     def test_delete_selected(self) -> None:

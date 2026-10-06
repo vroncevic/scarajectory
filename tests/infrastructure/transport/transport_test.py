@@ -29,11 +29,11 @@ from ats_utilities.context.factory import ContextBundleFactory
 
 from scarajectory.core.model.state.stream_state import StreamState
 from scarajectory.core.model.telemetry.stream_progress import StreamProgress
-from scarajectory.core.service.connection.iconnection import IConnection
-from scarajectory.core.service.connection.iraw_channel import IRawChannel
+from scarajectory.infrastructure.connection.iconnection import IConnection
+from scarajectory.infrastructure.connection.iraw_channel import IRawChannel
 from scarajectory.core.service.preferences.connection_preference_factory import ConnectionPreferenceFactory
-from scarajectory.core.service.state.session_factory import SessionFactory
-from scarajectory.core.service.streaming.ibinary_program_streamer import IBinaryProgramStreamer
+from scarajectory.core.service.streaming.session_factory import SessionFactory
+from scarajectory.infrastructure.streaming.ibinary_program_streamer import IBinaryProgramStreamer
 from scarajectory.core.service.streaming.istream_dispatcher import IStreamDispatcher
 from scarajectory.core.service.streaming.istream_playback_controller import IStreamPlaybackController
 from scarajectory.infrastructure.barrier.flow_barrier_factory import FlowBarrierFactory
@@ -52,7 +52,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'

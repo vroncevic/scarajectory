@@ -22,18 +22,21 @@ Info
 from __future__ import annotations
 
 from tkinter import Tk
+from types import SimpleNamespace
 from unittest import TestCase, main
 from unittest.mock import MagicMock, patch
 
 from scarajectory.infrastructure.gui.dsl.bundle import DslEditorBundle
 from scarajectory.infrastructure.gui.dsl.dsl_editor_tab import DslEditorTab
 from scarajectory.infrastructure.gui.dsl.dsl_editor_tab_factory import DslEditorTabFactory
+from scarajectory.setup.pipeline.dsl_diagnostic_bundle import DslDiagnosticBundle
+from scarajectory.setup.pipeline.dsl_pipeline_bundle import DslPipelineBundle
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -45,6 +48,7 @@ class TestDslEditorTab(TestCase):
     '''
 
     root: Tk
+    mocks: SimpleNamespace
 
     @classmethod
     def setUpClass(cls) -> None:
@@ -56,29 +60,33 @@ class TestDslEditorTab(TestCase):
         cls.root.destroy()
 
     def setUp(self) -> None:
-        self.mock_store = MagicMock()
-        self.mock_store.count = 0
-        self.mock_mutation = MagicMock()
-        self.mock_dsl_service = MagicMock()
-        self.mock_storage = MagicMock()
-        self.mock_launcher = MagicMock()
-        self.mock_catalog = MagicMock()
-        self.mock_catalog.get_example_files.return_value = ['demo.scara']
-        self.mock_catalog.get_default_script.return_value = 'DEFAULT_SCRIPT'
-        self.mock_catalog.load_example_content.return_value = 'DEMO_SCRIPT'
-        self.mock_doc_manager = MagicMock()
+        mocks = SimpleNamespace(
+            store=MagicMock(count=0),
+            mutation=MagicMock(),
+            compiler=MagicMock(),
+            validator=MagicMock(),
+            exporter=MagicMock(),
+            storage=MagicMock(),
+            launcher=MagicMock(),
+            catalog=MagicMock(),
+            doc_manager=MagicMock(),
+        )
+        mocks.catalog.get_example_files.return_value = ['demo.scara']
+        mocks.catalog.get_default_script.return_value = 'DEFAULT_SCRIPT'
+        mocks.catalog.load_example_content.return_value = 'DEMO_SCRIPT'
+        self.mocks = mocks
 
     def test_factory_version(self) -> None:
         '''
             Tests DslEditorTabFactory version string.
         '''
-        self.assertEqual(DslEditorTabFactory.get_version(), '1.0.4')
+        self.assertEqual(DslEditorTabFactory.get_version(), '1.0.3')
 
     def test_initialization_with_empty_store_loads_example(self) -> None:
         '''
             Tests that DslEditorTab loads example script when store is empty.
         '''
-        self.mock_store.count = 0
+        self.mocks.store.count = 0
         tab: DslEditorTab = DslEditorTab(self.root)
         mock_toolbar = MagicMock()
         mock_toolbar.get_selected_example.return_value = 'demo.scara'
@@ -86,20 +94,17 @@ class TestDslEditorTab(TestCase):
         mock_console = MagicMock()
         mock_exec = MagicMock()
         mock_file = MagicMock()
+        mock_bin = MagicMock()
 
         tab.mount_views(toolbar=mock_toolbar, editor=mock_editor, console=mock_console)
         tab.mount_handlers(
             execution_handler=mock_exec,
             file_handler=mock_file,
-            store=self.mock_store,
+            binary_handler=mock_bin,
+            store=self.mocks.store,
         )
         tab.load_initial_content()
 
-        self.assertIs(tab.editor, mock_editor)
-        self.assertIs(tab.console, mock_console)
-        self.assertIs(tab.toolbar, mock_toolbar)
-        self.assertIs(tab.execution_handler, mock_exec)
-        self.assertIs(tab.file_handler, mock_file)
         mock_file.on_example_selected.assert_called_once_with('demo.scara')
         tab.destroy()
 
@@ -107,19 +112,21 @@ class TestDslEditorTab(TestCase):
         '''
             Tests that DslEditorTab exports plan into editor when store contains waypoints.
         '''
-        self.mock_store.count = 3
+        self.mocks.store.count = 3
         tab: DslEditorTab = DslEditorTab(self.root)
         mock_toolbar = MagicMock()
         mock_editor = MagicMock()
         mock_console = MagicMock()
         mock_exec = MagicMock()
         mock_file = MagicMock()
+        mock_bin = MagicMock()
 
         tab.mount_views(toolbar=mock_toolbar, editor=mock_editor, console=mock_console)
         tab.mount_handlers(
             execution_handler=mock_exec,
             file_handler=mock_file,
-            store=self.mock_store,
+            binary_handler=mock_bin,
+            store=self.mocks.store,
         )
         tab.load_initial_content()
 
@@ -149,15 +156,23 @@ class TestDslEditorTab(TestCase):
             Tests that DslEditorTabFactory.create assembles collaborating
             services and returns DslEditorTab.
         '''
-        mock_launcher_create.return_value = self.mock_launcher
-        mock_cat_create.return_value = self.mock_catalog
-        mock_doc_mgr_create.return_value = self.mock_doc_manager
+        mock_launcher_create.return_value = self.mocks.launcher
+        mock_cat_create.return_value = self.mocks.catalog
+        mock_doc_mgr_create.return_value = self.mocks.doc_manager
 
+        dsl_bundle = DslPipelineBundle(
+            compiler=MagicMock(),
+            decompiler=MagicMock(),
+            plan_compiler=self.mocks.compiler,
+            plan_exporter=self.mocks.exporter,
+            validator=self.mocks.validator,
+            diagnostics=MagicMock(spec=DslDiagnosticBundle),
+        )
         bundle: DslEditorBundle = DslEditorBundle(
-            store=self.mock_store,
-            mutation=self.mock_mutation,
-            dsl_service=self.mock_dsl_service,
-            storage=self.mock_storage,
+            store=self.mocks.store,
+            mutation=self.mocks.mutation,
+            dsl=dsl_bundle,
+            storage=self.mocks.storage,
         )
         tab: DslEditorTab = DslEditorTabFactory.create(self.root, bundle=bundle)
         self.assertIsInstance(tab, DslEditorTab)

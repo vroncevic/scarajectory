@@ -25,41 +25,31 @@ from threading import Event
 from unittest import TestCase, main
 from unittest.mock import MagicMock, patch
 
-from scaralang.core.model.dsl.binary.binary_program_telemetry import (
-    BinaryProgramTelemetry,
-)
+from scaralang.core.model.dsl.binary.axis_peak_steps import AxisPeakSteps
+from scaralang.core.model.dsl.binary.binary_program_telemetry import BinaryProgramTelemetry
 from scaralang.core.model.dsl.binary.program import BinaryProgram
 from scaralang.core.model.dsl.binary.step import Step
 from scaralang.core.model.protocol.binary_frame import BinaryFrame
 from scaralang.core.model.protocol.message_id import MessageId
-from scaralang.infrastructure.communication.protocol.binary.builder.binary_frame_builder_factory import (
-    BinaryFrameBuilderFactory,
-)
-from scaralang.infrastructure.communication.protocol.binary.parser.binary_frame_parser_factory import (
-    BinaryFrameParserFactory,
-)
+from scaralang.infrastructure.communication.protocol.binary.builder.binary_frame_builder_factory import BinaryFrameBuilderFactory
+from scaralang.infrastructure.communication.protocol.binary.parser.binary_frame_parser_factory import BinaryFrameParserFactory
 from scarajectory.core.model.state.stream_session import StreamSession
 from scarajectory.core.model.state.stream_state import StreamState
-from scarajectory.core.model.streaming.stream_pacing_config import (
-    StreamPacingConfig,
-)
+from scarajectory.core.model.streaming.stream_pacing_config import StreamPacingConfig
 from scarajectory.core.model.trajectory.waypoint import Waypoint
-from scarajectory.core.service.state.session_factory import SessionFactory
-from scarajectory.infrastructure.worker.binary.binary_stream_loop_runner import (
-    BinaryStreamLoopRunner,
-)
-from scarajectory.infrastructure.worker.binary.binary_stream_loop_runner_factory import (
-    BinaryStreamLoopRunnerFactory,
-)
-from scarajectory.infrastructure.worker.binary.ibinary_stream_loop_runner import (
-    IBinaryStreamLoopRunner,
-)
+from scarajectory.core.service.streaming.session_factory import SessionFactory
+from scarajectory.infrastructure.pacing.bundle import FlowPacingBundle
+from scarajectory.infrastructure.worker.binary.binary_loop_runner_bundle import BinaryLoopRunnerBundle
+from scarajectory.infrastructure.worker.binary.binary_stream_loop_runner import BinaryStreamLoopRunner
+from scarajectory.infrastructure.worker.binary.binary_stream_loop_runner_factory import BinaryStreamLoopRunnerFactory
+from scarajectory.infrastructure.worker.binary.binary_stream_runner_bundle import BinaryStreamRunnerBundle
+from scarajectory.infrastructure.worker.binary.ibinary_stream_loop_runner import IBinaryStreamLoopRunner
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -91,30 +81,31 @@ class BinaryStreamLoopRunnerTestCase(TestCase):
             throttle_delay=0.001,
             poll_delay=0.001,
         )
-        self.runner: BinaryStreamLoopRunner = BinaryStreamLoopRunnerFactory.create(
-            flow_pacing=self.mock_flow,
+        self.runner_bundle = BinaryStreamRunnerBundle(
+            pacing_bundle=FlowPacingBundle(
+                pacing_controller=self.mock_flow,
+                barrier_coordinator=MagicMock(),
+            ),
             packet_strategy=self.mock_strategy,
             byte_sender=self.mock_sender,
             state_controller=self.mock_state,
             observer_dispatcher=self.mock_observer,
             pacing_config=self.pacing_config,
         )
+        self.runner: BinaryStreamLoopRunner = BinaryStreamLoopRunnerFactory.create(
+            self.runner_bundle
+        )
 
     def test_factory_and_protocol(self) -> None:
         '''Tests factory creation with default or injected parser and version.'''
         self.assertIsInstance(self.runner, IBinaryStreamLoopRunner)
         version: str = BinaryStreamLoopRunnerFactory.get_version()
-        self.assertEqual(version, '1.0.4')
+        self.assertEqual(version, '1.0.3')
 
         custom_parser = BinaryFrameParserFactory.create()
         runner2 = BinaryStreamLoopRunnerFactory.create_with_parser(
-            flow_pacing=self.mock_flow,
-            packet_strategy=self.mock_strategy,
-            frame_parser=custom_parser,
-            byte_sender=self.mock_sender,
-            state_controller=self.mock_state,
-            observer_dispatcher=self.mock_observer,
-            pacing_config=self.pacing_config,
+            self.runner_bundle,
+            custom_parser,
         )
         self.assertIsInstance(runner2, IBinaryStreamLoopRunner)
 
@@ -135,16 +126,14 @@ class BinaryStreamLoopRunnerTestCase(TestCase):
 
         mock_fault_handler = MagicMock()
         mock_fault_handler.handle_frame.return_value = True
-        fault_runner = BinaryStreamLoopRunner(
-            flow_pacing=self.mock_flow,
-            packet_strategy=self.mock_strategy,
+        fault_bundle = BinaryLoopRunnerBundle(
+            step_dispatcher=MagicMock(),
+            queue_drainer=MagicMock(),
             frame_parser=BinaryFrameParserFactory.create(),
             frame_handler=mock_fault_handler,
-            byte_sender=self.mock_sender,
-            state_controller=self.mock_state,
-            observer_dispatcher=self.mock_observer,
             pacing_config=self.pacing_config,
         )
+        fault_runner = BinaryStreamLoopRunner(fault_bundle)
         self.assertTrue(
             fault_runner.handle_incoming_bytes(data=raw_bytes, session=session)
         )
@@ -182,10 +171,12 @@ class BinaryStreamLoopRunnerTestCase(TestCase):
             compiled_steps=1,
             duration_us=1000,
             duration_s=0.001,
-            peak_j1_steps=10,
-            peak_j2_steps=10,
-            peak_z_steps=0,
-            peak_j4_steps=0,
+            peak_steps=AxisPeakSteps(
+                peak_j1_steps=10,
+                peak_j2_steps=10,
+                peak_z_steps=0,
+                peak_j4_steps=0,
+            ),
             total_wire_bytes=4,
         )
         mock_step = MagicMock(spec=Step)

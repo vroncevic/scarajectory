@@ -23,7 +23,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from scarajectory.core.service.connection.iraw_channel import IRawChannel
+from scarajectory.infrastructure.connection.iraw_channel import IRawChannel
 from scarajectory.core.service.manipulator.ijog_controller import IJogController
 from scarajectory.core.service.manipulator.imotion_controller import IMotionController
 from scarajectory.core.service.manipulator.iquery_controller import IQueryController
@@ -33,7 +33,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'

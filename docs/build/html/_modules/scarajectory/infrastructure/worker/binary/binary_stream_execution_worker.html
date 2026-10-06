@@ -59,19 +59,18 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Event</span><span class="p">,</span> <span class="n">Thread</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span>
 
 <span class="kn">from</span> <span class="nn">scaralang.core.model.dsl.binary.program</span> <span class="kn">import</span> <span class="n">BinaryProgram</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.model.state.stream_session</span> <span class="kn">import</span> <span class="n">StreamSession</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.barrier.iflow_barrier_coordinator</span> <span class="kn">import</span> <span class="n">IFlowBarrierCoordinator</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.worker.binary.ibinary_stream_loop_runner</span> <span class="kn">import</span> <span class="n">IBinaryStreamLoopRunner</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.worker.thread.iworker_thread_coordinator</span> <span class="kn">import</span> <span class="n">IWorkerThreadCoordinator</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -87,14 +86,10 @@
 
 <span class="sd">            :attributes:</span>
 <span class="sd">                | _loop_runner - IBinaryStreamLoopRunner managing step execution loops.</span>
-<span class="sd">                | _barrier_coordinator - IFlowBarrierCoordinator managing synchronization barriers.</span>
-<span class="sd">                | _worker_thread - Active background worker thread.</span>
-<span class="sd">                | _stop_event - Event signaling streaming loop termination.</span>
-<span class="sd">                | _pause_event - Event signaling transmission pause.</span>
+<span class="sd">                | _coordinator - IWorkerThreadCoordinator managing background thread execution.</span>
 <span class="sd">                | _session - Active trajectory streaming session metrics.</span>
-<span class="sd">                | _is_running - Flag indicating whether worker thread is actively executing.</span>
 <span class="sd">            :methods:</span>
-<span class="sd">                | __init__ - Initializes worker with injected loop runner and barrier coordinator.</span>
+<span class="sd">                | __init__ - Initializes worker with injected loop runner and thread coordinator.</span>
 <span class="sd">                | start - Spawns background worker thread for waypoint sequence.</span>
 <span class="sd">                | start_program - Spawns background worker thread for binary program.</span>
 <span class="sd">                | pause - Signals transmission pause.</span>
@@ -105,34 +100,25 @@
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="n">_loop_runner</span><span class="p">:</span> <span class="n">IBinaryStreamLoopRunner</span>
-    <span class="n">_barrier_coordinator</span><span class="p">:</span> <span class="n">IFlowBarrierCoordinator</span>
-    <span class="n">_worker_thread</span><span class="p">:</span> <span class="n">Thread</span>
-    <span class="n">_stop_event</span><span class="p">:</span> <span class="n">Event</span>
-    <span class="n">_pause_event</span><span class="p">:</span> <span class="n">Event</span>
+    <span class="n">_coordinator</span><span class="p">:</span> <span class="n">IWorkerThreadCoordinator</span>
     <span class="n">_session</span><span class="p">:</span> <span class="n">StreamSession</span>
-    <span class="n">_is_running</span><span class="p">:</span> <span class="nb">bool</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">loop_runner</span><span class="p">:</span> <span class="n">IBinaryStreamLoopRunner</span><span class="p">,</span>
-        <span class="n">barrier_coordinator</span><span class="p">:</span> <span class="n">IFlowBarrierCoordinator</span><span class="p">,</span>
+        <span class="n">coordinator</span><span class="p">:</span> <span class="n">IWorkerThreadCoordinator</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Initializes binary stream worker with loop runner and barrier coordinator.</span>
+<span class="sd">            Initializes binary stream worker with loop runner and thread coordinator.</span>
 
 <span class="sd">            :param loop_runner: IBinaryStreamLoopRunner managing execution loops.</span>
-<span class="sd">            :param barrier_coordinator: IFlowBarrierCoordinator managing synchronization barriers.</span>
+<span class="sd">            :param coordinator: IWorkerThreadCoordinator managing background thread execution.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_loop_runner</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IBinaryStreamLoopRunner</span><span class="p">]</span> <span class="o">=</span> <span class="n">loop_runner</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_barrier_coordinator</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IFlowBarrierCoordinator</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">barrier_coordinator</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_worker_thread</span><span class="p">:</span> <span class="n">Thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="nb">tuple</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">Event</span><span class="p">]</span> <span class="o">=</span> <span class="n">Event</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_pause_event</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">Event</span><span class="p">]</span> <span class="o">=</span> <span class="n">Event</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="p">:</span> <span class="n">StreamSession</span> <span class="o">=</span> <span class="n">StreamSession</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_coordinator</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IWorkerThreadCoordinator</span><span class="p">]</span> <span class="o">=</span> <span class="n">coordinator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_session</span> <span class="o">=</span> <span class="n">StreamSession</span><span class="p">(</span>
             <span class="n">waypoints</span><span class="o">=</span><span class="p">[],</span>
             <span class="n">sent_count</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
             <span class="n">done_count</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
@@ -140,7 +126,6 @@
             <span class="n">remote_queue_depth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
             <span class="n">start_time</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_is_running</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 
 <div class="viewcode-block" id="BinaryStreamExecutionWorker.start">
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.html#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker.BinaryStreamExecutionWorker.start">[docs]</a>
@@ -152,19 +137,10 @@
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_session</span> <span class="o">=</span> <span class="n">session</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_is_running</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_pause_event</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_worker_thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_coordinator</span><span class="o">.</span><span class="n">start_thread</span><span class="p">(</span>
             <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_loop_runner</span><span class="o">.</span><span class="n">run_waypoints_loop</span><span class="p">,</span>
-            <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span>
-                <span class="s1">&#39;session&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="p">,</span>
-                <span class="s1">&#39;stop_event&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="p">,</span>
-                <span class="s1">&#39;pause_event&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pause_event</span><span class="p">,</span>
-            <span class="p">},</span>
-            <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_worker_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
+            <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;session&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="p">},</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BinaryStreamExecutionWorker.start_program">
@@ -183,20 +159,10 @@
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_session</span> <span class="o">=</span> <span class="n">session</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_is_running</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_pause_event</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_worker_thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_coordinator</span><span class="o">.</span><span class="n">start_thread</span><span class="p">(</span>
             <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_loop_runner</span><span class="o">.</span><span class="n">run_program_loop</span><span class="p">,</span>
-            <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span>
-                <span class="s1">&#39;program&#39;</span><span class="p">:</span> <span class="n">program</span><span class="p">,</span>
-                <span class="s1">&#39;session&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="p">,</span>
-                <span class="s1">&#39;stop_event&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="p">,</span>
-                <span class="s1">&#39;pause_event&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pause_event</span><span class="p">,</span>
-            <span class="p">},</span>
-            <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_worker_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
+            <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;program&#39;</span><span class="p">:</span> <span class="n">program</span><span class="p">,</span> <span class="s1">&#39;session&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="p">},</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BinaryStreamExecutionWorker.pause">
@@ -207,7 +173,7 @@
 
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_pause_event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_coordinator</span><span class="o">.</span><span class="n">set_paused</span><span class="p">(</span><span class="n">paused</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BinaryStreamExecutionWorker.resume">
@@ -218,7 +184,7 @@
 
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_pause_event</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_coordinator</span><span class="o">.</span><span class="n">set_paused</span><span class="p">(</span><span class="n">paused</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BinaryStreamExecutionWorker.stop">
@@ -229,10 +195,7 @@
 
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_is_running</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_pause_event</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_barrier_coordinator</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_coordinator</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="BinaryStreamExecutionWorker.is_running">
@@ -244,7 +207,7 @@
 <span class="sd">            :return: True if running, False otherwise.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_running</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_worker_thread</span><span class="o">.</span><span class="n">is_alive</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coordinator</span><span class="o">.</span><span class="n">is_running</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="BinaryStreamExecutionWorker.handle_incoming_bytes">

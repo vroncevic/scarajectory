@@ -27,12 +27,14 @@ from ats_utilities.context.bundle import ContextBundle
 from ats_utilities.context.factory import ContextBundleFactory
 
 from scarajectory.infrastructure.settings.settings_reader import SettingsReader
+from scarajectory.infrastructure.storage.config_io.config_io_factory import ConfigIOFactory
+from scarajectory.infrastructure.storage.config_io.iconfig_io_factory import IConfigIOFactory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -57,10 +59,11 @@ class TestSettingsReader(TestCase):
             Sets up test fixture initializing SettingsReader with default config paths.
         '''
         bundle: ContextBundle = ContextBundleFactory.create_bundle()
+        io_factory: IConfigIOFactory = ConfigIOFactory.create(bundle)
         self.reader = SettingsReader(
             config_path=SettingsReader.DEFAULT_GEOMETRY_CONFIG,
             scheme_path=SettingsReader.DEFAULT_SCHEME_CONFIG,
-            context_bundle=bundle,
+            io_factory=io_factory,
         )
 
     def test_read_settings(self) -> None:
@@ -74,6 +77,13 @@ class TestSettingsReader(TestCase):
         self.assertIn('steps_per_rev', raw)
         self.assertEqual(raw['l1'], 150.0)
         self.assertEqual(raw['l2'], 120.0)
+
+        missing_reader = SettingsReader(
+            config_path='/tmp/missing_scarajectory_config.json',
+            scheme_path=SettingsReader.DEFAULT_SCHEME_CONFIG,
+            io_factory=self.reader._io_factory,  # pylint: disable=protected-access
+        )
+        self.assertEqual(missing_reader.read_settings(), {})
 
     def test_get_setting(self) -> None:
         '''

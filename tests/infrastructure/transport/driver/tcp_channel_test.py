@@ -27,15 +27,13 @@ from unittest.mock import MagicMock, patch
 
 from scarajectory.core.model.protocol.protocol_mode import ProtocolMode
 from scarajectory.core.model.streaming.stream_config import StreamConfig
-from scarajectory.infrastructure.transport.driver.tcp_channel import (
-    TcpChannelDriver,
-)
+from scarajectory.infrastructure.transport.driver.tcp_channel import TcpChannelDriver
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'

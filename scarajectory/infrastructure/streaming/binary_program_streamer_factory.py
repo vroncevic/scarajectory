@@ -22,17 +22,17 @@ Info
 from __future__ import annotations
 
 from scarajectory.core.model.state.stream_session import StreamSession
-from scarajectory.core.service.connection.iconnection import IConnection
-from scarajectory.core.service.state.istream_state_machine import IStreamStateMachine
+from scarajectory.infrastructure.connection.iconnection import IConnection
+from scarajectory.infrastructure.state.istream_state_machine import IStreamStateMachine
 from scarajectory.core.service.streaming.observer.istream_observer_dispatcher import IStreamObserverDispatcher
-from scarajectory.core.service.worker.iexecution_worker import IExecutionWorker
+from scarajectory.infrastructure.worker.iexecution_worker import IExecutionWorker
 from scarajectory.infrastructure.streaming.binary_program_streamer import BinaryProgramStreamer
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'

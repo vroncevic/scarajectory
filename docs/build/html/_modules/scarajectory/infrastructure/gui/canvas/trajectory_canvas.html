@@ -63,9 +63,9 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span>
 
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.canvas.bundle</span> <span class="kn">import</span> <span class="n">CanvasBundle</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.canvas.status.icanvas_status_presenter</span> <span class="kn">import</span> <span class="n">ICanvasStatusPresenter</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.canvas.navigation.icanvas_view_navigator</span> <span class="kn">import</span> <span class="n">ICanvasViewNavigator</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.canvas.render.renderer</span> <span class="kn">import</span> <span class="n">CanvasRenderer</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.canvas.status.icanvas_status_presenter</span> <span class="kn">import</span> <span class="n">ICanvasStatusPresenter</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.model.canvas_interaction_state</span> <span class="kn">import</span> <span class="n">CanvasInteractionState</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.model.canvas_settings</span> <span class="kn">import</span> <span class="n">CanvasSettings</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.model.canvas_tool_mode</span> <span class="kn">import</span> <span class="n">CanvasToolMode</span>
@@ -75,7 +75,7 @@
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -95,11 +95,11 @@
 <span class="sd">                | _tool_mode - Active interactive drawing tool.</span>
 <span class="sd">                | _vp - Viewport transformation matrix.</span>
 <span class="sd">                | _state - Interactive mouse pan, drag and selection state.</span>
-<span class="sd">                | _navigator - Viewport zoom, pan, and framing coordinator interface.</span>
-<span class="sd">                | _status_presenter - Cursor status presenter collaborator interface.</span>
+<span class="sd">                | _navigator - Canvas view navigator controller.</span>
+<span class="sd">                | _status_presenter - Canvas status presenter.</span>
 <span class="sd">            :methods:</span>
 <span class="sd">                | __init__ - Initializes vector CAD canvas widget and assigns dependencies.</span>
-<span class="sd">                | mount_navigation - Mounts view navigator and status presenter interfaces.</span>
+<span class="sd">                | attach_presentation - Associates navigator and status presenter with canvas.</span>
 <span class="sd">                | get_view_dimensions - Returns current width and height in pixels.</span>
 <span class="sd">                | redraw - Clears and redraws entire vector scene.</span>
 <span class="sd">                | set_tool_mode - Changes active drawing/selection tool.</span>
@@ -143,33 +143,30 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_vp</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ViewportTransform</span><span class="p">]</span> <span class="o">=</span> <span class="n">vp</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">CanvasInteractionState</span><span class="p">]</span> <span class="o">=</span> <span class="n">state</span>
 
-<div class="viewcode-block" id="TrajectoryCanvas.mount_navigation">
-<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.canvas.trajectory_canvas.html#scarajectory.infrastructure.gui.canvas.trajectory_canvas.TrajectoryCanvas.mount_navigation">[docs]</a>
-    <span class="k">def</span> <span class="nf">mount_navigation</span><span class="p">(</span>
+<div class="viewcode-block" id="TrajectoryCanvas.attach_presentation">
+<a class="viewcode-back" href="../../../../../scarajectory.infrastructure.gui.canvas.trajectory_canvas.html#scarajectory.infrastructure.gui.canvas.trajectory_canvas.TrajectoryCanvas.attach_presentation">[docs]</a>
+    <span class="k">def</span> <span class="nf">attach_presentation</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
         <span class="n">navigator</span><span class="p">:</span> <span class="n">ICanvasViewNavigator</span><span class="p">,</span>
         <span class="n">status_presenter</span><span class="p">:</span> <span class="n">ICanvasStatusPresenter</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Mounts injected navigation and status presentation collaborators.</span>
+<span class="sd">            Associates view navigator and status presenter with this canvas.</span>
 
-<span class="sd">            :param navigator: Injected ICanvasViewNavigator interface.</span>
-<span class="sd">            :param status_presenter: Injected ICanvasStatusPresenter interface.</span>
+<span class="sd">            :param navigator: ICanvasViewNavigator collaborator.</span>
+<span class="sd">            :param status_presenter: ICanvasStatusPresenter collaborator.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_navigator</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ICanvasViewNavigator</span><span class="p">]</span> <span class="o">=</span> <span class="n">navigator</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_status_presenter</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ICanvasStatusPresenter</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">status_presenter</span>
-        <span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_navigator</span> <span class="o">=</span> <span class="n">navigator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_status_presenter</span> <span class="o">=</span> <span class="n">status_presenter</span></div>
 
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">navigator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ICanvasViewNavigator</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Returns viewport navigation coordinator.</span>
+<span class="sd">            Returns active canvas view navigator.</span>
 
-<span class="sd">            :return: ICanvasViewNavigator interface.</span>
+<span class="sd">            :return: ICanvasViewNavigator instance.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_navigator</span>
@@ -177,9 +174,9 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">status_presenter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ICanvasStatusPresenter</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Returns cursor status presenter component.</span>
+<span class="sd">            Returns active canvas status presenter.</span>
 
-<span class="sd">            :return: ICanvasStatusPresenter interface.</span>
+<span class="sd">            :return: ICanvasStatusPresenter instance.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_status_presenter</span>
@@ -269,7 +266,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_bundle</span><span class="o">.</span><span class="n">validator</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">drag_start_world</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">drag_current_world</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">is_dragging</span><span class="p">:</span>
             <span class="n">CanvasRenderer</span><span class="o">.</span><span class="n">draw_preview</span><span class="p">(</span>
                 <span class="bp">self</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_vp</span><span class="p">,</span>

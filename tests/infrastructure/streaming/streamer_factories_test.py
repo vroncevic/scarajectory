@@ -25,18 +25,18 @@ from unittest import TestCase, main
 from unittest.mock import MagicMock
 
 from scarajectory.core.model.state.stream_state import StreamState
-from scarajectory.core.service.barrier.iflow_barrier import IFlowBarrier
-from scarajectory.core.service.classifier.iflow_status_classifier import IFlowStatusClassifier
-from scarajectory.core.service.classifier.ihoming_status_classifier import IHomingStatusClassifier
-from scarajectory.core.service.classifier.imotion_status_classifier import IMotionStatusClassifier
-from scarajectory.core.service.classifier.iresponse_parser import IResponseParser
-from scarajectory.core.service.connection.iconnection import IConnection
-from scarajectory.core.service.connection.iraw_channel import IRawChannel
-from scarajectory.core.service.streaming.ibinary_program_streamer import IBinaryProgramStreamer
+from scarajectory.infrastructure.barrier.iflow_barrier import IFlowBarrier
+from scarajectory.infrastructure.classifier.status.iflow_status_classifier import IFlowStatusClassifier
+from scarajectory.infrastructure.classifier.status.ihoming_status_classifier import IHomingStatusClassifier
+from scarajectory.infrastructure.classifier.status.imotion_status_classifier import IMotionStatusClassifier
+from scarajectory.infrastructure.classifier.iresponse_parser import IResponseParser
+from scarajectory.infrastructure.connection.iconnection import IConnection
+from scarajectory.infrastructure.connection.iraw_channel import IRawChannel
+from scarajectory.infrastructure.streaming.ibinary_program_streamer import IBinaryProgramStreamer
 from scarajectory.core.service.streaming.istream_dispatcher import IStreamDispatcher
 from scarajectory.core.service.streaming.istream_playback_controller import IStreamPlaybackController
 from scarajectory.core.service.streaming.stream_pacing_config_factory import StreamPacingConfigFactory
-from scarajectory.core.service.worker.icommand_formatter import ICommandFormatter
+from scarajectory.infrastructure.formatter.icommand_formatter import ICommandFormatter
 from scarajectory.infrastructure.barrier.flow_barrier_factory import FlowBarrierFactory
 from scarajectory.infrastructure.classifier.status.flow_status_classifier_factory import FlowStatusClassifierFactory
 from scarajectory.infrastructure.classifier.status.homing_status_classifier_factory import HomingStatusClassifierFactory
@@ -48,13 +48,13 @@ from scarajectory.infrastructure.state.stream_state_machine_factory import Strea
 from scarajectory.infrastructure.streaming.assembly.stream_pipeline_assembler import StreamPipelineAssembler
 from scarajectory.infrastructure.streaming.bundle import StreamingBundle
 from scarajectory.infrastructure.streaming.observer.stream_observer_dispatcher_factory import StreamObserverDispatcherFactory
-from scarajectory.infrastructure.worker.stream_execution_worker_factory import StreamExecutionWorkerFactory
+from scarajectory.infrastructure.worker.ascii.stream_execution_worker_factory import StreamExecutionWorkerFactory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'

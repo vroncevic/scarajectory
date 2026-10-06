@@ -23,21 +23,15 @@ from __future__ import annotations
 
 from unittest import TestCase, main
 
-from scarajectory.infrastructure.transport.istream_transport_transceiver import (
-    IStreamTransportTransceiver,
-)
-from scarajectory.infrastructure.transport.stream_transport_transceiver import (
-    StreamTransportTransceiver,
-)
-from scarajectory.infrastructure.transport.stream_transport_transceiver_factory import (
-    StreamTransportTransceiverFactory,
-)
+from scarajectory.infrastructure.transport.istream_transport_transceiver import IStreamTransportTransceiver
+from scarajectory.infrastructure.transport.stream_transport_transceiver import StreamTransportTransceiver
+from scarajectory.infrastructure.transport.stream_transport_transceiver_factory import StreamTransportTransceiverFactory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -134,7 +128,7 @@ class StreamTransportTransceiverTestCase(TestCase):
         )
         self.assertEqual(transceiver.channel_name(), 'StubChannel')
         self.assertIsInstance(transceiver, IStreamTransportTransceiver)
-        self.assertEqual(StreamTransportTransceiverFactory.get_version(), '1.0.4')
+        self.assertEqual(StreamTransportTransceiverFactory.get_version(), '1.0.3')
 
     def test_send_raw_connected_and_disconnected(self) -> None:
         '''

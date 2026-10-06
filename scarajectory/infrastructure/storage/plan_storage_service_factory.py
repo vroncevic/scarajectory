@@ -24,6 +24,8 @@ from __future__ import annotations
 from ats_utilities.context.bundle import ContextBundle
 from ats_utilities.context.factory import ContextBundleFactory
 
+from scarajectory.infrastructure.storage.config_io.config_io_factory import ConfigIOFactory
+from scarajectory.infrastructure.storage.config_io.iconfig_io_factory import IConfigIOFactory
 from scarajectory.infrastructure.storage.plan_loader import PlanLoader
 from scarajectory.infrastructure.storage.plan_storer import PlanStorer
 from scarajectory.infrastructure.storage.plan_storage_service import PlanStorageService
@@ -32,7 +34,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -47,6 +49,7 @@ class PlanStorageServiceFactory:
             :methods:
                 | create - Assembles and instantiates a PlanStorageService with default ContextBundle.
                 | create_with_context - Assembles PlanStorageService with explicit ContextBundle.
+                | create_with_io_factory - Assembles PlanStorageService with explicit IConfigIOFactory.
                 | get_version - Returns factory module semantic version string.
     '''
 
@@ -69,8 +72,23 @@ class PlanStorageServiceFactory:
             :return: Fully assembled PlanStorageService instance.
             :exceptions: None.
         '''
-        loader = PlanLoader(context_bundle=context_bundle)
-        storer = PlanStorer(context_bundle=context_bundle)
+        io_factory = ConfigIOFactory.create(context_bundle)
+        return cls.create_with_io_factory(io_factory)
+
+    @classmethod
+    def create_with_io_factory(
+        cls,
+        io_factory: IConfigIOFactory,
+    ) -> PlanStorageService:
+        '''
+            Assembles and instantiates a PlanStorageService adapter with explicit I/O factory.
+
+            :param io_factory: IConfigIOFactory instance.
+            :return: Fully assembled PlanStorageService instance.
+            :exceptions: None.
+        '''
+        loader = PlanLoader(io_factory=io_factory)
+        storer = PlanStorer(io_factory=io_factory)
 
         return PlanStorageService(loader=loader, storer=storer)
 

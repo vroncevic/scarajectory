@@ -26,28 +26,18 @@ from tkinter import Tk
 from unittest import TestCase, main
 from unittest.mock import MagicMock
 
-from scarajectory.core.service.storage.iplan_storage_service import (
-    IPlanStorageService,
-)
-from scarajectory.core.service.streaming.istream_playback_controller import (
-    IStreamPlaybackController,
-)
-from scarajectory.core.service.trajectory.plan.mutation.iplan_bulk_mutator import (
-    IPlanBulkMutator,
-)
-from scarajectory.infrastructure.gui.canvas.navigation.icanvas_view_navigator import (
-    ICanvasViewNavigator,
-)
-from scarajectory.infrastructure.gui.scarajectory_gui_bundle import (
-    ScarajectoryGUIBundle,
-)
+from scarajectory.core.service.storage.iplan_storage_service import IPlanStorageService
+from scarajectory.core.service.streaming.istream_playback_controller import IStreamPlaybackController
+from scarajectory.core.service.trajectory.plan.mutation.iplan_bulk_mutator import IPlanBulkMutator
+from scarajectory.infrastructure.gui.canvas.navigation.icanvas_view_navigator import ICanvasViewNavigator
+from scarajectory.infrastructure.gui.scarajectory_gui_bundle import ScarajectoryGUIBundle
 from scarajectory.infrastructure.gui.toolbar.toolbar import Toolbar
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'

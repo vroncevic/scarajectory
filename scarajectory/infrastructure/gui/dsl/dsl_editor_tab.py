@@ -27,6 +27,7 @@ from tkinter.ttk import Frame
 from scarajectory.core.service.trajectory.plan.store.iwaypoint_store import IWaypointStore
 from scarajectory.infrastructure.gui.dsl.code_editor import DslCodeEditor
 from scarajectory.infrastructure.gui.dsl.console_view import DslConsoleView
+from scarajectory.infrastructure.gui.dsl.handler.ibinary_delegate import IDslBinaryDelegate
 from scarajectory.infrastructure.gui.dsl.handler.iexecution_delegate import IDslExecutionDelegate
 from scarajectory.infrastructure.gui.dsl.handler.ifile_delegate import IDslFileDelegate
 from scarajectory.infrastructure.gui.dsl.toolbar import DslEditorToolbar
@@ -35,7 +36,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -54,10 +55,11 @@ class DslEditorTab(Frame):
                 | _console - Diagnostic console view subcomponent.
                 | _execution_handler - Fine-grained delegate for DSL execution actions.
                 | _file_handler - Fine-grained delegate for DSL file and example actions.
+                | _binary_handler - Fine-grained delegate for DSL binary compilation and decompile actions.
             :methods:
                 | __init__ - Initializes the editor tab container frame.
                 | mount_views - Mounts toolbar, editor, and console subcomponents.
-                | mount_handlers - Injects execution and file delegates.
+                | mount_handlers - Injects execution, file, and binary delegates.
                 | load_initial_content - Loads exported plan or demonstration script.
     '''
 
@@ -67,6 +69,7 @@ class DslEditorTab(Frame):
     _console: DslConsoleView
     _execution_handler: IDslExecutionDelegate
     _file_handler: IDslFileDelegate
+    _binary_handler: IDslBinaryDelegate
 
     def __init__(self, parent: Widget) -> None:
         '''
@@ -106,6 +109,7 @@ class DslEditorTab(Frame):
         *,
         execution_handler: IDslExecutionDelegate,
         file_handler: IDslFileDelegate,
+        binary_handler: IDslBinaryDelegate,
         store: IWaypointStore,
     ) -> None:
         '''
@@ -113,11 +117,13 @@ class DslEditorTab(Frame):
 
             :param execution_handler: Delegate handling compilation and execution.
             :param file_handler: Delegate handling file persistence and demo loading.
+            :param binary_handler: Delegate handling binary program export and decompilation.
             :param store: Waypoint query store.
             :exceptions: None.
         '''
         self._execution_handler = execution_handler
         self._file_handler = file_handler
+        self._binary_handler = binary_handler
         self._store = store
 
     def load_initial_content(self) -> None:
@@ -131,53 +137,3 @@ class DslEditorTab(Frame):
         else:
             selected: str = self._toolbar.get_selected_example()
             self._file_handler.on_example_selected(selected)
-
-    @property
-    def editor(self) -> DslCodeEditor:
-        '''
-            Returns the code editor subcomponent.
-
-            :return: DslCodeEditor instance.
-            :exceptions: None.
-        '''
-        return self._editor
-
-    @property
-    def console(self) -> DslConsoleView:
-        '''
-            Returns the diagnostic console view subcomponent.
-
-            :return: DslConsoleView instance.
-            :exceptions: None.
-        '''
-        return self._console
-
-    @property
-    def toolbar(self) -> DslEditorToolbar:
-        '''
-            Returns the action toolbar subcomponent.
-
-            :return: DslEditorToolbar instance.
-            :exceptions: None.
-        '''
-        return self._toolbar
-
-    @property
-    def execution_handler(self) -> IDslExecutionDelegate:
-        '''
-            Returns the execution delegate.
-
-            :return: IDslExecutionDelegate instance.
-            :exceptions: None.
-        '''
-        return self._execution_handler
-
-    @property
-    def file_handler(self) -> IDslFileDelegate:
-        '''
-            Returns the file delegate.
-
-            :return: IDslFileDelegate instance.
-            :exceptions: None.
-        '''
-        return self._file_handler

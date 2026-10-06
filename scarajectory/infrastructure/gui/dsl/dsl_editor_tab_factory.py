@@ -32,6 +32,9 @@ from scarajectory.infrastructure.gui.dsl.document.document_manager_factory impor
 from scarajectory.infrastructure.gui.dsl.document.example_catalog import DslExampleCatalog
 from scarajectory.infrastructure.gui.dsl.document.example_catalog_factory import DslExampleCatalogFactory
 from scarajectory.infrastructure.gui.dsl.dsl_editor_tab import DslEditorTab
+from scarajectory.infrastructure.gui.dsl.handler.binary_handler import DslEditorBinaryHandler
+from scarajectory.infrastructure.gui.dsl.handler.binary_handler_bundle import BinaryHandlerBundle
+from scarajectory.infrastructure.gui.dsl.handler.binary_handler_factory import DslEditorBinaryHandlerFactory
 from scarajectory.infrastructure.gui.dsl.handler.execution_handler import DslEditorExecutionHandler
 from scarajectory.infrastructure.gui.dsl.handler.execution_handler_bundle import ExecutionHandlerBundle
 from scarajectory.infrastructure.gui.dsl.handler.execution_handler_factory import DslEditorExecutionHandlerFactory
@@ -46,7 +49,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -79,36 +82,57 @@ class DslEditorTabFactory:
         console: DslConsoleView = DslConsoleView(tab)
 
         launcher: IEmulatorLauncher = EmulatorLauncherFactory.create()
-        catalog: DslExampleCatalog = DslExampleCatalogFactory.create_default(storage=bundle.storage)
-        document_manager: DslDocumentManager = DslDocumentManagerFactory.create(storage=bundle.storage)
-
-        exec_bundle: ExecutionHandlerBundle = ExecutionHandlerBundle(
-            store=bundle.store,
-            mutation=bundle.mutation,
-            dsl_service=bundle.dsl_service,
-            launcher=launcher,
-            editor=editor,
-            console=console,
+        catalog: DslExampleCatalog = (
+            DslExampleCatalogFactory.create_default(storage=bundle.storage)
         )
+        document_manager: DslDocumentManager = (
+            DslDocumentManagerFactory.create(storage=bundle.storage)
+        )
+
         execution_handler: DslEditorExecutionHandler = (
-            DslEditorExecutionHandlerFactory.create(bundle=exec_bundle)
+            DslEditorExecutionHandlerFactory.create(
+                bundle=ExecutionHandlerBundle(
+                    store=bundle.store,
+                    mutation=bundle.mutation,
+                    dsl=bundle.dsl,
+                    launcher=launcher,
+                    editor=editor,
+                    console=console,
+                )
+            )
         )
 
-        file_bundle: FileHandlerBundle = FileHandlerBundle(
-            parent=tab,
-            editor=editor,
-            console=console,
-            catalog=catalog,
-            document_manager=document_manager,
-        )
         file_handler: DslEditorFileHandler = (
-            DslEditorFileHandlerFactory.create(bundle=file_bundle)
+            DslEditorFileHandlerFactory.create(
+                bundle=FileHandlerBundle(
+                    parent=tab,
+                    editor=editor,
+                    console=console,
+                    catalog=catalog,
+                    document_manager=document_manager,
+                )
+            )
+        )
+
+        binary_handler: DslEditorBinaryHandler = (
+            DslEditorBinaryHandlerFactory.create(
+                bundle=BinaryHandlerBundle(
+                    parent=tab,
+                    editor=editor,
+                    console=console,
+                    compiler=bundle.dsl.compiler,
+                    decompiler=bundle.dsl.decompiler,
+                    storage=bundle.storage,
+                    diagnostics=bundle.dsl.diagnostics,
+                )
+            )
         )
 
         toolbar: DslEditorToolbar = DslEditorToolbar(
             tab,
             execution_delegate=execution_handler,
             file_delegate=file_handler,
+            binary_delegate=binary_handler,
         )
         example_files: list[str] = catalog.get_example_files()
 
@@ -119,6 +143,7 @@ class DslEditorTabFactory:
         tab.mount_handlers(
             execution_handler=execution_handler,
             file_handler=file_handler,
+            binary_handler=binary_handler,
             store=bundle.store,
         )
         tab.load_initial_content()

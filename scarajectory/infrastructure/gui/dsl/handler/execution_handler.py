@@ -23,19 +23,19 @@ from __future__ import annotations
 
 from typing import Final
 
-from scaralang.core.service.dsl.iscara_dsl_service import IScaraDslService
 from scarajectory.core.service.trajectory.plan.mutation.iplan_bulk_mutator import IPlanBulkMutator
 from scarajectory.core.service.trajectory.plan.store.iwaypoint_store import IWaypointStore
 from scarajectory.infrastructure.gui.dsl.code_editor import DslCodeEditor
 from scarajectory.infrastructure.gui.dsl.console_view import DslConsoleView
 from scarajectory.infrastructure.gui.dsl.handler.execution_handler_bundle import ExecutionHandlerBundle
 from scarajectory.infrastructure.gui.emulator.iemulator_launcher import IEmulatorLauncher
+from scarajectory.setup.pipeline.dsl_pipeline_bundle import DslPipelineBundle
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -50,7 +50,7 @@ class DslEditorExecutionHandler:
             :attributes:
                 | _store - Injected waypoint query collaborator.
                 | _mutation - Injected plan mutation service collaborator.
-                | _dsl_service - High-level DSL compilation and serialization service.
+                | _dsl - Injected SCARA DSL pipeline role services bundle.
                 | _launcher - SCARAEmu emulator process launcher.
                 | _editor - Code editor subcomponent.
                 | _console - Diagnostic console view subcomponent.
@@ -64,7 +64,7 @@ class DslEditorExecutionHandler:
 
     _store: IWaypointStore
     _mutation: IPlanBulkMutator
-    _dsl_service: IScaraDslService
+    _dsl: DslPipelineBundle
     _launcher: IEmulatorLauncher
     _editor: DslCodeEditor
     _console: DslConsoleView
@@ -82,7 +82,7 @@ class DslEditorExecutionHandler:
         '''
         self._store: Final[IWaypointStore] = bundle.store
         self._mutation: Final[IPlanBulkMutator] = bundle.mutation
-        self._dsl_service: Final[IScaraDslService] = bundle.dsl_service
+        self._dsl: Final[DslPipelineBundle] = bundle.dsl
         self._launcher: Final[IEmulatorLauncher] = bundle.launcher
         self._editor: Final[DslCodeEditor] = bundle.editor
         self._console: Final[DslConsoleView] = bundle.console
@@ -96,21 +96,27 @@ class DslEditorExecutionHandler:
         source: str = self._editor.get_text().strip()
 
         if not source:
-            self._console.log('❌ Editor is empty. Nothing to compile.', is_error=True)
+            self._console.append_log(
+                '❌ Editor is empty. Nothing to compile.',
+                level='warning',
+            )
             return
 
         try:
-            compiled_plan = self._dsl_service.compile_script(source=source)
+            compiled_plan = self._dsl.plan_compiler.compile_script(source=source)
             self._mutation.set_waypoints(compiled_plan.waypoints)
             msg: str = (
                 f'✅ Successfully compiled and synchronized!\n'
                 f'Waypoints in Plan: {compiled_plan.count} | '
                 f'Kinematic Feasibility: PASSED'
             )
-            self._console.log(msg, is_error=False)
+            self._console.append_log(msg, level='success')
 
         except Exception as exc:
-            self._console.log(f'❌ Compilation error: {exc}', is_error=True)
+            err_msg: str = self._dsl.diagnostics.compile_error_handler.format_error(
+                error=exc
+            )
+            self._console.append_log(f'❌ {err_msg}', level='error')
 
     def validate_code(self) -> None:
         '''
@@ -121,11 +127,21 @@ class DslEditorExecutionHandler:
         source: str = self._editor.get_text().strip()
 
         if not source:
-            self._console.log('❌ Editor is empty. Nothing to validate.', is_error=True)
+            self._console.append_log(
+                '❌ Editor is empty. Nothing to validate.',
+                level='warning',
+            )
             return
 
-        is_valid, messages = self._dsl_service.validate_script(source=source)
-        self._console.log('\n'.join(messages), is_error=not is_valid)
+        is_valid, messages = self._dsl.validator.validate_script(source=source)
+        if is_valid:
+            for msg in messages:
+                self._console.append_log(f'✅ {msg}', level='success')
+        else:
+            for msg in messages:
+                level: str = 'warning' if '[WARNING]' in msg else 'error'
+                prefix: str = '⚠️ ' if level == 'warning' else '❌ '
+                self._console.append_log(f'{prefix}{msg}', level=level)
 
     def export_plan_to_editor(self) -> None:
         '''
@@ -133,11 +149,11 @@ class DslEditorExecutionHandler:
 
             :exceptions: None.
         '''
-        script: str = self._dsl_service.export_plan(plan=self._store)
+        script: str = self._dsl.plan_exporter.export_plan(plan=self._store)
         self._editor.set_text(script)
-        self._console.log(
+        self._console.append_log(
             f'ℹ️ Exported {self._store.count} waypoints to SCARA DSL format.',
-            is_error=False,
+            level='info',
         )
 
     def preview_in_scaraemu(self) -> None:
@@ -149,11 +165,14 @@ class DslEditorExecutionHandler:
         code: str = self._editor.get_text().strip()
 
         if not code:
-            self._console.log(
+            self._console.append_log(
                 '[WARN]: DSL editor is empty. Nothing to preview.',
-                is_error=True,
+                level='warning',
             )
             return
 
         success, message = self._launcher.launch_preview(dsl_code=code)
-        self._console.log(message, is_error=not success)
+        self._console.append_log(
+            message,
+            level='success' if success else 'error',
+        )

@@ -80,7 +80,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dd class="field-odd"><div class="line-block">
 <div class="line">save_plan - Saves current trajectory plan to JSON file path.</div>
 <div class="line">save_text_file - Writes text content to file path.</div>
-<div class="line">save_binary_program - Writes compiled binary program payload to destination file path.</div>
+<div class="line">save_binary_file - Writes binary byte payload to destination file path.</div>
 </div>
 </dd>
 </dl>
@@ -101,13 +101,13 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="scarajectory.core.service.storage.iplan_storer.IPlanStorer.save_binary_program">
-<span class="sig-name descname"><span class="pre">save_binary_program</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">program</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BinaryProgram</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/storage/iplan_storer.html#IPlanStorer.save_binary_program"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.storage.iplan_storer.IPlanStorer.save_binary_program" title="Link to this definition">¶</a></dt>
-<dd><p>Writes compiled binary program payload to destination file path.</p>
+<dt class="sig sig-object py" id="scarajectory.core.service.storage.iplan_storer.IPlanStorer.save_binary_file">
+<span class="sig-name descname"><span class="pre">save_binary_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/scarajectory/core/service/storage/iplan_storer.html#IPlanStorer.save_binary_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.core.service.storage.iplan_storer.IPlanStorer.save_binary_file" title="Link to this definition">¶</a></dt>
+<dd><p>Writes binary byte payload to destination file path.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>program</strong> – BinaryProgram instance.</p></li>
+<li><p><strong>content</strong> – Binary raw bytes to write.</p></li>
 <li><p><strong>filepath</strong> – Destination file path.</p></li>
 </ul>
 </dd>
@@ -161,7 +161,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <li><a class="reference internal" href="#scarajectory.core.service.storage.iplan_storer.IPlanStorer._abc_impl"><code class="docutils literal notranslate"><span class="pre">IPlanStorer._abc_impl</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.core.service.storage.iplan_storer.IPlanStorer._is_protocol"><code class="docutils literal notranslate"><span class="pre">IPlanStorer._is_protocol</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.core.service.storage.iplan_storer.IPlanStorer._is_runtime_protocol"><code class="docutils literal notranslate"><span class="pre">IPlanStorer._is_runtime_protocol</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.core.service.storage.iplan_storer.IPlanStorer.save_binary_program"><code class="docutils literal notranslate"><span class="pre">IPlanStorer.save_binary_program()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.core.service.storage.iplan_storer.IPlanStorer.save_binary_file"><code class="docutils literal notranslate"><span class="pre">IPlanStorer.save_binary_file()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.core.service.storage.iplan_storer.IPlanStorer.save_plan"><code class="docutils literal notranslate"><span class="pre">IPlanStorer.save_plan()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.core.service.storage.iplan_storer.IPlanStorer.save_text_file"><code class="docutils literal notranslate"><span class="pre">IPlanStorer.save_text_file()</span></code></a></li>
 </ul>

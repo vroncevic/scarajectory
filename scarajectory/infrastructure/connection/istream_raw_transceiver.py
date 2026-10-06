@@ -23,14 +23,14 @@ from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
-from scarajectory.core.service.worker.ibyte_sender import IByteSender
-from scarajectory.core.service.worker.icommand_sender import ICommandSender
+from scarajectory.infrastructure.connection.ibyte_sender import IByteSender
+from scarajectory.infrastructure.connection.icommand_sender import ICommandSender
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -39,27 +39,27 @@ __status__ = 'Updated'
 @runtime_checkable
 class IStreamRawTransceiver(ICommandSender, IByteSender, Protocol):
     '''
-    Composite structural protocol combining raw command and byte sending operations.
+        Composite structural protocol combining raw command and byte sending operations.
 
-    It defines:
+        It defines:
 
-        :methods:
-            | send_raw_command - Transmits raw string command packet over communication channel.
-            | send_raw_bytes - Transmits raw byte sequence over active communication transport.
+            :methods:
+                | send_raw_command - Transmits raw string command packet over communication channel.
+                | send_raw_bytes - Transmits raw byte sequence over active communication transport.
     '''
 
     def send_raw_command(self, cmd: str) -> bool:
         '''
-        Transmits raw string command packet over communication channel.
+            Transmits raw string command packet over communication channel.
 
-        :param cmd: Raw command string to transmit.
-        :return: True if transmission succeeded, False otherwise.
+            :param cmd: Raw command string to transmit.
+            :return: True if transmission succeeded, False otherwise.
         '''
 
-    def send_raw_bytes(self, data: bytes) -> bool:
+    def send_raw_bytes(self, payload: bytes) -> bool:
         '''
-        Transmits raw byte payload over active transport.
+            Transmits raw byte payload over active transport.
 
-        :param data: Raw byte payload.
-        :return: True if transmission succeeded, False otherwise.
+            :param payload: Raw byte payload.
+            :return: True if transmission succeeded, False otherwise.
         '''

@@ -60,12 +60,13 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Mapping</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">cos</span><span class="p">,</span> <span class="n">pi</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -193,6 +194,14 @@
 <span class="sd">            :return: Dictionary containing singularity parameter values.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">j2_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+            <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;j2_max_rad&#39;</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;j2_max_rad&#39;</span><span class="p">,</span> <span class="mf">2.530727</span><span class="p">))</span>
+        <span class="p">)</span>
+        <span class="n">l1</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;l1&#39;</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;l1&#39;</span><span class="p">,</span> <span class="mf">150.0</span><span class="p">)))</span>
+        <span class="n">l2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;l2&#39;</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;l2&#39;</span><span class="p">,</span> <span class="mf">120.0</span><span class="p">)))</span>
+        <span class="n">computed_deadzone</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">l1</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">l2</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">l1</span> <span class="o">*</span> <span class="n">l2</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">pi</span> <span class="o">-</span> <span class="n">j2_max</span><span class="p">))</span> <span class="o">**</span> <span class="mf">0.5</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="s1">&#39;singularity_outer_margin_mm&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span>
                 <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
@@ -210,6 +219,12 @@
                 <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
                     <span class="s1">&#39;singularity_theta2_min_rad&#39;</span><span class="p">,</span>
                     <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;singularity_theta2_min_rad&#39;</span><span class="p">,</span> <span class="mf">0.087266</span><span class="p">),</span>
+                <span class="p">)</span>
+            <span class="p">),</span>
+            <span class="s1">&#39;deadzone_r_min&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span>
+                <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                    <span class="s1">&#39;deadzone_r_min&#39;</span><span class="p">,</span>
+                    <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;deadzone_r_min&#39;</span><span class="p">,</span> <span class="n">computed_deadzone</span><span class="p">),</span>
                 <span class="p">)</span>
             <span class="p">),</span>
         <span class="p">}</span></div>

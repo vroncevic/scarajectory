@@ -24,21 +24,15 @@ from __future__ import annotations
 from unittest import TestCase, main
 
 from scarajectory.core.model.protocol.scara_response import ScaraResponse
-from scarajectory.core.service.classifier.imotion_status_classifier import (
-    IMotionStatusClassifier,
-)
-from scarajectory.infrastructure.classifier.status.motion_status_classifier import (
-    MotionStatusClassifier,
-)
-from scarajectory.infrastructure.classifier.status.motion_status_classifier_factory import (
-    MotionStatusClassifierFactory,
-)
+from scarajectory.infrastructure.classifier.status.imotion_status_classifier import IMotionStatusClassifier
+from scarajectory.infrastructure.classifier.status.motion_status_classifier import MotionStatusClassifier
+from scarajectory.infrastructure.classifier.status.motion_status_classifier_factory import MotionStatusClassifierFactory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -90,7 +84,7 @@ class MotionStatusClassifierTestCase(TestCase):
         classifier = MotionStatusClassifierFactory.create()
         self.assertIsInstance(classifier, MotionStatusClassifier)
         self.assertIsInstance(classifier, IMotionStatusClassifier)
-        self.assertEqual(MotionStatusClassifierFactory.get_version(), '1.0.4')
+        self.assertEqual(MotionStatusClassifierFactory.get_version(), '1.0.3')
 
     def test_is_move_done(self) -> None:
         '''

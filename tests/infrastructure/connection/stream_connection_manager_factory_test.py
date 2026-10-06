@@ -25,21 +25,15 @@ from unittest import TestCase, main
 from unittest.mock import MagicMock
 
 from scarajectory.core.model.protocol.protocol_mode import ProtocolMode
-from scarajectory.infrastructure.connection.stream_connection_manager import (
-    StreamConnectionManager,
-)
-from scarajectory.infrastructure.connection.stream_connection_manager_factory import (
-    StreamConnectionManagerFactory,
-)
-from scarajectory.infrastructure.transport.istream_transport_connection import (
-    IStreamTransportConnection,
-)
+from scarajectory.infrastructure.connection.stream_connection_manager import StreamConnectionManager
+from scarajectory.infrastructure.connection.stream_connection_manager_factory import StreamConnectionManagerFactory
+from scarajectory.infrastructure.transport.istream_transport_connection import IStreamTransportConnection
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -59,7 +53,7 @@ class StreamConnectionManagerFactoryTestCase(TestCase):
     def test_factory_version_and_structure(self) -> None:
         '''Verifies factory version string and create callable.'''
         self.assertEqual(
-            StreamConnectionManagerFactory.get_version(), '1.0.4'
+            StreamConnectionManagerFactory.get_version(), '1.0.3'
         )
         self.assertTrue(hasattr(StreamConnectionManagerFactory, 'create'))
         self.assertTrue(callable(StreamConnectionManagerFactory.create))

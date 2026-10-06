@@ -24,7 +24,6 @@ Subpackages
    scarajectory.infrastructure.storage
    scarajectory.infrastructure.streaming
    scarajectory.infrastructure.tool
-   scarajectory.infrastructure.transmission
    scarajectory.infrastructure.transport
    scarajectory.infrastructure.worker
 

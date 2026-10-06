@@ -61,7 +61,6 @@
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span>
 
-<span class="kn">from</span> <span class="nn">scaralang.core.model.dsl.binary.program</span> <span class="kn">import</span> <span class="n">BinaryProgram</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.waypoint</span> <span class="kn">import</span> <span class="n">Waypoint</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.storage.iplan_loader</span> <span class="kn">import</span> <span class="n">IPlanLoader</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.storage.iplan_storer</span> <span class="kn">import</span> <span class="n">IPlanStorer</span>
@@ -71,7 +70,7 @@
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -94,7 +93,7 @@
 <span class="sd">                | load_plan - Loads and deserializes waypoints from JSON file path.</span>
 <span class="sd">                | save_text_file - Writes string content to file path using UTF-8 encoding.</span>
 <span class="sd">                | load_text_file - Reads string content from file path using UTF-8 encoding.</span>
-<span class="sd">                | save_binary_program - Writes compiled binary program payload to destination file path.</span>
+<span class="sd">                | save_binary_file - Writes compiled binary payload to destination file path.</span>
 <span class="sd">                | load_binary_file - Reads binary file content from destination file path.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
@@ -159,16 +158,16 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">load_text_file</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="PlanStorageService.save_binary_program">
-<a class="viewcode-back" href="../../../../scarajectory.infrastructure.storage.plan_storage_service.html#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService.save_binary_program">[docs]</a>
-    <span class="k">def</span> <span class="nf">save_binary_program</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">BinaryProgram</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PlanStorageService.save_binary_file">
+<a class="viewcode-back" href="../../../../scarajectory.infrastructure.storage.plan_storage_service.html#scarajectory.infrastructure.storage.plan_storage_service.PlanStorageService.save_binary_file">[docs]</a>
+    <span class="k">def</span> <span class="nf">save_binary_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Writes compiled binary program payload to destination file path.</span>
+<span class="sd">            Writes compiled binary payload to destination file path.</span>
 
-<span class="sd">            :param program: BinaryProgram instance.</span>
+<span class="sd">            :param content: Raw bytes payload.</span>
 <span class="sd">            :param filepath: Destination file path.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_storer</span><span class="o">.</span><span class="n">save_binary_program</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">filepath</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_storer</span><span class="o">.</span><span class="n">save_binary_file</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">filepath</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PlanStorageService.load_binary_file">
@@ -182,6 +181,7 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">load_binary_file</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span></div>
 </div>
+
 
 </pre></div>
 

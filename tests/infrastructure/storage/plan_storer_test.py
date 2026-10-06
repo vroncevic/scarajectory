@@ -28,12 +28,9 @@ from unittest import TestCase, main
 
 from ats_utilities.context.bundle import ContextBundle
 from ats_utilities.context.factory import ContextBundleFactory
-from scaralang.core.model.dsl.binary.binary_program_telemetry import BinaryProgramTelemetry
-from scaralang.core.model.dsl.binary.program import BinaryProgram
 from scarajectory.core.model.trajectory.waypoint import Waypoint
-from scarajectory.core.service.trajectory.plan.store.waypoint_store_factory import (
-    WaypointStoreFactory,
-)
+from scarajectory.core.service.trajectory.plan.store.waypoint_store_factory import WaypointStoreFactory
+from scarajectory.infrastructure.storage.config_io.config_io_factory import ConfigIOFactory
 from scarajectory.infrastructure.storage.plan_loader import PlanLoader
 from scarajectory.infrastructure.storage.plan_storer import PlanStorer
 
@@ -41,7 +38,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -57,7 +54,7 @@ class TestPlanStorer(TestCase):
                 | setUp - Initializes storer test fixture.
                 | test_save_plan - Tests saving trajectory plan to JSON file and reading back.
                 | test_save_text_file - Tests writing text file with parent directory creation.
-                | test_save_binary_program - Tests writing BinaryProgram raw bytes to file.
+                | test_save_binary_file - Tests writing binary raw bytes to file.
     '''
 
     context_bundle: ContextBundle
@@ -66,11 +63,12 @@ class TestPlanStorer(TestCase):
 
     def setUp(self) -> None:
         '''
-            Sets up test fixture initializing PlanStorer and PlanLoader.
+            Sets up test fixture initializing PlanStorer and PlanLoader with I/O factory.
         '''
         self.context_bundle = ContextBundleFactory.create_bundle()
-        self.storer = PlanStorer(context_bundle=self.context_bundle)
-        self.loader = PlanLoader(context_bundle=self.context_bundle)
+        io_factory = ConfigIOFactory.create(self.context_bundle)
+        self.storer = PlanStorer(io_factory=io_factory)
+        self.loader = PlanLoader(io_factory=io_factory)
 
     def test_save_plan(self) -> None:
         '''
@@ -112,39 +110,20 @@ class TestPlanStorer(TestCase):
             read_back: str = self.loader.load_text_file(nested_path)
             self.assertEqual(read_back, content)
 
-    def test_save_binary_program(self) -> None:
+    def test_save_binary_file(self) -> None:
         '''
-            Verifies saving compiled BinaryProgram raw bytes to destination file.
+            Verifies saving binary raw bytes to destination file.
         '''
         raw_bytes = b'\xAA\x55\x01\x02\x03\x04\x0D\x0A'
-        telemetry = BinaryProgramTelemetry(
-            source_instructions=1,
-            compiled_steps=0,
-            duration_us=1000,
-            duration_s=0.001,
-            peak_j1_steps=0,
-            peak_j2_steps=0,
-            peak_z_steps=0,
-            peak_j4_steps=0,
-            total_wire_bytes=8,
-        )
-        program = BinaryProgram(
-            steps=(),
-            raw_bytes=raw_bytes,
-            total_duration_us=1000,
-            instruction_count=1,
-            step_counts=(0, 0, 0, 0),
-            telemetry=telemetry,
-        )
 
         with TemporaryDirectory() as tmp_dir:
             nested_path: str = join(tmp_dir, 'bin_sub', 'program.bin')
 
-            self.storer.save_binary_program(program, nested_path)
+            self.storer.save_binary_file(raw_bytes, nested_path)
             self.assertTrue(exists(nested_path))
 
             read_bytes: bytes = self.loader.load_binary_file(nested_path)
-            self.assertEqual(read_bytes, program.raw_bytes)
+            self.assertEqual(read_bytes, raw_bytes)
 
 
 if __name__ == '__main__':

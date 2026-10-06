@@ -8,6 +8,7 @@ Submodules
    :maxdepth: 4
 
    scarajectory.infrastructure.gui.streaming.panel.istream_control_delegate
+   scarajectory.infrastructure.gui.streaming.panel.istream_status_bar
    scarajectory.infrastructure.gui.streaming.panel.stream_control_panel
    scarajectory.infrastructure.gui.streaming.panel.stream_progress_adapter
    scarajectory.infrastructure.gui.streaming.panel.stream_status_bar

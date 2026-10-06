@@ -24,27 +24,12 @@ from __future__ import annotations
 from unittest import TestCase, main
 
 from scaralang.core.service.kinematics.kinematics_service_factory import KinematicsServiceFactory
-from scaralang.core.service.trajectory.validation.\
-    trajectory_validator_factory import (
-        TrajectoryValidatorFactory,
-    )
+from scaralang.core.service.trajectory.validation.trajectory_validator_factory import TrajectoryValidatorFactory
 from scarajectory.core.model.trajectory.waypoint import Waypoint
-from scarajectory.core.service.trajectory.plan.observer.\
-    plan_observer_dispatcher_factory import (
-        PlanObserverDispatcherFactory,
-    )
-from scarajectory.core.service.trajectory.plan.selection.\
-    plan_selection_coordinator_factory import (
-        PlanSelectionCoordinatorFactory,
-    )
-from scarajectory.core.service.trajectory.plan.selection.\
-    plan_selection_manager_factory import (
-        PlanSelectionManagerFactory,
-    )
-from scarajectory.core.service.trajectory.plan.store.\
-    waypoint_store_factory import (
-        WaypointStoreFactory,
-    )
+from scarajectory.core.service.trajectory.plan.observer.plan_observer_dispatcher_factory import PlanObserverDispatcherFactory
+from scarajectory.core.service.trajectory.plan.selection.plan_selection_coordinator_factory import PlanSelectionCoordinatorFactory
+from scarajectory.core.service.trajectory.plan.selection.plan_selection_manager_factory import PlanSelectionManagerFactory
+from scarajectory.core.service.trajectory.plan.store.waypoint_store_factory import WaypointStoreFactory
 from scarajectory.infrastructure.gui.canvas.render.preview_renderer import CanvasPreviewRenderer
 from scarajectory.infrastructure.gui.canvas.render.renderer import CanvasRenderer
 from scarajectory.infrastructure.gui.canvas.render.trajectory_renderer import CanvasTrajectoryRenderer
@@ -56,7 +41,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -190,6 +175,10 @@ class TestCanvasRenderer(TestCase):
             self.canvas, self.vp, CanvasToolMode.LINE, drag_pts
         )
         self.assertGreater(len(self.canvas.lines), 0)
+
+        CanvasPreviewRenderer.draw_preview(
+            self.canvas, self.vp, CanvasToolMode.FREEHAND, drag_pts
+        )
 
     def test_canvas_renderer_facade(self) -> None:
         '''

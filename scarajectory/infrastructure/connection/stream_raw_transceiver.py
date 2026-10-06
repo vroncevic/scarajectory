@@ -30,7 +30,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -38,18 +38,18 @@ __status__ = 'Updated'
 
 class StreamRawTransceiver:
     '''
-    Transceiver managing raw string command and byte payload transmission.
+        Transceiver managing raw string command and byte payload transmission.
 
-    It defines:
+        It defines:
 
-        :attributes:
-            | _connection - Injected IStreamTransportConnection lifecycle instance.
-            | _transceiver - Injected IStreamTransportTransceiver wire I/O instance.
+            :attributes:
+                | _connection - Injected IStreamTransportConnection lifecycle instance.
+                | _transceiver - Injected IStreamTransportTransceiver wire I/O instance.
 
-        :methods:
-            | is_connected - Checks whether transport connection is currently open.
-            | send_raw_command - Transmits raw string command packet over channel.
-            | send_raw_bytes - Transmits raw byte payload over active transport.
+            :methods:
+                | is_connected - Checks whether transport connection is currently open.
+                | send_raw_command - Transmits raw string command packet over channel.
+                | send_raw_bytes - Transmits raw byte payload over active transport.
     '''
 
     _connection: IStreamTransportConnection
@@ -62,46 +62,46 @@ class StreamRawTransceiver:
         transceiver: IStreamTransportTransceiver,
     ) -> None:
         '''
-        Initializes StreamRawTransceiver with connection and transceiver.
+            Initializes StreamRawTransceiver with connection and transceiver.
 
-        :param connection: Injected IStreamTransportConnection instance.
-        :param transceiver: Injected IStreamTransportTransceiver instance.
-        :exceptions: None.
+            :param connection: Injected IStreamTransportConnection instance.
+            :param transceiver: Injected IStreamTransportTransceiver instance.
+            :exceptions: None.
         '''
         self._connection: Final[IStreamTransportConnection] = connection
         self._transceiver: Final[IStreamTransportTransceiver] = transceiver
 
     def is_connected(self) -> bool:
         '''
-        Checks whether transport connection is currently open.
+            Checks whether transport connection is currently open.
 
-        :return: True if transport is connected, False otherwise.
-        :exceptions: None.
+            :return: True if transport is connected, False otherwise.
+            :exceptions: None.
         '''
         return self._connection.is_connected()
 
     def send_raw_command(self, cmd: str) -> bool:
         '''
-        Transmits raw string command packet over communication channel.
+            Transmits raw string command packet over communication channel.
 
-        :param cmd: Raw command string to transmit.
-        :return: True if transmission succeeded, False otherwise.
-        :exceptions: None.
+            :param cmd: Raw command string to transmit.
+            :return: True if transmission succeeded, False otherwise.
+            :exceptions: None.
         '''
         if not self._connection.is_connected():
             return False
 
         return self._transceiver.send_raw(cmd)
 
-    def send_raw_bytes(self, data: bytes) -> bool:
+    def send_raw_bytes(self, payload: bytes) -> bool:
         '''
-        Transmits raw byte payload over active transport.
+            Transmits raw byte payload over active transport.
 
-        :param data: Raw byte payload.
-        :return: True if transmission succeeded, False otherwise.
-        :exceptions: None.
+            :param payload: Raw byte payload.
+            :return: True if transmission succeeded, False otherwise.
+            :exceptions: None.
         '''
         if not self._connection.is_connected():
             return False
 
-        return self._transceiver.send_bytes(data)
+        return self._transceiver.send_bytes(payload)

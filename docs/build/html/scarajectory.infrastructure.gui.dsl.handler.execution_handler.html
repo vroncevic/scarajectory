@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="scarajectory.infrastructure.gui.dsl.handler.execution_handler_bundle module" href="scarajectory.infrastructure.gui.dsl.handler.execution_handler_bundle.html" />
-    <link rel="prev" title="scarajectory.infrastructure.gui.dsl.handler package" href="scarajectory.infrastructure.gui.dsl.handler.html" /> 
+    <link rel="prev" title="scarajectory.infrastructure.gui.dsl.handler.binary_handler_factory module" href="scarajectory.infrastructure.gui.dsl.handler.binary_handler_factory.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -31,7 +31,7 @@
           <a href="scarajectory.infrastructure.gui.dsl.handler.execution_handler_bundle.html" title="scarajectory.infrastructure.gui.dsl.handler.execution_handler_bundle module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.gui.dsl.handler.html" title="scarajectory.infrastructure.gui.dsl.handler package"
+          <a href="scarajectory.infrastructure.gui.dsl.handler.binary_handler_factory.html" title="scarajectory.infrastructure.gui.dsl.handler.binary_handler_factory module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
@@ -81,7 +81,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dd class="field-odd"><div class="line-block">
 <div class="line">_store - Injected waypoint query collaborator.</div>
 <div class="line">_mutation - Injected plan mutation service collaborator.</div>
-<div class="line">_dsl_service - High-level DSL compilation and serialization service.</div>
+<div class="line">_dsl - Injected SCARA DSL pipeline role services bundle.</div>
 <div class="line">_launcher - SCARAEmu emulator process launcher.</div>
 <div class="line">_editor - Code editor subcomponent.</div>
 <div class="line">_console - Diagnostic console view subcomponent.</div>
@@ -104,8 +104,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.handler.execution_handler.DslEditorExecutionHandler._dsl_service">
-<span class="sig-name descname"><span class="pre">_dsl_service</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">IScaraDslService</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.handler.execution_handler.DslEditorExecutionHandler._dsl_service" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.dsl.handler.execution_handler.DslEditorExecutionHandler._dsl">
+<span class="sig-name descname"><span class="pre">_dsl</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.setup.pipeline.dsl_pipeline_bundle.html#scarajectory.setup.pipeline.dsl_pipeline_bundle.DslPipelineBundle" title="scarajectory.setup.pipeline.dsl_pipeline_bundle.DslPipelineBundle"><span class="pre">DslPipelineBundle</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.dsl.handler.execution_handler.DslEditorExecutionHandler._dsl" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -189,7 +189,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <li><a class="reference internal" href="#">scarajectory.infrastructure.gui.dsl.handler.execution_handler module</a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.handler.execution_handler.DslEditorExecutionHandler"><code class="docutils literal notranslate"><span class="pre">DslEditorExecutionHandler</span></code></a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.handler.execution_handler.DslEditorExecutionHandler._console"><code class="docutils literal notranslate"><span class="pre">DslEditorExecutionHandler._console</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.handler.execution_handler.DslEditorExecutionHandler._dsl_service"><code class="docutils literal notranslate"><span class="pre">DslEditorExecutionHandler._dsl_service</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.handler.execution_handler.DslEditorExecutionHandler._dsl"><code class="docutils literal notranslate"><span class="pre">DslEditorExecutionHandler._dsl</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.handler.execution_handler.DslEditorExecutionHandler._editor"><code class="docutils literal notranslate"><span class="pre">DslEditorExecutionHandler._editor</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.handler.execution_handler.DslEditorExecutionHandler._launcher"><code class="docutils literal notranslate"><span class="pre">DslEditorExecutionHandler._launcher</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.dsl.handler.execution_handler.DslEditorExecutionHandler._mutation"><code class="docutils literal notranslate"><span class="pre">DslEditorExecutionHandler._mutation</span></code></a></li>
@@ -207,8 +207,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.gui.dsl.handler.html"
-                          title="previous chapter">scarajectory.infrastructure.gui.dsl.handler package</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.gui.dsl.handler.binary_handler_factory.html"
+                          title="previous chapter">scarajectory.infrastructure.gui.dsl.handler.binary_handler_factory module</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -249,7 +249,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="scarajectory.infrastructure.gui.dsl.handler.execution_handler_bundle.html" title="scarajectory.infrastructure.gui.dsl.handler.execution_handler_bundle module"
              >next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.gui.dsl.handler.html" title="scarajectory.infrastructure.gui.dsl.handler package"
+          <a href="scarajectory.infrastructure.gui.dsl.handler.binary_handler_factory.html" title="scarajectory.infrastructure.gui.dsl.handler.binary_handler_factory module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>

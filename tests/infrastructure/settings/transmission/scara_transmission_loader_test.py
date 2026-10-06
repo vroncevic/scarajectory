@@ -24,7 +24,7 @@ from __future__ import annotations
 from unittest import TestCase, main
 
 from scaralang.core.model.kinematics.transmission_parameters import TransmissionParameters
-from scarajectory.core.service.settings.iscara_transmission_loader import IScaraTransmissionLoader
+from scarajectory.infrastructure.settings.transmission.iscara_transmission_loader import IScaraTransmissionLoader
 from scarajectory.infrastructure.settings.transmission.scara_transmission_loader import ScaraTransmissionLoader
 from scarajectory.infrastructure.settings.transmission.scara_transmission_loader_factory import ScaraTransmissionLoaderFactory
 from scarajectory.infrastructure.settings.settings_reader_factory import SettingsReaderFactory
@@ -33,7 +33,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'

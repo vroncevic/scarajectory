@@ -1,6 +1,15 @@
 scarajectory.infrastructure.storage package
 ===========================================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   scarajectory.infrastructure.storage.config_io
+   scarajectory.infrastructure.storage.workspace
+
 Submodules
 ----------
 

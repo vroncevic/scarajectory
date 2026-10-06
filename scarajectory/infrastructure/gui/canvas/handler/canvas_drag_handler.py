@@ -26,8 +26,8 @@ from typing import ClassVar, Final
 from scarajectory.core.model.trajectory.waypoint import Waypoint
 from scarajectory.core.service.trajectory.plan.mutation.iplan_point_mutator import IPlanPointMutator
 from scarajectory.core.service.trajectory.plan.store.iwaypoint_store import IWaypointStore
-from scarajectory.infrastructure.gui.canvas.handler.canvas_shape_handler import CanvasShapeHandler
 from scarajectory.infrastructure.gui.canvas.handler.canvas_tool_handler import CanvasToolHandler
+from scarajectory.infrastructure.gui.canvas.handler.icanvas_waypoint_builder import ICanvasWaypointBuilder
 from scarajectory.infrastructure.gui.model.canvas_interaction_state import CanvasInteractionState
 from scarajectory.infrastructure.gui.model.canvas_settings import CanvasSettings
 
@@ -35,7 +35,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -52,7 +52,7 @@ class CanvasDragHandler:
                 | _store - Injected waypoint store query collaborator.
                 | _mutation - Injected plan point mutator collaborator.
                 | _state - Interactive mouse and selection state.
-                | _shape_handler - Geometric shape handler for waypoint construction.
+                | _shape_handler - Injected waypoint builder for canvas geometry.
             :methods:
                 | __init__ - Initializes handler with injected collaborators.
                 | handle_drag_select - Updates dragged waypoint position during selection drag.
@@ -64,7 +64,7 @@ class CanvasDragHandler:
     _store: IWaypointStore
     _mutation: IPlanPointMutator
     _state: CanvasInteractionState
-    _shape_handler: CanvasShapeHandler
+    _shape_handler: ICanvasWaypointBuilder
 
     def __init__(
         self,
@@ -72,7 +72,7 @@ class CanvasDragHandler:
         store: IWaypointStore,
         mutation: IPlanPointMutator,
         state: CanvasInteractionState,
-        shape_handler: CanvasShapeHandler,
+        shape_handler: ICanvasWaypointBuilder,
     ) -> None:
         '''
             Initializes drag handler with injected collaborators.
@@ -80,12 +80,12 @@ class CanvasDragHandler:
             :param store: Injected IWaypointStore instance.
             :param mutation: Injected IPlanPointMutator instance.
             :param state: CanvasInteractionState instance.
-            :param shape_handler: Injected CanvasShapeHandler instance.
+            :param shape_handler: Injected ICanvasWaypointBuilder instance.
         '''
         self._store: Final[IWaypointStore] = store
         self._mutation: Final[IPlanPointMutator] = mutation
         self._state: Final[CanvasInteractionState] = state
-        self._shape_handler: Final[CanvasShapeHandler] = shape_handler
+        self._shape_handler: Final[ICanvasWaypointBuilder] = shape_handler
 
     def handle_drag_select(self, wx: float, wy: float) -> bool:
         '''
@@ -99,15 +99,7 @@ class CanvasDragHandler:
             cur_pt: Waypoint = self._store.waypoints[self._state.dragged_node_idx]
             self._mutation.update_point(
                 self._state.dragged_node_idx,
-                Waypoint(
-                    x=wx,
-                    y=wy,
-                    z=cur_pt.z,
-                    phi=cur_pt.phi,
-                    speed=cur_pt.speed,
-                    name=cur_pt.name,
-                    command=cur_pt.command,
-                ),
+                self._shape_handler.create_relocated_waypoint(cur_pt, wx, wy),
             )
         return False
 

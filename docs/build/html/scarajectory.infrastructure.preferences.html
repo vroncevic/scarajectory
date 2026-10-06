@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="scarajectory.infrastructure.preferences.connection_repository module" href="scarajectory.infrastructure.preferences.connection_repository.html" />
-    <link rel="prev" title="scarajectory.infrastructure.packet.binary_packet_strategy_factory module" href="scarajectory.infrastructure.packet.binary_packet_strategy_factory.html" /> 
+    <link rel="prev" title="scarajectory.infrastructure.packet.ipacket_strategy module" href="scarajectory.infrastructure.packet.ipacket_strategy.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -31,7 +31,7 @@
           <a href="scarajectory.infrastructure.preferences.connection_repository.html" title="scarajectory.infrastructure.preferences.connection_repository module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.packet.binary_packet_strategy_factory.html" title="scarajectory.infrastructure.packet.binary_packet_strategy_factory module"
+          <a href="scarajectory.infrastructure.packet.ipacket_strategy.html" title="scarajectory.infrastructure.packet.ipacket_strategy module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
@@ -58,7 +58,7 @@
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.preferences.connection_repository.html#scarajectory.infrastructure.preferences.connection_repository.ConnectionRepository.DEFAULT_CONFIG_FILE"><code class="docutils literal notranslate"><span class="pre">ConnectionRepository.DEFAULT_CONFIG_FILE</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.preferences.connection_repository.html#scarajectory.infrastructure.preferences.connection_repository.ConnectionRepository.DEFAULT_PORT"><code class="docutils literal notranslate"><span class="pre">ConnectionRepository.DEFAULT_PORT</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.preferences.connection_repository.html#scarajectory.infrastructure.preferences.connection_repository.ConnectionRepository._config_file"><code class="docutils literal notranslate"><span class="pre">ConnectionRepository._config_file</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.preferences.connection_repository.html#scarajectory.infrastructure.preferences.connection_repository.ConnectionRepository._context"><code class="docutils literal notranslate"><span class="pre">ConnectionRepository._context</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.preferences.connection_repository.html#scarajectory.infrastructure.preferences.connection_repository.ConnectionRepository._io_factory"><code class="docutils literal notranslate"><span class="pre">ConnectionRepository._io_factory</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.preferences.connection_repository.html#scarajectory.infrastructure.preferences.connection_repository.ConnectionRepository.has_preference"><code class="docutils literal notranslate"><span class="pre">ConnectionRepository.has_preference()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.preferences.connection_repository.html#scarajectory.infrastructure.preferences.connection_repository.ConnectionRepository.load_preference"><code class="docutils literal notranslate"><span class="pre">ConnectionRepository.load_preference()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.preferences.connection_repository.html#scarajectory.infrastructure.preferences.connection_repository.ConnectionRepository.save_preference"><code class="docutils literal notranslate"><span class="pre">ConnectionRepository.save_preference()</span></code></a></li>
@@ -69,6 +69,7 @@
 <li class="toctree-l1"><a class="reference internal" href="scarajectory.infrastructure.preferences.connection_repository_factory.html">scarajectory.infrastructure.preferences.connection_repository_factory module</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="scarajectory.infrastructure.preferences.connection_repository_factory.html#scarajectory.infrastructure.preferences.connection_repository_factory.ConnectionRepositoryFactory"><code class="docutils literal notranslate"><span class="pre">ConnectionRepositoryFactory</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.preferences.connection_repository_factory.html#scarajectory.infrastructure.preferences.connection_repository_factory.ConnectionRepositoryFactory.create"><code class="docutils literal notranslate"><span class="pre">ConnectionRepositoryFactory.create()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.preferences.connection_repository_factory.html#scarajectory.infrastructure.preferences.connection_repository_factory.ConnectionRepositoryFactory.create_with_io_factory"><code class="docutils literal notranslate"><span class="pre">ConnectionRepositoryFactory.create_with_io_factory()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.preferences.connection_repository_factory.html#scarajectory.infrastructure.preferences.connection_repository_factory.ConnectionRepositoryFactory.create_with_path"><code class="docutils literal notranslate"><span class="pre">ConnectionRepositoryFactory.create_with_path()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="scarajectory.infrastructure.preferences.connection_repository_factory.html#scarajectory.infrastructure.preferences.connection_repository_factory.ConnectionRepositoryFactory.get_version"><code class="docutils literal notranslate"><span class="pre">ConnectionRepositoryFactory.get_version()</span></code></a></li>
 </ul>
@@ -121,8 +122,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.packet.binary_packet_strategy_factory.html"
-                          title="previous chapter">scarajectory.infrastructure.packet.binary_packet_strategy_factory module</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.packet.ipacket_strategy.html"
+                          title="previous chapter">scarajectory.infrastructure.packet.ipacket_strategy module</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -163,7 +164,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="scarajectory.infrastructure.preferences.connection_repository.html" title="scarajectory.infrastructure.preferences.connection_repository module"
              >next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.packet.binary_packet_strategy_factory.html" title="scarajectory.infrastructure.packet.binary_packet_strategy_factory module"
+          <a href="scarajectory.infrastructure.packet.ipacket_strategy.html" title="scarajectory.infrastructure.packet.ipacket_strategy module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>

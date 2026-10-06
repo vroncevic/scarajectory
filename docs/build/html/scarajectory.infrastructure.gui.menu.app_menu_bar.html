@@ -65,7 +65,7 @@ See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
 </dd>
-<dt>Info</dt><dd><p>Top application menu bar coordinator and file I/O action handlers.</p>
+<dt>Info</dt><dd><p>Top application menu bar coordinating file I/O operations and bindings.</p>
 </dd>
 </dl>
 <dl class="py class">
@@ -84,7 +84,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <div class="line">_store - Waypoint store interface.</div>
 <div class="line">_mutation - Plan mutation service interface.</div>
 <div class="line">_storage - Plan storage service interface.</div>
-<div class="line">_dsl_service - SCARA DSL service interface.</div>
+<div class="line">_dsl - SCARA DSL pipeline role services bundle.</div>
 </div>
 </dd>
 <dt class="field-even">methods<span class="colon">:</span></dt>
@@ -99,8 +99,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dl>
 </div></blockquote>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.menu.app_menu_bar.AppMenuBar._dsl_service">
-<span class="sig-name descname"><span class="pre">_dsl_service</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">IScaraDslService</span></em><a class="headerlink" href="#scarajectory.infrastructure.gui.menu.app_menu_bar.AppMenuBar._dsl_service" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="scarajectory.infrastructure.gui.menu.app_menu_bar.AppMenuBar._dsl">
+<span class="sig-name descname"><span class="pre">_dsl</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.setup.pipeline.dsl_pipeline_bundle.html#scarajectory.setup.pipeline.dsl_pipeline_bundle.DslPipelineBundle" title="scarajectory.setup.pipeline.dsl_pipeline_bundle.DslPipelineBundle"><span class="pre">DslPipelineBundle</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.gui.menu.app_menu_bar.AppMenuBar._dsl" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -173,7 +173,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <ul>
 <li><a class="reference internal" href="#">scarajectory.infrastructure.gui.menu.app_menu_bar module</a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.menu.app_menu_bar.AppMenuBar"><code class="docutils literal notranslate"><span class="pre">AppMenuBar</span></code></a><ul>
-<li><a class="reference internal" href="#scarajectory.infrastructure.gui.menu.app_menu_bar.AppMenuBar._dsl_service"><code class="docutils literal notranslate"><span class="pre">AppMenuBar._dsl_service</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.gui.menu.app_menu_bar.AppMenuBar._dsl"><code class="docutils literal notranslate"><span class="pre">AppMenuBar._dsl</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.menu.app_menu_bar.AppMenuBar._mutation"><code class="docutils literal notranslate"><span class="pre">AppMenuBar._mutation</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.menu.app_menu_bar.AppMenuBar._navigator"><code class="docutils literal notranslate"><span class="pre">AppMenuBar._navigator</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.gui.menu.app_menu_bar.AppMenuBar._root"><code class="docutils literal notranslate"><span class="pre">AppMenuBar._root</span></code></a></li>

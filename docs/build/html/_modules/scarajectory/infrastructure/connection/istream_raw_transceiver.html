@@ -61,14 +61,14 @@
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>
 
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.worker.ibyte_sender</span> <span class="kn">import</span> <span class="n">IByteSender</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.worker.icommand_sender</span> <span class="kn">import</span> <span class="n">ICommandSender</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.connection.ibyte_sender</span> <span class="kn">import</span> <span class="n">IByteSender</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.connection.icommand_sender</span> <span class="kn">import</span> <span class="n">ICommandSender</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -79,34 +79,34 @@
 <span class="nd">@runtime_checkable</span>
 <span class="k">class</span> <span class="nc">IStreamRawTransceiver</span><span class="p">(</span><span class="n">ICommandSender</span><span class="p">,</span> <span class="n">IByteSender</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Composite structural protocol combining raw command and byte sending operations.</span>
+<span class="sd">        Composite structural protocol combining raw command and byte sending operations.</span>
 
-<span class="sd">    It defines:</span>
+<span class="sd">        It defines:</span>
 
-<span class="sd">        :methods:</span>
-<span class="sd">            | send_raw_command - Transmits raw string command packet over communication channel.</span>
-<span class="sd">            | send_raw_bytes - Transmits raw byte sequence over active communication transport.</span>
+<span class="sd">            :methods:</span>
+<span class="sd">                | send_raw_command - Transmits raw string command packet over communication channel.</span>
+<span class="sd">                | send_raw_bytes - Transmits raw byte sequence over active communication transport.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
 <div class="viewcode-block" id="IStreamRawTransceiver.send_raw_command">
 <a class="viewcode-back" href="../../../../scarajectory.infrastructure.connection.istream_raw_transceiver.html#scarajectory.infrastructure.connection.istream_raw_transceiver.IStreamRawTransceiver.send_raw_command">[docs]</a>
     <span class="k">def</span> <span class="nf">send_raw_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Transmits raw string command packet over communication channel.</span>
+<span class="sd">            Transmits raw string command packet over communication channel.</span>
 
-<span class="sd">        :param cmd: Raw command string to transmit.</span>
-<span class="sd">        :return: True if transmission succeeded, False otherwise.</span>
+<span class="sd">            :param cmd: Raw command string to transmit.</span>
+<span class="sd">            :return: True if transmission succeeded, False otherwise.</span>
 <span class="sd">        &#39;&#39;&#39;</span></div>
 
 
 <div class="viewcode-block" id="IStreamRawTransceiver.send_raw_bytes">
 <a class="viewcode-back" href="../../../../scarajectory.infrastructure.connection.istream_raw_transceiver.html#scarajectory.infrastructure.connection.istream_raw_transceiver.IStreamRawTransceiver.send_raw_bytes">[docs]</a>
-    <span class="k">def</span> <span class="nf">send_raw_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">send_raw_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payload</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Transmits raw byte payload over active transport.</span>
+<span class="sd">            Transmits raw byte payload over active transport.</span>
 
-<span class="sd">        :param data: Raw byte payload.</span>
-<span class="sd">        :return: True if transmission succeeded, False otherwise.</span>
+<span class="sd">            :param payload: Raw byte payload.</span>
+<span class="sd">            :return: True if transmission succeeded, False otherwise.</span>
 <span class="sd">        &#39;&#39;&#39;</span></div>
 </div>
 

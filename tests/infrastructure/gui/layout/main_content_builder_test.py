@@ -33,7 +33,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -49,7 +49,7 @@ class TestMainContentBuilder(TestCase):
 
     def setUp(self) -> None:
         validator = MagicMock()
-        validator.bounds.default_speed = 50.0
+        validator.bounds.speeds.default_speed = 50.0
         validator.r_min = 30.0
         validator.r_max = 270.0
         self.root = MagicMock()
@@ -65,7 +65,7 @@ class TestMainContentBuilder(TestCase):
             validator=validator,
             streaming=MagicMock(),
             storage=MagicMock(),
-            dsl_service=MagicMock(),
+            dsl=MagicMock(),
             connection_repository=MagicMock(),
         )
 

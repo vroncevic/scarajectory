@@ -21,6 +21,7 @@ Info
 
 from __future__ import annotations
 
+from pathlib import Path
 from unittest import TestCase, main
 from unittest.mock import MagicMock, patch
 
@@ -34,7 +35,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -171,6 +172,38 @@ class TestDslDocumentManager(TestCase):
         )
         self.assertEqual(result, '')
         mock_showerror.assert_called_once()
+
+    def test_catalog_missing_dir(self) -> None:
+        '''
+            Verifies catalog behavior when examples directory does not exist.
+        '''
+        mock_storage = MagicMock()
+        catalog = DslExampleCatalog(
+            storage=mock_storage,
+            examples_dir=Path('/non/existent/path/for/scara/examples')
+        )
+        self.assertEqual(catalog.examples_dir, Path('/non/existent/path/for/scara/examples'))
+        self.assertEqual(catalog.get_example_files(), [])
+        self.assertEqual(catalog.load_example_content(filename='sample.scara'), '')
+
+    def test_catalog_load_os_error(self) -> None:
+        '''
+            Verifies catalog handles OSError when reading existing file.
+        '''
+        mock_storage = MagicMock()
+        mock_storage.load_text_file.side_effect = OSError('Read error')
+        catalog = DslExampleCatalogFactory.create_default(storage=mock_storage)
+        examples = catalog.get_example_files()
+        if examples:
+            result = catalog.load_example_content(filename=examples[0])
+            self.assertEqual(result, '')
+
+    def test_factory_versions(self) -> None:
+        '''
+            Verifies version retrieval on factories.
+        '''
+        self.assertIsInstance(DslDocumentManagerFactory.get_version(), str)
+        self.assertIsInstance(DslExampleCatalogFactory.get_version(), str)
 
 
 if __name__ == '__main__':

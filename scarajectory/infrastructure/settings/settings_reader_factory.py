@@ -25,12 +25,14 @@ from ats_utilities.context.bundle import ContextBundle
 from ats_utilities.context.factory import ContextBundleFactory
 
 from scarajectory.infrastructure.settings.settings_reader import SettingsReader
+from scarajectory.infrastructure.storage.config_io.config_io_factory import ConfigIOFactory
+from scarajectory.infrastructure.storage.config_io.iconfig_io_factory import IConfigIOFactory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -46,6 +48,7 @@ class SettingsReaderFactory:
                 | create - Instantiates SettingsReader with default paths.
                 | create_with_context - Instantiates SettingsReader with explicit context.
                 | create_with_paths - Instantiates SettingsReader with explicit paths.
+                | create_with_io_factory - Instantiates SettingsReader with explicit IConfigIOFactory.
                 | get_version - Returns factory version string.
     '''
 
@@ -90,10 +93,33 @@ class SettingsReaderFactory:
             :param context_bundle: ATS ContextBundle instance.
             :return: Fully configured SettingsReader instance.
         '''
+        io_factory: IConfigIOFactory = ConfigIOFactory.create(context_bundle)
+        return cls.create_with_io_factory(
+            config_path=config_path,
+            scheme_path=scheme_path,
+            io_factory=io_factory,
+        )
+
+    @classmethod
+    def create_with_io_factory(
+        cls,
+        *,
+        config_path: str,
+        scheme_path: str,
+        io_factory: IConfigIOFactory,
+    ) -> SettingsReader:
+        '''
+            Creates and returns a SettingsReader instance with explicit I/O factory.
+
+            :param config_path: Absolute path to geometry configuration file.
+            :param scheme_path: Absolute path to validation schema file.
+            :param io_factory: Injected IConfigIOFactory instance.
+            :return: Fully configured SettingsReader instance.
+        '''
         return SettingsReader(
             config_path=config_path,
             scheme_path=scheme_path,
-            context_bundle=context_bundle,
+            io_factory=io_factory,
         )
 
     @classmethod

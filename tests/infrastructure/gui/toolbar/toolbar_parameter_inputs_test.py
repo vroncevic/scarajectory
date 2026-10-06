@@ -34,7 +34,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -107,11 +107,18 @@ class TestToolbarParameterInputs(TestCase):
         self.assertEqual(last_settings.default_z, 30.0)
         self.assertEqual(last_settings.default_speed, 60.0)
 
+    def test_on_defaults_changed_invalid_input(self) -> None:
+        '''
+            Tests on_defaults_changed handles non-numeric input gracefully.
+        '''
+        self.inputs._spin_z.set('invalid')
+        self.inputs.on_defaults_changed()
+
     def test_factory_version(self) -> None:
         '''
             Tests factory version retrieval.
         '''
-        self.assertEqual(ToolbarParameterInputsFactory.get_version(), '1.0.4')
+        self.assertEqual(ToolbarParameterInputsFactory.get_version(), '1.0.3')
 
 
 if __name__ == '__main__':

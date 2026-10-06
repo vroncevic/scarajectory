@@ -29,6 +29,7 @@ from scarajectory.core.model.streaming.stream_config import StreamConfig
 from scarajectory.infrastructure.transport.driver.serial_channel_factory import SerialChannelDriverFactory
 from scarajectory.infrastructure.transport.istream_transport_connection import IStreamTransportConnection
 from scarajectory.infrastructure.transport.listener.null_transport_listener import NullTransportListener
+from scarajectory.infrastructure.transport.listener.transport_listener_holder import TransportListenerHolder
 from scarajectory.infrastructure.transport.stream_transport_connection import StreamTransportConnection
 from scarajectory.infrastructure.transport.stream_transport_connection_factory import StreamTransportConnectionFactory
 from scarajectory.infrastructure.transport.worker.transport_reader_worker_factory import TransportReaderWorkerFactory
@@ -37,7 +38,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -92,12 +93,14 @@ class TestStreamTransportConnection(TestCase):
     def test_set_listener(self) -> None:
         '''Tests updating the active event listener.'''
         driver = SerialChannelDriverFactory.create()
-        initial_listener = NullTransportListener()
+        initial_listener = TransportListenerHolder(NullTransportListener())
         connection = StreamTransportConnectionFactory.create(
             driver=driver,
             listener=initial_listener,
         )
         new_listener = MockRecordingListener()
+        connection.set_listener(new_listener)
+        connection._listener = NullTransportListener()
         connection.set_listener(new_listener)
         self.assertFalse(connection.is_connected())
 
@@ -136,6 +139,9 @@ class TestStreamTransportConnection(TestCase):
             listener=listener,
             worker_factory=mock_worker_factory,
         )
+        mock_worker.run.side_effect = (
+            lambda: connection._stop_event.wait(timeout=2.0)
+        )
         config = StreamConfig(
             port='/dev/ttyUSB0',
             baudrate=115200,
@@ -167,12 +173,12 @@ class TestStreamTransportConnection(TestCase):
     def test_factory_version(self) -> None:
         '''Tests factory version accessor.'''
         version = StreamTransportConnectionFactory.get_version()
-        self.assertEqual(version, '1.0.4')
+        self.assertEqual(version, '1.0.3')
 
     def test_worker_factory_methods(self) -> None:
         '''Tests that default TransportReaderWorkerFactory has create and get_version.'''
         self.assertTrue(callable(TransportReaderWorkerFactory.create))
-        self.assertEqual(TransportReaderWorkerFactory.get_version(), '1.0.4')
+        self.assertEqual(TransportReaderWorkerFactory.get_version(), '1.0.3')
 
 
 if __name__ == '__main__':

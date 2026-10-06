@@ -27,18 +27,15 @@ from unittest import TestCase, main
 
 from ats_utilities.context.factory import ContextBundleFactory
 
-from scarajectory.infrastructure.preferences.connection_repository import (
-    ConnectionRepository,
-)
-from scarajectory.infrastructure.preferences.connection_repository_factory import (
-    ConnectionRepositoryFactory,
-)
+from scarajectory.infrastructure.preferences.connection_repository import ConnectionRepository
+from scarajectory.infrastructure.preferences.connection_repository_factory import ConnectionRepositoryFactory
+from scarajectory.infrastructure.storage.config_io.config_io_factory import ConfigIOFactory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -53,6 +50,7 @@ class ConnectionRepositoryFactoryTestCase(TestCase):
             :methods:
                 | test_create_default - Verifies factory creates repository with default path.
                 | test_create_with_path - Verifies factory creates repository with custom path.
+                | test_create_with_io_factory - Verifies factory creates repository with IConfigIOFactory.
                 | test_get_version - Verifies factory returns semantic version string.
     '''
 
@@ -73,10 +71,22 @@ class ConnectionRepositoryFactoryTestCase(TestCase):
             )
             self.assertIsInstance(repo, ConnectionRepository)
 
+    def test_create_with_io_factory(self) -> None:
+        '''Verifies factory creates repository with injected IConfigIOFactory.'''
+        with TemporaryDirectory() as tmp_dir:
+            config_file = Path(tmp_dir) / 'custom_pref.json'
+            ctx = ContextBundleFactory.create_bundle()
+            io_factory = ConfigIOFactory.create(ctx)
+            repo = ConnectionRepositoryFactory.create_with_io_factory(
+                io_factory=io_factory,
+                config_file=config_file,
+            )
+            self.assertIsInstance(repo, ConnectionRepository)
+
     def test_get_version(self) -> None:
         '''Verifies factory exposes semantic version string matching package.'''
         self.assertEqual(
-            ConnectionRepositoryFactory.get_version(), '1.0.4'
+            ConnectionRepositoryFactory.get_version(), '1.0.3'
         )
 
 

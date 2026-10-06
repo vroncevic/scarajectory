@@ -35,7 +35,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -141,14 +141,10 @@ class PortConnectionPanel(Frame):
             matching_ports = [p for p in ports if p.startswith(preference.port)]
             if matching_ports:
                 self._cbo_ports.set(matching_ports[0])
-            elif ports:
-                self._cbo_ports.current(0)
             else:
-                self._cbo_ports.set('')
-        elif ports:
-            self._cbo_ports.current(0)
+                self._cbo_ports.current(0)
         else:
-            self._cbo_ports.set('')
+            self._cbo_ports.current(0)
 
     def get_selected_port(self) -> str:
         '''

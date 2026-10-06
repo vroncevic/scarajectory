@@ -60,7 +60,6 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">from</span> <span class="nn">ats_utilities.base.setup.bundle</span> <span class="kn">import</span> <span class="n">BaseBundle</span>
-<span class="kn">from</span> <span class="nn">scaralang.core.service.dsl.iscara_dsl_service</span> <span class="kn">import</span> <span class="n">IScaraDslService</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.engine</span> <span class="kn">import</span> <span class="n">Service</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.service.service_factory</span> <span class="kn">import</span> <span class="n">ServiceFactory</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.cli.engine</span> <span class="kn">import</span> <span class="n">CLI</span>
@@ -75,6 +74,7 @@
 <span class="kn">from</span> <span class="nn">scarajectory.setup.bundle</span> <span class="kn">import</span> <span class="n">SCARAjectoryBundle</span>
 <span class="kn">from</span> <span class="nn">scarajectory.setup.dependencies</span> <span class="kn">import</span> <span class="n">SCARAjectoryBundleDependencies</span>
 <span class="kn">from</span> <span class="nn">scarajectory.setup.pipeline.dsl_pipeline_builder</span> <span class="kn">import</span> <span class="n">DslPipelineBuilder</span>
+<span class="kn">from</span> <span class="nn">scarajectory.setup.pipeline.dsl_pipeline_bundle</span> <span class="kn">import</span> <span class="n">DslPipelineBundle</span>
 <span class="kn">from</span> <span class="nn">scarajectory.setup.pipeline.plan_pipeline_bundle</span> <span class="kn">import</span> <span class="n">PlanPipelineBundle</span>
 <span class="kn">from</span> <span class="nn">scarajectory.setup.registry</span> <span class="kn">import</span> <span class="n">SCARAjectoryBundleRegistry</span>
 
@@ -82,7 +82,7 @@
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -121,10 +121,8 @@
 <span class="sd">            :return: Fully assembled SCARAjectoryBundle instance.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">dsl_service</span><span class="p">:</span> <span class="n">IScaraDslService</span> <span class="o">=</span> <span class="n">DslPipelineBuilder</span><span class="o">.</span><span class="n">build</span><span class="p">(</span>
+        <span class="n">dsl_bundle</span><span class="p">:</span> <span class="n">DslPipelineBundle</span> <span class="o">=</span> <span class="n">DslPipelineBuilder</span><span class="o">.</span><span class="n">build</span><span class="p">(</span>
             <span class="n">validator</span><span class="o">=</span><span class="n">core_bundle</span><span class="o">.</span><span class="n">validator</span><span class="p">,</span>
-            <span class="n">kinematics</span><span class="o">=</span><span class="n">core_bundle</span><span class="o">.</span><span class="n">kinematics</span><span class="p">,</span>
-            <span class="n">transmission</span><span class="o">=</span><span class="n">core_bundle</span><span class="o">.</span><span class="n">transmission</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">service</span><span class="p">:</span> <span class="n">Service</span> <span class="o">=</span> <span class="n">ServiceFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
             <span class="n">validator</span><span class="o">=</span><span class="n">core_bundle</span><span class="o">.</span><span class="n">validator</span><span class="p">,</span>
@@ -138,7 +136,7 @@
                 <span class="n">validator</span><span class="o">=</span><span class="n">core_bundle</span><span class="o">.</span><span class="n">validator</span><span class="p">,</span>
                 <span class="n">streaming</span><span class="o">=</span><span class="n">runtime_bundle</span><span class="o">.</span><span class="n">streaming</span><span class="p">,</span>
                 <span class="n">storage</span><span class="o">=</span><span class="n">runtime_bundle</span><span class="o">.</span><span class="n">storage</span><span class="p">,</span>
-                <span class="n">dsl_service</span><span class="o">=</span><span class="n">dsl_service</span><span class="p">,</span>
+                <span class="n">dsl</span><span class="o">=</span><span class="n">dsl_bundle</span><span class="p">,</span>
                 <span class="n">connection_repository</span><span class="o">=</span><span class="n">runtime_bundle</span><span class="o">.</span><span class="n">connection_repo</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span>

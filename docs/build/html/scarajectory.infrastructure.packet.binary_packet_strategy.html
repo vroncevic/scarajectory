@@ -64,12 +64,12 @@ See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
 </dd>
-<dt>Info</dt><dd><p>Binary packet formatting strategy compiling Waypoint instances into packed binary wire frames.</p>
+<dt>Info</dt><dd><p>Formats waypoints into wire-protocol binary frames packed with CRC16 and delimiters.</p>
 </dd>
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.packet.binary_packet_strategy.</span></span><span class="sig-name descname"><span class="pre">BinaryPacketStrategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kinematics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IKinematicsService</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transmission</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TransmissionParameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_builder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IBinaryFrameBuilder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_calculator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.service.transmission.itransmission_step_calculator.html#scarajectory.core.service.transmission.itransmission_step_calculator.ITransmissionStepCalculator" title="scarajectory.core.service.transmission.itransmission_step_calculator.ITransmissionStepCalculator"><span class="pre">ITransmissionStepCalculator</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/packet/binary_packet_strategy.html#BinaryPacketStrategy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.packet.binary_packet_strategy.</span></span><span class="sig-name descname"><span class="pre">BinaryPacketStrategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discretizer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IStepDiscretizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_builder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IBinaryFrameBuilder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/packet/binary_packet_strategy.html#BinaryPacketStrategy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Formats waypoints into wire-protocol binary frames packed with CRC16 and delimiters.</p>
 <p>It defines:</p>
@@ -77,10 +77,9 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <div><dl class="field-list">
 <dt class="field-odd">attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><div class="line-block">
-<div class="line">_kinematics - Injected kinematics service for inverse kinematic calculations.</div>
-<div class="line">_transmission - Injected transmission parameters for gear ratio retrieval.</div>
+<div class="line">_discretizer - Injected step discretizer for kinematic conversions.</div>
 <div class="line">_builder - Injected binary frame builder for wire serialization.</div>
-<div class="line">_calculator - Injected step calculator for kinematic conversions.</div>
+<div class="line">_prev_angles - Internal angle state for relative motion discretization.</div>
 </div>
 </dd>
 <dt class="field-even">methods<span class="colon">:</span></dt>
@@ -97,18 +96,13 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy._calculator">
-<span class="sig-name descname"><span class="pre">_calculator</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.core.service.transmission.itransmission_step_calculator.html#scarajectory.core.service.transmission.itransmission_step_calculator.ITransmissionStepCalculator" title="scarajectory.core.service.transmission.itransmission_step_calculator.ITransmissionStepCalculator"><span class="pre">ITransmissionStepCalculator</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy._calculator" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy._discretizer">
+<span class="sig-name descname"><span class="pre">_discretizer</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">IStepDiscretizer</span></em><a class="headerlink" href="#scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy._discretizer" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy._kinematics">
-<span class="sig-name descname"><span class="pre">_kinematics</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">IKinematicsService</span></em><a class="headerlink" href="#scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy._kinematics" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy._transmission">
-<span class="sig-name descname"><span class="pre">_transmission</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">TransmissionParameters</span></em><a class="headerlink" href="#scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy._transmission" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy._prev_angles">
+<span class="sig-name descname"><span class="pre">_prev_angles</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy._prev_angles" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -145,9 +139,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <li><a class="reference internal" href="#">scarajectory.infrastructure.packet.binary_packet_strategy module</a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy"><code class="docutils literal notranslate"><span class="pre">BinaryPacketStrategy</span></code></a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy._builder"><code class="docutils literal notranslate"><span class="pre">BinaryPacketStrategy._builder</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy._calculator"><code class="docutils literal notranslate"><span class="pre">BinaryPacketStrategy._calculator</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy._kinematics"><code class="docutils literal notranslate"><span class="pre">BinaryPacketStrategy._kinematics</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy._transmission"><code class="docutils literal notranslate"><span class="pre">BinaryPacketStrategy._transmission</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy._discretizer"><code class="docutils literal notranslate"><span class="pre">BinaryPacketStrategy._discretizer</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy._prev_angles"><code class="docutils literal notranslate"><span class="pre">BinaryPacketStrategy._prev_angles</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy.format_waypoint_packet"><code class="docutils literal notranslate"><span class="pre">BinaryPacketStrategy.format_waypoint_packet()</span></code></a></li>
 </ul>
 </li>

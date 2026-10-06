@@ -23,8 +23,8 @@ from __future__ import annotations
 
 from unittest import TestCase, main
 
-from scarajectory.core.service.connection.iconnection import IConnection
-from scarajectory.core.service.streaming.ibinary_program_streamer import IBinaryProgramStreamer
+from scarajectory.infrastructure.connection.iconnection import IConnection
+from scarajectory.infrastructure.streaming.ibinary_program_streamer import IBinaryProgramStreamer
 from scarajectory.core.service.streaming.istream_dispatcher import IStreamDispatcher
 from scarajectory.core.service.streaming.istream_playback_controller import IStreamPlaybackController
 from scarajectory.infrastructure.connection.istream_raw_transceiver import IStreamRawTransceiver
@@ -37,7 +37,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -91,7 +91,7 @@ class StreamPipelineBuilderTestCase(TestCase):
             :exceptions: None.
         '''
         version: str = StreamPipelineBuilder.get_version()
-        self.assertEqual(version, '1.0.4')
+        self.assertEqual(version, '1.0.3')
 
 
 if __name__ == '__main__':

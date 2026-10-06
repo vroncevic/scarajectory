@@ -63,13 +63,13 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">ClassVar</span><span class="p">,</span> <span class="n">Final</span>
 
 <span class="kn">from</span> <span class="nn">scarajectory.core.model.protocol.scara_response</span> <span class="kn">import</span> <span class="n">ScaraResponse</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.classifier.response_classification_registry</span> <span class="kn">import</span> <span class="n">ResponseClassificationRegistry</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.classifier.iresponse_classification_registry</span> <span class="kn">import</span> <span class="n">IResponseClassificationRegistry</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -93,16 +93,16 @@
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="n">_QUEUE_REGEX</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">Pattern</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">re_compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;QUEUE=(\d+)&#39;</span><span class="p">,</span> <span class="n">IGNORECASE</span><span class="p">)</span>
-    <span class="n">_registry</span><span class="p">:</span> <span class="n">ResponseClassificationRegistry</span>
+    <span class="n">_registry</span><span class="p">:</span> <span class="n">IResponseClassificationRegistry</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">registry</span><span class="p">:</span> <span class="n">ResponseClassificationRegistry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">registry</span><span class="p">:</span> <span class="n">IResponseClassificationRegistry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Initializes ResponseParser with classification registry.</span>
 
-<span class="sd">            :param registry: ResponseClassificationRegistry instance.</span>
+<span class="sd">            :param registry: IResponseClassificationRegistry instance.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_registry</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ResponseClassificationRegistry</span><span class="p">]</span> <span class="o">=</span> <span class="n">registry</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_registry</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IResponseClassificationRegistry</span><span class="p">]</span> <span class="o">=</span> <span class="n">registry</span>
 
 <div class="viewcode-block" id="ResponseParser.parse_response">
 <a class="viewcode-back" href="../../../../scarajectory.infrastructure.classifier.response_parser.html#scarajectory.infrastructure.classifier.response_parser.ResponseParser.parse_response">[docs]</a>

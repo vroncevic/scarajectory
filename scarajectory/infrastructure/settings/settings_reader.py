@@ -16,7 +16,7 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Infrastructure reader for caching raw SCARA JSON configuration settings using ATS Loader.
+    Infrastructure reader for caching raw SCARA JSON configuration settings.
 '''
 
 from __future__ import annotations
@@ -24,17 +24,14 @@ from __future__ import annotations
 from os.path import abspath, dirname, exists, join
 from typing import ClassVar
 
-from ats_utilities.config_io.loader.engine import Loader
-from ats_utilities.config_io.setup.factory import ConfigIOBundleFactory
-from ats_utilities.config_io.setup.keys import ConfigIOBundleKeys
-from ats_utilities.config_io.setup.options import ConfigIOBundleOptions
-from ats_utilities.context.bundle import ContextBundle
+from scarajectory.infrastructure.storage.config_io.iconfig_io_factory import IConfigIOFactory
+from scarajectory.infrastructure.storage.config_io.iconfig_loader import IConfigLoader
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -51,11 +48,11 @@ class SettingsReader:
                 | DEFAULT_SCHEME_CONFIG - Default absolute path to scheme.json.
                 | _config_path - Absolute path to scara_geometry.json.
                 | _scheme_path - Absolute path to scheme.json.
-                | _context - The ContextBundle for ATS configuration I/O operations.
+                | _io_factory - The configuration I/O factory constructing loaders.
                 | _cached_config - Cached raw configuration dictionary.
 
             :methods:
-                | __init__ - Initializes SettingsReader with configuration file paths and context bundle.
+                | __init__ - Initializes SettingsReader with configuration file paths and I/O factory.
                 | read_settings - Loads and caches raw dictionary of settings.
                 | get_setting - Retrieves setting value by key with required fallback value.
     '''
@@ -69,7 +66,7 @@ class SettingsReader:
 
     _config_path: str
     _scheme_path: str
-    _context: ContextBundle
+    _io_factory: IConfigIOFactory
     _cached_config: dict[str, float]
 
     def __init__(
@@ -77,23 +74,23 @@ class SettingsReader:
         *,
         config_path: str,
         scheme_path: str,
-        context_bundle: ContextBundle,
+        io_factory: IConfigIOFactory,
     ) -> None:
         '''
-            Initializes SettingsReader with configuration file paths and context bundle.
+            Initializes SettingsReader with configuration file paths and I/O factory.
 
             :param config_path: Absolute path to geometry configuration file.
             :param scheme_path: Absolute path to validation schema file.
-            :param context_bundle: ATS ContextBundle instance.
+            :param io_factory: Injected IConfigIOFactory instance.
         '''
         self._config_path = config_path
         self._scheme_path = scheme_path
-        self._context = context_bundle
+        self._io_factory = io_factory
         self._cached_config = {}
 
     def read_settings(self) -> dict[str, float]:
         '''
-            Reads and returns configuration parameters dictionary using ATS Loader.
+            Reads and returns configuration parameters dictionary using configuration loader.
 
             :return: Dictionary of configuration keys to float values.
         '''
@@ -103,27 +100,11 @@ class SettingsReader:
         if not exists(self._config_path):
             return {}
 
-        opts: dict[str, object] = {
-            ConfigIOBundleKeys.OPTION_FILE_PATH: self._config_path,
-            ConfigIOBundleKeys.OPTION_CONTEXT_BUNDLE: self._context,
-        }
-
-        if exists(self._scheme_path):
-            scheme_bundle = ConfigIOBundleFactory.create_bundle(
-                ConfigIOBundleOptions({
-                    ConfigIOBundleKeys.OPTION_FILE_PATH: self._scheme_path,
-                    ConfigIOBundleKeys.OPTION_CONTEXT_BUNDLE: self._context,
-                })
-            )
-            scheme: object = Loader(scheme_bundle).load_configuration()
-
-            if bool(scheme):
-                opts[ConfigIOBundleKeys.OPTION_SCHEME] = scheme
-
-        config_bundle = ConfigIOBundleFactory.create_bundle(
-            ConfigIOBundleOptions(opts)
+        loader: IConfigLoader = self._io_factory.create_validated_loader(
+            filepath=self._config_path,
+            scheme_path=self._scheme_path,
         )
-        data: object = Loader(config_bundle).load_configuration()
+        data: object = loader.load_configuration()
 
         if isinstance(data, dict):
             self._cached_config = {

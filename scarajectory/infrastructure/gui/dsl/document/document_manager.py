@@ -32,7 +32,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -106,18 +106,21 @@ class DslDocumentManager:
         *,
         parent: Widget,
         content: str,
+        initial_dir: str = '',
     ) -> str:
         '''
             Presents modal file save dialog and saves script text content to disk.
 
             :param parent: Parent widget owning the modal dialog.
             :param content: DSL script text to write.
+            :param initial_dir: Starting filesystem directory path.
             :return: Filepath where script was saved, or empty string if cancelled/failed.
             :exceptions: None.
         '''
         parent.update_idletasks()
         filepath: str = asksaveasfilename(
             parent=parent.winfo_toplevel(),
+            initialdir=initial_dir if initial_dir else None,
             defaultextension='.scara',
             filetypes=[('SCARA DSL Scripts', '*.scara'), ('All Files', '*.*')],
         )

@@ -59,31 +59,22 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Event</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span><span class="p">,</span> <span class="n">time</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span>
 
 <span class="kn">from</span> <span class="nn">scaralang.core.model.dsl.binary.program</span> <span class="kn">import</span> <span class="n">BinaryProgram</span>
 <span class="kn">from</span> <span class="nn">scaralang.core.model.dsl.binary.step</span> <span class="kn">import</span> <span class="n">Step</span>
 <span class="kn">from</span> <span class="nn">scaralang.core.model.protocol.binary_frame</span> <span class="kn">import</span> <span class="n">BinaryFrame</span>
-<span class="kn">from</span> <span class="nn">scaralang.infrastructure.communication.protocol.binary.parser.binary_frame_parser</span> <span class="kn">import</span> <span class="n">BinaryFrameParser</span>
+
 <span class="kn">from</span> <span class="nn">scarajectory.core.model.state.stream_session</span> <span class="kn">import</span> <span class="n">StreamSession</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.state.stream_state</span> <span class="kn">import</span> <span class="n">StreamState</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.streaming.stream_pacing_config</span> <span class="kn">import</span> <span class="n">StreamPacingConfig</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.waypoint</span> <span class="kn">import</span> <span class="n">Waypoint</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.pacing.iflow_pacing_controller</span> <span class="kn">import</span> <span class="n">IFlowPacingController</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.packet.ipacket_strategy</span> <span class="kn">import</span> <span class="n">IPacketStrategy</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.state.istream_state_controller</span> <span class="kn">import</span> <span class="n">IStreamStateController</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.streaming.observer.istream_observer_dispatcher</span> <span class="kn">import</span> <span class="n">IStreamObserverDispatcher</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.worker.ibyte_sender</span> <span class="kn">import</span> <span class="n">IByteSender</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.worker.binary.ibinary_stream_frame_handler</span> <span class="kn">import</span> <span class="n">IBinaryStreamFrameHandler</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.worker.binary.binary_loop_runner_bundle</span> <span class="kn">import</span> <span class="n">BinaryLoopRunnerBundle</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -98,63 +89,24 @@
 <span class="sd">        It defines:</span>
 
 <span class="sd">            :attributes:</span>
-<span class="sd">                | _flow_pacing - IFlowPacingController managing buffer queue.</span>
-<span class="sd">                | _packet_strategy - IPacketStrategy encoding waypoints.</span>
-<span class="sd">                | _frame_parser - BinaryFrameParser decoding inbound frames.</span>
-<span class="sd">                | _frame_handler - IBinaryStreamFrameHandler handling responses.</span>
-<span class="sd">                | _byte_sender - IByteSender transmitting raw byte stream.</span>
-<span class="sd">                | _state_controller - IStreamStateController managing stream lifecycle.</span>
-<span class="sd">                | _observer_dispatcher - IStreamObserverDispatcher emitting progress and logs.</span>
-<span class="sd">                | _pacing_config - StreamPacingConfig with loop pacing delays.</span>
+<span class="sd">                | _bundle - Injected BinaryLoopRunnerBundle holding collaborators.</span>
 <span class="sd">            :methods:</span>
-<span class="sd">                | __init__ - Initializes loop runner with injected collaborators.</span>
+<span class="sd">                | __init__ - Initializes loop runner with injected bundle.</span>
 <span class="sd">                | run_waypoints_loop - Background loop streaming sequence of waypoints.</span>
 <span class="sd">                | run_program_loop - Background loop streaming pre-compiled binary steps.</span>
 <span class="sd">                | handle_incoming_bytes - Feeds raw incoming bytes and dispatches frames.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="n">_flow_pacing</span><span class="p">:</span> <span class="n">IFlowPacingController</span>
-    <span class="n">_packet_strategy</span><span class="p">:</span> <span class="n">IPacketStrategy</span>
-    <span class="n">_frame_parser</span><span class="p">:</span> <span class="n">BinaryFrameParser</span>
-    <span class="n">_frame_handler</span><span class="p">:</span> <span class="n">IBinaryStreamFrameHandler</span>
-    <span class="n">_byte_sender</span><span class="p">:</span> <span class="n">IByteSender</span>
-    <span class="n">_state_controller</span><span class="p">:</span> <span class="n">IStreamStateController</span>
-    <span class="n">_observer_dispatcher</span><span class="p">:</span> <span class="n">IStreamObserverDispatcher</span>
-    <span class="n">_pacing_config</span><span class="p">:</span> <span class="n">StreamPacingConfig</span>
+    <span class="n">_bundle</span><span class="p">:</span> <span class="n">BinaryLoopRunnerBundle</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">flow_pacing</span><span class="p">:</span> <span class="n">IFlowPacingController</span><span class="p">,</span>
-        <span class="n">packet_strategy</span><span class="p">:</span> <span class="n">IPacketStrategy</span><span class="p">,</span>
-        <span class="n">frame_parser</span><span class="p">:</span> <span class="n">BinaryFrameParser</span><span class="p">,</span>
-        <span class="n">frame_handler</span><span class="p">:</span> <span class="n">IBinaryStreamFrameHandler</span><span class="p">,</span>
-        <span class="n">byte_sender</span><span class="p">:</span> <span class="n">IByteSender</span><span class="p">,</span>
-        <span class="n">state_controller</span><span class="p">:</span> <span class="n">IStreamStateController</span><span class="p">,</span>
-        <span class="n">observer_dispatcher</span><span class="p">:</span> <span class="n">IStreamObserverDispatcher</span><span class="p">,</span>
-        <span class="n">pacing_config</span><span class="p">:</span> <span class="n">StreamPacingConfig</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bundle</span><span class="p">:</span> <span class="n">BinaryLoopRunnerBundle</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Initializes binary stream loop runner with collaborators and configuration.</span>
+<span class="sd">            Initializes binary stream loop runner with collaborators bundle.</span>
 
-<span class="sd">            :param flow_pacing: IFlowPacingController managing buffer queue.</span>
-<span class="sd">            :param packet_strategy: IPacketStrategy encoding waypoints.</span>
-<span class="sd">            :param frame_parser: BinaryFrameParser decoding inbound frames.</span>
-<span class="sd">            :param frame_handler: IBinaryStreamFrameHandler handling responses.</span>
-<span class="sd">            :param byte_sender: IByteSender transmitting raw byte stream.</span>
-<span class="sd">            :param state_controller: IStreamStateController managing stream lifecycle.</span>
-<span class="sd">            :param observer_dispatcher: IStreamObserverDispatcher emitting progress and logs.</span>
-<span class="sd">            :param pacing_config: StreamPacingConfig with loop pacing delays.</span>
+<span class="sd">            :param bundle: BinaryLoopRunnerBundle containing collaborators.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_flow_pacing</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IFlowPacingController</span><span class="p">]</span> <span class="o">=</span> <span class="n">flow_pacing</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_packet_strategy</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IPacketStrategy</span><span class="p">]</span> <span class="o">=</span> <span class="n">packet_strategy</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_frame_parser</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">BinaryFrameParser</span><span class="p">]</span> <span class="o">=</span> <span class="n">frame_parser</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_frame_handler</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IBinaryStreamFrameHandler</span><span class="p">]</span> <span class="o">=</span> <span class="n">frame_handler</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_byte_sender</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IByteSender</span><span class="p">]</span> <span class="o">=</span> <span class="n">byte_sender</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_state_controller</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IStreamStateController</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_controller</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_observer_dispatcher</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IStreamObserverDispatcher</span><span class="p">]</span> <span class="o">=</span> <span class="n">observer_dispatcher</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_pacing_config</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">StreamPacingConfig</span><span class="p">]</span> <span class="o">=</span> <span class="n">pacing_config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bundle</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">BinaryLoopRunnerBundle</span><span class="p">]</span> <span class="o">=</span> <span class="n">bundle</span>
 
 <div class="viewcode-block" id="BinaryStreamLoopRunner.run_waypoints_loop">
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.html#scarajectory.infrastructure.worker.binary.binary_stream_loop_runner.BinaryStreamLoopRunner.run_waypoints_loop">[docs]</a>
@@ -177,45 +129,20 @@
 
         <span class="k">while</span> <span class="ow">not</span> <span class="n">stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">()</span> <span class="ow">and</span> <span class="n">session</span><span class="o">.</span><span class="n">sent_count</span> <span class="o">&lt;</span> <span class="n">total_pts</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">pause_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
-                <span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pacing_config</span><span class="o">.</span><span class="n">poll_delay</span><span class="p">)</span>
+                <span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bundle</span><span class="o">.</span><span class="n">pacing_config</span><span class="o">.</span><span class="n">poll_delay</span><span class="p">)</span>
                 <span class="k">continue</span>
 
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flow_pacing</span><span class="o">.</span><span class="n">can_send</span><span class="p">(</span><span class="n">session</span><span class="p">):</span>
-                <span class="n">pt</span><span class="p">:</span> <span class="n">Waypoint</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">waypoints</span><span class="p">[</span><span class="n">session</span><span class="o">.</span><span class="n">sent_count</span><span class="p">]</span>
-                <span class="n">frame_bytes</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_packet_strategy</span><span class="o">.</span><span class="n">format_waypoint_packet</span><span class="p">(</span>
-                    <span class="n">waypoint</span><span class="o">=</span><span class="n">pt</span><span class="p">,</span> <span class="n">seq_num</span><span class="o">=</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">sent_count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span>
-                <span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_byte_sender</span><span class="o">.</span><span class="n">send_raw_bytes</span><span class="p">(</span><span class="n">frame_bytes</span><span class="p">)</span>
-                <span class="n">session</span><span class="o">.</span><span class="n">sent_count</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="n">session</span><span class="o">.</span><span class="n">remote_queue_depth</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_observer_dispatcher</span><span class="o">.</span><span class="n">notify_progress</span><span class="p">(</span>
-                    <span class="n">state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_state_controller</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
-                    <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
-                    <span class="n">error</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
-                <span class="p">)</span>
-                <span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pacing_config</span><span class="o">.</span><span class="n">send_delay</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bundle</span><span class="o">.</span><span class="n">step_dispatcher</span><span class="o">.</span><span class="n">can_dispatch_step</span><span class="p">(</span><span class="n">session</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_bundle</span><span class="o">.</span><span class="n">step_dispatcher</span><span class="o">.</span><span class="n">dispatch_waypoint</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+                <span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bundle</span><span class="o">.</span><span class="n">pacing_config</span><span class="o">.</span><span class="n">send_delay</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pacing_config</span><span class="o">.</span><span class="n">throttle_delay</span><span class="p">)</span>
-
-        <span class="k">while</span> <span class="p">(</span>
-            <span class="ow">not</span> <span class="n">stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">()</span>
-            <span class="ow">and</span> <span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">done_count</span> <span class="o">+</span> <span class="n">session</span><span class="o">.</span><span class="n">failed_count</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">total_pts</span>
-        <span class="p">):</span>
-            <span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pacing_config</span><span class="o">.</span><span class="n">poll_delay</span><span class="p">)</span>
+                <span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bundle</span><span class="o">.</span><span class="n">pacing_config</span><span class="o">.</span><span class="n">throttle_delay</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_state_controller</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="n">StreamState</span><span class="o">.</span><span class="n">COMPLETED</span><span class="p">)</span>
-            <span class="n">elapsed</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">session</span><span class="o">.</span><span class="n">start_time</span>
-            <span class="n">end_ts</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%H:%M:%S.</span><span class="si">%f</span><span class="s1">&#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_observer_dispatcher</span><span class="o">.</span><span class="n">notify_progress</span><span class="p">(</span>
-                <span class="n">state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_state_controller</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bundle</span><span class="o">.</span><span class="n">queue_drainer</span><span class="o">.</span><span class="n">drain_queue</span><span class="p">(</span>
                 <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
-                <span class="n">error</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_observer_dispatcher</span><span class="o">.</span><span class="n">notify_log</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;[</span><span class="si">{</span><span class="n">end_ts</span><span class="si">}</span><span class="s1">] [BINARY STREAM COMPLETED]: </span><span class="si">{</span><span class="n">session</span><span class="o">.</span><span class="n">done_count</span><span class="si">}</span><span class="s1"> finished, &#39;</span>
-                <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">session</span><span class="o">.</span><span class="n">failed_count</span><span class="si">}</span><span class="s1"> failed in </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">s&#39;</span><span class="p">,</span>
-                <span class="kc">False</span><span class="p">,</span>
+                <span class="n">total_items</span><span class="o">=</span><span class="n">total_pts</span><span class="p">,</span>
+                <span class="n">stop_event</span><span class="o">=</span><span class="n">stop_event</span><span class="p">,</span>
             <span class="p">)</span></div>
 
 
@@ -243,42 +170,23 @@
 
         <span class="k">while</span> <span class="ow">not</span> <span class="n">stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">()</span> <span class="ow">and</span> <span class="n">session</span><span class="o">.</span><span class="n">sent_count</span> <span class="o">&lt;</span> <span class="n">total_items</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">pause_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
-                <span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pacing_config</span><span class="o">.</span><span class="n">poll_delay</span><span class="p">)</span>
+                <span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bundle</span><span class="o">.</span><span class="n">pacing_config</span><span class="o">.</span><span class="n">poll_delay</span><span class="p">)</span>
                 <span class="k">continue</span>
 
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flow_pacing</span><span class="o">.</span><span class="n">can_send</span><span class="p">(</span><span class="n">session</span><span class="p">):</span>
-                <span class="n">step</span><span class="p">:</span> <span class="n">Step</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="n">session</span><span class="o">.</span><span class="n">sent_count</span><span class="p">]</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_byte_sender</span><span class="o">.</span><span class="n">send_raw_bytes</span><span class="p">(</span><span class="n">step</span><span class="o">.</span><span class="n">raw_bytes</span><span class="p">)</span>
-                <span class="n">session</span><span class="o">.</span><span class="n">sent_count</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="n">session</span><span class="o">.</span><span class="n">remote_queue_depth</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_observer_dispatcher</span><span class="o">.</span><span class="n">notify_progress</span><span class="p">(</span>
-                    <span class="n">state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_state_controller</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bundle</span><span class="o">.</span><span class="n">step_dispatcher</span><span class="o">.</span><span class="n">can_dispatch_step</span><span class="p">(</span><span class="n">session</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_bundle</span><span class="o">.</span><span class="n">step_dispatcher</span><span class="o">.</span><span class="n">dispatch_binary_step</span><span class="p">(</span>
                     <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
-                    <span class="n">error</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+                    <span class="n">step</span><span class="o">=</span><span class="n">steps</span><span class="p">[</span><span class="n">session</span><span class="o">.</span><span class="n">sent_count</span><span class="p">],</span>
                 <span class="p">)</span>
-                <span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pacing_config</span><span class="o">.</span><span class="n">send_delay</span><span class="p">)</span>
+                <span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bundle</span><span class="o">.</span><span class="n">pacing_config</span><span class="o">.</span><span class="n">send_delay</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pacing_config</span><span class="o">.</span><span class="n">throttle_delay</span><span class="p">)</span>
-
-        <span class="k">while</span> <span class="p">(</span>
-            <span class="ow">not</span> <span class="n">stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">()</span>
-            <span class="ow">and</span> <span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">done_count</span> <span class="o">+</span> <span class="n">session</span><span class="o">.</span><span class="n">failed_count</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">total_items</span>
-        <span class="p">):</span>
-            <span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pacing_config</span><span class="o">.</span><span class="n">poll_delay</span><span class="p">)</span>
+                <span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bundle</span><span class="o">.</span><span class="n">pacing_config</span><span class="o">.</span><span class="n">throttle_delay</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_state_controller</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="n">StreamState</span><span class="o">.</span><span class="n">COMPLETED</span><span class="p">)</span>
-            <span class="n">elapsed</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">session</span><span class="o">.</span><span class="n">start_time</span>
-            <span class="n">end_ts</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%H:%M:%S.</span><span class="si">%f</span><span class="s1">&#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_observer_dispatcher</span><span class="o">.</span><span class="n">notify_progress</span><span class="p">(</span>
-                <span class="n">state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_state_controller</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bundle</span><span class="o">.</span><span class="n">queue_drainer</span><span class="o">.</span><span class="n">drain_queue</span><span class="p">(</span>
                 <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
-                <span class="n">error</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_observer_dispatcher</span><span class="o">.</span><span class="n">notify_log</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;[</span><span class="si">{</span><span class="n">end_ts</span><span class="si">}</span><span class="s1">] [BINARY STREAM COMPLETED]: </span><span class="si">{</span><span class="n">session</span><span class="o">.</span><span class="n">done_count</span><span class="si">}</span><span class="s1"> finished, &#39;</span>
-                <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">session</span><span class="o">.</span><span class="n">failed_count</span><span class="si">}</span><span class="s1"> failed in </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">s&#39;</span><span class="p">,</span>
-                <span class="kc">False</span><span class="p">,</span>
+                <span class="n">total_items</span><span class="o">=</span><span class="n">total_items</span><span class="p">,</span>
+                <span class="n">stop_event</span><span class="o">=</span><span class="n">stop_event</span><span class="p">,</span>
             <span class="p">)</span></div>
 
 
@@ -298,11 +206,13 @@
 <span class="sd">            :return: True if a fault occurred requiring immediate stop, False otherwise.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">frames</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">BinaryFrame</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_frame_parser</span><span class="o">.</span><span class="n">feed_bytes</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">frames</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">BinaryFrame</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bundle</span><span class="o">.</span><span class="n">frame_parser</span><span class="o">.</span><span class="n">feed_bytes</span><span class="p">(</span>
+            <span class="n">data</span>
+        <span class="p">)</span>
         <span class="n">should_stop</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">frames</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_frame_handler</span><span class="o">.</span><span class="n">handle_frame</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bundle</span><span class="o">.</span><span class="n">frame_handler</span><span class="o">.</span><span class="n">handle_frame</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
                 <span class="n">should_stop</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="k">return</span> <span class="n">should_stop</span></div>

@@ -64,14 +64,14 @@ See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
 </dd>
-<dt>Info</dt><dd><p>Infrastructure repository persisting and retrieving serial connection preferences using ats_utilities.</p>
+<dt>Info</dt><dd><p>Infrastructure repository persisting and retrieving serial connection preferences.</p>
 </dd>
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.preferences.connection_repository.ConnectionRepository">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.preferences.connection_repository.</span></span><span class="sig-name descname"><span class="pre">ConnectionRepository</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context_bundle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ContextBundle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/preferences/connection_repository.html#ConnectionRepository"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.preferences.connection_repository.ConnectionRepository" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.preferences.connection_repository.</span></span><span class="sig-name descname"><span class="pre">ConnectionRepository</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">io_factory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.storage.config_io.iconfig_io_factory.html#scarajectory.infrastructure.storage.config_io.iconfig_io_factory.IConfigIOFactory" title="scarajectory.infrastructure.storage.config_io.iconfig_io_factory.IConfigIOFactory"><span class="pre">IConfigIOFactory</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/preferences/connection_repository.html#ConnectionRepository"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.preferences.connection_repository.ConnectionRepository" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Repository managing file-based persistence for connection preferences using ats_utilities.</p>
+<p>Repository managing file-based persistence for connection preferences.</p>
 <p>It defines:</p>
 <blockquote>
 <div><dl class="field-list">
@@ -81,15 +81,15 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <div class="line">DEFAULT_PORT - Default serial port string identifier.</div>
 <div class="line">DEFAULT_BAUD - Default serial baud rate frequency integer.</div>
 <div class="line">_config_file - Path to configuration storage file.</div>
-<div class="line">_context - ATS context bundle for configuration I/O operations.</div>
+<div class="line">_io_factory - Configuration I/O factory constructing loaders and storers.</div>
 </div>
 </dd>
 <dt class="field-even">methods<span class="colon">:</span></dt>
 <dd class="field-even"><div class="line-block">
-<div class="line">__init__ - Initializes repository with injected context bundle and config file.</div>
+<div class="line">__init__ - Initializes repository with injected I/O factory and config file.</div>
 <div class="line">has_preference - Checks if saved preference configuration file exists on disk.</div>
-<div class="line">load_preference - Reads previously saved connection preference using ATS Loader.</div>
-<div class="line">save_preference - Persists active connection preference to storage using ATS Storer.</div>
+<div class="line">load_preference - Reads previously saved connection preference using loader.</div>
+<div class="line">save_preference - Persists active connection preference to storage using storer.</div>
 <div class="line">__str__ - Returns repository instance as string representation.</div>
 </div>
 </dd>
@@ -116,8 +116,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.preferences.connection_repository.ConnectionRepository._context">
-<span class="sig-name descname"><span class="pre">_context</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ContextBundle</span></em><a class="headerlink" href="#scarajectory.infrastructure.preferences.connection_repository.ConnectionRepository._context" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="scarajectory.infrastructure.preferences.connection_repository.ConnectionRepository._io_factory">
+<span class="sig-name descname"><span class="pre">_io_factory</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.storage.config_io.iconfig_io_factory.html#scarajectory.infrastructure.storage.config_io.iconfig_io_factory.IConfigIOFactory" title="scarajectory.infrastructure.storage.config_io.iconfig_io_factory.IConfigIOFactory"><span class="pre">IConfigIOFactory</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.preferences.connection_repository.ConnectionRepository._io_factory" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -134,7 +134,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.preferences.connection_repository.ConnectionRepository.load_preference">
 <span class="sig-name descname"><span class="pre">load_preference</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.core.model.preferences.connection_preference.html#scarajectory.core.model.preferences.connection_preference.ConnectionPreference" title="scarajectory.core.model.preferences.connection_preference.ConnectionPreference"><span class="pre">ConnectionPreference</span></a></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/preferences/connection_repository.html#ConnectionRepository.load_preference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.preferences.connection_repository.ConnectionRepository.load_preference" title="Link to this definition">¶</a></dt>
-<dd><p>Reads previously saved connection preference using ATS Loader.</p>
+<dd><p>Reads previously saved connection preference using configuration loader.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Loaded ConnectionPreference or default instance if not found.</p>
@@ -145,7 +145,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.preferences.connection_repository.ConnectionRepository.save_preference">
 <span class="sig-name descname"><span class="pre">save_preference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">preference</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.core.model.preferences.connection_preference.html#scarajectory.core.model.preferences.connection_preference.ConnectionPreference" title="scarajectory.core.model.preferences.connection_preference.ConnectionPreference"><span class="pre">ConnectionPreference</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/preferences/connection_repository.html#ConnectionRepository.save_preference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.preferences.connection_repository.ConnectionRepository.save_preference" title="Link to this definition">¶</a></dt>
-<dd><p>Persists active connection preference to storage using ATS Storer.</p>
+<dd><p>Persists active connection preference to storage using configuration storer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>preference</strong> – ConnectionPreference instance to persist.</p>
@@ -176,7 +176,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <li><a class="reference internal" href="#scarajectory.infrastructure.preferences.connection_repository.ConnectionRepository.DEFAULT_CONFIG_FILE"><code class="docutils literal notranslate"><span class="pre">ConnectionRepository.DEFAULT_CONFIG_FILE</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.preferences.connection_repository.ConnectionRepository.DEFAULT_PORT"><code class="docutils literal notranslate"><span class="pre">ConnectionRepository.DEFAULT_PORT</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.preferences.connection_repository.ConnectionRepository._config_file"><code class="docutils literal notranslate"><span class="pre">ConnectionRepository._config_file</span></code></a></li>
-<li><a class="reference internal" href="#scarajectory.infrastructure.preferences.connection_repository.ConnectionRepository._context"><code class="docutils literal notranslate"><span class="pre">ConnectionRepository._context</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.preferences.connection_repository.ConnectionRepository._io_factory"><code class="docutils literal notranslate"><span class="pre">ConnectionRepository._io_factory</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.preferences.connection_repository.ConnectionRepository.has_preference"><code class="docutils literal notranslate"><span class="pre">ConnectionRepository.has_preference()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.preferences.connection_repository.ConnectionRepository.load_preference"><code class="docutils literal notranslate"><span class="pre">ConnectionRepository.load_preference()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.preferences.connection_repository.ConnectionRepository.save_preference"><code class="docutils literal notranslate"><span class="pre">ConnectionRepository.save_preference()</span></code></a></li>

@@ -62,14 +62,14 @@
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">asin</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">degrees</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">sin</span>
 <span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">Canvas</span>
 
-<span class="kn">from</span> <span class="nn">scaralang.core.service.trajectory.validation.itrajectory_validator</span> <span class="kn">import</span> <span class="n">ITrajectoryValidator</span>
+<span class="kn">from</span> <span class="nn">scarajectory.core.service.trajectory.validation.itrajectory_validator</span> <span class="kn">import</span> <span class="n">ITrajectoryValidator</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.gui.model.viewport_transform</span> <span class="kn">import</span> <span class="n">ViewportTransform</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -106,9 +106,9 @@
         <span class="n">w</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">winfo_width</span><span class="p">()</span>
         <span class="n">h</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">canvas</span><span class="o">.</span><span class="n">winfo_height</span><span class="p">()</span>
         <span class="n">r_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">r_max</span>
-        <span class="n">l1</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">l1</span>
-        <span class="n">l2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">l2</span>
-        <span class="n">j1_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">j1_max_rad</span>
+        <span class="n">l1</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">l1</span>
+        <span class="n">l2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">l2</span>
+        <span class="n">j1_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">bounds</span><span class="o">.</span><span class="n">joints</span><span class="o">.</span><span class="n">j1_max_rad</span>
 
         <span class="n">poly_pts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">steps_arc</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">24</span>

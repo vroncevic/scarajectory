@@ -25,14 +25,14 @@ from tkinter import BOTH, END, LEFT, X, Text, Widget
 from tkinter.ttk import Button, Frame
 from typing import Final
 
-from scaralang.core.service.trajectory.validation.itrajectory_validator import ITrajectoryValidator
+from scarajectory.core.service.trajectory.validation.itrajectory_validator import ITrajectoryValidator
 from scarajectory.core.service.trajectory.plan.itrajectory_read_only import ITrajectoryReadOnly
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -103,6 +103,10 @@ class ValidationTab(Frame):
             wrap='word',
         )
         self._txt_val.pack(fill=BOTH, expand=True, pady=4)
+        self._txt_val.tag_config('pass', foreground='#98c379')
+        self._txt_val.tag_config('fail', foreground='#e06c75')
+        self._txt_val.tag_config('warn', foreground='#e5c07b')
+        self._txt_val.tag_config('info', foreground='#61afef')
 
     def run_validation(self) -> None:
         '''
@@ -110,9 +114,22 @@ class ValidationTab(Frame):
 
             :exceptions: None.
         '''
-        _, msgs = self._validator.validate_plan(self._plan)
-        self._txt_val.delete('1.0', END)
+        try:
+            _, msgs = self._validator.validate_plan(self._plan)
+            self._txt_val.delete('1.0', END)
 
-        for msg in msgs:
-            prefix: str = '✅ ' if 'PASSED' in msg else '❌ '
-            self._txt_val.insert(END, f'{prefix}{msg}\n')
+            for msg in msgs:
+                if 'PASSED' in msg:
+                    prefix: str = '✅ '
+                    tag: str = 'pass'
+                elif 'WARNING' in msg:
+                    prefix = '⚠️ '
+                    tag = 'warn'
+                else:
+                    prefix = '❌ '
+                    tag = 'fail'
+                self._txt_val.insert(END, f'{prefix}{msg}\n', tag)
+
+        except Exception as exc:
+            self._txt_val.delete('1.0', END)
+            self._txt_val.insert(END, f'❌ Validation error: {exc}\n', 'fail')

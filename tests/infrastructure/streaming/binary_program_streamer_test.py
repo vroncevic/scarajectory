@@ -24,38 +24,25 @@ from __future__ import annotations
 from unittest import TestCase, main
 from unittest.mock import MagicMock
 
-from scaralang.core.model.dsl.binary.binary_program_telemetry import (
-    BinaryProgramTelemetry,
-)
+from scaralang.core.model.dsl.binary.axis_peak_steps import AxisPeakSteps
+from scaralang.core.model.dsl.binary.binary_program_telemetry import BinaryProgramTelemetry
 from scaralang.core.model.dsl.binary.program import BinaryProgram
 from scaralang.core.model.dsl.binary.step import Step
 from scarajectory.core.model.protocol.protocol_mode import ProtocolMode
 from scarajectory.core.model.state.stream_session import StreamSession
-from scarajectory.core.service.state.session_factory import SessionFactory
-from scarajectory.core.service.streaming.ibinary_program_streamer import (
-    IBinaryProgramStreamer,
-)
-from scarajectory.infrastructure.connection.stream_connection_manager_factory import (
-    StreamConnectionManagerFactory,
-)
-from scarajectory.infrastructure.state.stream_state_machine_factory import (
-    StreamStateMachineFactory,
-)
-from scarajectory.infrastructure.streaming.binary_program_streamer_factory import (
-    BinaryProgramStreamerFactory,
-)
-from scarajectory.infrastructure.streaming.observer.stream_observer_dispatcher_factory import (
-    StreamObserverDispatcherFactory,
-)
-from scarajectory.infrastructure.transport.transport_factory import (
-    TransportFactory,
-)
+from scarajectory.core.service.streaming.session_factory import SessionFactory
+from scarajectory.infrastructure.streaming.ibinary_program_streamer import IBinaryProgramStreamer
+from scarajectory.infrastructure.connection.stream_connection_manager_factory import StreamConnectionManagerFactory
+from scarajectory.infrastructure.state.stream_state_machine_factory import StreamStateMachineFactory
+from scarajectory.infrastructure.streaming.binary_program_streamer_factory import BinaryProgramStreamerFactory
+from scarajectory.infrastructure.streaming.observer.stream_observer_dispatcher_factory import StreamObserverDispatcherFactory
+from scarajectory.infrastructure.transport.transport_factory import TransportFactory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -142,10 +129,7 @@ class BinaryProgramStreamerTest(TestCase):
             compiled_steps=0,
             duration_us=0,
             duration_s=0.0,
-            peak_j1_steps=0,
-            peak_j2_steps=0,
-            peak_z_steps=0,
-            peak_j4_steps=0,
+            peak_steps=AxisPeakSteps(),
             total_wire_bytes=0,
         )
         program = BinaryProgram(
@@ -165,10 +149,7 @@ class BinaryProgramStreamerTest(TestCase):
             compiled_steps=0,
             duration_us=0,
             duration_s=0.0,
-            peak_j1_steps=0,
-            peak_j2_steps=0,
-            peak_z_steps=0,
-            peak_j4_steps=0,
+            peak_steps=AxisPeakSteps(),
             total_wire_bytes=0,
         )
         program = BinaryProgram(
@@ -189,10 +170,12 @@ class BinaryProgramStreamerTest(TestCase):
             compiled_steps=1,
             duration_us=1000,
             duration_s=0.001,
-            peak_j1_steps=10,
-            peak_j2_steps=10,
-            peak_z_steps=0,
-            peak_j4_steps=0,
+            peak_steps=AxisPeakSteps(
+                peak_j1_steps=10,
+                peak_j2_steps=10,
+                peak_z_steps=0,
+                peak_j4_steps=0,
+            ),
             total_wire_bytes=16,
         )
         mock_step = MagicMock(spec=Step)
@@ -224,10 +207,12 @@ class BinaryProgramStreamerTest(TestCase):
             compiled_steps=1,
             duration_us=1000,
             duration_s=0.001,
-            peak_j1_steps=10,
-            peak_j2_steps=10,
-            peak_z_steps=0,
-            peak_j4_steps=0,
+            peak_steps=AxisPeakSteps(
+                peak_j1_steps=10,
+                peak_j2_steps=10,
+                peak_z_steps=0,
+                peak_j4_steps=0,
+            ),
             total_wire_bytes=16,
         )
         mock_step = MagicMock(spec=Step)

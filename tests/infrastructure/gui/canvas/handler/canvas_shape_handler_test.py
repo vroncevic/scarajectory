@@ -23,16 +23,10 @@ from __future__ import annotations
 
 from unittest import TestCase, main
 
-from scaralang.core.service.trajectory.discretization.ishape_discretizer import (
-    IShapeDiscretizer,
-)
-from scaralang.core.service.trajectory.discretization.shape_discretizer_factory import (
-    ShapeDiscretizerFactory,
-)
+from scaralang.core.service.trajectory.discretization.ishape_discretizer import IShapeDiscretizer
+from scaralang.core.service.trajectory.discretization.shape_discretizer_factory import ShapeDiscretizerFactory
 from scarajectory.core.model.trajectory.waypoint import Waypoint
-from scarajectory.infrastructure.gui.canvas.handler.canvas_shape_handler import (
-    CanvasShapeHandler,
-)
+from scarajectory.infrastructure.gui.canvas.handler.canvas_shape_handler import CanvasShapeHandler
 from scarajectory.infrastructure.gui.model.canvas_settings import CanvasSettings
 from scarajectory.infrastructure.gui.model.canvas_tool_mode import CanvasToolMode
 
@@ -40,7 +34,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -121,11 +115,11 @@ class CanvasShapeHandlerTestCase(TestCase):
             :exceptions: None.
         '''
         # Below length threshold: hypot <= 1.0
-        self.handler.commit_line(0.0, 0.0, 0.4, 0.4, self.settings)
+        self.handler._commit_line(0.0, 0.0, 0.4, 0.4, self.settings)
         self.assertEqual(len(self.plan.waypoints), 0)
 
         # Above length threshold
-        self.handler.commit_line(0.0, 0.0, 20.0, 20.0, self.settings)
+        self.handler._commit_line(0.0, 0.0, 20.0, 20.0, self.settings)
         self.assertGreater(len(self.plan.waypoints), 0)
 
     def test_commit_circle(self) -> None:
@@ -135,11 +129,11 @@ class CanvasShapeHandlerTestCase(TestCase):
             :exceptions: None.
         '''
         # Below minimum radius (radius < 5.0)
-        self.handler.commit_circle(0.0, 0.0, 2.0, 2.0, self.settings)
+        self.handler._commit_circle(0.0, 0.0, 2.0, 2.0, self.settings)
         self.assertEqual(len(self.plan.waypoints), 0)
 
         # Above minimum radius (radius >= 5.0)
-        self.handler.commit_circle(0.0, 0.0, 10.0, 0.0, self.settings)
+        self.handler._commit_circle(0.0, 0.0, 10.0, 0.0, self.settings)
         self.assertGreater(len(self.plan.waypoints), 0)
 
     def test_commit_rectangle(self) -> None:
@@ -149,11 +143,11 @@ class CanvasShapeHandlerTestCase(TestCase):
             :exceptions: None.
         '''
         # Dimensions too small (dx <= 2.0 or dy <= 2.0)
-        self.handler.commit_rectangle(0.0, 0.0, 1.0, 1.0, self.settings)
+        self.handler._commit_rectangle(0.0, 0.0, 1.0, 1.0, self.settings)
         self.assertEqual(len(self.plan.waypoints), 0)
 
         # Sufficient dimensions
-        self.handler.commit_rectangle(0.0, 0.0, 20.0, 30.0, self.settings)
+        self.handler._commit_rectangle(0.0, 0.0, 20.0, 30.0, self.settings)
         self.assertGreater(len(self.plan.waypoints), 0)
 
     def test_commit_shape_dispatch(self) -> None:

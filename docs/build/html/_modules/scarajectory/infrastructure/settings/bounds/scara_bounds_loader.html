@@ -62,16 +62,21 @@
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Mapping</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span>
 
+<span class="kn">from</span> <span class="nn">scaralang.core.model.kinematics.joint_angle_bounds</span> <span class="kn">import</span> <span class="n">JointAngleBounds</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.model.kinematics.link_dimensions</span> <span class="kn">import</span> <span class="n">LinkDimensions</span>
 <span class="kn">from</span> <span class="nn">scaralang.core.model.kinematics.scara_bounds</span> <span class="kn">import</span> <span class="n">ScaraBounds</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.kinematics.iscara_deadzone_calculator</span> <span class="kn">import</span> <span class="n">IScaraDeadzoneCalculator</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.settings.iscara_bounds_parser</span> <span class="kn">import</span> <span class="n">IScaraBoundsParser</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.model.kinematics.singularity_margins</span> <span class="kn">import</span> <span class="n">SingularityMargins</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.model.kinematics.speed_limits</span> <span class="kn">import</span> <span class="n">SpeedLimits</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.model.kinematics.vertical_bounds</span> <span class="kn">import</span> <span class="n">VerticalBounds</span>
+
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.settings.bounds.iscara_bounds_parser</span> <span class="kn">import</span> <span class="n">IScaraBoundsParser</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.settings.isettings_reader</span> <span class="kn">import</span> <span class="n">ISettingsReader</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -87,7 +92,6 @@
 
 <span class="sd">            :attributes:</span>
 <span class="sd">                | _reader - Injected ISettingsReader providing configuration key-values.</span>
-<span class="sd">                | _deadzone_calculator - Injected domain calculator for kinematic deadzones.</span>
 <span class="sd">                | _parser - Injected parser component for bounds options.</span>
 
 <span class="sd">            :methods:</span>
@@ -98,28 +102,22 @@
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="n">_reader</span><span class="p">:</span> <span class="n">ISettingsReader</span>
-    <span class="n">_deadzone_calculator</span><span class="p">:</span> <span class="n">IScaraDeadzoneCalculator</span>
     <span class="n">_parser</span><span class="p">:</span> <span class="n">IScaraBoundsParser</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">reader</span><span class="p">:</span> <span class="n">ISettingsReader</span><span class="p">,</span>
-        <span class="n">deadzone_calculator</span><span class="p">:</span> <span class="n">IScaraDeadzoneCalculator</span><span class="p">,</span>
         <span class="n">parser</span><span class="p">:</span> <span class="n">IScaraBoundsParser</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Initializes ScaraBoundsLoader with injected collaborators.</span>
 
 <span class="sd">            :param reader: ISettingsReader instance.</span>
-<span class="sd">            :param deadzone_calculator: Domain kinematic deadzone calculator instance.</span>
 <span class="sd">            :param parser: Bounds options parser component implementing IScaraBoundsParser.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ISettingsReader</span><span class="p">]</span> <span class="o">=</span> <span class="n">reader</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_deadzone_calculator</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IScaraDeadzoneCalculator</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">deadzone_calculator</span>
-        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IScaraBoundsParser</span><span class="p">]</span> <span class="o">=</span> <span class="n">parser</span>
 
 <div class="viewcode-block" id="ScaraBoundsLoader.load_bounds">
@@ -161,34 +159,36 @@
         <span class="n">sings</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parser</span><span class="o">.</span><span class="n">parse_singularities</span><span class="p">(</span>
             <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span> <span class="n">cfg</span><span class="o">=</span><span class="n">cfg</span>
         <span class="p">)</span>
-        <span class="n">deadzone_r</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deadzone_calculator</span><span class="o">.</span><span class="n">calculate_deadzone_radius</span><span class="p">(</span>
-            <span class="n">geom</span><span class="p">[</span><span class="s1">&#39;l1&#39;</span><span class="p">],</span> <span class="n">geom</span><span class="p">[</span><span class="s1">&#39;l2&#39;</span><span class="p">],</span> <span class="n">joints</span><span class="p">[</span><span class="s1">&#39;j2_max_rad&#39;</span><span class="p">]</span>
-        <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">ScaraBounds</span><span class="p">(</span>
-            <span class="n">l1</span><span class="o">=</span><span class="n">geom</span><span class="p">[</span><span class="s1">&#39;l1&#39;</span><span class="p">],</span>
-            <span class="n">l2</span><span class="o">=</span><span class="n">geom</span><span class="p">[</span><span class="s1">&#39;l2&#39;</span><span class="p">],</span>
-            <span class="n">z_min</span><span class="o">=</span><span class="n">geom</span><span class="p">[</span><span class="s1">&#39;z_min&#39;</span><span class="p">],</span>
-            <span class="n">z_max</span><span class="o">=</span><span class="n">geom</span><span class="p">[</span><span class="s1">&#39;z_max&#39;</span><span class="p">],</span>
-            <span class="n">min_speed</span><span class="o">=</span><span class="n">motion</span><span class="p">[</span><span class="s1">&#39;min_speed&#39;</span><span class="p">],</span>
-            <span class="n">max_speed</span><span class="o">=</span><span class="n">motion</span><span class="p">[</span><span class="s1">&#39;max_speed&#39;</span><span class="p">],</span>
-            <span class="n">default_speed</span><span class="o">=</span><span class="n">motion</span><span class="p">[</span><span class="s1">&#39;default_speed&#39;</span><span class="p">],</span>
-            <span class="n">default_accel</span><span class="o">=</span><span class="n">motion</span><span class="p">[</span><span class="s1">&#39;default_accel&#39;</span><span class="p">],</span>
-            <span class="n">max_accel</span><span class="o">=</span><span class="n">motion</span><span class="p">[</span><span class="s1">&#39;max_accel&#39;</span><span class="p">],</span>
-            <span class="n">j1_min_rad</span><span class="o">=</span><span class="n">joints</span><span class="p">[</span><span class="s1">&#39;j1_min_rad&#39;</span><span class="p">],</span>
-            <span class="n">j1_max_rad</span><span class="o">=</span><span class="n">joints</span><span class="p">[</span><span class="s1">&#39;j1_max_rad&#39;</span><span class="p">],</span>
-            <span class="n">j2_min_rad</span><span class="o">=</span><span class="n">joints</span><span class="p">[</span><span class="s1">&#39;j2_min_rad&#39;</span><span class="p">],</span>
-            <span class="n">j2_max_rad</span><span class="o">=</span><span class="n">joints</span><span class="p">[</span><span class="s1">&#39;j2_max_rad&#39;</span><span class="p">],</span>
-            <span class="n">singularity_outer_margin_mm</span><span class="o">=</span><span class="n">sings</span><span class="p">[</span><span class="s1">&#39;singularity_outer_margin_mm&#39;</span><span class="p">],</span>
-            <span class="n">singularity_inner_margin_mm</span><span class="o">=</span><span class="n">sings</span><span class="p">[</span><span class="s1">&#39;singularity_inner_margin_mm&#39;</span><span class="p">],</span>
-            <span class="n">singularity_theta2_min_rad</span><span class="o">=</span><span class="n">sings</span><span class="p">[</span><span class="s1">&#39;singularity_theta2_min_rad&#39;</span><span class="p">],</span>
-            <span class="n">deadzone_r_min</span><span class="o">=</span><span class="n">deadzone_r</span><span class="p">,</span>
+            <span class="n">links</span><span class="o">=</span><span class="n">LinkDimensions</span><span class="p">(</span><span class="n">l1</span><span class="o">=</span><span class="n">geom</span><span class="p">[</span><span class="s1">&#39;l1&#39;</span><span class="p">],</span> <span class="n">l2</span><span class="o">=</span><span class="n">geom</span><span class="p">[</span><span class="s1">&#39;l2&#39;</span><span class="p">]),</span>
+            <span class="n">vertical</span><span class="o">=</span><span class="n">VerticalBounds</span><span class="p">(</span><span class="n">z_min</span><span class="o">=</span><span class="n">geom</span><span class="p">[</span><span class="s1">&#39;z_min&#39;</span><span class="p">],</span> <span class="n">z_max</span><span class="o">=</span><span class="n">geom</span><span class="p">[</span><span class="s1">&#39;z_max&#39;</span><span class="p">]),</span>
+            <span class="n">speeds</span><span class="o">=</span><span class="n">SpeedLimits</span><span class="p">(</span>
+                <span class="n">min_speed</span><span class="o">=</span><span class="n">motion</span><span class="p">[</span><span class="s1">&#39;min_speed&#39;</span><span class="p">],</span>
+                <span class="n">max_speed</span><span class="o">=</span><span class="n">motion</span><span class="p">[</span><span class="s1">&#39;max_speed&#39;</span><span class="p">],</span>
+                <span class="n">default_speed</span><span class="o">=</span><span class="n">motion</span><span class="p">[</span><span class="s1">&#39;default_speed&#39;</span><span class="p">],</span>
+                <span class="n">default_accel</span><span class="o">=</span><span class="n">motion</span><span class="p">[</span><span class="s1">&#39;default_accel&#39;</span><span class="p">],</span>
+                <span class="n">max_accel</span><span class="o">=</span><span class="n">motion</span><span class="p">[</span><span class="s1">&#39;max_accel&#39;</span><span class="p">],</span>
+            <span class="p">),</span>
+            <span class="n">joints</span><span class="o">=</span><span class="n">JointAngleBounds</span><span class="p">(</span>
+                <span class="n">j1_min_rad</span><span class="o">=</span><span class="n">joints</span><span class="p">[</span><span class="s1">&#39;j1_min_rad&#39;</span><span class="p">],</span>
+                <span class="n">j1_max_rad</span><span class="o">=</span><span class="n">joints</span><span class="p">[</span><span class="s1">&#39;j1_max_rad&#39;</span><span class="p">],</span>
+                <span class="n">j2_min_rad</span><span class="o">=</span><span class="n">joints</span><span class="p">[</span><span class="s1">&#39;j2_min_rad&#39;</span><span class="p">],</span>
+                <span class="n">j2_max_rad</span><span class="o">=</span><span class="n">joints</span><span class="p">[</span><span class="s1">&#39;j2_max_rad&#39;</span><span class="p">],</span>
+            <span class="p">),</span>
+            <span class="n">singularity</span><span class="o">=</span><span class="n">SingularityMargins</span><span class="p">(</span>
+                <span class="n">singularity_outer_margin_mm</span><span class="o">=</span><span class="n">sings</span><span class="p">[</span><span class="s1">&#39;singularity_outer_margin_mm&#39;</span><span class="p">],</span>
+                <span class="n">singularity_inner_margin_mm</span><span class="o">=</span><span class="n">sings</span><span class="p">[</span><span class="s1">&#39;singularity_inner_margin_mm&#39;</span><span class="p">],</span>
+                <span class="n">singularity_theta2_min_rad</span><span class="o">=</span><span class="n">sings</span><span class="p">[</span><span class="s1">&#39;singularity_theta2_min_rad&#39;</span><span class="p">],</span>
+                <span class="n">deadzone_r_min</span><span class="o">=</span><span class="n">sings</span><span class="p">[</span><span class="s1">&#39;deadzone_r_min&#39;</span><span class="p">],</span>
+            <span class="p">),</span>
         <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ScaraBoundsLoader.get_version">
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.settings.bounds.scara_bounds_loader.html#scarajectory.infrastructure.settings.bounds.scara_bounds_loader.ScaraBoundsLoader.get_version">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_version</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_version</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Returns the adapter version string.</span>
 

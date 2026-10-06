@@ -27,15 +27,15 @@ from ats_utilities.context.bundle import ContextBundle
 from ats_utilities.context.factory import ContextBundleFactory
 
 from scarajectory.infrastructure.settings.settings_reader import SettingsReader
-from scarajectory.infrastructure.settings.settings_reader_factory import (
-    SettingsReaderFactory,
-)
+from scarajectory.infrastructure.settings.settings_reader_factory import SettingsReaderFactory
+from scarajectory.infrastructure.storage.config_io.config_io_factory import ConfigIOFactory
+from scarajectory.infrastructure.storage.config_io.iconfig_io_factory import IConfigIOFactory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -51,6 +51,7 @@ class TestSettingsReaderFactory(TestCase):
                 | test_create - Verifies factory creates SettingsReader with default configuration.
                 | test_create_with_context - Verifies assembly with explicit ContextBundle.
                 | test_create_with_paths - Verifies assembly with explicit file paths.
+                | test_create_with_io_factory - Verifies assembly with explicit IConfigIOFactory.
                 | test_get_version - Verifies factory returns semantic version string.
     '''
 
@@ -81,13 +82,26 @@ class TestSettingsReaderFactory(TestCase):
         )
         self.assertIsInstance(reader, SettingsReader)
 
+    def test_create_with_io_factory(self) -> None:
+        '''
+            Verifies factory creates SettingsReader with explicit IConfigIOFactory.
+        '''
+        bundle: ContextBundle = ContextBundleFactory.create_bundle()
+        io_factory: IConfigIOFactory = ConfigIOFactory.create(bundle)
+        reader = SettingsReaderFactory.create_with_io_factory(
+            config_path=SettingsReader.DEFAULT_GEOMETRY_CONFIG,
+            scheme_path=SettingsReader.DEFAULT_SCHEME_CONFIG,
+            io_factory=io_factory,
+        )
+        self.assertIsInstance(reader, SettingsReader)
+
     def test_get_version(self) -> None:
         '''
             Verifies factory returns semantic version string.
         '''
         version = SettingsReaderFactory.get_version()
         self.assertIsInstance(version, str)
-        self.assertEqual(version, '1.0.4')
+        self.assertEqual(version, '1.0.3')
 
 
 if __name__ == '__main__':

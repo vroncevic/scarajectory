@@ -21,9 +21,7 @@ Info
 
 from __future__ import annotations
 
-from scarajectory.core.service.kinematics.iscara_deadzone_calculator import IScaraDeadzoneCalculator
-from scarajectory.core.service.kinematics.scara_deadzone_calculator_factory import ScaraDeadzoneCalculatorFactory
-from scarajectory.core.service.settings.iscara_bounds_parser import IScaraBoundsParser
+from scarajectory.infrastructure.settings.bounds.iscara_bounds_parser import IScaraBoundsParser
 from scarajectory.infrastructure.settings.bounds.scara_bounds_loader import ScaraBoundsLoader
 from scarajectory.infrastructure.settings.bounds.scara_bounds_parser_factory import ScaraBoundsParserFactory
 from scarajectory.infrastructure.settings.isettings_reader import ISettingsReader
@@ -33,7 +31,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -62,7 +60,6 @@ class ScaraBoundsLoaderFactory:
         '''
         return cls.create_with_collaborators(
             reader=SettingsReaderFactory.create(),
-            deadzone_calculator=ScaraDeadzoneCalculatorFactory.create(),
             parser=ScaraBoundsParserFactory.create(),
         )
 
@@ -81,7 +78,6 @@ class ScaraBoundsLoaderFactory:
         '''
         return cls.create_with_collaborators(
             reader=reader,
-            deadzone_calculator=ScaraDeadzoneCalculatorFactory.create(),
             parser=ScaraBoundsParserFactory.create(),
         )
 
@@ -90,21 +86,18 @@ class ScaraBoundsLoaderFactory:
         cls,
         *,
         reader: ISettingsReader,
-        deadzone_calculator: IScaraDeadzoneCalculator,
         parser: IScaraBoundsParser,
     ) -> ScaraBoundsLoader:
         '''
             Creates and returns a ScaraBoundsLoader instance with explicit collaborators.
 
             :param reader: ISettingsReader providing configuration key-values.
-            :param deadzone_calculator: Domain kinematic deadzone calculator instance.
             :param parser: Bounds options parser implementing IScaraBoundsParser.
             :return: Fully configured ScaraBoundsLoader instance.
             :exceptions: None.
         '''
         return ScaraBoundsLoader(
             reader=reader,
-            deadzone_calculator=deadzone_calculator,
             parser=parser,
         )
 

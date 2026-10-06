@@ -22,6 +22,7 @@ Info
 from __future__ import annotations
 
 from unittest import TestCase, main
+from unittest.mock import MagicMock
 
 from scaralang.core.service.kinematics.kinematics_service_factory import KinematicsServiceFactory
 from scaralang.core.service.trajectory.validation.trajectory_validator_factory import TrajectoryValidatorFactory
@@ -33,7 +34,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -93,6 +94,20 @@ class CanvasReachBoundaryRendererTestCase(TestCase):
             Tests drawing of outer reach and inner deadzone circles.
         '''
         self.renderer.render_layer(self.canvas, self.vp, self.validator)
+        self.assertEqual(len(self.canvas.ovals), 2)
+        self.assertEqual(len(self.canvas.texts), 2)
+
+    def test_render_layer_with_deadzone(self) -> None:
+        '''
+            Tests drawing of outer reach and inner deadzone circles with deadzone_r_min.
+        '''
+        mock_bounds = MagicMock()
+        mock_bounds.deadzone_r_min = 50.0
+        mock_validator = MagicMock()
+        mock_validator.bounds = mock_bounds
+        mock_validator.r_min = 30.0
+        mock_validator.r_max = 350.0
+        self.renderer.render_layer(self.canvas, self.vp, mock_validator)
         self.assertEqual(len(self.canvas.ovals), 2)
         self.assertEqual(len(self.canvas.texts), 2)
 

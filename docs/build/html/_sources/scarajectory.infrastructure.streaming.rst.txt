@@ -19,6 +19,7 @@ Submodules
    scarajectory.infrastructure.streaming.binary_program_streamer
    scarajectory.infrastructure.streaming.binary_program_streamer_factory
    scarajectory.infrastructure.streaming.bundle
+   scarajectory.infrastructure.streaming.ibinary_program_streamer
    scarajectory.infrastructure.streaming.stream_control_transmitter
    scarajectory.infrastructure.streaming.stream_control_transmitter_factory
    scarajectory.infrastructure.streaming.stream_playback_controller

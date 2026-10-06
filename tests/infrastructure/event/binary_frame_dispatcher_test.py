@@ -24,21 +24,15 @@ from __future__ import annotations
 from types import SimpleNamespace
 from unittest import TestCase, main
 
-from scarajectory.core.service.event.ibinary_frame_dispatcher import (
-    IBinaryFrameDispatcher,
-)
-from scarajectory.infrastructure.event.binary_frame_dispatcher import (
-    BinaryFrameDispatcher,
-)
-from scarajectory.infrastructure.event.binary_frame_dispatcher_factory import (
-    BinaryFrameDispatcherFactory,
-)
+from scarajectory.infrastructure.event.ibinary_frame_dispatcher import IBinaryFrameDispatcher
+from scarajectory.infrastructure.event.binary_frame_dispatcher import BinaryFrameDispatcher
+from scarajectory.infrastructure.event.binary_frame_dispatcher_factory import BinaryFrameDispatcherFactory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -84,7 +78,7 @@ class BinaryFrameDispatcherTestCase(TestCase):
         dispatcher = BinaryFrameDispatcherFactory.create()
         self.assertIsInstance(dispatcher, BinaryFrameDispatcher)
         self.assertIsInstance(dispatcher, IBinaryFrameDispatcher)
-        self.assertEqual(BinaryFrameDispatcherFactory.get_version(), '1.0.4')
+        self.assertEqual(BinaryFrameDispatcherFactory.get_version(), '1.0.3')
 
     def test_register_and_dispatch_success(self) -> None:
         '''

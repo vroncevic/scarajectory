@@ -41,7 +41,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -116,6 +116,7 @@ class CanvasMouseHandler:
         wx, wy = self._vp.screen_to_world(
             event.x, event.y, context.width, context.height
         )
+        self._state.is_dragging = True
         self._state.drag_start_world = (wx, wy)
         self._state.drag_current_world = (wx, wy)
         self._state.dragged_node_idx = -1
@@ -182,7 +183,7 @@ class CanvasMouseHandler:
             event.x, event.y, context.width, context.height
         )
 
-        if self._state.drag_start_world:
+        if self._state.is_dragging:
             x0, y0 = self._state.drag_start_world
             self._shape_handler.commit_shape(
                 context.tool_mode, x0, y0, wx, wy, context.settings

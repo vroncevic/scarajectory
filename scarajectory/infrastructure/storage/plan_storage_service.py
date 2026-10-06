@@ -23,7 +23,6 @@ from __future__ import annotations
 
 from typing import Final
 
-from scaralang.core.model.dsl.binary.program import BinaryProgram
 from scarajectory.core.model.trajectory.waypoint import Waypoint
 from scarajectory.core.service.storage.iplan_loader import IPlanLoader
 from scarajectory.core.service.storage.iplan_storer import IPlanStorer
@@ -33,7 +32,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -54,7 +53,7 @@ class PlanStorageService:
                 | load_plan - Loads and deserializes waypoints from JSON file path.
                 | save_text_file - Writes string content to file path using UTF-8 encoding.
                 | load_text_file - Reads string content from file path using UTF-8 encoding.
-                | save_binary_program - Writes compiled binary program payload to destination file path.
+                | save_binary_file - Writes compiled binary payload to destination file path.
                 | load_binary_file - Reads binary file content from destination file path.
     '''
 
@@ -107,14 +106,14 @@ class PlanStorageService:
         '''
         return self._loader.load_text_file(filepath)
 
-    def save_binary_program(self, program: BinaryProgram, filepath: str) -> None:
+    def save_binary_file(self, content: bytes, filepath: str) -> None:
         '''
-            Writes compiled binary program payload to destination file path.
+            Writes compiled binary payload to destination file path.
 
-            :param program: BinaryProgram instance.
+            :param content: Raw bytes payload.
             :param filepath: Destination file path.
         '''
-        self._storer.save_binary_program(program, filepath)
+        self._storer.save_binary_file(content, filepath)
 
     def load_binary_file(self, filepath: str) -> bytes:
         '''
@@ -124,3 +123,4 @@ class PlanStorageService:
             :return: File bytes content.
         '''
         return self._loader.load_binary_file(filepath)
+

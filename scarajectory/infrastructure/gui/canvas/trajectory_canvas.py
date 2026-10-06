@@ -25,9 +25,9 @@ from tkinter import Canvas, Widget
 from typing import Final
 
 from scarajectory.infrastructure.gui.canvas.bundle import CanvasBundle
-from scarajectory.infrastructure.gui.canvas.status.icanvas_status_presenter import ICanvasStatusPresenter
 from scarajectory.infrastructure.gui.canvas.navigation.icanvas_view_navigator import ICanvasViewNavigator
 from scarajectory.infrastructure.gui.canvas.render.renderer import CanvasRenderer
+from scarajectory.infrastructure.gui.canvas.status.icanvas_status_presenter import ICanvasStatusPresenter
 from scarajectory.infrastructure.gui.model.canvas_interaction_state import CanvasInteractionState
 from scarajectory.infrastructure.gui.model.canvas_settings import CanvasSettings
 from scarajectory.infrastructure.gui.model.canvas_tool_mode import CanvasToolMode
@@ -37,7 +37,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -55,11 +55,11 @@ class TrajectoryCanvas(Canvas):
                 | _tool_mode - Active interactive drawing tool.
                 | _vp - Viewport transformation matrix.
                 | _state - Interactive mouse pan, drag and selection state.
-                | _navigator - Viewport zoom, pan, and framing coordinator interface.
-                | _status_presenter - Cursor status presenter collaborator interface.
+                | _navigator - Canvas view navigator controller.
+                | _status_presenter - Canvas status presenter.
             :methods:
                 | __init__ - Initializes vector CAD canvas widget and assigns dependencies.
-                | mount_navigation - Mounts view navigator and status presenter interfaces.
+                | attach_presentation - Associates navigator and status presenter with canvas.
                 | get_view_dimensions - Returns current width and height in pixels.
                 | redraw - Clears and redraws entire vector scene.
                 | set_tool_mode - Changes active drawing/selection tool.
@@ -103,30 +103,27 @@ class TrajectoryCanvas(Canvas):
         self._vp: Final[ViewportTransform] = vp
         self._state: Final[CanvasInteractionState] = state
 
-    def mount_navigation(
+    def attach_presentation(
         self,
-        *,
         navigator: ICanvasViewNavigator,
         status_presenter: ICanvasStatusPresenter,
     ) -> None:
         '''
-            Mounts injected navigation and status presentation collaborators.
+            Associates view navigator and status presenter with this canvas.
 
-            :param navigator: Injected ICanvasViewNavigator interface.
-            :param status_presenter: Injected ICanvasStatusPresenter interface.
+            :param navigator: ICanvasViewNavigator collaborator.
+            :param status_presenter: ICanvasStatusPresenter collaborator.
             :exceptions: None.
         '''
-        self._navigator: Final[ICanvasViewNavigator] = navigator
-        self._status_presenter: Final[ICanvasStatusPresenter] = (
-            status_presenter
-        )
+        self._navigator = navigator
+        self._status_presenter = status_presenter
 
     @property
     def navigator(self) -> ICanvasViewNavigator:
         '''
-            Returns viewport navigation coordinator.
+            Returns active canvas view navigator.
 
-            :return: ICanvasViewNavigator interface.
+            :return: ICanvasViewNavigator instance.
             :exceptions: None.
         '''
         return self._navigator
@@ -134,9 +131,9 @@ class TrajectoryCanvas(Canvas):
     @property
     def status_presenter(self) -> ICanvasStatusPresenter:
         '''
-            Returns cursor status presenter component.
+            Returns active canvas status presenter.
 
-            :return: ICanvasStatusPresenter interface.
+            :return: ICanvasStatusPresenter instance.
             :exceptions: None.
         '''
         return self._status_presenter
@@ -215,7 +212,7 @@ class TrajectoryCanvas(Canvas):
             self._bundle.validator,
         )
 
-        if self._state.drag_start_world and self._state.drag_current_world:
+        if self._state.is_dragging:
             CanvasRenderer.draw_preview(
                 self,
                 self._vp,

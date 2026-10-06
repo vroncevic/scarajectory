@@ -54,28 +54,25 @@
 <span class="sd">    You should have received a copy of the GNU General Public License along</span>
 <span class="sd">    with this program. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 <span class="sd">Info</span>
-<span class="sd">    Binary packet formatting strategy compiling Waypoint instances into packed binary wire frames.</span>
+<span class="sd">    Formats waypoints into wire-protocol binary frames packed with CRC16 and delimiters.</span>
 <span class="sd">&#39;&#39;&#39;</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">radians</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span>
 
-<span class="kn">from</span> <span class="nn">scaralang.core.model.kinematics.point_2d</span> <span class="kn">import</span> <span class="n">Point2D</span>
-<span class="kn">from</span> <span class="nn">scaralang.core.model.kinematics.transmission_parameters</span> <span class="kn">import</span> <span class="n">TransmissionParameters</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.model.exceptions.scara_kinematics_error</span> <span class="kn">import</span> <span class="n">ScaraKinematicsError</span>
 <span class="kn">from</span> <span class="nn">scaralang.core.model.protocol.binary_frame</span> <span class="kn">import</span> <span class="n">BinaryFrame</span>
 <span class="kn">from</span> <span class="nn">scaralang.core.model.protocol.joint_steps</span> <span class="kn">import</span> <span class="n">JointSteps</span>
-<span class="kn">from</span> <span class="nn">scaralang.core.service.kinematics.ikinematics_service</span> <span class="kn">import</span> <span class="n">IKinematicsService</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.compiler.binary.step.istep_discretizer</span> <span class="kn">import</span> <span class="n">IStepDiscretizer</span>
 <span class="kn">from</span> <span class="nn">scaralang.core.service.protocol.ibinary_frame_builder</span> <span class="kn">import</span> <span class="n">IBinaryFrameBuilder</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.waypoint</span> <span class="kn">import</span> <span class="n">Waypoint</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.transmission.itransmission_step_calculator</span> <span class="kn">import</span> <span class="n">ITransmissionStepCalculator</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -90,44 +87,42 @@
 <span class="sd">        It defines:</span>
 
 <span class="sd">            :attributes:</span>
-<span class="sd">                | _kinematics - Injected kinematics service for inverse kinematic calculations.</span>
-<span class="sd">                | _transmission - Injected transmission parameters for gear ratio retrieval.</span>
+<span class="sd">                | _discretizer - Injected step discretizer for kinematic conversions.</span>
 <span class="sd">                | _builder - Injected binary frame builder for wire serialization.</span>
-<span class="sd">                | _calculator - Injected step calculator for kinematic conversions.</span>
+<span class="sd">                | _prev_angles - Internal angle state for relative motion discretization.</span>
 <span class="sd">            :methods:</span>
 <span class="sd">                | __init__ - Initializes strategy with collaborators.</span>
 <span class="sd">                | format_waypoint_packet - Formats and packs waypoint into binary frame bytes.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="n">_kinematics</span><span class="p">:</span> <span class="n">IKinematicsService</span>
-    <span class="n">_transmission</span><span class="p">:</span> <span class="n">TransmissionParameters</span>
+    <span class="n">_discretizer</span><span class="p">:</span> <span class="n">IStepDiscretizer</span>
     <span class="n">_builder</span><span class="p">:</span> <span class="n">IBinaryFrameBuilder</span>
-    <span class="n">_calculator</span><span class="p">:</span> <span class="n">ITransmissionStepCalculator</span>
+    <span class="n">_prev_angles</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">kinematics</span><span class="p">:</span> <span class="n">IKinematicsService</span><span class="p">,</span>
-        <span class="n">transmission</span><span class="p">:</span> <span class="n">TransmissionParameters</span><span class="p">,</span>
+        <span class="n">discretizer</span><span class="p">:</span> <span class="n">IStepDiscretizer</span><span class="p">,</span>
         <span class="n">frame_builder</span><span class="p">:</span> <span class="n">IBinaryFrameBuilder</span><span class="p">,</span>
-        <span class="n">step_calculator</span><span class="p">:</span> <span class="n">ITransmissionStepCalculator</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Initializes strategy with kinematics, transmission, and frame builder collaborators.</span>
+<span class="sd">            Initializes strategy with step discretizer and frame builder collaborators.</span>
 
-<span class="sd">            :param kinematics: Injected IKinematicsService implementation.</span>
-<span class="sd">            :param transmission: Injected TransmissionParameters configuration DTO.</span>
+<span class="sd">            :param discretizer: Injected IStepDiscretizer implementation.</span>
 <span class="sd">            :param frame_builder: Injected IBinaryFrameBuilder builder implementation.</span>
-<span class="sd">            :param step_calculator: Injected ITransmissionStepCalculator instance.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_kinematics</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IKinematicsService</span><span class="p">]</span> <span class="o">=</span> <span class="n">kinematics</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_transmission</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">TransmissionParameters</span><span class="p">]</span> <span class="o">=</span> <span class="n">transmission</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_discretizer</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IStepDiscretizer</span><span class="p">]</span> <span class="o">=</span> <span class="n">discretizer</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_builder</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IBinaryFrameBuilder</span><span class="p">]</span> <span class="o">=</span> <span class="n">frame_builder</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_calculator</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ITransmissionStepCalculator</span><span class="p">]</span> <span class="o">=</span> <span class="n">step_calculator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_prev_angles</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
 
 <div class="viewcode-block" id="BinaryPacketStrategy.format_waypoint_packet">
 <a class="viewcode-back" href="../../../../scarajectory.infrastructure.packet.binary_packet_strategy.html#scarajectory.infrastructure.packet.binary_packet_strategy.BinaryPacketStrategy.format_waypoint_packet">[docs]</a>
-    <span class="k">def</span> <span class="nf">format_waypoint_packet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">waypoint</span><span class="p">:</span> <span class="n">Waypoint</span><span class="p">,</span> <span class="n">seq_num</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">format_waypoint_packet</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">waypoint</span><span class="p">:</span> <span class="n">Waypoint</span><span class="p">,</span>
+        <span class="n">seq_num</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Packs trajectory waypoint into binary JointSteps frame with CRC16 framing.</span>
 
@@ -135,34 +130,23 @@
 <span class="sd">            :param seq_num: Packet cyclic sequence number (0-255).</span>
 <span class="sd">            :return: Serialized binary frame byte payload.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">point</span> <span class="o">=</span> <span class="n">Point2D</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">waypoint</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">waypoint</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
-        <span class="n">ik_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_kinematics</span><span class="o">.</span><span class="n">solve_ik</span><span class="p">(</span><span class="n">point</span><span class="o">=</span><span class="n">point</span><span class="p">)</span>
-        <span class="n">th1</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
-        <span class="n">th2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
-        <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">ik_res</span><span class="p">):</span>
-            <span class="n">th1</span><span class="p">,</span> <span class="n">th2</span> <span class="o">=</span> <span class="n">ik_res</span>
-        <span class="n">th4</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">radians</span><span class="p">(</span><span class="n">waypoint</span><span class="o">.</span><span class="n">phi</span><span class="p">)</span>
-
-        <span class="n">steps_j1</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculator</span><span class="o">.</span><span class="n">revolute_steps</span><span class="p">(</span>
-            <span class="n">angle_rad</span><span class="o">=</span><span class="n">th1</span><span class="p">,</span> <span class="n">gear_ratio</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_transmission</span><span class="o">.</span><span class="n">gear_ratio_j1</span>
-        <span class="p">)</span>
-        <span class="n">steps_j2</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculator</span><span class="o">.</span><span class="n">revolute_steps</span><span class="p">(</span>
-            <span class="n">angle_rad</span><span class="o">=</span><span class="n">th2</span><span class="p">,</span> <span class="n">gear_ratio</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_transmission</span><span class="o">.</span><span class="n">gear_ratio_j2</span>
-        <span class="p">)</span>
-        <span class="n">steps_z</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculator</span><span class="o">.</span><span class="n">linear_z_steps</span><span class="p">(</span><span class="n">z_mm</span><span class="o">=</span><span class="n">waypoint</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
-        <span class="n">steps_j4</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculator</span><span class="o">.</span><span class="n">revolute_steps</span><span class="p">(</span>
-            <span class="n">angle_rad</span><span class="o">=</span><span class="n">th4</span><span class="p">,</span> <span class="n">gear_ratio</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_transmission</span><span class="o">.</span><span class="n">gear_ratio_j4</span>
-        <span class="p">)</span>
-        <span class="n">duration_us</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculator</span><span class="o">.</span><span class="n">calculate_duration_us</span><span class="p">(</span><span class="n">speed</span><span class="o">=</span><span class="n">waypoint</span><span class="o">.</span><span class="n">speed</span><span class="p">)</span>
-
-        <span class="n">joint_steps</span><span class="p">:</span> <span class="n">JointSteps</span> <span class="o">=</span> <span class="n">JointSteps</span><span class="p">(</span>
-            <span class="n">target_j1_steps</span><span class="o">=</span><span class="n">steps_j1</span><span class="p">,</span>
-            <span class="n">target_j2_steps</span><span class="o">=</span><span class="n">steps_j2</span><span class="p">,</span>
-            <span class="n">target_z_steps</span><span class="o">=</span><span class="n">steps_z</span><span class="p">,</span>
-            <span class="n">target_j4_steps</span><span class="o">=</span><span class="n">steps_j4</span><span class="p">,</span>
-            <span class="n">duration_us</span><span class="o">=</span><span class="n">duration_us</span><span class="p">,</span>
-            <span class="n">feedrate_scale</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">joint_steps</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prev_angles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_discretizer</span><span class="o">.</span><span class="n">discretize_waypoint</span><span class="p">(</span>
+                <span class="n">waypoint</span><span class="o">=</span><span class="n">waypoint</span><span class="p">,</span>
+                <span class="n">prev_angles</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_prev_angles</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="n">ScaraKinematicsError</span><span class="p">:</span>
+            <span class="n">target_steps</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_discretizer</span><span class="o">.</span><span class="n">angles_to_steps</span><span class="p">(</span>
+                <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_prev_angles</span>
+            <span class="p">)</span>
+            <span class="n">joint_steps</span> <span class="o">=</span> <span class="n">JointSteps</span><span class="p">(</span>
+                <span class="n">target_j1_steps</span><span class="o">=</span><span class="n">target_steps</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">target_j2_steps</span><span class="o">=</span><span class="n">target_steps</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">target_z_steps</span><span class="o">=</span><span class="n">target_steps</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                <span class="n">target_j4_steps</span><span class="o">=</span><span class="n">target_steps</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+                <span class="n">duration_us</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+                <span class="n">feedrate_scale</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="n">frame</span><span class="p">:</span> <span class="n">BinaryFrame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_builder</span><span class="o">.</span><span class="n">build_joint_move</span><span class="p">(</span>
             <span class="n">seq_num</span><span class="o">=</span><span class="n">seq_num</span><span class="p">,</span>
             <span class="n">steps</span><span class="o">=</span><span class="n">joint_steps</span><span class="p">,</span>

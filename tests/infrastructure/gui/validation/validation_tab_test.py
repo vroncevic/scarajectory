@@ -33,7 +33,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -72,7 +72,11 @@ class ValidationTabTestCase(TestCase):
         mock_validator = MagicMock()
         mock_validator.validate_plan.return_value = (
             False,
-            ['Reachability limit PASSED', 'Singularity zone FAILED'],
+            [
+                'Reachability limit PASSED',
+                'Singularity zone FAILED',
+                'WARNING: speed near singularity',
+            ],
         )
 
         tab = ValidationTab(self.root, plan=mock_plan, validator=mock_validator)
@@ -83,6 +87,20 @@ class ValidationTabTestCase(TestCase):
         output_text = text_widgets[0].get('1.0', END).strip()
         self.assertIn('✅ Reachability limit PASSED', output_text)
         self.assertIn('❌ Singularity zone FAILED', output_text)
+        self.assertIn('⚠️ WARNING: speed near singularity', output_text)
+
+    def test_validation_tab_run_validation_error(self) -> None:
+        '''Verifies run_validation handles unexpected validation exceptions.'''
+        mock_plan = MagicMock()
+        mock_validator = MagicMock()
+        mock_validator.validate_plan.side_effect = RuntimeError('Validator failure')
+
+        tab = ValidationTab(self.root, plan=mock_plan, validator=mock_validator)
+        tab.run_validation()
+
+        text_widgets = [w for w in tab.winfo_children() if isinstance(w, Text)]
+        output_text = text_widgets[0].get('1.0', END).strip()
+        self.assertIn('❌ Validation error: Validator failure', output_text)
 
     def test_validation_tab_factory_create(self) -> None:
         '''Verifies ValidationTabFactory creates a valid ValidationTab instance.'''
@@ -97,7 +115,7 @@ class ValidationTabTestCase(TestCase):
 
     def test_validation_tab_factory_version(self) -> None:
         '''Verifies factory returns semantic version string.'''
-        self.assertEqual(ValidationTabFactory.get_version(), '1.0.4')
+        self.assertEqual(ValidationTabFactory.get_version(), '1.0.3')
 
 
 if __name__ == '__main__':

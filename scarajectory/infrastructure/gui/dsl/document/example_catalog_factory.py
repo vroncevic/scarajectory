@@ -25,12 +25,13 @@ from pathlib import Path
 
 from scarajectory.core.service.storage.iplan_storage_service import IPlanStorageService
 from scarajectory.infrastructure.gui.dsl.document.example_catalog import DslExampleCatalog
+from scarajectory.infrastructure.storage.workspace.workspace_service_factory import WorkspaceServiceFactory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -72,15 +73,16 @@ class DslExampleCatalogFactory:
         storage: IPlanStorageService,
     ) -> DslExampleCatalog:
         '''
-            Constructs DslExampleCatalog with default package examples directory.
+            Constructs DslExampleCatalog with default user workspace directory.
 
             :param storage: Required IPlanStorageService implementation.
             :return: DslExampleCatalog instance.
             :exceptions: None.
         '''
-        examples_dir = Path(__file__).resolve().parents[5] / 'examples'
+        workspace_service = WorkspaceServiceFactory.create_default()
+        workspace_dir = Path(workspace_service.ensure_workspace())
 
-        return cls.create(examples_dir=examples_dir, storage=storage)
+        return cls.create(examples_dir=workspace_dir, storage=storage)
 
     @classmethod
     def get_version(cls) -> str:

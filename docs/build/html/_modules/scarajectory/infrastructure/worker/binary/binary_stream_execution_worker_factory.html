@@ -59,22 +59,20 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">scaralang.infrastructure.communication.protocol.binary.parser.binary_frame_parser</span> <span class="kn">import</span> <span class="n">BinaryFrameParser</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.model.streaming.stream_pacing_config</span> <span class="kn">import</span> <span class="n">StreamPacingConfig</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.packet.ipacket_strategy</span> <span class="kn">import</span> <span class="n">IPacketStrategy</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.state.istream_state_controller</span> <span class="kn">import</span> <span class="n">IStreamStateController</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.streaming.observer.istream_observer_dispatcher</span> <span class="kn">import</span> <span class="n">IStreamObserverDispatcher</span>
-<span class="kn">from</span> <span class="nn">scarajectory.core.service.worker.ibyte_sender</span> <span class="kn">import</span> <span class="n">IByteSender</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.pacing.bundle</span> <span class="kn">import</span> <span class="n">FlowPacingBundle</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.protocol.ibinary_frame_parser</span> <span class="kn">import</span> <span class="n">IBinaryFrameParser</span>
+
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.worker.binary.binary_stream_execution_worker</span> <span class="kn">import</span> <span class="n">BinaryStreamExecutionWorker</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.worker.binary.binary_stream_loop_runner_factory</span> <span class="kn">import</span> <span class="n">BinaryStreamLoopRunnerFactory</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.worker.binary.binary_stream_runner_bundle</span> <span class="kn">import</span> <span class="n">BinaryStreamRunnerBundle</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.worker.binary.ibinary_stream_loop_runner</span> <span class="kn">import</span> <span class="n">IBinaryStreamLoopRunner</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.worker.thread.iworker_thread_coordinator</span> <span class="kn">import</span> <span class="n">IWorkerThreadCoordinator</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.worker.thread.worker_thread_coordinator_factory</span> <span class="kn">import</span> <span class="n">WorkerThreadCoordinatorFactory</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -97,40 +95,24 @@
 <div class="viewcode-block" id="BinaryStreamExecutionWorkerFactory.create">
 <a class="viewcode-back" href="../../../../../scarajectory.infrastructure.worker.binary.binary_stream_execution_worker_factory.html#scarajectory.infrastructure.worker.binary.binary_stream_execution_worker_factory.BinaryStreamExecutionWorkerFactory.create">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span>
-        <span class="bp">cls</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">pacing_bundle</span><span class="p">:</span> <span class="n">FlowPacingBundle</span><span class="p">,</span>
-        <span class="n">packet_strategy</span><span class="p">:</span> <span class="n">IPacketStrategy</span><span class="p">,</span>
-        <span class="n">byte_sender</span><span class="p">:</span> <span class="n">IByteSender</span><span class="p">,</span>
-        <span class="n">state_controller</span><span class="p">:</span> <span class="n">IStreamStateController</span><span class="p">,</span>
-        <span class="n">observer_dispatcher</span><span class="p">:</span> <span class="n">IStreamObserverDispatcher</span><span class="p">,</span>
-        <span class="n">pacing_config</span><span class="p">:</span> <span class="n">StreamPacingConfig</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BinaryStreamExecutionWorker</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">bundle</span><span class="p">:</span> <span class="n">BinaryStreamRunnerBundle</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BinaryStreamExecutionWorker</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Constructs BinaryStreamExecutionWorker with internal frame parser.</span>
 
-<span class="sd">            :param pacing_bundle: FlowPacingBundle instance holding pacing and barrier.</span>
-<span class="sd">            :param packet_strategy: IPacketStrategy instance.</span>
-<span class="sd">            :param byte_sender: IByteSender transmitting raw byte payloads.</span>
-<span class="sd">            :param state_controller: IStreamStateController managing stream lifecycle state.</span>
-<span class="sd">            :param observer_dispatcher: IStreamObserverDispatcher emitting progress and logs.</span>
-<span class="sd">            :param pacing_config: StreamPacingConfig with loop pacing delays.</span>
+<span class="sd">            :param bundle: BinaryStreamRunnerBundle containing worker dependencies.</span>
 <span class="sd">            :return: BinaryStreamExecutionWorker instance.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">loop_runner</span><span class="p">:</span> <span class="n">IBinaryStreamLoopRunner</span> <span class="o">=</span> <span class="n">BinaryStreamLoopRunnerFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">flow_pacing</span><span class="o">=</span><span class="n">pacing_bundle</span><span class="o">.</span><span class="n">pacing_controller</span><span class="p">,</span>
-            <span class="n">packet_strategy</span><span class="o">=</span><span class="n">packet_strategy</span><span class="p">,</span>
-            <span class="n">byte_sender</span><span class="o">=</span><span class="n">byte_sender</span><span class="p">,</span>
-            <span class="n">state_controller</span><span class="o">=</span><span class="n">state_controller</span><span class="p">,</span>
-            <span class="n">observer_dispatcher</span><span class="o">=</span><span class="n">observer_dispatcher</span><span class="p">,</span>
-            <span class="n">pacing_config</span><span class="o">=</span><span class="n">pacing_config</span><span class="p">,</span>
+        <span class="n">loop_runner</span><span class="p">:</span> <span class="n">IBinaryStreamLoopRunner</span> <span class="o">=</span> <span class="n">BinaryStreamLoopRunnerFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">bundle</span><span class="p">)</span>
+        <span class="n">coordinator</span><span class="p">:</span> <span class="n">IWorkerThreadCoordinator</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">WorkerThreadCoordinatorFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="n">barrier_coordinator</span><span class="o">=</span><span class="n">bundle</span><span class="o">.</span><span class="n">pacing_bundle</span><span class="o">.</span><span class="n">barrier_coordinator</span>
+            <span class="p">)</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">BinaryStreamExecutionWorker</span><span class="p">(</span>
             <span class="n">loop_runner</span><span class="o">=</span><span class="n">loop_runner</span><span class="p">,</span>
-            <span class="n">barrier_coordinator</span><span class="o">=</span><span class="n">pacing_bundle</span><span class="o">.</span><span class="n">barrier_coordinator</span><span class="p">,</span>
+            <span class="n">coordinator</span><span class="o">=</span><span class="n">coordinator</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 
@@ -139,43 +121,29 @@
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">create_with_parser</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">pacing_bundle</span><span class="p">:</span> <span class="n">FlowPacingBundle</span><span class="p">,</span>
-        <span class="n">packet_strategy</span><span class="p">:</span> <span class="n">IPacketStrategy</span><span class="p">,</span>
-        <span class="n">frame_parser</span><span class="p">:</span> <span class="n">BinaryFrameParser</span><span class="p">,</span>
-        <span class="n">byte_sender</span><span class="p">:</span> <span class="n">IByteSender</span><span class="p">,</span>
-        <span class="n">state_controller</span><span class="p">:</span> <span class="n">IStreamStateController</span><span class="p">,</span>
-        <span class="n">observer_dispatcher</span><span class="p">:</span> <span class="n">IStreamObserverDispatcher</span><span class="p">,</span>
-        <span class="n">pacing_config</span><span class="p">:</span> <span class="n">StreamPacingConfig</span><span class="p">,</span>
+        <span class="n">bundle</span><span class="p">:</span> <span class="n">BinaryStreamRunnerBundle</span><span class="p">,</span>
+        <span class="n">frame_parser</span><span class="p">:</span> <span class="n">IBinaryFrameParser</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BinaryStreamExecutionWorker</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">            Constructs BinaryStreamExecutionWorker with injected frame parser.</span>
 
-<span class="sd">            :param pacing_bundle: FlowPacingBundle instance holding pacing and barrier.</span>
-<span class="sd">            :param packet_strategy: IPacketStrategy instance.</span>
-<span class="sd">            :param frame_parser: BinaryFrameParser instance.</span>
-<span class="sd">            :param byte_sender: IByteSender transmitting raw byte payloads.</span>
-<span class="sd">            :param state_controller: IStreamStateController managing stream lifecycle state.</span>
-<span class="sd">            :param observer_dispatcher: IStreamObserverDispatcher emitting progress and logs.</span>
-<span class="sd">            :param pacing_config: StreamPacingConfig with loop pacing delays.</span>
+<span class="sd">            :param bundle: BinaryStreamRunnerBundle containing worker dependencies.</span>
+<span class="sd">            :param frame_parser: IBinaryFrameParser instance.</span>
 <span class="sd">            :return: BinaryStreamExecutionWorker instance.</span>
 <span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">loop_runner</span><span class="p">:</span> <span class="n">IBinaryStreamLoopRunner</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">BinaryStreamLoopRunnerFactory</span><span class="o">.</span><span class="n">create_with_parser</span><span class="p">(</span>
-                <span class="n">flow_pacing</span><span class="o">=</span><span class="n">pacing_bundle</span><span class="o">.</span><span class="n">pacing_controller</span><span class="p">,</span>
-                <span class="n">packet_strategy</span><span class="o">=</span><span class="n">packet_strategy</span><span class="p">,</span>
-                <span class="n">frame_parser</span><span class="o">=</span><span class="n">frame_parser</span><span class="p">,</span>
-                <span class="n">byte_sender</span><span class="o">=</span><span class="n">byte_sender</span><span class="p">,</span>
-                <span class="n">state_controller</span><span class="o">=</span><span class="n">state_controller</span><span class="p">,</span>
-                <span class="n">observer_dispatcher</span><span class="o">=</span><span class="n">observer_dispatcher</span><span class="p">,</span>
-                <span class="n">pacing_config</span><span class="o">=</span><span class="n">pacing_config</span><span class="p">,</span>
+            <span class="n">BinaryStreamLoopRunnerFactory</span><span class="o">.</span><span class="n">create_with_parser</span><span class="p">(</span><span class="n">bundle</span><span class="p">,</span> <span class="n">frame_parser</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">coordinator</span><span class="p">:</span> <span class="n">IWorkerThreadCoordinator</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">WorkerThreadCoordinatorFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="n">barrier_coordinator</span><span class="o">=</span><span class="n">bundle</span><span class="o">.</span><span class="n">pacing_bundle</span><span class="o">.</span><span class="n">barrier_coordinator</span>
             <span class="p">)</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">BinaryStreamExecutionWorker</span><span class="p">(</span>
             <span class="n">loop_runner</span><span class="o">=</span><span class="n">loop_runner</span><span class="p">,</span>
-            <span class="n">barrier_coordinator</span><span class="o">=</span><span class="n">pacing_bundle</span><span class="o">.</span><span class="n">barrier_coordinator</span><span class="p">,</span>
+            <span class="n">coordinator</span><span class="o">=</span><span class="n">coordinator</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 

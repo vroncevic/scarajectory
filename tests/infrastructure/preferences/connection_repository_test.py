@@ -24,25 +24,20 @@ from __future__ import annotations
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest import TestCase, main
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 from ats_utilities.context.factory import ContextBundleFactory
 
-from scarajectory.core.model.preferences.connection_preference import (
-    ConnectionPreference,
-)
-from scarajectory.core.service.preferences.iconnection_repository import (
-    IConnectionRepository,
-)
-from scarajectory.infrastructure.preferences.connection_repository import (
-    ConnectionRepository,
-)
+from scarajectory.core.model.preferences.connection_preference import ConnectionPreference
+from scarajectory.core.service.preferences.iconnection_repository import IConnectionRepository
+from scarajectory.infrastructure.preferences.connection_repository import ConnectionRepository
+from scarajectory.infrastructure.storage.config_io.config_io_factory import ConfigIOFactory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -66,8 +61,9 @@ class ConnectionRepositoryTestCase(TestCase):
         with TemporaryDirectory() as tmp_dir:
             config_file = Path(tmp_dir) / 'serial.json'
             ctx = ContextBundleFactory.create_bundle()
+            io_factory = ConfigIOFactory.create(ctx)
             repo = ConnectionRepository(
-                context_bundle=ctx,
+                io_factory=io_factory,
                 config_file=config_file,
             )
             self.assertIsInstance(repo, IConnectionRepository)
@@ -78,8 +74,9 @@ class ConnectionRepositoryTestCase(TestCase):
         with TemporaryDirectory() as tmp_dir:
             config_file = Path(tmp_dir) / 'serial.json'
             ctx = ContextBundleFactory.create_bundle()
+            io_factory = ConfigIOFactory.create(ctx)
             repo = ConnectionRepository(
-                context_bundle=ctx,
+                io_factory=io_factory,
                 config_file=config_file,
             )
             self.assertFalse(repo.has_preference())
@@ -92,8 +89,9 @@ class ConnectionRepositoryTestCase(TestCase):
         with TemporaryDirectory() as tmp_dir:
             config_file = Path(tmp_dir) / 'serial.json'
             ctx = ContextBundleFactory.create_bundle()
+            io_factory = ConfigIOFactory.create(ctx)
             repo = ConnectionRepository(
-                context_bundle=ctx,
+                io_factory=io_factory,
                 config_file=config_file,
             )
             pref = ConnectionPreference(port='/dev/ttyUSB1', baud=57600)
@@ -113,25 +111,24 @@ class ConnectionRepositoryTestCase(TestCase):
             )
             self.assertFalse(repo.save_preference(virtual_pref))
 
-    @patch('scarajectory.infrastructure.preferences.connection_repository.Storer')
-    @patch('scarajectory.infrastructure.preferences.connection_repository.Loader')
-    def test_load_and_save_fallbacks(
-        self, mock_loader_cls: MagicMock, mock_storer_cls: MagicMock
-    ) -> None:
+    def test_load_and_save_fallbacks(self) -> None:
         '''Tests fallback to default preference on incomplete payload or exception.'''
         with TemporaryDirectory() as tmp_dir:
             config_file = Path(tmp_dir) / 'serial.json'
             config_file.touch()
-            ctx = ContextBundleFactory.create_bundle()
+
+            mock_io_factory = MagicMock()
+            mock_loader = MagicMock()
+            mock_storer = MagicMock()
+            mock_io_factory.create_loader.return_value = mock_loader
+            mock_io_factory.create_storer.return_value = mock_storer
+
             repo = ConnectionRepository(
-                context_bundle=ctx,
+                io_factory=mock_io_factory,
                 config_file=config_file,
             )
 
-            mock_loader = MagicMock()
             mock_loader.load_configuration.return_value = {'other_key': 123}
-            mock_loader_cls.return_value = mock_loader
-
             pref = repo.load_preference()
             self.assertEqual(pref.port, ConnectionRepository.DEFAULT_PORT)
 
@@ -139,10 +136,7 @@ class ConnectionRepositoryTestCase(TestCase):
             pref_err = repo.load_preference()
             self.assertEqual(pref_err.port, ConnectionRepository.DEFAULT_PORT)
 
-            mock_storer = MagicMock()
             mock_storer.store_configuration.side_effect = OSError('Disk full')
-            mock_storer_cls.return_value = mock_storer
-
             valid_pref = ConnectionPreference(
                 port='/dev/ttyUSB0', baud=115200
             )

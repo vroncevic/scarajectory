@@ -16,7 +16,7 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Top application menu bar coordinator and file I/O action handlers.
+    Top application menu bar coordinating file I/O operations and bindings.
 '''
 
 from __future__ import annotations
@@ -26,7 +26,6 @@ from tkinter.filedialog import askopenfilename, asksaveasfilename
 from tkinter.messagebox import showerror, showinfo
 from typing import Final
 
-from scaralang.core.service.dsl.iscara_dsl_service import IScaraDslService
 from scarajectory.core.service.storage.iplan_storage_service import IPlanStorageService
 from scarajectory.core.service.trajectory.plan.mutation.iplan_bulk_mutator import IPlanBulkMutator
 from scarajectory.core.service.trajectory.plan.store.iwaypoint_store import IWaypointStore
@@ -34,12 +33,13 @@ from scarajectory.infrastructure.gui.canvas.navigation.icanvas_view_navigator im
 from scarajectory.infrastructure.gui.editor.table.itable import ITable
 from scarajectory.infrastructure.gui.menu.builders_bundle import MenuBuildersBundle
 from scarajectory.infrastructure.gui.menu.bundle import MenuBundle
+from scarajectory.setup.pipeline.dsl_pipeline_bundle import DslPipelineBundle
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -58,7 +58,7 @@ class AppMenuBar:
                 | _store - Waypoint store interface.
                 | _mutation - Plan mutation service interface.
                 | _storage - Plan storage service interface.
-                | _dsl_service - SCARA DSL service interface.
+                | _dsl - SCARA DSL pipeline role services bundle.
             :methods:
                 | __init__ - Initializes and attaches menu bar to root window.
                 | open_json_dialog - Shows open file dialog and loads plan.
@@ -73,7 +73,7 @@ class AppMenuBar:
     _store: IWaypointStore
     _mutation: IPlanBulkMutator
     _storage: IPlanStorageService
-    _dsl_service: IScaraDslService
+    _dsl: DslPipelineBundle
 
     def __init__(
         self,
@@ -95,7 +95,7 @@ class AppMenuBar:
         self._store: Final[IWaypointStore] = bundle.store
         self._mutation: Final[IPlanBulkMutator] = bundle.mutation
         self._storage: Final[IPlanStorageService] = bundle.storage
-        self._dsl_service: Final[IScaraDslService] = bundle.dsl_service
+        self._dsl: Final[DslPipelineBundle] = bundle.dsl
 
         builders.layout_builder.build_menu(
             root=self._root,
@@ -157,7 +157,7 @@ class AppMenuBar:
         if path:
             try:
                 content: str = self._storage.load_text_file(path)
-                plan = self._dsl_service.compile_script(source=content)
+                plan = self._dsl.plan_compiler.compile_script(source=content)
                 self._mutation.set_waypoints(plan.waypoints)
                 self._navigator.fit_reach_view()
                 count: int = plan.count
@@ -183,7 +183,7 @@ class AppMenuBar:
 
         if path:
             try:
-                content: str = self._dsl_service.export_plan(plan=self._store)
+                content: str = self._dsl.plan_exporter.export_plan(plan=self._store)
                 self._storage.save_text_file(content, path)
                 showinfo(
                     'Export SCARA DSL', 'DSL script exported successfully!'

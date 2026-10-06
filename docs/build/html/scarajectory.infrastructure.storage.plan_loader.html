@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="scarajectory.infrastructure.storage.plan_storage_service module" href="scarajectory.infrastructure.storage.plan_storage_service.html" />
-    <link rel="prev" title="scarajectory.infrastructure.storage package" href="scarajectory.infrastructure.storage.html" /> 
+    <link rel="prev" title="scarajectory.infrastructure.storage.workspace.workspace_service_factory module" href="scarajectory.infrastructure.storage.workspace.workspace_service_factory.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -31,7 +31,7 @@
           <a href="scarajectory.infrastructure.storage.plan_storage_service.html" title="scarajectory.infrastructure.storage.plan_storage_service module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.storage.html" title="scarajectory.infrastructure.storage package"
+          <a href="scarajectory.infrastructure.storage.workspace.workspace_service_factory.html" title="scarajectory.infrastructure.storage.workspace.workspace_service_factory module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
@@ -69,7 +69,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.storage.plan_loader.PlanLoader">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.storage.plan_loader.</span></span><span class="sig-name descname"><span class="pre">PlanLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context_bundle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ContextBundle</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/storage/plan_loader.html#PlanLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.storage.plan_loader.PlanLoader" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.infrastructure.storage.plan_loader.</span></span><span class="sig-name descname"><span class="pre">PlanLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">io_factory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="scarajectory.infrastructure.storage.config_io.iconfig_io_factory.html#scarajectory.infrastructure.storage.config_io.iconfig_io_factory.IConfigIOFactory" title="scarajectory.infrastructure.storage.config_io.iconfig_io_factory.IConfigIOFactory"><span class="pre">IConfigIOFactory</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/scarajectory/infrastructure/storage/plan_loader.html#PlanLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.storage.plan_loader.PlanLoader" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Infrastructure adapter handling JSON trajectory plan loading and text/binary file reading.</p>
 <p>It defines:</p>
@@ -77,13 +77,13 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <div><dl class="field-list">
 <dt class="field-odd">attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><div class="line-block">
-<div class="line">_context - The ContextBundle for ATS configuration I/O operations.</div>
+<div class="line">_io_factory - Configuration I/O factory constructing loaders.</div>
 </div>
 </dd>
 <dt class="field-even">methods<span class="colon">:</span></dt>
 <dd class="field-even"><div class="line-block">
-<div class="line">__init__ - Initializes the plan loader with context bundle.</div>
-<div class="line">load_plan - Loads and deserializes waypoints from JSON file path using ATS Loader.</div>
+<div class="line">__init__ - Initializes the plan loader with I/O factory.</div>
+<div class="line">load_plan - Loads and deserializes waypoints from JSON file path.</div>
 <div class="line">load_text_file - Reads string content from file path using UTF-8 encoding.</div>
 <div class="line">load_binary_file - Reads binary file content from destination file path.</div>
 </div>
@@ -91,8 +91,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 </dl>
 </div></blockquote>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="scarajectory.infrastructure.storage.plan_loader.PlanLoader._context">
-<span class="sig-name descname"><span class="pre">_context</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ContextBundle</span></em><a class="headerlink" href="#scarajectory.infrastructure.storage.plan_loader.PlanLoader._context" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="scarajectory.infrastructure.storage.plan_loader.PlanLoader._io_factory">
+<span class="sig-name descname"><span class="pre">_io_factory</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="scarajectory.infrastructure.storage.config_io.iconfig_io_factory.html#scarajectory.infrastructure.storage.config_io.iconfig_io_factory.IConfigIOFactory" title="scarajectory.infrastructure.storage.config_io.iconfig_io_factory.IConfigIOFactory"><span class="pre">IConfigIOFactory</span></a></em><a class="headerlink" href="#scarajectory.infrastructure.storage.plan_loader.PlanLoader._io_factory" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -112,7 +112,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.infrastructure.storage.plan_loader.PlanLoader.load_plan">
 <span class="sig-name descname"><span class="pre">load_plan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Waypoint</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/scarajectory/infrastructure/storage/plan_loader.html#PlanLoader.load_plan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.infrastructure.storage.plan_loader.PlanLoader.load_plan" title="Link to this definition">¶</a></dt>
-<dd><p>Loads and deserializes waypoints from JSON file path using ATS Loader.</p>
+<dd><p>Loads and deserializes waypoints from JSON file path using configuration loader.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>filepath</strong> – Source file path.</p>
@@ -153,7 +153,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
     <ul>
 <li><a class="reference internal" href="#">scarajectory.infrastructure.storage.plan_loader module</a><ul>
 <li><a class="reference internal" href="#scarajectory.infrastructure.storage.plan_loader.PlanLoader"><code class="docutils literal notranslate"><span class="pre">PlanLoader</span></code></a><ul>
-<li><a class="reference internal" href="#scarajectory.infrastructure.storage.plan_loader.PlanLoader._context"><code class="docutils literal notranslate"><span class="pre">PlanLoader._context</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.infrastructure.storage.plan_loader.PlanLoader._io_factory"><code class="docutils literal notranslate"><span class="pre">PlanLoader._io_factory</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.storage.plan_loader.PlanLoader.load_binary_file"><code class="docutils literal notranslate"><span class="pre">PlanLoader.load_binary_file()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.storage.plan_loader.PlanLoader.load_plan"><code class="docutils literal notranslate"><span class="pre">PlanLoader.load_plan()</span></code></a></li>
 <li><a class="reference internal" href="#scarajectory.infrastructure.storage.plan_loader.PlanLoader.load_text_file"><code class="docutils literal notranslate"><span class="pre">PlanLoader.load_text_file()</span></code></a></li>
@@ -166,8 +166,8 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.infrastructure.storage.html"
-                          title="previous chapter">scarajectory.infrastructure.storage package</a></p>
+    <p class="topless"><a href="scarajectory.infrastructure.storage.workspace.workspace_service_factory.html"
+                          title="previous chapter">scarajectory.infrastructure.storage.workspace.workspace_service_factory module</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
@@ -208,7 +208,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="scarajectory.infrastructure.storage.plan_storage_service.html" title="scarajectory.infrastructure.storage.plan_storage_service module"
              >next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.infrastructure.storage.html" title="scarajectory.infrastructure.storage package"
+          <a href="scarajectory.infrastructure.storage.workspace.workspace_service_factory.html" title="scarajectory.infrastructure.storage.workspace.workspace_service_factory module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>

@@ -25,6 +25,7 @@ from struct import pack
 from unittest import TestCase, main
 from unittest.mock import MagicMock
 
+from scaralang.core.model.dsl.binary.axis_peak_steps import AxisPeakSteps
 from scaralang.core.model.dsl.binary.binary_program_telemetry import BinaryProgramTelemetry
 from scaralang.core.model.dsl.binary.program import BinaryProgram
 from scaralang.core.model.dsl.binary.step import Step
@@ -35,7 +36,7 @@ from scaralang.infrastructure.communication.protocol.binary.parser.binary_frame_
 
 from scarajectory.core.model.protocol.protocol_mode import ProtocolMode
 from scarajectory.core.model.trajectory.waypoint import Waypoint
-from scarajectory.core.service.state.session_factory import SessionFactory
+from scarajectory.core.service.streaming.session_factory import SessionFactory
 from scarajectory.core.service.streaming.stream_pacing_config_factory import StreamPacingConfigFactory
 from scarajectory.infrastructure.barrier.flow_barrier_factory import FlowBarrierFactory
 from scarajectory.infrastructure.event.binary_frame_dispatcher_factory import BinaryFrameDispatcherFactory
@@ -51,12 +52,13 @@ from scarajectory.infrastructure.state.stream_state_machine_factory import Strea
 from scarajectory.infrastructure.streaming.observer.stream_observer_dispatcher_factory import StreamObserverDispatcherFactory
 from scarajectory.infrastructure.tool.tool_controller_factory import ToolControllerFactory
 from scarajectory.infrastructure.worker.binary.binary_stream_execution_worker_factory import BinaryStreamExecutionWorkerFactory
+from scarajectory.infrastructure.worker.binary.binary_stream_runner_bundle import BinaryStreamRunnerBundle
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -94,9 +96,9 @@ class MockStreamer:
         '''Capture raw string command.'''
         self.sent_commands.append(cmd)
 
-    def send_raw_bytes(self, data: bytes) -> bool:
+    def send_raw_bytes(self, payload: bytes) -> bool:
         '''Capture raw byte packet.'''
-        self.sent_bytes.append(data)
+        self.sent_bytes.append(payload)
         return True
 
 
@@ -213,7 +215,7 @@ class TestBinaryStreamer(TestCase):
             poll_delay=0.001,
         )
 
-        worker = BinaryStreamExecutionWorkerFactory.create(
+        runner_bundle1 = BinaryStreamRunnerBundle(
             pacing_bundle=pacing_bundle1,
             packet_strategy=strategy,
             byte_sender=byte_sender,
@@ -221,6 +223,7 @@ class TestBinaryStreamer(TestCase):
             observer_dispatcher=observer_dispatcher,
             pacing_config=pacing_config,
         )
+        worker = BinaryStreamExecutionWorkerFactory.create(runner_bundle1)
 
         waypoints = [
             Waypoint(x=150.0, y=50.0, z=0.0, speed=10.0),
@@ -273,7 +276,7 @@ class TestBinaryStreamer(TestCase):
             poll_delay=0.001,
         )
 
-        worker = BinaryStreamExecutionWorkerFactory.create(
+        runner_bundle2 = BinaryStreamRunnerBundle(
             pacing_bundle=pacing_bundle2,
             packet_strategy=strategy,
             byte_sender=byte_sender,
@@ -281,6 +284,7 @@ class TestBinaryStreamer(TestCase):
             observer_dispatcher=observer_dispatcher,
             pacing_config=pacing_config,
         )
+        worker = BinaryStreamExecutionWorkerFactory.create(runner_bundle2)
 
         step_frame = self.frame_builder.build_system_cmd(
             msg_id=MessageId.CMD_ENABLE,
@@ -306,10 +310,7 @@ class TestBinaryStreamer(TestCase):
                 compiled_steps=1,
                 duration_us=1000,
                 duration_s=0.001,
-                peak_j1_steps=0,
-                peak_j2_steps=0,
-                peak_z_steps=0,
-                peak_j4_steps=0,
+                peak_steps=AxisPeakSteps(),
                 total_wire_bytes=len(step_bytes),
             ),
         )

@@ -23,9 +23,9 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from scarajectory.core.service.barrier.iflow_barrier import IFlowBarrier
-from scarajectory.core.service.barrier.iflow_barrier_coordinator import IFlowBarrierCoordinator
-from scarajectory.core.service.pacing.iflow_pacing_controller import IFlowPacingController
+from scarajectory.infrastructure.barrier.iflow_barrier import IFlowBarrier
+from scarajectory.infrastructure.pacing.iflow_barrier_coordinator import IFlowBarrierCoordinator
+from scarajectory.infrastructure.pacing.iflow_pacing_controller import IFlowPacingController
 from scarajectory.infrastructure.pacing.bundle import FlowPacingBundle
 from scarajectory.infrastructure.pacing.flow_barrier_coordinator_factory import FlowBarrierCoordinatorFactory
 from scarajectory.infrastructure.pacing.flow_pacing_controller_factory import FlowPacingControllerFactory
@@ -34,7 +34,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'

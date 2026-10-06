@@ -36,6 +36,8 @@ other information that should be provided before the modules are installed.
   - [📜 SCARA Domain-Specific Language (DSL) & `.scara` Programs](#-scara-domain-specific-language-dsl--scara-programs)
     - [SCARA DSL Instruction Reference](#scara-dsl-instruction-reference)
     - [Example `.scara` Program: Industrial Pick & Place](#example-scara-program-industrial-pick--place)
+    - [Bundled Industrial `.scara` Demonstration Programs](#bundled-industrial-scara-demonstration-programs)
+    - [User Workspace Auto-Provisioning (`~/.scarajectory/workspace/`)](#user-workspace-auto-provisioning-scarajectoryworkspace)
   - [📡 Unified Serial ASCII Communication Protocol](#-unified-serial-ascii-communication-protocol)
     - [Command Packets (PC $\to$ Robot)](#command-packets-pc-%5Cto-robot)
     - [Microcontroller Response Packets (Robot $\to$ PC)](#microcontroller-response-packets-robot-%5Cto-pc)
@@ -167,7 +169,6 @@ Tool structure
          │   │   │   └── stream_pacing_config.py
          │   │   ├── telemetry/
          │   │   │   ├── diagnostics_bundle.py
-         │   │   │   ├── diagnostics_snapshot.py
          │   │   │   ├── fault_event.py
          │   │   │   ├── __init__.py
          │   │   │   ├── move_event.py
@@ -175,65 +176,21 @@ Tool structure
          │   │   │   ├── stream_progress.py
          │   │   │   └── stream_summary.py
          │   │   └── trajectory/
-         │   │       ├── plan_metrics.py
-         │   │       ├── validation_report.py
          │   │       └── waypoint.py
          │   └── service/
-         │       ├── barrier/
-         │       │   ├── iflow_barrier.py
-         │       │   ├── iflow_barrier_coordinator.py
-         │       │   └── __init__.py
-         │       ├── classifier/
-         │       │   ├── iflow_status_classifier.py
-         │       │   ├── ihoming_status_classifier.py
-         │       │   ├── imotion_status_classifier.py
-         │       │   ├── __init__.py
-         │       │   └── iresponse_parser.py
-         │       ├── connection/
-         │       │   ├── ichannel_dispatcher.py
-         │       │   ├── iconnection.py
-         │       │   ├── __init__.py
-         │       │   ├── iraw_channel.py
-         │       │   └── istream_connection.py
          │       ├── engine.py
-         │       ├── event/
-         │       │   ├── ibinary_frame_dispatcher.py
-         │       │   ├── ibinary_frame_handler.py
-         │       │   └── __init__.py
          │       ├── __init__.py
          │       ├── iservice.py
-         │       ├── kinematics/
-         │       │   ├── __init__.py
-         │       │   ├── iscara_deadzone_calculator.py
-         │       │   ├── scara_deadzone_calculator.py
-         │       │   └── scara_deadzone_calculator_factory.py
          │       ├── manipulator/
          │       │   ├── ijog_controller.py
          │       │   ├── imotion_controller.py
          │       │   ├── __init__.py
          │       │   └── iquery_controller.py
-         │       ├── pacing/
-         │       │   ├── iflow_pacing_controller.py
-         │       │   └── __init__.py
-         │       ├── packet/
-         │       │   ├── __init__.py
-         │       │   └── ipacket_strategy.py
          │       ├── preferences/
          │       │   ├── connection_preference_factory.py
          │       │   ├── iconnection_repository.py
          │       │   └── __init__.py
          │       ├── service_factory.py
-         │       ├── settings/
-         │       │   ├── __init__.py
-         │       │   ├── iscara_bounds_loader.py
-         │       │   ├── iscara_bounds_parser.py
-         │       │   ├── iscara_transmission_loader.py
-         │       │   └── istream_config_loader.py
-         │       ├── state/
-         │       │   ├── __init__.py
-         │       │   ├── istream_state_controller.py
-         │       │   ├── istream_state_machine.py
-         │       │   └── session_factory.py
          │       ├── storage/
          │       │   ├── __init__.py
          │       │   ├── iplan_loader.py
@@ -241,7 +198,6 @@ Tool structure
          │       │   └── iplan_storer.py
          │       ├── streaming/
          │       │   ├── config_factory.py
-         │       │   ├── ibinary_program_streamer.py
          │       │   ├── imotion_streamer.py
          │       │   ├── __init__.py
          │       │   ├── istream_control_transmitter.py
@@ -252,9 +208,9 @@ Tool structure
          │       │   │   ├── iobservable.py
          │       │   │   ├── iobserver.py
          │       │   │   └── istream_observer_dispatcher.py
+         │       │   ├── session_factory.py
          │       │   └── stream_pacing_config_factory.py
          │       ├── telemetry/
-         │       │   ├── diagnostics_snapshot_factory.py
          │       │   ├── fault_event_factory.py
          │       │   ├── __init__.py
          │       │   └── move_event_factory.py
@@ -262,87 +218,79 @@ Tool structure
          │       │   ├── __init__.py
          │       │   ├── ipurge_valve_actuator.py
          │       │   └── itool_controller.py
-         │       ├── trajectory/
-         │       │   ├── contract/
-         │       │   │   ├── __init__.py
-         │       │   │   ├── iplan_command_service.py
-         │       │   │   ├── iplan_persistence_service.py
-         │       │   │   └── iplan_validation_service.py
-         │       │   ├── history/
-         │       │   │   ├── __init__.py
-         │       │   │   ├── iplan_history.py
-         │       │   │   ├── iplan_history_saver.py
-         │       │   │   ├── plan_history.py
-         │       │   │   └── plan_history_factory.py
-         │       │   ├── __init__.py
-         │       │   └── plan/
-         │       │       ├── history/
-         │       │       │   ├── __init__.py
-         │       │       │   ├── plan_history_service.py
-         │       │       │   └── plan_history_service_factory.py
-         │       │       ├── __init__.py
-         │       │       ├── itrajectory_history.py
-         │       │       ├── itrajectory_mutable.py
-         │       │       ├── itrajectory_read_only.py
-         │       │       ├── mutation/
-         │       │       │   ├── __init__.py
-         │       │       │   ├── iplan_bulk_mutator.py
-         │       │       │   ├── iplan_mutation_service.py
-         │       │       │   ├── iplan_point_mutator.py
-         │       │       │   ├── plan_mutation_service.py
-         │       │       │   └── plan_mutation_service_factory.py
-         │       │       ├── observer/
-         │       │       │   ├── __init__.py
-         │       │       │   ├── iplan_observer_dispatcher.py
-         │       │       │   ├── itrajectory_observer.py
-         │       │       │   ├── plan_observer_dispatcher.py
-         │       │       │   └── plan_observer_dispatcher_factory.py
-         │       │       ├── selection/
-         │       │       │   ├── __init__.py
-         │       │       │   ├── iplan_selection_coordinator.py
-         │       │       │   ├── iplan_selection_manager.py
-         │       │       │   ├── iplan_selection_navigator.py
-         │       │       │   ├── iplan_selection_state.py
-         │       │       │   ├── plan_selection_coordinator.py
-         │       │       │   ├── plan_selection_coordinator_factory.py
-         │       │       │   ├── plan_selection_manager.py
-         │       │       │   ├── plan_selection_manager_factory.py
-         │       │       │   ├── plan_selection_navigator.py
-         │       │       │   ├── plan_selection_navigator_factory.py
-         │       │       │   └── plan_selection_state.py
-         │       │       └── store/
-         │       │           ├── __init__.py
-         │       │           ├── iwaypoint_bulk_mutator.py
-         │       │           ├── iwaypoint_mutator.py
-         │       │           ├── iwaypoint_query.py
-         │       │           ├── iwaypoint_store.py
-         │       │           ├── waypoint_bulk_mutator.py
-         │       │           ├── waypoint_mutator.py
-         │       │           ├── waypoint_query.py
-         │       │           ├── waypoint_store.py
-         │       │           └── waypoint_store_factory.py
-         │       ├── transmission/
-         │       │   ├── __init__.py
-         │       │   └── itransmission_step_calculator.py
-         │       └── worker/
-         │           ├── ibyte_sender.py
-         │           ├── icommand_formatter.py
-         │           ├── icommand_sender.py
-         │           ├── iexecution_service.py
-         │           ├── iexecution_worker.py
+         │       └── trajectory/
+         │           ├── contract/
+         │           │   ├── __init__.py
+         │           │   ├── iplan_command_service.py
+         │           │   ├── iplan_persistence_service.py
+         │           │   └── iplan_validation_service.py
+         │           ├── history/
+         │           │   ├── __init__.py
+         │           │   ├── iplan_history.py
+         │           │   ├── iplan_history_saver.py
+         │           │   ├── plan_history.py
+         │           │   └── plan_history_factory.py
          │           ├── __init__.py
-         │           ├── istream_bytes_receiver.py
-         │           ├── istream_line_receiver.py
-         │           └── istream_loop_runner.py
+         │           ├── plan/
+         │           │   ├── history/
+         │           │   │   ├── __init__.py
+         │           │   │   ├── plan_history_service.py
+         │           │   │   └── plan_history_service_factory.py
+         │           │   ├── __init__.py
+         │           │   ├── itrajectory_history.py
+         │           │   ├── itrajectory_mutable.py
+         │           │   ├── itrajectory_read_only.py
+         │           │   ├── mutation/
+         │           │   │   ├── __init__.py
+         │           │   │   ├── iplan_bulk_mutator.py
+         │           │   │   ├── iplan_mutation_service.py
+         │           │   │   ├── iplan_point_mutator.py
+         │           │   │   ├── plan_mutation_service.py
+         │           │   │   └── plan_mutation_service_factory.py
+         │           │   ├── observer/
+         │           │   │   ├── __init__.py
+         │           │   │   ├── iplan_observer_dispatcher.py
+         │           │   │   ├── itrajectory_observer.py
+         │           │   │   ├── plan_observer_dispatcher.py
+         │           │   │   └── plan_observer_dispatcher_factory.py
+         │           │   ├── selection/
+         │           │   │   ├── __init__.py
+         │           │   │   ├── iplan_selection_coordinator.py
+         │           │   │   ├── iplan_selection_manager.py
+         │           │   │   ├── iplan_selection_navigator.py
+         │           │   │   ├── iplan_selection_state.py
+         │           │   │   ├── plan_selection_coordinator.py
+         │           │   │   ├── plan_selection_coordinator_factory.py
+         │           │   │   ├── plan_selection_manager.py
+         │           │   │   ├── plan_selection_manager_factory.py
+         │           │   │   ├── plan_selection_navigator.py
+         │           │   │   ├── plan_selection_navigator_factory.py
+         │           │   │   └── plan_selection_state.py
+         │           │   └── store/
+         │           │       ├── __init__.py
+         │           │       ├── iwaypoint_bulk_mutator.py
+         │           │       ├── iwaypoint_mutator.py
+         │           │       ├── iwaypoint_query.py
+         │           │       ├── iwaypoint_store.py
+         │           │       ├── waypoint_bulk_mutator.py
+         │           │       ├── waypoint_mutator.py
+         │           │       ├── waypoint_query.py
+         │           │       ├── waypoint_store.py
+         │           │       └── waypoint_store_factory.py
+         │           └── validation/
+         │               └── itrajectory_validator.py
          ├── engine.py
          ├── infrastructure/
          │   ├── barrier/
          │   │   ├── flow_barrier.py
          │   │   ├── flow_barrier_factory.py
+         │   │   ├── iflow_barrier.py
          │   │   └── __init__.py
          │   ├── classifier/
          │   │   ├── __init__.py
+         │   │   ├── iresponse_classification_registry.py
          │   │   ├── iresponse_classification_rule.py
+         │   │   ├── iresponse_parser.py
          │   │   ├── response_classification_registry.py
          │   │   ├── response_classification_registry_factory.py
          │   │   ├── response_classification_rule.py
@@ -353,6 +301,9 @@ Tool structure
          │   │       ├── flow_status_classifier_factory.py
          │   │       ├── homing_status_classifier.py
          │   │       ├── homing_status_classifier_factory.py
+         │   │       ├── iflow_status_classifier.py
+         │   │       ├── ihoming_status_classifier.py
+         │   │       ├── imotion_status_classifier.py
          │   │       ├── __init__.py
          │   │       ├── motion_status_classifier.py
          │   │       └── motion_status_classifier_factory.py
@@ -379,6 +330,7 @@ Tool structure
          │   │   ├── studio_command_definition.py
          │   │   └── studio_command_executor.py
          │   ├── config/
+         │   │   ├── examples.tgz
          │   │   ├── scara_geometry.json
          │   │   ├── scarajectory.cfg
          │   │   ├── scarajectory.logo
@@ -386,7 +338,15 @@ Tool structure
          │   ├── connection/
          │   │   ├── channel_dispatcher.py
          │   │   ├── channel_dispatcher_factory.py
+         │   │   ├── ibyte_sender.py
+         │   │   ├── ichannel_dispatcher.py
+         │   │   ├── icommand_sender.py
+         │   │   ├── iconnection.py
          │   │   ├── __init__.py
+         │   │   ├── iraw_channel.py
+         │   │   ├── istream_bytes_receiver.py
+         │   │   ├── istream_connection.py
+         │   │   ├── istream_line_receiver.py
          │   │   ├── istream_raw_transceiver.py
          │   │   ├── stream_connection_manager.py
          │   │   ├── stream_connection_manager_factory.py
@@ -395,6 +355,8 @@ Tool structure
          │   ├── event/
          │   │   ├── binary_frame_dispatcher.py
          │   │   ├── binary_frame_dispatcher_factory.py
+         │   │   ├── ibinary_frame_dispatcher.py
+         │   │   ├── ibinary_frame_handler.py
          │   │   └── __init__.py
          │   ├── formatter/
          │   │   ├── command/
@@ -408,6 +370,7 @@ Tool structure
          │   │   ├── command_formatter.py
          │   │   ├── command_formatter_factory.py
          │   │   ├── command_templates.py
+         │   │   ├── icommand_formatter.py
          │   │   └── __init__.py
          │   ├── gui/
          │   │   ├── canvas/
@@ -422,6 +385,7 @@ Tool structure
          │   │   │   │   ├── canvas_shape_handler.py
          │   │   │   │   ├── canvas_tool_handler.py
          │   │   │   │   ├── icanvas_mouse_handler.py
+         │   │   │   │   ├── icanvas_waypoint_builder.py
          │   │   │   │   ├── __init__.py
          │   │   │   │   ├── mouse_handler_bundle.py
          │   │   │   │   ├── mouse_handler_init_bundle.py
@@ -469,6 +433,7 @@ Tool structure
          │   │   ├── connection/
          │   │   │   ├── __init__.py
          │   │   │   ├── iport_connection_delegate.py
+         │   │   │   ├── iport_connection_panel.py
          │   │   │   ├── null_port_connection_delegate.py
          │   │   │   └── port_connection_panel.py
          │   │   ├── console/
@@ -502,12 +467,16 @@ Tool structure
          │   │   │   ├── dsl_editor_tab.py
          │   │   │   ├── dsl_editor_tab_factory.py
          │   │   │   ├── handler/
+         │   │   │   │   ├── binary_handler.py
+         │   │   │   │   ├── binary_handler_bundle.py
+         │   │   │   │   ├── binary_handler_factory.py
          │   │   │   │   ├── execution_handler.py
          │   │   │   │   ├── execution_handler_bundle.py
          │   │   │   │   ├── execution_handler_factory.py
          │   │   │   │   ├── file_handler.py
          │   │   │   │   ├── file_handler_bundle.py
          │   │   │   │   ├── file_handler_factory.py
+         │   │   │   │   ├── ibinary_delegate.py
          │   │   │   │   ├── iexecution_delegate.py
          │   │   │   │   ├── ifile_delegate.py
          │   │   │   │   └── __init__.py
@@ -560,6 +529,7 @@ Tool structure
          │   │   │   └── toolbar_layout_builder_factory.py
          │   │   ├── manipulator/
          │   │   │   ├── imanipulator_action_delegate.py
+         │   │   │   ├── imanipulator_override_panel.py
          │   │   │   ├── __init__.py
          │   │   │   ├── jog/
          │   │   │   │   ├── axis_grid_panel.py
@@ -620,6 +590,7 @@ Tool structure
          │   │   │   ├── panel/
          │   │   │   │   ├── __init__.py
          │   │   │   │   ├── istream_control_delegate.py
+         │   │   │   │   ├── istream_status_bar.py
          │   │   │   │   ├── stream_control_panel.py
          │   │   │   │   ├── stream_progress_adapter.py
          │   │   │   │   └── stream_status_bar.py
@@ -667,11 +638,14 @@ Tool structure
          │   │   ├── flow_pacing_bundle_factory.py
          │   │   ├── flow_pacing_controller.py
          │   │   ├── flow_pacing_controller_factory.py
+         │   │   ├── iflow_barrier_coordinator.py
+         │   │   ├── iflow_pacing_controller.py
          │   │   └── __init__.py
          │   ├── packet/
          │   │   ├── binary_packet_strategy.py
          │   │   ├── binary_packet_strategy_factory.py
-         │   │   └── __init__.py
+         │   │   ├── __init__.py
+         │   │   └── ipacket_strategy.py
          │   ├── preferences/
          │   │   ├── connection_repository.py
          │   │   ├── connection_repository_factory.py
@@ -679,6 +653,8 @@ Tool structure
          │   ├── settings/
          │   │   ├── bounds/
          │   │   │   ├── __init__.py
+         │   │   │   ├── iscara_bounds_loader.py
+         │   │   │   ├── iscara_bounds_parser.py
          │   │   │   ├── scara_bounds_loader.py
          │   │   │   ├── scara_bounds_loader_factory.py
          │   │   │   ├── scara_bounds_parser.py
@@ -689,23 +665,39 @@ Tool structure
          │   │   ├── settings_reader_factory.py
          │   │   ├── stream/
          │   │   │   ├── __init__.py
+         │   │   │   ├── istream_config_loader.py
          │   │   │   ├── stream_config_loader.py
          │   │   │   └── stream_config_loader_factory.py
          │   │   └── transmission/
          │   │       ├── __init__.py
+         │   │       ├── iscara_transmission_loader.py
          │   │       ├── scara_transmission_loader.py
          │   │       └── scara_transmission_loader_factory.py
          │   ├── state/
          │   │   ├── __init__.py
+         │   │   ├── istream_state_controller.py
+         │   │   ├── istream_state_machine.py
          │   │   ├── stream_state_machine.py
          │   │   └── stream_state_machine_factory.py
          │   ├── storage/
+         │   │   ├── config_io/
+         │   │   │   ├── config_io_factory.py
+         │   │   │   ├── iconfig_io_factory.py
+         │   │   │   ├── iconfig_loader.py
+         │   │   │   ├── iconfig_storer.py
+         │   │   │   └── __init__.py
          │   │   ├── __init__.py
          │   │   ├── plan_loader.py
          │   │   ├── plan_storage_service.py
          │   │   ├── plan_storage_service_factory.py
          │   │   ├── plan_storer.py
-         │   │   └── trajectory_serializer.py
+         │   │   ├── trajectory_serializer.py
+         │   │   └── workspace/
+         │   │       ├── __init__.py
+         │   │       ├── iworkspace_service.py
+         │   │       ├── workspace_constants.py
+         │   │       ├── workspace_service.py
+         │   │       └── workspace_service_factory.py
          │   ├── streaming/
          │   │   ├── assembly/
          │   │   │   ├── __init__.py
@@ -717,6 +709,7 @@ Tool structure
          │   │   ├── binary_program_streamer.py
          │   │   ├── binary_program_streamer_factory.py
          │   │   ├── bundle.py
+         │   │   ├── ibinary_program_streamer.py
          │   │   ├── __init__.py
          │   │   ├── observer/
          │   │   │   ├── __init__.py
@@ -738,10 +731,6 @@ Tool structure
          │   │   ├── tool_controller_factory.py
          │   │   ├── valve_pulse_worker.py
          │   │   └── valve_pulse_worker_factory.py
-         │   ├── transmission/
-         │   │   ├── __init__.py
-         │   │   ├── transmission_step_calculator.py
-         │   │   └── transmission_step_calculator_factory.py
          │   ├── transport/
          │   │   ├── bundle.py
          │   │   ├── driver/
@@ -776,27 +765,46 @@ Tool structure
          │   │       ├── transport_reader_worker.py
          │   │       └── transport_reader_worker_factory.py
          │   └── worker/
+         │       ├── ascii/
+         │       │   ├── __init__.py
+         │       │   ├── istream_loop_runner.py
+         │       │   ├── istream_queue_drainer.py
+         │       │   ├── istream_step_dispatcher.py
+         │       │   ├── stream_execution_worker.py
+         │       │   ├── stream_execution_worker_factory.py
+         │       │   ├── stream_loop_runner.py
+         │       │   ├── stream_loop_runner_factory.py
+         │       │   ├── stream_queue_drainer.py
+         │       │   ├── stream_queue_drainer_factory.py
+         │       │   ├── stream_step_dispatcher.py
+         │       │   └── stream_step_dispatcher_factory.py
          │       ├── binary/
+         │       │   ├── binary_loop_runner_bundle.py
+         │       │   ├── binary_queue_drainer.py
+         │       │   ├── binary_queue_drainer_factory.py
+         │       │   ├── binary_step_bundle.py
+         │       │   ├── binary_step_dispatcher.py
+         │       │   ├── binary_step_dispatcher_factory.py
          │       │   ├── binary_stream_execution_worker.py
          │       │   ├── binary_stream_execution_worker_factory.py
          │       │   ├── binary_stream_frame_handler.py
          │       │   ├── binary_stream_frame_handler_factory.py
          │       │   ├── binary_stream_loop_runner.py
          │       │   ├── binary_stream_loop_runner_factory.py
+         │       │   ├── binary_stream_runner_bundle.py
+         │       │   ├── ibinary_queue_drainer.py
+         │       │   ├── ibinary_step_dispatcher.py
          │       │   ├── ibinary_stream_frame_handler.py
          │       │   ├── ibinary_stream_loop_runner.py
          │       │   └── __init__.py
+         │       ├── iexecution_service.py
+         │       ├── iexecution_worker.py
          │       ├── __init__.py
-         │       ├── istream_queue_drainer.py
-         │       ├── istream_step_dispatcher.py
-         │       ├── stream_execution_worker.py
-         │       ├── stream_execution_worker_factory.py
-         │       ├── stream_loop_runner.py
-         │       ├── stream_loop_runner_factory.py
-         │       ├── stream_queue_drainer.py
-         │       ├── stream_queue_drainer_factory.py
-         │       ├── stream_step_dispatcher.py
-         │       └── stream_step_dispatcher_factory.py
+         │       └── thread/
+         │           ├── __init__.py
+         │           ├── iworker_thread_coordinator.py
+         │           ├── worker_thread_coordinator.py
+         │           └── worker_thread_coordinator_factory.py
          ├── __init__.py
          ├── py.typed
          └── setup/
@@ -816,7 +824,9 @@ Tool structure
              ├── opt_validator.py
              ├── options.py
              ├── pipeline/
+             │   ├── dsl_diagnostic_bundle.py
              │   ├── dsl_pipeline_builder.py
+             │   ├── dsl_pipeline_bundle.py
              │   ├── __init__.py
              │   ├── plan_pipeline_builder.py
              │   ├── plan_pipeline_bundle.py
@@ -825,7 +835,7 @@ Tool structure
              ├── registry.py
              └── validator.py
 
-     106 directories, 578 files
+     99 directories, 593 files
 ```
 </details>
 
@@ -840,30 +850,30 @@ Tool structure
                                                │ Orchestrates UI Components via DTOs
          ┌─────────────────────────┬───────────┴─────────────┬──────────────────────────┐
          ▼                         ▼                         ▼                          ▼
-┌──────────────────┐      ┌─────────────────┐      ┌───────────────────┐      ┌──────────────────┐
-│ TrajectoryCanvas │      │ TrajectoryTable │      │   DslEditorTab    │      │   StreamerTab    │
-│   (Vector CAD)   │      │   (Data Grid)   │      │(Syntax Highlighter│      │ (Live Feedrate & │
-└────────┬─────────┘      └────────┬────────┘      └─────────┬─────────┘      │  Device Control) │
-         │                         │                         │                └────────┬─────────┘
-         │                         │                         │                         │
-         └────────────┬────────────┴─────────────────────────┘                         │
-                      │ Observes / Modifies TrajectoryPlan                             │
-                      ▼                                                                │
-         ┌──────────────────────────┐                                                  │
-         │      TrajectoryPlan      │ (Domain Model)                                   │
-         └────────────┬─────────────┘                                                  │
-                      │                                                                │
-         ┌────────────┴────────────┬────────────────────────┐                          │ Uses ITransport &
-         ▼                         ▼                        ▼                          │ Classifiers
-┌──────────────────┐      ┌──────────────────┐     ┌─────────────────┐                 ▼
-│TrajectoryValidat.│      │  ScaraDslService │     │ ScaraPlanExport │        ┌──────────────────┐
-│(Workspace Bounds)│      │  (DSL Compiler)  │     │  (Plan to DSL)  │        │  SerialStreamer  │
-└──────────────────┘      └────────┬─────────┘     └─────────────────┘        └────────┬─────────┘
-                                   │                                                   │
-              ┌────────────────────┼────────────────────┐                              ▼
-              ▼                    ▼                    ▼                     ┌──────────────────┐
-     ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐            │Response & FlowCls│
-     │   ScaraLexer    │  │   ScaraParser   │  │  ScaraCompiler  │            └──────────────────┘
+┌──────────────────┐      ┌─────────────────┐      ┌────────────────────┐      ┌──────────────────┐
+│ TrajectoryCanvas │      │ TrajectoryTable │      │   DslEditorTab     │      │   StreamerTab    │
+│   (Vector CAD)   │      │   (Data Grid)   │      │(Syntax Highlighter)│      │ (Live Feedrate & │
+└────────┬─────────┘      └────────┬────────┘      └─────────┬──────────┘      │  Device Control) │
+         │                         │                         │                 └────────┬─────────┘
+         │                         │                         │                          │
+         └────────────┬────────────┴─────────────────────────┘                          │
+                      │ Observes / Modifies TrajectoryPlan                              │
+                      ▼                                                                 │
+         ┌──────────────────────────┐                                                   │
+         │      TrajectoryPlan      │ (Domain Model)                                    │
+         └────────────┬─────────────┘                                                   │
+                      │                                                                 │
+         ┌────────────┴────────────┬────────────────────────┐                           │ Uses ITransport &
+         ▼                         ▼                        ▼                           │ Classifiers
+┌──────────────────┐      ┌──────────────────┐     ┌─────────────────┐                  ▼
+│TrajectoryValidat.│      │  ScaraDslService │     │ ScaraPlanExport │         ┌──────────────────┐
+│(Workspace Bounds)│      │  (DSL Compiler)  │     │  (Plan to DSL)  │         │  SerialStreamer  │
+└──────────────────┘      └────────┬─────────┘     └─────────────────┘         └────────┬─────────┘
+                                   │                                                    │
+              ┌────────────────────┼────────────────────┐                               ▼
+              ▼                    ▼                    ▼                      ┌──────────────────┐
+     ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐             │Response & FlowCls│
+     │   ScaraLexer    │  │   ScaraParser   │  │  ScaraCompiler  │             └──────────────────┘
      │  (Token Stream) │  │(ICommandParser) │  │(IMacroExpander) │
      └─────────────────┘  └─────────────────┘  └─────────────────┘
 ```
@@ -1018,6 +1028,34 @@ RETRACT DIST 30.0
 HOME
 ```
 
+##### Bundled Industrial `.scara` Demonstration Programs
+
+**scarajectory** includes a comprehensive suite of 12 industrial-grade `.scara` demonstration programs showcasing the full capabilities of the DSL syntax, kinematics, trajectory smoothing, and pneumatic tool sequencing:
+
+| File Name | Functional Category | Primary DSL Instructions | Description |
+|---|---|---|---|
+| **`01_homing.scara`** | Calibration & Safety | `ENABLE`, `HOME` | Coordinated multi-axis homing sequence (Z limit switch, J2 elbow, J1 shoulder) and zero-reference calibration. |
+| **`02_linear_motion.scara`** | Cartesian Interpolation | `SPEED WORK/RAPID`, `MOVE_L` | Continuous linear interpolated path between Cartesian coordinates with configurable working and rapid feedrates. |
+| **`03_joint_rapid.scara`** | Rapid Transit | `MOVE_J` | High-speed joint-interpolated transit across workspace quadrants, prioritizing transition speed over straight-line paths. |
+| **`04_circular_arc.scara`** | Planar Contouring | `ARC_CW`, `ARC_CCW` | Clockwise and counter-clockwise circular arc interpolation using relative center offsets (`I`, `J`). |
+| **`05_jump_arch.scara`** | 3D Pick & Place | `JUMP`, `ARCH` | Parabolic 3D clearance arch: vertical ascent, horizontal transit, and descent with configurable clearance height. |
+| **`06_pneumatics.scara`** | Actuator Sequencing | `PUMP ON/OFF`, `VALVE ON/OFF`, `WAIT_MS` | Pneumatic vacuum pump and blow-off valve actuation with safety interlocks preventing simultaneous engagement. |
+| **`07_approach_retract.scara`** | Z-Axis Tooling | `APPROACH DIST`, `RETRACT DIST` | Relative descent to workpiece at controlled creep speed and fast clearance ascent along the Z-axis. |
+| **`08_work_frames.scara`** | Coordinate Systems | `FRAME_SET`, `FRAME_RESET` | User Work Coordinate System (WCS) shifting and rotated reference systems for inclined assembly stations. |
+| **`09_pallet_matrix.scara`** | Parametric Palletizing | `PALLET_DEF`, `MOVE_PALLET` | 2D pallet grid matrix indexing by row, column, pitch (`DX`, `DY`), and zero-based cell index. |
+| **`10_tangent_orientation.scara`** | 4th-Axis Tool Control | `TOOL_ORIENT TANGENTIAL/FIXED` | Automatic continuous rotation of the 4th axis ($\Phi$) tangential to trajectory heading (knife cutting, dispensing). |
+| **`11_zone_blending.scara`** | Trajectory Smoothing | `ZONE BLEND`, `ZONE FINE` | Continuous curvature trajectory blending and corner rounding radius for high-speed continuous motion. |
+| **`12_industrial_pick_place.scara`** | Full Automation Cycle | `FRAME_SET`, `MOVE_J`, `ZONE BLEND`, `PUMP`, `VALVE`, `RETRACT` | Comprehensive production pick-and-place cycle combining homing, frames, blended transit, vacuum grip, and blow-off release. |
+
+##### User Workspace Auto-Provisioning (`~/.scarajectory/workspace/`)
+
+To allow users to modify, test, and develop custom routines without modifying the installed package assets, **scarajectory** implements an automated personal workspace architecture:
+
+* **Automatic Archive Extraction:** All 12 demonstration scripts are packaged inside `examples.tgz` within the package configuration. Upon application launch or when initializing the DSL Editor tab, `WorkspaceService` verifies that the workspace directory (`~/.scarajectory/workspace/`) exists. If the folder does not exist or contains no `.scara` files, the archive is unpacked automatically into the user's workspace.
+* **Integrated Examples Catalog:** The **Examples:** dropdown combobox on the DSL Editor toolbar dynamically discovers and lists all `.scara` files present in the user workspace. Selecting an example and clicking **📂 Load Demo** immediately populates the syntax-highlighted editor with the script.
+* **Streamlined File Dialogs:** File operations such as **📂 Open...** (`Ctrl+O`) and **💾 Save As...** (`Ctrl+S`) default directly to `~/.scarajectory/workspace/`, enabling quick access to user scripts and personal templates.
+* **Safe User Customization:** Users can freely edit existing examples, save variations, or create new industrial programs directly in `~/.scarajectory/workspace/` with full persistence.
+
 #### 📡 Unified Serial ASCII Communication Protocol
 
 All communication between **scarajectory**, the physical **`scara_base`** firmware, and the **`scaraemu`** digital twin is governed by a packetized ASCII streaming protocol:
@@ -1087,7 +1125,6 @@ All communication between **scarajectory**, the physical **`scara_base`** firmwa
 | `scarajectory/core/model/streaming/stream_pacing_config.py` | 15 | 0 | 100%|
 | `scarajectory/core/model/telemetry/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/core/model/telemetry/diagnostics_bundle.py` | 29 | 0 | 100%|
-| `scarajectory/core/model/telemetry/diagnostics_snapshot.py` | 29 | 0 | 100%|
 | `scarajectory/core/model/telemetry/fault_event.py` | 15 | 0 | 100%|
 | `scarajectory/core/model/telemetry/move_event.py` | 14 | 0 | 100%|
 | `scarajectory/core/model/telemetry/scara_status.py` | 19 | 0 | 100%|
@@ -1095,56 +1132,22 @@ All communication between **scarajectory**, the physical **`scara_base`** firmwa
 | `scarajectory/core/model/telemetry/stream_summary.py` | 18 | 0 | 100%|
 | `scarajectory/core/model/trajectory/waypoint.py` | 19 | 0 | 100%|
 | `scarajectory/core/service/__init__.py` | 9 | 0 | 100%|
-| `scarajectory/core/service/barrier/__init__.py` | 9 | 0 | 100%|
-| `scarajectory/core/service/barrier/iflow_barrier.py` | 16 | 0 | 100%|
-| `scarajectory/core/service/barrier/iflow_barrier_coordinator.py` | 16 | 0 | 100%|
-| `scarajectory/core/service/classifier/__init__.py` | 9 | 0 | 100%|
-| `scarajectory/core/service/classifier/iflow_status_classifier.py` | 15 | 0 | 100%|
-| `scarajectory/core/service/classifier/ihoming_status_classifier.py` | 14 | 0 | 100%|
-| `scarajectory/core/service/classifier/imotion_status_classifier.py` | 16 | 0 | 100%|
-| `scarajectory/core/service/classifier/iresponse_parser.py` | 16 | 0 | 100%|
-| `scarajectory/core/service/connection/__init__.py` | 9 | 0 | 100%|
-| `scarajectory/core/service/connection/ichannel_dispatcher.py` | 22 | 0 | 100%|
-| `scarajectory/core/service/connection/iconnection.py` | 16 | 0 | 100%|
-| `scarajectory/core/service/connection/iraw_channel.py` | 15 | 0 | 100%|
-| `scarajectory/core/service/connection/istream_connection.py` | 14 | 0 | 100%|
 | `scarajectory/core/service/engine.py` | 38 | 0 | 100%|
-| `scarajectory/core/service/event/__init__.py` | 9 | 0 | 100%|
-| `scarajectory/core/service/event/ibinary_frame_dispatcher.py` | 15 | 0 | 100%|
-| `scarajectory/core/service/event/ibinary_frame_handler.py` | 13 | 0 | 100%|
 | `scarajectory/core/service/iservice.py` | 19 | 0 | 100%|
-| `scarajectory/core/service/kinematics/__init__.py` | 9 | 0 | 100%|
-| `scarajectory/core/service/kinematics/iscara_deadzone_calculator.py` | 14 | 0 | 100%|
-| `scarajectory/core/service/kinematics/scara_deadzone_calculator.py` | 16 | 0 | 100%|
-| `scarajectory/core/service/kinematics/scara_deadzone_calculator_factory.py` | 17 | 0 | 100%|
 | `scarajectory/core/service/manipulator/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/core/service/manipulator/ijog_controller.py` | 14 | 0 | 100%|
 | `scarajectory/core/service/manipulator/imotion_controller.py` | 16 | 0 | 100%|
 | `scarajectory/core/service/manipulator/iquery_controller.py` | 14 | 0 | 100%|
-| `scarajectory/core/service/pacing/__init__.py` | 9 | 0 | 100%|
-| `scarajectory/core/service/pacing/iflow_pacing_controller.py` | 18 | 0 | 100%|
-| `scarajectory/core/service/packet/__init__.py` | 9 | 0 | 100%|
-| `scarajectory/core/service/packet/ipacket_strategy.py` | 14 | 0 | 100%|
 | `scarajectory/core/service/preferences/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/core/service/preferences/connection_preference_factory.py` | 23 | 0 | 100%|
 | `scarajectory/core/service/preferences/iconnection_repository.py` | 16 | 0 | 100%|
-| `scarajectory/core/service/service_factory.py` | 21 | 1 | 95%|
-| `scarajectory/core/service/settings/__init__.py` | 9 | 0 | 100%|
-| `scarajectory/core/service/settings/iscara_bounds_loader.py` | 16 | 0 | 100%|
-| `scarajectory/core/service/settings/iscara_bounds_parser.py` | 17 | 0 | 100%|
-| `scarajectory/core/service/settings/iscara_transmission_loader.py` | 16 | 0 | 100%|
-| `scarajectory/core/service/settings/istream_config_loader.py` | 16 | 0 | 100%|
-| `scarajectory/core/service/state/__init__.py` | 9 | 0 | 100%|
-| `scarajectory/core/service/state/istream_state_controller.py` | 16 | 0 | 100%|
-| `scarajectory/core/service/state/istream_state_machine.py` | 18 | 0 | 100%|
-| `scarajectory/core/service/state/session_factory.py` | 19 | 1 | 95%|
+| `scarajectory/core/service/service_factory.py` | 21 | 0 | 100%|
 | `scarajectory/core/service/storage/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/core/service/storage/iplan_loader.py` | 16 | 0 | 100%|
 | `scarajectory/core/service/storage/iplan_storage_service.py` | 14 | 0 | 100%|
-| `scarajectory/core/service/storage/iplan_storer.py` | 17 | 0 | 100%|
+| `scarajectory/core/service/storage/iplan_storer.py` | 16 | 0 | 100%|
 | `scarajectory/core/service/streaming/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/core/service/streaming/config_factory.py` | 18 | 0 | 100%|
-| `scarajectory/core/service/streaming/ibinary_program_streamer.py` | 14 | 0 | 100%|
 | `scarajectory/core/service/streaming/imotion_streamer.py` | 14 | 0 | 100%|
 | `scarajectory/core/service/streaming/istream_control_transmitter.py` | 17 | 0 | 100%|
 | `scarajectory/core/service/streaming/istream_dispatcher.py` | 14 | 0 | 100%|
@@ -1153,9 +1156,9 @@ All communication between **scarajectory**, the physical **`scara_base`** firmwa
 | `scarajectory/core/service/streaming/observer/iobservable.py` | 14 | 0 | 100%|
 | `scarajectory/core/service/streaming/observer/iobserver.py` | 15 | 0 | 100%|
 | `scarajectory/core/service/streaming/observer/istream_observer_dispatcher.py` | 16 | 0 | 100%|
+| `scarajectory/core/service/streaming/session_factory.py` | 19 | 0 | 100%|
 | `scarajectory/core/service/streaming/stream_pacing_config_factory.py` | 23 | 0 | 100%|
 | `scarajectory/core/service/telemetry/__init__.py` | 9 | 0 | 100%|
-| `scarajectory/core/service/telemetry/diagnostics_snapshot_factory.py` | 18 | 0 | 100%|
 | `scarajectory/core/service/telemetry/fault_event_factory.py` | 17 | 0 | 100%|
 | `scarajectory/core/service/telemetry/move_event_factory.py` | 17 | 0 | 100%|
 | `scarajectory/core/service/tool/__init__.py` | 9 | 0 | 100%|
@@ -1169,8 +1172,8 @@ All communication between **scarajectory**, the physical **`scara_base`** firmwa
 | `scarajectory/core/service/trajectory/history/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/core/service/trajectory/history/iplan_history.py` | 17 | 0 | 100%|
 | `scarajectory/core/service/trajectory/history/iplan_history_saver.py` | 15 | 0 | 100%|
-| `scarajectory/core/service/trajectory/history/plan_history.py` | 38 | 1 | 97%|
-| `scarajectory/core/service/trajectory/history/plan_history_factory.py` | 17 | 1 | 94%|
+| `scarajectory/core/service/trajectory/history/plan_history.py` | 38 | 0 | 100%|
+| `scarajectory/core/service/trajectory/history/plan_history_factory.py` | 17 | 0 | 100%|
 | `scarajectory/core/service/trajectory/plan/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/core/service/trajectory/plan/history/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/core/service/trajectory/plan/history/plan_history_service.py` | 40 | 0 | 100%|
@@ -1188,7 +1191,7 @@ All communication between **scarajectory**, the physical **`scara_base`** firmwa
 | `scarajectory/core/service/trajectory/plan/observer/iplan_observer_dispatcher.py` | 18 | 0 | 100%|
 | `scarajectory/core/service/trajectory/plan/observer/itrajectory_observer.py` | 14 | 0 | 100%|
 | `scarajectory/core/service/trajectory/plan/observer/plan_observer_dispatcher.py` | 29 | 0 | 100%|
-| `scarajectory/core/service/trajectory/plan/observer/plan_observer_dispatcher_factory.py` | 17 | 1 | 94%|
+| `scarajectory/core/service/trajectory/plan/observer/plan_observer_dispatcher_factory.py` | 17 | 0 | 100%|
 | `scarajectory/core/service/trajectory/plan/selection/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/core/service/trajectory/plan/selection/iplan_selection_coordinator.py` | 15 | 0 | 100%|
 | `scarajectory/core/service/trajectory/plan/selection/iplan_selection_manager.py` | 14 | 0 | 100%|
@@ -1196,8 +1199,8 @@ All communication between **scarajectory**, the physical **`scara_base`** firmwa
 | `scarajectory/core/service/trajectory/plan/selection/iplan_selection_state.py` | 17 | 0 | 100%|
 | `scarajectory/core/service/trajectory/plan/selection/plan_selection_coordinator.py` | 27 | 0 | 100%|
 | `scarajectory/core/service/trajectory/plan/selection/plan_selection_coordinator_factory.py` | 20 | 0 | 100%|
-| `scarajectory/core/service/trajectory/plan/selection/plan_selection_manager.py` | 35 | 1 | 97%|
-| `scarajectory/core/service/trajectory/plan/selection/plan_selection_manager_factory.py` | 26 | 1 | 96%|
+| `scarajectory/core/service/trajectory/plan/selection/plan_selection_manager.py` | 35 | 0 | 100%|
+| `scarajectory/core/service/trajectory/plan/selection/plan_selection_manager_factory.py` | 26 | 0 | 100%|
 | `scarajectory/core/service/trajectory/plan/selection/plan_selection_navigator.py` | 23 | 0 | 100%|
 | `scarajectory/core/service/trajectory/plan/selection/plan_selection_navigator_factory.py` | 18 | 0 | 100%|
 | `scarajectory/core/service/trajectory/plan/selection/plan_selection_state.py` | 28 | 0 | 100%|
@@ -1210,50 +1213,46 @@ All communication between **scarajectory**, the physical **`scara_base`** firmwa
 | `scarajectory/core/service/trajectory/plan/store/waypoint_mutator.py` | 29 | 0 | 100%|
 | `scarajectory/core/service/trajectory/plan/store/waypoint_query.py` | 22 | 0 | 100%|
 | `scarajectory/core/service/trajectory/plan/store/waypoint_store.py` | 41 | 0 | 100%|
-| `scarajectory/core/service/trajectory/plan/store/waypoint_store_factory.py` | 27 | 1 | 96%|
-| `scarajectory/core/service/transmission/__init__.py` | 9 | 0 | 100%|
-| `scarajectory/core/service/transmission/itransmission_step_calculator.py` | 15 | 0 | 100%|
-| `scarajectory/core/service/worker/__init__.py` | 9 | 0 | 100%|
-| `scarajectory/core/service/worker/ibyte_sender.py` | 13 | 0 | 100%|
-| `scarajectory/core/service/worker/icommand_formatter.py` | 14 | 0 | 100%|
-| `scarajectory/core/service/worker/icommand_sender.py` | 13 | 0 | 100%|
-| `scarajectory/core/service/worker/iexecution_service.py` | 16 | 0 | 100%|
-| `scarajectory/core/service/worker/iexecution_worker.py` | 18 | 0 | 100%|
-| `scarajectory/core/service/worker/istream_bytes_receiver.py` | 14 | 0 | 100%|
-| `scarajectory/core/service/worker/istream_line_receiver.py` | 14 | 0 | 100%|
-| `scarajectory/core/service/worker/istream_loop_runner.py` | 16 | 0 | 100%|
-| `scarajectory/engine.py` | 58 | 2 | 97%|
+| `scarajectory/core/service/trajectory/plan/store/waypoint_store_factory.py` | 27 | 0 | 100%|
+| `scarajectory/core/service/trajectory/validation/itrajectory_validator.py` | 22 | 0 | 100%|
+| `scarajectory/engine.py` | 58 | 0 | 100%|
 | `scarajectory/infrastructure/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/barrier/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/barrier/flow_barrier.py` | 23 | 0 | 100%|
 | `scarajectory/infrastructure/barrier/flow_barrier_factory.py` | 17 | 0 | 100%|
+| `scarajectory/infrastructure/barrier/iflow_barrier.py` | 16 | 0 | 100%|
 | `scarajectory/infrastructure/classifier/__init__.py` | 9 | 0 | 100%|
+| `scarajectory/infrastructure/classifier/iresponse_classification_registry.py` | 16 | 0 | 100%|
 | `scarajectory/infrastructure/classifier/iresponse_classification_rule.py` | 15 | 0 | 100%|
+| `scarajectory/infrastructure/classifier/iresponse_parser.py` | 16 | 0 | 100%|
 | `scarajectory/infrastructure/classifier/response_classification_registry.py` | 23 | 0 | 100%|
 | `scarajectory/infrastructure/classifier/response_classification_registry_factory.py` | 22 | 0 | 100%|
 | `scarajectory/infrastructure/classifier/response_classification_rule.py` | 28 | 0 | 100%|
 | `scarajectory/infrastructure/classifier/response_parser.py` | 32 | 0 | 100%|
-| `scarajectory/infrastructure/classifier/response_parser_factory.py` | 23 | 0 | 100%|
+| `scarajectory/infrastructure/classifier/response_parser_factory.py` | 24 | 0 | 100%|
 | `scarajectory/infrastructure/classifier/status/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/classifier/status/flow_status_classifier.py` | 24 | 0 | 100%|
 | `scarajectory/infrastructure/classifier/status/flow_status_classifier_factory.py` | 22 | 0 | 100%|
 | `scarajectory/infrastructure/classifier/status/homing_status_classifier.py` | 17 | 0 | 100%|
 | `scarajectory/infrastructure/classifier/status/homing_status_classifier_factory.py` | 17 | 0 | 100%|
+| `scarajectory/infrastructure/classifier/status/iflow_status_classifier.py` | 15 | 0 | 100%|
+| `scarajectory/infrastructure/classifier/status/ihoming_status_classifier.py` | 14 | 0 | 100%|
+| `scarajectory/infrastructure/classifier/status/imotion_status_classifier.py` | 16 | 0 | 100%|
 | `scarajectory/infrastructure/classifier/status/motion_status_classifier.py` | 28 | 0 | 100%|
 | `scarajectory/infrastructure/classifier/status/motion_status_classifier_factory.py` | 22 | 0 | 100%|
 | `scarajectory/infrastructure/cli/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/cli/engine.py` | 41 | 0 | 100%|
 | `scarajectory/infrastructure/cli/icli.py` | 15 | 0 | 100%|
 | `scarajectory/infrastructure/cli/setup/__init__.py` | 9 | 0 | 100%|
-| `scarajectory/infrastructure/cli/setup/bundle.py` | 22 | 1 | 95%|
-| `scarajectory/infrastructure/cli/setup/dep_validator.py` | 36 | 5 | 86%|
+| `scarajectory/infrastructure/cli/setup/bundle.py` | 22 | 0 | 100%|
+| `scarajectory/infrastructure/cli/setup/dep_validator.py` | 36 | 0 | 100%|
 | `scarajectory/infrastructure/cli/setup/dependencies.py` | 18 | 0 | 100%|
-| `scarajectory/infrastructure/cli/setup/factory.py` | 37 | 1 | 97%|
+| `scarajectory/infrastructure/cli/setup/factory.py` | 37 | 0 | 100%|
 | `scarajectory/infrastructure/cli/setup/keys.py` | 28 | 0 | 100%|
-| `scarajectory/infrastructure/cli/setup/opt_validator.py` | 36 | 5 | 86%|
+| `scarajectory/infrastructure/cli/setup/opt_validator.py` | 36 | 0 | 100%|
 | `scarajectory/infrastructure/cli/setup/options.py` | 17 | 0 | 100%|
-| `scarajectory/infrastructure/cli/setup/registry.py` | 24 | 1 | 96%|
-| `scarajectory/infrastructure/cli/setup/validator.py` | 43 | 5 | 88%|
+| `scarajectory/infrastructure/cli/setup/registry.py` | 24 | 0 | 100%|
+| `scarajectory/infrastructure/cli/setup/validator.py` | 43 | 0 | 100%|
 | `scarajectory/infrastructure/command/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/command/command_bundle.py` | 16 | 0 | 100%|
 | `scarajectory/infrastructure/command/icommand_definition.py` | 14 | 0 | 100%|
@@ -1263,6 +1262,14 @@ All communication between **scarajectory**, the physical **`scara_base`** firmwa
 | `scarajectory/infrastructure/connection/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/connection/channel_dispatcher.py` | 46 | 0 | 100%|
 | `scarajectory/infrastructure/connection/channel_dispatcher_factory.py` | 20 | 0 | 100%|
+| `scarajectory/infrastructure/connection/ibyte_sender.py` | 13 | 0 | 100%|
+| `scarajectory/infrastructure/connection/ichannel_dispatcher.py` | 22 | 0 | 100%|
+| `scarajectory/infrastructure/connection/icommand_sender.py` | 13 | 0 | 100%|
+| `scarajectory/infrastructure/connection/iconnection.py` | 16 | 0 | 100%|
+| `scarajectory/infrastructure/connection/iraw_channel.py` | 15 | 0 | 100%|
+| `scarajectory/infrastructure/connection/istream_bytes_receiver.py` | 14 | 0 | 100%|
+| `scarajectory/infrastructure/connection/istream_connection.py` | 14 | 0 | 100%|
+| `scarajectory/infrastructure/connection/istream_line_receiver.py` | 14 | 0 | 100%|
 | `scarajectory/infrastructure/connection/istream_raw_transceiver.py` | 16 | 0 | 100%|
 | `scarajectory/infrastructure/connection/stream_connection_manager.py` | 30 | 0 | 100%|
 | `scarajectory/infrastructure/connection/stream_connection_manager_factory.py` | 19 | 0 | 100%|
@@ -1271,6 +1278,8 @@ All communication between **scarajectory**, the physical **`scara_base`** firmwa
 | `scarajectory/infrastructure/event/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/event/binary_frame_dispatcher.py` | 28 | 0 | 100%|
 | `scarajectory/infrastructure/event/binary_frame_dispatcher_factory.py` | 17 | 0 | 100%|
+| `scarajectory/infrastructure/event/ibinary_frame_dispatcher.py` | 15 | 0 | 100%|
+| `scarajectory/infrastructure/event/ibinary_frame_handler.py` | 13 | 0 | 100%|
 | `scarajectory/infrastructure/formatter/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/formatter/command/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/formatter/command/config_command_formatter.py` | 22 | 0 | 100%|
@@ -1280,8 +1289,9 @@ All communication between **scarajectory**, the physical **`scara_base`** firmwa
 | `scarajectory/infrastructure/formatter/command/system_command_formatter.py` | 29 | 0 | 100%|
 | `scarajectory/infrastructure/formatter/command/tool_command_formatter.py` | 25 | 0 | 100%|
 | `scarajectory/infrastructure/formatter/command_formatter.py` | 20 | 0 | 100%|
-| `scarajectory/infrastructure/formatter/command_formatter_factory.py` | 17 | 1 | 94%|
-| `scarajectory/infrastructure/formatter/command_templates.py` | 46 | 2 | 96%|
+| `scarajectory/infrastructure/formatter/command_formatter_factory.py` | 17 | 0 | 100%|
+| `scarajectory/infrastructure/formatter/command_templates.py` | 46 | 0 | 100%|
+| `scarajectory/infrastructure/formatter/icommand_formatter.py` | 14 | 0 | 100%|
 | `scarajectory/infrastructure/gui/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/bundle.py` | 24 | 0 | 100%|
@@ -1290,20 +1300,21 @@ All communication between **scarajectory**, the physical **`scara_base`** firmwa
 | `scarajectory/infrastructure/gui/canvas/handler/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/handler/canvas_drag_handler.py` | 40 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/handler/canvas_event_context.py` | 18 | 0 | 100%|
-| `scarajectory/infrastructure/gui/canvas/handler/canvas_mouse_handler.py` | 73 | 0 | 100%|
+| `scarajectory/infrastructure/gui/canvas/handler/canvas_mouse_handler.py` | 74 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/handler/canvas_mouse_handler_factory.py` | 36 | 0 | 100%|
-| `scarajectory/infrastructure/gui/canvas/handler/canvas_shape_handler.py` | 55 | 0 | 100%|
+| `scarajectory/infrastructure/gui/canvas/handler/canvas_shape_handler.py` | 57 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/handler/canvas_tool_handler.py` | 45 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/handler/icanvas_mouse_handler.py` | 18 | 0 | 100%|
+| `scarajectory/infrastructure/gui/canvas/handler/icanvas_waypoint_builder.py` | 16 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/handler/mouse_handler_bundle.py` | 24 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/handler/mouse_handler_init_bundle.py` | 22 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/handler/pan/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/handler/pan/canvas_viewport_pan_handler.py` | 41 | 0 | 100%|
-| `scarajectory/infrastructure/gui/canvas/handler/pan/canvas_viewport_pan_handler_factory.py` | 19 | 1 | 95%|
+| `scarajectory/infrastructure/gui/canvas/handler/pan/canvas_viewport_pan_handler_factory.py` | 19 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/handler/pan/icanvas_viewport_pan_handler.py` | 17 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/handler/selection/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/handler/selection/canvas_selection_mouse_handler.py` | 49 | 0 | 100%|
-| `scarajectory/infrastructure/gui/canvas/handler/selection/canvas_selection_mouse_handler_factory.py` | 22 | 1 | 95%|
+| `scarajectory/infrastructure/gui/canvas/handler/selection/canvas_selection_mouse_handler_factory.py` | 22 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/handler/selection/icanvas_selection_mouse_handler.py` | 16 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/icanvas.py` | 16 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/navigation/__init__.py` | 9 | 0 | 100%|
@@ -1319,26 +1330,27 @@ All communication between **scarajectory**, the physical **`scara_base`** firmwa
 | `scarajectory/infrastructure/gui/canvas/render/forbidden_zone_renderer.py` | 56 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/render/ilayer_renderer.py` | 17 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/render/polar_grid_renderer.py` | 36 | 0 | 100%|
-| `scarajectory/infrastructure/gui/canvas/render/preview_renderer.py` | 31 | 1 | 97%|
+| `scarajectory/infrastructure/gui/canvas/render/preview_renderer.py` | 31 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/render/reach_boundary_renderer.py` | 31 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/render/renderer.py` | 34 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/render/trajectory_renderer.py` | 32 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/render/waypoint_node_renderer.py` | 25 | 0 | 100%|
-| `scarajectory/infrastructure/gui/canvas/render/waypoint_node_renderer_factory.py` | 17 | 1 | 94%|
+| `scarajectory/infrastructure/gui/canvas/render/waypoint_node_renderer_factory.py` | 17 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/status/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/status/canvas_status_presenter.py` | 21 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/status/canvas_status_presenter_factory.py` | 17 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/status/icanvas_status_presenter.py` | 16 | 0 | 100%|
-| `scarajectory/infrastructure/gui/canvas/trajectory_canvas.py` | 68 | 4 | 94%|
+| `scarajectory/infrastructure/gui/canvas/trajectory_canvas.py` | 68 | 0 | 100%|
 | `scarajectory/infrastructure/gui/canvas/trajectory_canvas_factory.py` | 44 | 0 | 100%|
 | `scarajectory/infrastructure/gui/connection/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/gui/connection/iport_connection_delegate.py` | 13 | 0 | 100%|
+| `scarajectory/infrastructure/gui/connection/iport_connection_panel.py` | 14 | 0 | 100%|
 | `scarajectory/infrastructure/gui/connection/null_port_connection_delegate.py` | 11 | 0 | 100%|
-| `scarajectory/infrastructure/gui/connection/port_connection_panel.py` | 76 | 2 | 97%|
+| `scarajectory/infrastructure/gui/connection/port_connection_panel.py` | 72 | 0 | 100%|
 | `scarajectory/infrastructure/gui/console/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/gui/console/serial_console.py` | 39 | 0 | 100%|
-| `scarajectory/infrastructure/gui/console/serial_console_builder.py` | 30 | 1 | 97%|
-| `scarajectory/infrastructure/gui/console/serial_console_builder_factory.py` | 17 | 1 | 94%|
+| `scarajectory/infrastructure/gui/console/serial_console_builder.py` | 28 | 0 | 100%|
+| `scarajectory/infrastructure/gui/console/serial_console_builder_factory.py` | 17 | 0 | 100%|
 | `scarajectory/infrastructure/gui/controls/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/gui/controls/bundle.py` | 29 | 0 | 100%|
 | `scarajectory/infrastructure/gui/controls/controls_panel.py` | 52 | 0 | 100%|
@@ -1352,23 +1364,27 @@ All communication between **scarajectory**, the physical **`scara_base`** firmwa
 | `scarajectory/infrastructure/gui/controls/tabs_bundle.py` | 22 | 0 | 100%|
 | `scarajectory/infrastructure/gui/dsl/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/gui/dsl/bundle.py` | 20 | 0 | 100%|
-| `scarajectory/infrastructure/gui/dsl/code_editor.py` | 36 | 3 | 92%|
-| `scarajectory/infrastructure/gui/dsl/code_editor_factory.py` | 24 | 1 | 96%|
-| `scarajectory/infrastructure/gui/dsl/console_view.py` | 27 | 3 | 89%|
+| `scarajectory/infrastructure/gui/dsl/code_editor.py` | 36 | 0 | 100%|
+| `scarajectory/infrastructure/gui/dsl/code_editor_factory.py` | 24 | 0 | 100%|
+| `scarajectory/infrastructure/gui/dsl/console_view.py` | 38 | 0 | 100%|
 | `scarajectory/infrastructure/gui/dsl/document/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/gui/dsl/document/document_manager.py` | 42 | 0 | 100%|
-| `scarajectory/infrastructure/gui/dsl/document/document_manager_factory.py` | 22 | 1 | 95%|
-| `scarajectory/infrastructure/gui/dsl/document/example_catalog.py` | 35 | 4 | 89%|
-| `scarajectory/infrastructure/gui/dsl/document/example_catalog_factory.py` | 23 | 1 | 96%|
-| `scarajectory/infrastructure/gui/dsl/dsl_editor_tab.py` | 57 | 0 | 100%|
-| `scarajectory/infrastructure/gui/dsl/dsl_editor_tab_factory.py` | 52 | 0 | 100%|
+| `scarajectory/infrastructure/gui/dsl/document/document_manager_factory.py` | 22 | 0 | 100%|
+| `scarajectory/infrastructure/gui/dsl/document/example_catalog.py` | 38 | 0 | 100%|
+| `scarajectory/infrastructure/gui/dsl/document/example_catalog_factory.py` | 25 | 0 | 100%|
+| `scarajectory/infrastructure/gui/dsl/dsl_editor_tab.py` | 45 | 0 | 100%|
+| `scarajectory/infrastructure/gui/dsl/dsl_editor_tab_factory.py` | 54 | 0 | 100%|
 | `scarajectory/infrastructure/gui/dsl/handler/__init__.py` | 9 | 0 | 100%|
-| `scarajectory/infrastructure/gui/dsl/handler/execution_handler.py` | 61 | 0 | 100%|
+| `scarajectory/infrastructure/gui/dsl/handler/binary_handler.py` | 68 | 0 | 100%|
+| `scarajectory/infrastructure/gui/dsl/handler/binary_handler_bundle.py` | 26 | 0 | 100%|
+| `scarajectory/infrastructure/gui/dsl/handler/binary_handler_factory.py` | 18 | 0 | 100%|
+| `scarajectory/infrastructure/gui/dsl/handler/execution_handler.py` | 68 | 0 | 100%|
 | `scarajectory/infrastructure/gui/dsl/handler/execution_handler_bundle.py` | 24 | 0 | 100%|
-| `scarajectory/infrastructure/gui/dsl/handler/execution_handler_factory.py` | 18 | 1 | 94%|
+| `scarajectory/infrastructure/gui/dsl/handler/execution_handler_factory.py` | 18 | 0 | 100%|
 | `scarajectory/infrastructure/gui/dsl/handler/file_handler.py` | 47 | 0 | 100%|
 | `scarajectory/infrastructure/gui/dsl/handler/file_handler_bundle.py` | 22 | 0 | 100%|
-| `scarajectory/infrastructure/gui/dsl/handler/file_handler_factory.py` | 18 | 1 | 94%|
+| `scarajectory/infrastructure/gui/dsl/handler/file_handler_factory.py` | 18 | 0 | 100%|
+| `scarajectory/infrastructure/gui/dsl/handler/ibinary_delegate.py` | 14 | 0 | 100%|
 | `scarajectory/infrastructure/gui/dsl/handler/iexecution_delegate.py` | 16 | 0 | 100%|
 | `scarajectory/infrastructure/gui/dsl/handler/ifile_delegate.py` | 15 | 0 | 100%|
 | `scarajectory/infrastructure/gui/dsl/syntax/__init__.py` | 9 | 0 | 100%|
@@ -1378,20 +1394,20 @@ All communication between **scarajectory**, the physical **`scara_base`** firmwa
 | `scarajectory/infrastructure/gui/dsl/syntax/itag_applier.py` | 17 | 0 | 100%|
 | `scarajectory/infrastructure/gui/dsl/syntax/itokenizer.py` | 15 | 0 | 100%|
 | `scarajectory/infrastructure/gui/dsl/syntax/tag_applier.py` | 24 | 0 | 100%|
-| `scarajectory/infrastructure/gui/dsl/syntax/tag_applier_factory.py` | 17 | 1 | 94%|
+| `scarajectory/infrastructure/gui/dsl/syntax/tag_applier_factory.py` | 17 | 0 | 100%|
 | `scarajectory/infrastructure/gui/dsl/syntax/token.py` | 15 | 0 | 100%|
 | `scarajectory/infrastructure/gui/dsl/syntax/tokenizer.py` | 42 | 0 | 100%|
 | `scarajectory/infrastructure/gui/dsl/syntax/tokenizer_factory.py` | 17 | 0 | 100%|
-| `scarajectory/infrastructure/gui/dsl/toolbar.py` | 50 | 2 | 96%|
+| `scarajectory/infrastructure/gui/dsl/toolbar.py` | 56 | 0 | 100%|
 | `scarajectory/infrastructure/gui/editor/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/gui/editor/table/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/gui/editor/table/bundle.py` | 20 | 0 | 100%|
 | `scarajectory/infrastructure/gui/editor/table/itable.py` | 14 | 0 | 100%|
-| `scarajectory/infrastructure/gui/editor/table/selection_handler.py` | 28 | 3 | 89%|
-| `scarajectory/infrastructure/gui/editor/table/selection_handler_factory.py` | 17 | 1 | 94%|
-| `scarajectory/infrastructure/gui/editor/table/trajectory_table.py` | 87 | 2 | 98%|
+| `scarajectory/infrastructure/gui/editor/table/selection_handler.py` | 28 | 0 | 100%|
+| `scarajectory/infrastructure/gui/editor/table/selection_handler_factory.py` | 17 | 0 | 100%|
+| `scarajectory/infrastructure/gui/editor/table/trajectory_table.py` | 87 | 0 | 100%|
 | `scarajectory/infrastructure/gui/editor/waypoint_coordinate_inputs.py` | 17 | 0 | 100%|
-| `scarajectory/infrastructure/gui/editor/waypoint_edit_applier.py` | 30 | 1 | 97%|
+| `scarajectory/infrastructure/gui/editor/waypoint_edit_applier.py` | 30 | 0 | 100%|
 | `scarajectory/infrastructure/gui/editor/waypoint_edit_applier_factory.py` | 17 | 0 | 100%|
 | `scarajectory/infrastructure/gui/editor/waypoint_editor.py` | 68 | 0 | 100%|
 | `scarajectory/infrastructure/gui/emulator/__init__.py` | 9 | 0 | 100%|
@@ -1413,6 +1429,7 @@ All communication between **scarajectory**, the physical **`scara_base`** firmwa
 | `scarajectory/infrastructure/gui/layout/toolbar_layout_builder_factory.py` | 18 | 0 | 100%|
 | `scarajectory/infrastructure/gui/manipulator/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/gui/manipulator/imanipulator_action_delegate.py` | 16 | 0 | 100%|
+| `scarajectory/infrastructure/gui/manipulator/imanipulator_override_panel.py` | 14 | 0 | 100%|
 | `scarajectory/infrastructure/gui/manipulator/jog/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/gui/manipulator/jog/axis_grid_panel.py` | 46 | 0 | 100%|
 | `scarajectory/infrastructure/gui/manipulator/jog/axis_grid_panel_factory.py` | 20 | 0 | 100%|
@@ -1430,23 +1447,23 @@ All communication between **scarajectory**, the physical **`scara_base`** firmwa
 | `scarajectory/infrastructure/gui/manipulator/null_manipulator_action_delegate.py` | 14 | 0 | 100%|
 | `scarajectory/infrastructure/gui/menu/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/gui/menu/app_menu_bar.py` | 77 | 0 | 100%|
-| `scarajectory/infrastructure/gui/menu/app_menu_bar_factory.py` | 26 | 1 | 96%|
+| `scarajectory/infrastructure/gui/menu/app_menu_bar_factory.py` | 26 | 0 | 100%|
 | `scarajectory/infrastructure/gui/menu/builders_bundle.py` | 16 | 0 | 100%|
 | `scarajectory/infrastructure/gui/menu/bundle.py` | 26 | 0 | 100%|
 | `scarajectory/infrastructure/gui/menu/iapp_menu_bar.py` | 16 | 0 | 100%|
 | `scarajectory/infrastructure/gui/menu/menu_hotkey_binder.py` | 23 | 0 | 100%|
-| `scarajectory/infrastructure/gui/menu/menu_hotkey_binder_factory.py` | 17 | 1 | 94%|
+| `scarajectory/infrastructure/gui/menu/menu_hotkey_binder_factory.py` | 17 | 0 | 100%|
 | `scarajectory/infrastructure/gui/menu/menu_layout_builder.py` | 40 | 0 | 100%|
-| `scarajectory/infrastructure/gui/menu/menu_layout_builder_factory.py` | 17 | 1 | 94%|
+| `scarajectory/infrastructure/gui/menu/menu_layout_builder_factory.py` | 17 | 0 | 100%|
 | `scarajectory/infrastructure/gui/model/__init__.py` | 9 | 0 | 100%|
-| `scarajectory/infrastructure/gui/model/canvas_interaction_state.py` | 26 | 0 | 100%|
+| `scarajectory/infrastructure/gui/model/canvas_interaction_state.py` | 28 | 0 | 100%|
 | `scarajectory/infrastructure/gui/model/canvas_settings.py` | 15 | 0 | 100%|
 | `scarajectory/infrastructure/gui/model/canvas_tool_mode.py` | 17 | 0 | 100%|
 | `scarajectory/infrastructure/gui/model/viewport_transform.py` | 47 | 0 | 100%|
 | `scarajectory/infrastructure/gui/preview/__init__.py` | 9 | 0 | 100%|
-| `scarajectory/infrastructure/gui/preview/preview_tab.py` | 33 | 0 | 100%|
+| `scarajectory/infrastructure/gui/preview/preview_tab.py` | 37 | 0 | 100%|
 | `scarajectory/infrastructure/gui/preview/preview_tab_factory.py` | 21 | 0 | 100%|
-| `scarajectory/infrastructure/gui/scarajectory_gui.py` | 65 | 2 | 97%|
+| `scarajectory/infrastructure/gui/scarajectory_gui.py` | 65 | 0 | 100%|
 | `scarajectory/infrastructure/gui/scarajectory_gui_bundle.py` | 27 | 0 | 100%|
 | `scarajectory/infrastructure/gui/scarajectory_gui_factory.py` | 57 | 0 | 100%|
 | `scarajectory/infrastructure/gui/scarajectory_gui_init_bundle.py` | 28 | 0 | 100%|
@@ -1464,25 +1481,26 @@ All communication between **scarajectory**, the physical **`scara_base`** firmwa
 | `scarajectory/infrastructure/gui/streaming/observer/igui_stream_observer_bridge.py` | 15 | 0 | 100%|
 | `scarajectory/infrastructure/gui/streaming/panel/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/gui/streaming/panel/istream_control_delegate.py` | 15 | 0 | 100%|
+| `scarajectory/infrastructure/gui/streaming/panel/istream_status_bar.py` | 15 | 0 | 100%|
 | `scarajectory/infrastructure/gui/streaming/panel/stream_control_panel.py` | 21 | 0 | 100%|
 | `scarajectory/infrastructure/gui/streaming/panel/stream_progress_adapter.py` | 35 | 0 | 100%|
 | `scarajectory/infrastructure/gui/streaming/panel/stream_status_bar.py` | 30 | 0 | 100%|
 | `scarajectory/infrastructure/gui/streaming/streamer_action_bundle.py` | 16 | 0 | 100%|
 | `scarajectory/infrastructure/gui/streaming/streamer_controllers_bundle.py` | 18 | 0 | 100%|
-| `scarajectory/infrastructure/gui/streaming/streamer_tab.py` | 70 | 0 | 100%|
+| `scarajectory/infrastructure/gui/streaming/streamer_tab.py` | 61 | 0 | 100%|
 | `scarajectory/infrastructure/gui/streaming/streamer_tab_factory.py` | 31 | 0 | 100%|
 | `scarajectory/infrastructure/gui/theme/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/gui/theme/theme_button_styler.py` | 23 | 0 | 100%|
-| `scarajectory/infrastructure/gui/theme/theme_button_styler_factory.py` | 17 | 1 | 94%|
+| `scarajectory/infrastructure/gui/theme/theme_button_styler_factory.py` | 17 | 0 | 100%|
 | `scarajectory/infrastructure/gui/theme/theme_manager.py` | 43 | 0 | 100%|
 | `scarajectory/infrastructure/gui/theme/theme_notebook_styler.py` | 16 | 0 | 100%|
-| `scarajectory/infrastructure/gui/theme/theme_notebook_styler_factory.py` | 17 | 1 | 94%|
+| `scarajectory/infrastructure/gui/theme/theme_notebook_styler_factory.py` | 17 | 0 | 100%|
 | `scarajectory/infrastructure/gui/toolbar/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/gui/toolbar/bundle.py` | 24 | 0 | 100%|
 | `scarajectory/infrastructure/gui/toolbar/itoolbar.py` | 15 | 0 | 100%|
 | `scarajectory/infrastructure/gui/toolbar/navigation_controls.py` | 32 | 0 | 100%|
 | `scarajectory/infrastructure/gui/toolbar/navigation_controls_factory.py` | 20 | 0 | 100%|
-| `scarajectory/infrastructure/gui/toolbar/parameter_inputs.py` | 56 | 1 | 98%|
+| `scarajectory/infrastructure/gui/toolbar/parameter_inputs.py` | 56 | 0 | 100%|
 | `scarajectory/infrastructure/gui/toolbar/parameter_inputs_bundle.py` | 20 | 0 | 100%|
 | `scarajectory/infrastructure/gui/toolbar/parameter_inputs_factory.py` | 19 | 0 | 100%|
 | `scarajectory/infrastructure/gui/toolbar/tool_selector.py` | 33 | 0 | 100%|
@@ -1490,15 +1508,15 @@ All communication between **scarajectory**, the physical **`scara_base`** firmwa
 | `scarajectory/infrastructure/gui/toolbar/toolbar.py` | 33 | 0 | 100%|
 | `scarajectory/infrastructure/gui/toolbar/toolbar_factory.py` | 29 | 0 | 100%|
 | `scarajectory/infrastructure/gui/validation/__init__.py` | 9 | 0 | 100%|
-| `scarajectory/infrastructure/gui/validation/validation_tab.py` | 35 | 0 | 100%|
+| `scarajectory/infrastructure/gui/validation/validation_tab.py` | 48 | 0 | 100%|
 | `scarajectory/infrastructure/gui/validation/validation_tab_factory.py` | 20 | 0 | 100%|
 | `scarajectory/infrastructure/manipulator/__init__.py` | 9 | 0 | 100%|
-| `scarajectory/infrastructure/manipulator/jog_controller.py` | 41 | 1 | 98%|
-| `scarajectory/infrastructure/manipulator/jog_controller_factory.py` | 23 | 1 | 96%|
+| `scarajectory/infrastructure/manipulator/jog_controller.py` | 41 | 0 | 100%|
+| `scarajectory/infrastructure/manipulator/jog_controller_factory.py` | 23 | 0 | 100%|
 | `scarajectory/infrastructure/manipulator/motion_controller.py` | 46 | 0 | 100%|
-| `scarajectory/infrastructure/manipulator/motion_controller_factory.py` | 23 | 1 | 96%|
-| `scarajectory/infrastructure/manipulator/query_controller.py` | 36 | 1 | 97%|
-| `scarajectory/infrastructure/manipulator/query_controller_factory.py` | 23 | 1 | 96%|
+| `scarajectory/infrastructure/manipulator/motion_controller_factory.py` | 23 | 0 | 100%|
+| `scarajectory/infrastructure/manipulator/query_controller.py` | 36 | 0 | 100%|
+| `scarajectory/infrastructure/manipulator/query_controller_factory.py` | 23 | 0 | 100%|
 | `scarajectory/infrastructure/pacing/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/pacing/bundle.py` | 16 | 0 | 100%|
 | `scarajectory/infrastructure/pacing/flow_barrier_coordinator.py` | 23 | 0 | 100%|
@@ -1506,46 +1524,66 @@ All communication between **scarajectory**, the physical **`scara_base`** firmwa
 | `scarajectory/infrastructure/pacing/flow_pacing_bundle_factory.py` | 26 | 0 | 100%|
 | `scarajectory/infrastructure/pacing/flow_pacing_controller.py` | 77 | 0 | 100%|
 | `scarajectory/infrastructure/pacing/flow_pacing_controller_factory.py` | 30 | 0 | 100%|
+| `scarajectory/infrastructure/pacing/iflow_barrier_coordinator.py` | 16 | 0 | 100%|
+| `scarajectory/infrastructure/pacing/iflow_pacing_controller.py` | 18 | 0 | 100%|
 | `scarajectory/infrastructure/packet/__init__.py` | 9 | 0 | 100%|
-| `scarajectory/infrastructure/packet/binary_packet_strategy.py` | 45 | 0 | 100%|
-| `scarajectory/infrastructure/packet/binary_packet_strategy_factory.py` | 28 | 0 | 100%|
+| `scarajectory/infrastructure/packet/binary_packet_strategy.py` | 32 | 0 | 100%|
+| `scarajectory/infrastructure/packet/binary_packet_strategy_factory.py` | 32 | 0 | 100%|
+| `scarajectory/infrastructure/packet/ipacket_strategy.py` | 14 | 0 | 100%|
 | `scarajectory/infrastructure/preferences/__init__.py` | 9 | 0 | 100%|
-| `scarajectory/infrastructure/preferences/connection_repository.py` | 57 | 0 | 100%|
-| `scarajectory/infrastructure/preferences/connection_repository_factory.py` | 22 | 0 | 100%|
+| `scarajectory/infrastructure/preferences/connection_repository.py` | 53 | 0 | 100%|
+| `scarajectory/infrastructure/preferences/connection_repository_factory.py` | 28 | 0 | 100%|
 | `scarajectory/infrastructure/settings/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/settings/bounds/__init__.py` | 9 | 0 | 100%|
-| `scarajectory/infrastructure/settings/bounds/scara_bounds_loader.py` | 35 | 1 | 97%|
-| `scarajectory/infrastructure/settings/bounds/scara_bounds_loader_factory.py` | 29 | 0 | 100%|
-| `scarajectory/infrastructure/settings/bounds/scara_bounds_parser.py` | 19 | 0 | 100%|
+| `scarajectory/infrastructure/settings/bounds/iscara_bounds_loader.py` | 16 | 0 | 100%|
+| `scarajectory/infrastructure/settings/bounds/iscara_bounds_parser.py` | 17 | 0 | 100%|
+| `scarajectory/infrastructure/settings/bounds/scara_bounds_loader.py` | 37 | 0 | 100%|
+| `scarajectory/infrastructure/settings/bounds/scara_bounds_loader_factory.py` | 27 | 0 | 100%|
+| `scarajectory/infrastructure/settings/bounds/scara_bounds_parser.py` | 24 | 0 | 100%|
 | `scarajectory/infrastructure/settings/bounds/scara_bounds_parser_factory.py` | 18 | 0 | 100%|
 | `scarajectory/infrastructure/settings/isettings_reader.py` | 14 | 0 | 100%|
-| `scarajectory/infrastructure/settings/settings_reader.py` | 46 | 1 | 98%|
-| `scarajectory/infrastructure/settings/settings_reader_factory.py` | 25 | 0 | 100%|
+| `scarajectory/infrastructure/settings/settings_reader.py` | 37 | 0 | 100%|
+| `scarajectory/infrastructure/settings/settings_reader_factory.py` | 31 | 0 | 100%|
 | `scarajectory/infrastructure/settings/stream/__init__.py` | 9 | 0 | 100%|
+| `scarajectory/infrastructure/settings/stream/istream_config_loader.py` | 16 | 0 | 100%|
 | `scarajectory/infrastructure/settings/stream/stream_config_loader.py` | 27 | 0 | 100%|
 | `scarajectory/infrastructure/settings/stream/stream_config_loader_factory.py` | 22 | 0 | 100%|
 | `scarajectory/infrastructure/settings/transmission/__init__.py` | 9 | 0 | 100%|
+| `scarajectory/infrastructure/settings/transmission/iscara_transmission_loader.py` | 16 | 0 | 100%|
 | `scarajectory/infrastructure/settings/transmission/scara_transmission_loader.py` | 21 | 0 | 100%|
 | `scarajectory/infrastructure/settings/transmission/scara_transmission_loader_factory.py` | 22 | 0 | 100%|
 | `scarajectory/infrastructure/state/__init__.py` | 9 | 0 | 100%|
+| `scarajectory/infrastructure/state/istream_state_controller.py` | 16 | 0 | 100%|
+| `scarajectory/infrastructure/state/istream_state_machine.py` | 18 | 0 | 100%|
 | `scarajectory/infrastructure/state/stream_state_machine.py` | 28 | 0 | 100%|
 | `scarajectory/infrastructure/state/stream_state_machine_factory.py` | 18 | 0 | 100%|
 | `scarajectory/infrastructure/storage/__init__.py` | 9 | 0 | 100%|
-| `scarajectory/infrastructure/storage/plan_loader.py` | 37 | 0 | 100%|
-| `scarajectory/infrastructure/storage/plan_storage_service.py` | 33 | 0 | 100%|
-| `scarajectory/infrastructure/storage/plan_storage_service_factory.py` | 26 | 0 | 100%|
-| `scarajectory/infrastructure/storage/plan_storer.py` | 40 | 0 | 100%|
+| `scarajectory/infrastructure/storage/config_io/__init__.py` | 9 | 0 | 100%|
+| `scarajectory/infrastructure/storage/config_io/config_io_factory.py` | 42 | 0 | 100%|
+| `scarajectory/infrastructure/storage/config_io/iconfig_io_factory.py` | 17 | 0 | 100%|
+| `scarajectory/infrastructure/storage/config_io/iconfig_loader.py` | 15 | 0 | 100%|
+| `scarajectory/infrastructure/storage/config_io/iconfig_storer.py` | 15 | 0 | 100%|
+| `scarajectory/infrastructure/storage/plan_loader.py` | 34 | 0 | 100%|
+| `scarajectory/infrastructure/storage/plan_storage_service.py` | 32 | 0 | 100%|
+| `scarajectory/infrastructure/storage/plan_storage_service_factory.py` | 32 | 0 | 100%|
+| `scarajectory/infrastructure/storage/plan_storer.py` | 36 | 0 | 100%|
 | `scarajectory/infrastructure/storage/trajectory_serializer.py` | 39 | 0 | 100%|
+| `scarajectory/infrastructure/storage/workspace/__init__.py` | 9 | 0 | 100%|
+| `scarajectory/infrastructure/storage/workspace/iworkspace_service.py` | 16 | 0 | 100%|
+| `scarajectory/infrastructure/storage/workspace/workspace_constants.py` | 17 | 0 | 100%|
+| `scarajectory/infrastructure/storage/workspace/workspace_service.py` | 49 | 0 | 100%|
+| `scarajectory/infrastructure/storage/workspace/workspace_service_factory.py` | 21 | 0 | 100%|
 | `scarajectory/infrastructure/streaming/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/streaming/assembly/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/streaming/assembly/stream_pacing_assembler.py` | 21 | 0 | 100%|
-| `scarajectory/infrastructure/streaming/assembly/stream_pipeline_assembler.py` | 52 | 1 | 98%|
+| `scarajectory/infrastructure/streaming/assembly/stream_pipeline_assembler.py` | 52 | 0 | 100%|
 | `scarajectory/infrastructure/streaming/assembly/stream_transport_assembler.py` | 24 | 0 | 100%|
-| `scarajectory/infrastructure/streaming/assembly/stream_worker_assembler.py` | 57 | 0 | 100%|
+| `scarajectory/infrastructure/streaming/assembly/stream_worker_assembler.py` | 59 | 0 | 100%|
 | `scarajectory/infrastructure/streaming/assembly/worker_bundle.py` | 20 | 0 | 100%|
 | `scarajectory/infrastructure/streaming/binary_program_streamer.py` | 50 | 0 | 100%|
 | `scarajectory/infrastructure/streaming/binary_program_streamer_factory.py` | 21 | 0 | 100%|
 | `scarajectory/infrastructure/streaming/bundle.py` | 22 | 0 | 100%|
+| `scarajectory/infrastructure/streaming/ibinary_program_streamer.py` | 14 | 0 | 100%|
 | `scarajectory/infrastructure/streaming/observer/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/streaming/observer/istream_observer_registry.py` | 17 | 0 | 100%|
 | `scarajectory/infrastructure/streaming/observer/istream_telemetry_notifier.py` | 16 | 0 | 100%|
@@ -1564,9 +1602,6 @@ All communication between **scarajectory**, the physical **`scara_base`** firmwa
 | `scarajectory/infrastructure/tool/tool_controller_factory.py` | 24 | 0 | 100%|
 | `scarajectory/infrastructure/tool/valve_pulse_worker.py` | 23 | 0 | 100%|
 | `scarajectory/infrastructure/tool/valve_pulse_worker_factory.py` | 18 | 0 | 100%|
-| `scarajectory/infrastructure/transmission/__init__.py` | 9 | 0 | 100%|
-| `scarajectory/infrastructure/transmission/transmission_step_calculator.py` | 24 | 0 | 100%|
-| `scarajectory/infrastructure/transmission/transmission_step_calculator_factory.py` | 18 | 1 | 94%|
 | `scarajectory/infrastructure/transport/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/transport/bundle.py` | 16 | 0 | 100%|
 | `scarajectory/infrastructure/transport/driver/__init__.py` | 9 | 0 | 100%|
@@ -1587,58 +1622,77 @@ All communication between **scarajectory**, the physical **`scara_base`** firmwa
 | `scarajectory/infrastructure/transport/listener/stream_binary_transport_listener.py` | 23 | 0 | 100%|
 | `scarajectory/infrastructure/transport/listener/stream_binary_transport_listener_factory.py` | 19 | 0 | 100%|
 | `scarajectory/infrastructure/transport/listener/transport_listener_holder.py` | 22 | 0 | 100%|
-| `scarajectory/infrastructure/transport/stream_transport_connection.py` | 61 | 1 | 98%|
+| `scarajectory/infrastructure/transport/stream_transport_connection.py` | 61 | 0 | 100%|
 | `scarajectory/infrastructure/transport/stream_transport_connection_factory.py` | 20 | 0 | 100%|
 | `scarajectory/infrastructure/transport/stream_transport_transceiver.py` | 54 | 0 | 100%|
 | `scarajectory/infrastructure/transport/stream_transport_transceiver_factory.py` | 20 | 0 | 100%|
-| `scarajectory/infrastructure/transport/transport_factory.py` | 35 | 1 | 97%|
+| `scarajectory/infrastructure/transport/transport_factory.py` | 35 | 0 | 100%|
 | `scarajectory/infrastructure/transport/worker/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/infrastructure/transport/worker/itransport_reader_worker.py` | 14 | 0 | 100%|
 | `scarajectory/infrastructure/transport/worker/transport_reader_worker.py` | 54 | 0 | 100%|
 | `scarajectory/infrastructure/transport/worker/transport_reader_worker_factory.py` | 20 | 0 | 100%|
 | `scarajectory/infrastructure/worker/__init__.py` | 9 | 0 | 100%|
+| `scarajectory/infrastructure/worker/ascii/__init__.py` | 9 | 0 | 100%|
+| `scarajectory/infrastructure/worker/ascii/istream_loop_runner.py` | 16 | 0 | 100%|
+| `scarajectory/infrastructure/worker/ascii/istream_queue_drainer.py` | 16 | 0 | 100%|
+| `scarajectory/infrastructure/worker/ascii/istream_step_dispatcher.py` | 15 | 0 | 100%|
+| `scarajectory/infrastructure/worker/ascii/stream_execution_worker.py` | 42 | 0 | 100%|
+| `scarajectory/infrastructure/worker/ascii/stream_execution_worker_factory.py` | 34 | 0 | 100%|
+| `scarajectory/infrastructure/worker/ascii/stream_loop_runner.py` | 57 | 0 | 100%|
+| `scarajectory/infrastructure/worker/ascii/stream_loop_runner_factory.py` | 38 | 0 | 100%|
+| `scarajectory/infrastructure/worker/ascii/stream_queue_drainer.py` | 40 | 0 | 100%|
+| `scarajectory/infrastructure/worker/ascii/stream_queue_drainer_factory.py` | 20 | 0 | 100%|
+| `scarajectory/infrastructure/worker/ascii/stream_step_dispatcher.py` | 49 | 0 | 100%|
+| `scarajectory/infrastructure/worker/ascii/stream_step_dispatcher_factory.py` | 22 | 0 | 100%|
 | `scarajectory/infrastructure/worker/binary/__init__.py` | 9 | 0 | 100%|
-| `scarajectory/infrastructure/worker/binary/binary_stream_execution_worker.py` | 60 | 0 | 100%|
-| `scarajectory/infrastructure/worker/binary/binary_stream_execution_worker_factory.py` | 31 | 0 | 100%|
+| `scarajectory/infrastructure/worker/binary/binary_loop_runner_bundle.py` | 22 | 0 | 100%|
+| `scarajectory/infrastructure/worker/binary/binary_queue_drainer.py` | 37 | 0 | 100%|
+| `scarajectory/infrastructure/worker/binary/binary_queue_drainer_factory.py` | 20 | 0 | 100%|
+| `scarajectory/infrastructure/worker/binary/binary_step_bundle.py` | 22 | 0 | 100%|
+| `scarajectory/infrastructure/worker/binary/binary_step_dispatcher.py` | 32 | 0 | 100%|
+| `scarajectory/infrastructure/worker/binary/binary_step_dispatcher_factory.py` | 18 | 0 | 100%|
+| `scarajectory/infrastructure/worker/binary/binary_stream_execution_worker.py` | 40 | 0 | 100%|
+| `scarajectory/infrastructure/worker/binary/binary_stream_execution_worker_factory.py` | 30 | 0 | 100%|
 | `scarajectory/infrastructure/worker/binary/binary_stream_frame_handler.py` | 55 | 0 | 100%|
 | `scarajectory/infrastructure/worker/binary/binary_stream_frame_handler_factory.py` | 20 | 0 | 100%|
-| `scarajectory/infrastructure/worker/binary/binary_stream_loop_runner.py` | 98 | 2 | 98%|
-| `scarajectory/infrastructure/worker/binary/binary_stream_loop_runner_factory.py` | 32 | 0 | 100%|
+| `scarajectory/infrastructure/worker/binary/binary_stream_loop_runner.py` | 53 | 0 | 100%|
+| `scarajectory/infrastructure/worker/binary/binary_stream_loop_runner_factory.py` | 41 | 0 | 100%|
+| `scarajectory/infrastructure/worker/binary/binary_stream_runner_bundle.py` | 24 | 0 | 100%|
+| `scarajectory/infrastructure/worker/binary/ibinary_queue_drainer.py` | 16 | 0 | 100%|
+| `scarajectory/infrastructure/worker/binary/ibinary_step_dispatcher.py` | 17 | 0 | 100%|
 | `scarajectory/infrastructure/worker/binary/ibinary_stream_frame_handler.py` | 16 | 0 | 100%|
 | `scarajectory/infrastructure/worker/binary/ibinary_stream_loop_runner.py` | 18 | 0 | 100%|
-| `scarajectory/infrastructure/worker/istream_queue_drainer.py` | 16 | 0 | 100%|
-| `scarajectory/infrastructure/worker/istream_step_dispatcher.py` | 15 | 0 | 100%|
-| `scarajectory/infrastructure/worker/stream_execution_worker.py` | 52 | 0 | 100%|
-| `scarajectory/infrastructure/worker/stream_execution_worker_factory.py` | 30 | 3 | 90%|
-| `scarajectory/infrastructure/worker/stream_loop_runner.py` | 57 | 3 | 95%|
-| `scarajectory/infrastructure/worker/stream_loop_runner_factory.py` | 38 | 1 | 97%|
-| `scarajectory/infrastructure/worker/stream_queue_drainer.py` | 40 | 1 | 98%|
-| `scarajectory/infrastructure/worker/stream_queue_drainer_factory.py` | 20 | 1 | 95%|
-| `scarajectory/infrastructure/worker/stream_step_dispatcher.py` | 49 | 0 | 100%|
-| `scarajectory/infrastructure/worker/stream_step_dispatcher_factory.py` | 22 | 1 | 95%|
+| `scarajectory/infrastructure/worker/iexecution_service.py` | 16 | 0 | 100%|
+| `scarajectory/infrastructure/worker/iexecution_worker.py` | 18 | 0 | 100%|
+| `scarajectory/infrastructure/worker/thread/__init__.py` | 9 | 0 | 100%|
+| `scarajectory/infrastructure/worker/thread/iworker_thread_coordinator.py` | 16 | 0 | 100%|
+| `scarajectory/infrastructure/worker/thread/worker_thread_coordinator.py` | 44 | 0 | 100%|
+| `scarajectory/infrastructure/worker/thread/worker_thread_coordinator_factory.py` | 18 | 0 | 100%|
 | `scarajectory/setup/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/setup/assembly/__init__.py` | 9 | 0 | 100%|
 | `scarajectory/setup/assembly/app_core_assembler.py` | 33 | 0 | 100%|
-| `scarajectory/setup/assembly/app_core_bundle.py` | 20 | 0 | 100%|
+| `scarajectory/setup/assembly/app_core_bundle.py` | 19 | 0 | 100%|
 | `scarajectory/setup/assembly/app_presentation_assembler.py` | 40 | 0 | 100%|
 | `scarajectory/setup/assembly/app_runtime_assembler.py` | 33 | 0 | 100%|
 | `scarajectory/setup/assembly/app_runtime_bundle.py` | 24 | 0 | 100%|
-| `scarajectory/setup/bundle.py` | 25 | 1 | 96%|
-| `scarajectory/setup/dep_validator.py` | 36 | 5 | 86%|
+| `scarajectory/setup/bundle.py` | 25 | 0 | 100%|
+| `scarajectory/setup/dep_validator.py` | 36 | 0 | 100%|
 | `scarajectory/setup/dependencies.py` | 21 | 0 | 100%|
-| `scarajectory/setup/factory.py` | 72 | 4 | 94%|
+| `scarajectory/setup/factory.py` | 72 | 0 | 100%|
 | `scarajectory/setup/keys.py` | 37 | 0 | 100%|
-| `scarajectory/setup/opt_validator.py` | 36 | 5 | 86%|
+| `scarajectory/setup/opt_validator.py` | 36 | 0 | 100%|
 | `scarajectory/setup/options.py` | 20 | 0 | 100%|
 | `scarajectory/setup/pipeline/__init__.py` | 9 | 0 | 100%|
-| `scarajectory/setup/pipeline/dsl_pipeline_builder.py` | 29 | 0 | 100%|
+| `scarajectory/setup/pipeline/dsl_diagnostic_bundle.py` | 22 | 0 | 100%|
+| `scarajectory/setup/pipeline/dsl_pipeline_builder.py` | 50 | 0 | 100%|
+| `scarajectory/setup/pipeline/dsl_pipeline_bundle.py` | 24 | 0 | 100%|
 | `scarajectory/setup/pipeline/plan_pipeline_builder.py` | 35 | 0 | 100%|
 | `scarajectory/setup/pipeline/plan_pipeline_bundle.py` | 22 | 0 | 100%|
 | `scarajectory/setup/pipeline/stream_pipeline_builder.py` | 58 | 0 | 100%|
 | `scarajectory/setup/pipeline/stream_pipeline_bundle.py` | 22 | 0 | 100%|
-| `scarajectory/setup/registry.py` | 34 | 1 | 97%|
-| `scarajectory/setup/validator.py` | 53 | 5 | 91%|
-| **Total** | 13316 | 120 | 99% |
+| `scarajectory/setup/registry.py` | 34 | 0 | 100%|
+| `scarajectory/setup/validator.py` | 53 | 0 | 100%|
+| **Total** | 13818 | 0 | 100% |
 
 </details>
 
@@ -1702,7 +1756,7 @@ python3 main.py studio --file ./trajectories/rectangle_demo.json --dead-zone --v
 
 ###### Mode 1: One-Click Simulation from DSL Editor
 1. In **scarajectory**, open the **SCARA DSL Editor** tab.
-2. Write or load any `.scara` program (or select from bundled examples in `examples/`).
+2. Write or load any `.scara` program (or select from bundled examples in `~/.scarajectory/workspace/` via the **Examples** dropdown).
 3. Click the **🚀 Preview in SCARAEmu** button located at the bottom toolbar.
 4. **scarajectory** automatically launches **scaraemu** in a background subprocess, passing the active trajectory file via `--file`.
 5. The 2D Planar and 3D Z-Tower canvases immediately render the robot arm executing the trajectory.
@@ -1732,7 +1786,7 @@ python3 main.py studio --file ./trajectories/rectangle_demo.json --dead-zone --v
 
 ###### Mode 3: Direct File Loading in SCARAEmu
 * Open **scaraemu** and navigate to the **Trajectories** tab.
-* In the **SCARA DSL Script** dropdown, select any of the 12 bundled programs (e.g. `pick_and_place.scara`, `engrave_spiral.scara`, `pallet_matrix.scara`).
+* In the **SCARA DSL Script** dropdown, select any of the 12 bundled programs from the user workspace (e.g. `12_industrial_pick_place.scara`, `04_circular_arc.scara`, `09_pallet_matrix.scara`).
 * Or click **📂 Load** to load any custom `.scara` script or exported `plan.json` file.
 
 ### 📚 Docs

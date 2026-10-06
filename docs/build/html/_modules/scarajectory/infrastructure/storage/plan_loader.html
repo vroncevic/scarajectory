@@ -62,19 +62,16 @@
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span>
 
-<span class="kn">from</span> <span class="nn">ats_utilities.config_io.loader.engine</span> <span class="kn">import</span> <span class="n">Loader</span>
-<span class="kn">from</span> <span class="nn">ats_utilities.config_io.setup.factory</span> <span class="kn">import</span> <span class="n">ConfigIOBundleFactory</span>
-<span class="kn">from</span> <span class="nn">ats_utilities.config_io.setup.options</span> <span class="kn">import</span> <span class="n">ConfigIOBundleOptions</span>
-<span class="kn">from</span> <span class="nn">ats_utilities.context.bundle</span> <span class="kn">import</span> <span class="n">ContextBundle</span>
 <span class="kn">from</span> <span class="nn">scarajectory.core.model.trajectory.waypoint</span> <span class="kn">import</span> <span class="n">Waypoint</span>
-
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.storage.config_io.iconfig_io_factory</span> <span class="kn">import</span> <span class="n">IConfigIOFactory</span>
+<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.storage.config_io.iconfig_loader</span> <span class="kn">import</span> <span class="n">IConfigLoader</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.storage.trajectory_serializer</span> <span class="kn">import</span> <span class="n">TrajectorySerializer</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -89,33 +86,33 @@
 <span class="sd">        It defines:</span>
 
 <span class="sd">            :attributes:</span>
-<span class="sd">                | _context - The ContextBundle for ATS configuration I/O operations.</span>
+<span class="sd">                | _io_factory - Configuration I/O factory constructing loaders.</span>
 <span class="sd">            :methods:</span>
-<span class="sd">                | __init__ - Initializes the plan loader with context bundle.</span>
-<span class="sd">                | load_plan - Loads and deserializes waypoints from JSON file path using ATS Loader.</span>
+<span class="sd">                | __init__ - Initializes the plan loader with I/O factory.</span>
+<span class="sd">                | load_plan - Loads and deserializes waypoints from JSON file path.</span>
 <span class="sd">                | load_text_file - Reads string content from file path using UTF-8 encoding.</span>
 <span class="sd">                | load_binary_file - Reads binary file content from destination file path.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="n">_context</span><span class="p">:</span> <span class="n">ContextBundle</span>
+    <span class="n">_io_factory</span><span class="p">:</span> <span class="n">IConfigIOFactory</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">context_bundle</span><span class="p">:</span> <span class="n">ContextBundle</span><span class="p">,</span>
+        <span class="n">io_factory</span><span class="p">:</span> <span class="n">IConfigIOFactory</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Initializes the plan loader with injected context bundle.</span>
+<span class="sd">            Initializes the plan loader with injected configuration I/O factory.</span>
 
-<span class="sd">            :param context_bundle: ATS ContextBundle instance.</span>
+<span class="sd">            :param io_factory: IConfigIOFactory instance.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ContextBundle</span><span class="p">]</span> <span class="o">=</span> <span class="n">context_bundle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_io_factory</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IConfigIOFactory</span><span class="p">]</span> <span class="o">=</span> <span class="n">io_factory</span>
 
 <div class="viewcode-block" id="PlanLoader.load_plan">
 <a class="viewcode-back" href="../../../../scarajectory.infrastructure.storage.plan_loader.html#scarajectory.infrastructure.storage.plan_loader.PlanLoader.load_plan">[docs]</a>
     <span class="k">def</span> <span class="nf">load_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Waypoint</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">            Loads and deserializes waypoints from JSON file path using ATS Loader.</span>
+<span class="sd">            Loads and deserializes waypoints from JSON file path using configuration loader.</span>
 
 <span class="sd">            :param filepath: Source file path.</span>
 <span class="sd">            :return: List of loaded Waypoint instances.</span>
@@ -125,13 +122,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">target_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
             <span class="k">return</span> <span class="p">[]</span>
 
-        <span class="n">bundle</span> <span class="o">=</span> <span class="n">ConfigIOBundleFactory</span><span class="o">.</span><span class="n">create_bundle</span><span class="p">(</span>
-            <span class="n">ConfigIOBundleOptions</span><span class="p">(</span>
-                <span class="n">file_path</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">target_path</span><span class="p">),</span>
-                <span class="n">context_bundle</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
-        <span class="n">loader</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span><span class="n">bundle</span><span class="p">)</span>
+        <span class="n">loader</span><span class="p">:</span> <span class="n">IConfigLoader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_io_factory</span><span class="o">.</span><span class="n">create_loader</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">target_path</span><span class="p">))</span>
         <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_configuration</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">TrajectorySerializer</span><span class="o">.</span><span class="n">deserialize_from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>

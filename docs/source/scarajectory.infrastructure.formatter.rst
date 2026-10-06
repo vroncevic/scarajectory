@@ -18,6 +18,7 @@ Submodules
    scarajectory.infrastructure.formatter.command_formatter
    scarajectory.infrastructure.formatter.command_formatter_factory
    scarajectory.infrastructure.formatter.command_templates
+   scarajectory.infrastructure.formatter.icommand_formatter
 
 Module contents
 ---------------

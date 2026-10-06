@@ -27,7 +27,7 @@ from unittest.mock import MagicMock
 
 from scaralang.core.service.trajectory.validation.itrajectory_validator import ITrajectoryValidator
 from scarajectory.core.model.preferences.connection_preference import ConnectionPreference
-from scarajectory.core.service.connection.istream_connection import IStreamConnection
+from scarajectory.infrastructure.connection.istream_connection import IStreamConnection
 from scarajectory.core.service.manipulator.ijog_controller import IJogController
 from scarajectory.core.service.manipulator.imotion_controller import IMotionController
 from scarajectory.core.service.preferences.iconnection_repository import IConnectionRepository
@@ -43,7 +43,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -92,7 +92,7 @@ class StreamerTabFactoryTestCase(TestCase):
         '''
             Tests factory version string.
         '''
-        self.assertEqual(StreamerTabFactory.get_version(), '1.0.4')
+        self.assertEqual(StreamerTabFactory.get_version(), '1.0.3')
 
     def test_create_streamer_tab(self) -> None:
         '''

@@ -25,13 +25,13 @@ from re import IGNORECASE, Pattern, compile as re_compile
 from typing import ClassVar, Final
 
 from scarajectory.core.model.protocol.scara_response import ScaraResponse
-from scarajectory.infrastructure.classifier.response_classification_registry import ResponseClassificationRegistry
+from scarajectory.infrastructure.classifier.iresponse_classification_registry import IResponseClassificationRegistry
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -53,16 +53,16 @@ class ResponseParser:
     '''
 
     _QUEUE_REGEX: ClassVar[Pattern[str]] = re_compile(r'QUEUE=(\d+)', IGNORECASE)
-    _registry: ResponseClassificationRegistry
+    _registry: IResponseClassificationRegistry
 
-    def __init__(self, registry: ResponseClassificationRegistry) -> None:
+    def __init__(self, registry: IResponseClassificationRegistry) -> None:
         '''
             Initializes ResponseParser with classification registry.
 
-            :param registry: ResponseClassificationRegistry instance.
+            :param registry: IResponseClassificationRegistry instance.
             :exceptions: None.
         '''
-        self._registry: Final[ResponseClassificationRegistry] = registry
+        self._registry: Final[IResponseClassificationRegistry] = registry
 
     def parse_response(self, line: str) -> ScaraResponse:
         '''

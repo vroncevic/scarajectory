@@ -9,6 +9,8 @@ Submodules
 
    scarajectory.infrastructure.event.binary_frame_dispatcher
    scarajectory.infrastructure.event.binary_frame_dispatcher_factory
+   scarajectory.infrastructure.event.ibinary_frame_dispatcher
+   scarajectory.infrastructure.event.ibinary_frame_handler
 
 Module contents
 ---------------

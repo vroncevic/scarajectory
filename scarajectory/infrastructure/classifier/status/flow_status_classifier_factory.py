@@ -21,7 +21,7 @@ Info
 
 from __future__ import annotations
 
-from scarajectory.core.service.classifier.iresponse_parser import IResponseParser
+from scarajectory.infrastructure.classifier.iresponse_parser import IResponseParser
 from scarajectory.infrastructure.classifier.response_parser_factory import ResponseParserFactory
 from scarajectory.infrastructure.classifier.status.flow_status_classifier import FlowStatusClassifier
 
@@ -29,7 +29,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'

@@ -38,7 +38,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -106,6 +106,33 @@ class StreamerTab(Frame):
         self._override_panel = ManipulatorOverridePanel(self)
         self._override_panel.pack(fill=X, pady=2)
 
+    @property
+    def progress_adapter(self) -> StreamProgressAdapter:
+        '''
+            Returns active stream progress adapter.
+
+            :return: StreamProgressAdapter instance.
+        '''
+        return self._progress_adapter
+
+    @property
+    def port_panel(self) -> PortConnectionPanel:
+        '''
+            Returns serial port connection panel.
+
+            :return: PortConnectionPanel instance.
+        '''
+        return self._port_panel
+
+    @property
+    def override_panel(self) -> ManipulatorOverridePanel:
+        '''
+            Returns manipulator override controls panel.
+
+            :return: ManipulatorOverridePanel instance.
+        '''
+        return self._override_panel
+
     def mount_actions(
         self,
         actions: StreamerActionBundle,
@@ -128,66 +155,6 @@ class StreamerTab(Frame):
 
         self._console = SerialConsole(self)
         self._console.pack(fill=BOTH, expand=True, pady=2)
-
-    @property
-    def port_panel(self) -> PortConnectionPanel:
-        '''
-            Returns port connection panel.
-
-            :return: PortConnectionPanel instance.
-            :exceptions: None.
-        '''
-        return self._port_panel
-
-    @property
-    def status_bar(self) -> StreamStatusBar:
-        '''
-            Returns stream status bar.
-
-            :return: StreamStatusBar instance.
-            :exceptions: None.
-        '''
-        return self._status_bar
-
-    @property
-    def progress_adapter(self) -> StreamProgressAdapter:
-        '''
-            Returns stream progress adapter.
-
-            :return: StreamProgressAdapter instance.
-            :exceptions: None.
-        '''
-        return self._progress_adapter
-
-    @property
-    def override_panel(self) -> ManipulatorOverridePanel:
-        '''
-            Returns manipulator override panel.
-
-            :return: ManipulatorOverridePanel instance.
-            :exceptions: None.
-        '''
-        return self._override_panel
-
-    @property
-    def actions(self) -> StreamerActionBundle:
-        '''
-            Returns mounted action handlers bundle.
-
-            :return: StreamerActionBundle instance.
-            :exceptions: None.
-        '''
-        return self._actions
-
-    @property
-    def console(self) -> SerialConsole:
-        '''
-            Returns serial terminal console component.
-
-            :return: SerialConsole instance.
-            :exceptions: None.
-        '''
-        return self._console
 
     def refresh_ports(self) -> None:
         '''

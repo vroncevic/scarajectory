@@ -24,24 +24,16 @@ from __future__ import annotations
 from unittest import TestCase, main
 from unittest.mock import MagicMock
 
-from scarajectory.infrastructure.connection.stream_raw_transceiver import (
-    StreamRawTransceiver,
-)
-from scarajectory.infrastructure.connection.stream_raw_transceiver_factory import (
-    StreamRawTransceiverFactory,
-)
-from scarajectory.infrastructure.transport.istream_transport_connection import (
-    IStreamTransportConnection,
-)
-from scarajectory.infrastructure.transport.istream_transport_transceiver import (
-    IStreamTransportTransceiver,
-)
+from scarajectory.infrastructure.connection.stream_raw_transceiver import StreamRawTransceiver
+from scarajectory.infrastructure.connection.stream_raw_transceiver_factory import StreamRawTransceiverFactory
+from scarajectory.infrastructure.transport.istream_transport_connection import IStreamTransportConnection
+from scarajectory.infrastructure.transport.istream_transport_transceiver import IStreamTransportTransceiver
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -61,7 +53,7 @@ class StreamRawTransceiverFactoryTestCase(TestCase):
     def test_factory_version_and_structure(self) -> None:
         '''Verifies factory version string and create callable.'''
         self.assertEqual(
-            StreamRawTransceiverFactory.get_version(), '1.0.4'
+            StreamRawTransceiverFactory.get_version(), '1.0.3'
         )
         self.assertTrue(hasattr(StreamRawTransceiverFactory, 'create'))
         self.assertTrue(callable(StreamRawTransceiverFactory.create))

@@ -32,7 +32,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -94,6 +94,11 @@ class PreviewTab(Frame):
 
             :exceptions: None.
         '''
-        scara_prog: str = self._exporter.export_plan(plan=self._plan)
-        self._txt_preview.delete('1.0', END)
-        self._txt_preview.insert(END, scara_prog)
+        try:
+            scara_prog: str = self._exporter.export_plan(plan=self._plan)
+            self._txt_preview.delete('1.0', END)
+            self._txt_preview.insert(END, scara_prog)
+
+        except Exception as exc:
+            self._txt_preview.delete('1.0', END)
+            self._txt_preview.insert(END, f'// [ERROR] Plan export failed: {exc}\n')

@@ -26,18 +26,16 @@ from unittest import TestCase, main
 from scarajectory.core.model.telemetry.move_event import MoveEvent
 from scarajectory.core.model.telemetry.fault_event import FaultEvent
 from scarajectory.core.model.telemetry.diagnostics_bundle import DiagnosticsBundle
-from scarajectory.core.model.telemetry.diagnostics_snapshot import DiagnosticsSnapshot
 from scarajectory.core.model.protocol.protocol_mode import ProtocolMode
 from scarajectory.core.service.telemetry.move_event_factory import MoveEventFactory
 from scarajectory.core.service.telemetry.fault_event_factory import FaultEventFactory
-from scarajectory.core.service.telemetry.diagnostics_snapshot_factory import DiagnosticsSnapshotFactory
 
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -63,8 +61,7 @@ class TestCommunicationEvents(TestCase):
         self.assertEqual(evt.fault_code, 5)
         self.assertEqual(evt.extra_info, 100)
 
-    def test_diagnostics_snapshot_factory(self) -> None:
-        self.assertTrue(issubclass(DiagnosticsSnapshotFactory, object))
+    def test_diagnostics_bundle(self) -> None:
         bundle = DiagnosticsBundle(
             rx_frames_total=10,
             tx_frames_total=12,
@@ -85,10 +82,8 @@ class TestCommunicationEvents(TestCase):
             uptime_ms=3600000,
         )
         self.assertIsInstance(bundle, DiagnosticsBundle)
-        diag: DiagnosticsSnapshot = DiagnosticsSnapshotFactory.create(bundle=bundle)
-        self.assertIsInstance(diag, DiagnosticsSnapshot)
-        self.assertEqual(diag.uptime_ms, 3600000)
-        self.assertEqual(diag.queue_high_watermark, 3)
+        self.assertEqual(bundle.uptime_ms, 3600000)
+        self.assertEqual(bundle.queue_high_watermark, 3)
 
     def test_protocol_mode_enum(self) -> None:
         self.assertEqual(ProtocolMode.ASCII.value, 'ascii')

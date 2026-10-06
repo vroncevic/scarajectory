@@ -23,21 +23,15 @@ from __future__ import annotations
 
 from unittest import TestCase, main
 
-from scarajectory.core.service.classifier.ihoming_status_classifier import (
-    IHomingStatusClassifier,
-)
-from scarajectory.infrastructure.classifier.status.homing_status_classifier import (
-    HomingStatusClassifier,
-)
-from scarajectory.infrastructure.classifier.status.homing_status_classifier_factory import (
-    HomingStatusClassifierFactory,
-)
+from scarajectory.infrastructure.classifier.status.ihoming_status_classifier import IHomingStatusClassifier
+from scarajectory.infrastructure.classifier.status.homing_status_classifier import HomingStatusClassifier
+from scarajectory.infrastructure.classifier.status.homing_status_classifier_factory import HomingStatusClassifierFactory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -65,7 +59,7 @@ class HomingStatusClassifierTestCase(TestCase):
         classifier = HomingStatusClassifierFactory.create()
         self.assertIsInstance(classifier, HomingStatusClassifier)
         self.assertIsInstance(classifier, IHomingStatusClassifier)
-        self.assertEqual(HomingStatusClassifierFactory.get_version(), '1.0.4')
+        self.assertEqual(HomingStatusClassifierFactory.get_version(), '1.0.3')
 
     def test_is_homed_success(self) -> None:
         '''

@@ -27,6 +27,7 @@ from typing import ClassVar, Final
 from scaralang.core.model.kinematics.point_2d import Point2D
 from scaralang.core.model.trajectory.circle_geometry import CircleGeometry
 from scaralang.core.service.trajectory.discretization.ishape_discretizer import IShapeDiscretizer
+
 from scarajectory.core.model.trajectory.waypoint import Waypoint
 from scarajectory.core.service.trajectory.plan.itrajectory_mutable import ITrajectoryMutable
 from scarajectory.infrastructure.gui.model.canvas_settings import CanvasSettings
@@ -36,7 +37,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -56,10 +57,8 @@ class CanvasShapeHandler:
             :methods:
                 | __init__ - Initializes handler with injected plan and discretizer.
                 | create_waypoint_at - Builds a Waypoint at given world coordinates.
+                | create_relocated_waypoint - Builds updated Waypoint with relocated coordinates.
                 | commit_point - Commits a single waypoint to the trajectory plan.
-                | commit_line - Discretizes and commits straight line segment to plan.
-                | commit_circle - Discretizes and commits circular trajectory to plan.
-                | commit_rectangle - Discretizes and commits rectangular perimeter to plan.
                 | commit_shape - Dispatches shape commitment based on active tool mode.
     '''
 
@@ -109,6 +108,31 @@ class CanvasShapeHandler:
             command='',
         )
 
+    def create_relocated_waypoint(
+        self,
+        current: Waypoint,
+        wx: float,
+        wy: float,
+    ) -> Waypoint:
+        '''
+            Builds updated Waypoint with relocated coordinates and preserved properties.
+
+            :param current: Current Waypoint instance.
+            :param wx: New world X coordinate.
+            :param wy: New world Y coordinate.
+            :return: Updated Waypoint object.
+            :exceptions: None.
+        '''
+        return Waypoint(
+            x=wx,
+            y=wy,
+            z=current.z,
+            phi=current.phi,
+            speed=current.speed,
+            name=current.name,
+            command=current.command,
+        )
+
     def commit_point(
         self,
         wx: float,
@@ -125,7 +149,7 @@ class CanvasShapeHandler:
         '''
         self._plan.add_point(self.create_waypoint_at(wx, wy, settings))
 
-    def commit_line(
+    def _commit_line(
         self,
         x0: float,
         y0: float,
@@ -152,7 +176,7 @@ class CanvasShapeHandler:
             )
             self._plan.set_waypoints(list(self._plan.waypoints) + line_pts)
 
-    def commit_circle(
+    def _commit_circle(
         self,
         x0: float,
         y0: float,
@@ -183,7 +207,7 @@ class CanvasShapeHandler:
             circle_pts = self._discretizer.discretize_circle(geometry=geom)
             self._plan.set_waypoints(list(self._plan.waypoints) + circle_pts)
 
-    def commit_rectangle(
+    def _commit_rectangle(
         self,
         x0: float,
         y0: float,
@@ -234,10 +258,10 @@ class CanvasShapeHandler:
             case CanvasToolMode.POINT:
                 self.commit_point(wx, wy, settings)
             case CanvasToolMode.LINE:
-                self.commit_line(x0, y0, wx, wy, settings)
+                self._commit_line(x0, y0, wx, wy, settings)
             case CanvasToolMode.CIRCLE:
-                self.commit_circle(x0, y0, wx, wy, settings)
+                self._commit_circle(x0, y0, wx, wy, settings)
             case CanvasToolMode.RECTANGLE:
-                self.commit_rectangle(x0, y0, wx, wy, settings)
+                self._commit_rectangle(x0, y0, wx, wy, settings)
             case _:
                 pass

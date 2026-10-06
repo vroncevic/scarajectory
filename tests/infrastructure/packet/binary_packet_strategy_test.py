@@ -23,38 +23,22 @@ from __future__ import annotations
 
 from unittest import TestCase, main
 
-from scaralang.core.model.kinematics.transmission_parameters import (
-    TransmissionParameters,
-)
-from scaralang.core.service.kinematics.ikinematics_service import (
-    IKinematicsService,
-)
-from scaralang.core.service.kinematics.kinematics_service_factory import (
-    KinematicsServiceFactory,
-)
-from scaralang.infrastructure.communication.protocol.binary.builder.binary_frame_builder_factory import (
-    BinaryFrameBuilderFactory,
-)
+from scaralang.core.model.kinematics.transmission_parameters import TransmissionParameters
+from scaralang.core.service.kinematics.ikinematics_service import IKinematicsService
+from scaralang.core.service.kinematics.kinematics_service_factory import KinematicsServiceFactory
+from scaralang.infrastructure.communication.protocol.binary.builder.binary_frame_builder_factory import BinaryFrameBuilderFactory
 from scarajectory.core.model.trajectory.waypoint import Waypoint
-from scarajectory.core.service.packet.ipacket_strategy import IPacketStrategy
-from scarajectory.infrastructure.packet.binary_packet_strategy import (
-    BinaryPacketStrategy,
-)
-from scarajectory.infrastructure.packet.binary_packet_strategy_factory import (
-    BinaryPacketStrategyFactory,
-)
-from scarajectory.infrastructure.settings.bounds.scara_bounds_loader_factory import (
-    ScaraBoundsLoaderFactory,
-)
-from scarajectory.infrastructure.settings.transmission.scara_transmission_loader_factory import (
-    ScaraTransmissionLoaderFactory,
-)
+from scarajectory.infrastructure.packet.ipacket_strategy import IPacketStrategy
+from scarajectory.infrastructure.packet.binary_packet_strategy import BinaryPacketStrategy
+from scarajectory.infrastructure.packet.binary_packet_strategy_factory import BinaryPacketStrategyFactory
+from scarajectory.infrastructure.settings.bounds.scara_bounds_loader_factory import ScaraBoundsLoaderFactory
+from scarajectory.infrastructure.settings.transmission.scara_transmission_loader_factory import ScaraTransmissionLoaderFactory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -101,7 +85,7 @@ class BinaryPacketStrategyTestCase(TestCase):
         )
         self.assertIsInstance(strategy, BinaryPacketStrategy)
         self.assertIsInstance(strategy, IPacketStrategy)
-        self.assertEqual(BinaryPacketStrategyFactory.get_version(), '1.0.4')
+        self.assertEqual(BinaryPacketStrategyFactory.get_version(), '1.0.3')
 
     def test_create_with_frame_builder(self) -> None:
         '''

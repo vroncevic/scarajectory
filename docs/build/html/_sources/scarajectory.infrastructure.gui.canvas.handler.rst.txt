@@ -23,6 +23,7 @@ Submodules
    scarajectory.infrastructure.gui.canvas.handler.canvas_shape_handler
    scarajectory.infrastructure.gui.canvas.handler.canvas_tool_handler
    scarajectory.infrastructure.gui.canvas.handler.icanvas_mouse_handler
+   scarajectory.infrastructure.gui.canvas.handler.icanvas_waypoint_builder
    scarajectory.infrastructure.gui.canvas.handler.mouse_handler_bundle
    scarajectory.infrastructure.gui.canvas.handler.mouse_handler_init_bundle
 

@@ -23,19 +23,19 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from scaralang.core.service.dsl.iscara_dsl_service import IScaraDslService
-from scaralang.core.service.trajectory.validation.itrajectory_validator import ITrajectoryValidator
+from scarajectory.core.service.trajectory.validation.itrajectory_validator import ITrajectoryValidator
 from scarajectory.core.service.preferences.iconnection_repository import IConnectionRepository
 from scarajectory.core.service.storage.iplan_storage_service import IPlanStorageService
 from scarajectory.core.service.streaming.istream_playback_controller import IStreamPlaybackController
 from scarajectory.infrastructure.streaming.bundle import StreamingBundle
+from scarajectory.setup.pipeline.dsl_pipeline_bundle import DslPipelineBundle
 from scarajectory.setup.pipeline.plan_pipeline_bundle import PlanPipelineBundle
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -53,7 +53,7 @@ class ScarajectoryGUIInitBundle:
             | validator - Trajectory validation port.
             | streaming - Streaming subsystem services bundle.
             | storage - Trajectory plan disk storage service.
-            | dsl_service - SCARA DSL interpretation service.
+            | dsl - SCARA DSL interpretation pipeline bundle.
             | connection_repository - Connection preferences repository.
         :methods:
             | streamer - Returns playback controller for backward compatibility.
@@ -63,7 +63,7 @@ class ScarajectoryGUIInitBundle:
     validator: ITrajectoryValidator
     streaming: StreamingBundle
     storage: IPlanStorageService
-    dsl_service: IScaraDslService
+    dsl: DslPipelineBundle
     connection_repository: IConnectionRepository
 
     @property

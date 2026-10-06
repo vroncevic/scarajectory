@@ -27,7 +27,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -44,6 +44,7 @@ class CanvasInteractionState:
                 | pan_x - Viewport panning origin coordinate X in pixels.
                 | pan_y - Viewport panning origin coordinate Y in pixels.
                 | is_panning - Viewport panning active flag.
+                | is_dragging - Active mouse drag drawing/selection flag.
                 | drag_start_world - Drag start point in world coordinate space (x, y) mm.
                 | drag_current_world - Active cursor drag position in world coordinate space (x, y) mm.
                 | dragged_node_idx - Index of selected waypoint being dragged, or -1 if none.
@@ -55,8 +56,9 @@ class CanvasInteractionState:
     pan_x: int = 0
     pan_y: int = 0
     is_panning: bool = False
-    drag_start_world: tuple[float, float] | None = None
-    drag_current_world: tuple[float, float] | None = None
+    is_dragging: bool = False
+    drag_start_world: tuple[float, float] = (0.0, 0.0)
+    drag_current_world: tuple[float, float] = (0.0, 0.0)
     dragged_node_idx: int = -1
 
     def reset_drag(self) -> None:
@@ -65,8 +67,9 @@ class CanvasInteractionState:
 
             :exceptions: None.
         '''
-        self.drag_start_world = None
-        self.drag_current_world = None
+        self.is_dragging = False
+        self.drag_start_world = (0.0, 0.0)
+        self.drag_current_world = (0.0, 0.0)
         self.dragged_node_idx = -1
 
     def reset_pan(self) -> None:

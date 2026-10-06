@@ -15,8 +15,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="scarajectory.setup.pipeline.plan_pipeline_builder module" href="scarajectory.setup.pipeline.plan_pipeline_builder.html" />
-    <link rel="prev" title="scarajectory.setup.pipeline package" href="scarajectory.setup.pipeline.html" /> 
+    <link rel="next" title="scarajectory.setup.pipeline.dsl_pipeline_bundle module" href="scarajectory.setup.pipeline.dsl_pipeline_bundle.html" />
+    <link rel="prev" title="scarajectory.setup.pipeline.dsl_diagnostic_bundle module" href="scarajectory.setup.pipeline.dsl_diagnostic_bundle.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -28,10 +28,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.setup.pipeline.plan_pipeline_builder.html" title="scarajectory.setup.pipeline.plan_pipeline_builder module"
+          <a href="scarajectory.setup.pipeline.dsl_pipeline_bundle.html" title="scarajectory.setup.pipeline.dsl_pipeline_bundle module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.setup.pipeline.html" title="scarajectory.setup.pipeline package"
+          <a href="scarajectory.setup.pipeline.dsl_diagnostic_bundle.html" title="scarajectory.setup.pipeline.dsl_diagnostic_bundle module"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>
@@ -64,41 +64,52 @@ See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program. If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
 </dd>
-<dt>Info</dt><dd><p>Builder assembling binary frame codecs and constructing IScaraDslService pipeline.</p>
+<dt>Info</dt><dd><p>Builder assembling fine-grained DSL role services into DslPipelineBundle.</p>
 </dd>
 </dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="scarajectory.setup.pipeline.dsl_pipeline_builder.DslPipelineBuilder">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">scarajectory.setup.pipeline.dsl_pipeline_builder.</span></span><span class="sig-name descname"><span class="pre">DslPipelineBuilder</span></span><a class="reference internal" href="_modules/scarajectory/setup/pipeline/dsl_pipeline_builder.html#DslPipelineBuilder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.setup.pipeline.dsl_pipeline_builder.DslPipelineBuilder" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Builder assembling binary frame codecs and constructing IScaraDslService pipeline.</p>
+<p>Builder assembling fine-grained DSL role services into DslPipelineBundle.</p>
 <p>It defines:</p>
 <blockquote>
 <div><dl class="field-list">
 <dt class="field-odd">methods<span class="colon">:</span></dt>
 <dd class="field-odd"><div class="line-block">
-<div class="line">build - Assembles DSL pipeline bundle and instantiates ScaraDslService.</div>
+<div class="line">build - Assembles DSL compiler, validator, and exporter services.</div>
+<div class="line">get_version - Returns builder version string.</div>
 </div>
 </dd>
 </dl>
 </div></blockquote>
 <dl class="py method">
 <dt class="sig sig-object py" id="scarajectory.setup.pipeline.dsl_pipeline_builder.DslPipelineBuilder.build">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ITrajectoryValidator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kinematics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IKinematicsService</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transmission</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TransmissionParameters</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">IScaraDslService</span></span></span><a class="reference internal" href="_modules/scarajectory/setup/pipeline/dsl_pipeline_builder.html#DslPipelineBuilder.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.setup.pipeline.dsl_pipeline_builder.DslPipelineBuilder.build" title="Link to this definition">¶</a></dt>
-<dd><p>Assembles binary codecs, creates pipeline bundle, and returns IScaraDslService.</p>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ITrajectoryValidator</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="scarajectory.setup.pipeline.dsl_pipeline_bundle.html#scarajectory.setup.pipeline.dsl_pipeline_bundle.DslPipelineBundle" title="scarajectory.setup.pipeline.dsl_pipeline_bundle.DslPipelineBundle"><span class="pre">DslPipelineBundle</span></a></span></span><a class="reference internal" href="_modules/scarajectory/setup/pipeline/dsl_pipeline_builder.html#DslPipelineBuilder.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.setup.pipeline.dsl_pipeline_builder.DslPipelineBuilder.build" title="Link to this definition">¶</a></dt>
+<dd><p>Assembles parser, compiler, linter, validator and exporter services.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>validator</strong> – Injected ITrajectoryValidator instance.</p></li>
-<li><p><strong>kinematics</strong> – Injected IKinematicsService instance.</p></li>
-<li><p><strong>transmission</strong> – Injected TransmissionParameters domain model.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>validator</strong> – Injected ITrajectoryValidator instance.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Fully assembled IScaraDslService instance.</p>
+<dd class="field-even"><p>Fully assembled DslPipelineBundle instance.</p>
 </dd>
 <dt class="field-odd">Exceptions<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="scarajectory.setup.pipeline.dsl_pipeline_builder.DslPipelineBuilder.get_version">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/scarajectory/setup/pipeline/dsl_pipeline_builder.html#DslPipelineBuilder.get_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#scarajectory.setup.pipeline.dsl_pipeline_builder.DslPipelineBuilder.get_version" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the builder version string representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Builder version string.</p>
+</dd>
+<dt class="field-even">Exceptions<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -120,6 +131,7 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
 <li><a class="reference internal" href="#">scarajectory.setup.pipeline.dsl_pipeline_builder module</a><ul>
 <li><a class="reference internal" href="#scarajectory.setup.pipeline.dsl_pipeline_builder.DslPipelineBuilder"><code class="docutils literal notranslate"><span class="pre">DslPipelineBuilder</span></code></a><ul>
 <li><a class="reference internal" href="#scarajectory.setup.pipeline.dsl_pipeline_builder.DslPipelineBuilder.build"><code class="docutils literal notranslate"><span class="pre">DslPipelineBuilder.build()</span></code></a></li>
+<li><a class="reference internal" href="#scarajectory.setup.pipeline.dsl_pipeline_builder.DslPipelineBuilder.get_version"><code class="docutils literal notranslate"><span class="pre">DslPipelineBuilder.get_version()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -129,13 +141,13 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="scarajectory.setup.pipeline.html"
-                          title="previous chapter">scarajectory.setup.pipeline package</a></p>
+    <p class="topless"><a href="scarajectory.setup.pipeline.dsl_diagnostic_bundle.html"
+                          title="previous chapter">scarajectory.setup.pipeline.dsl_diagnostic_bundle module</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="scarajectory.setup.pipeline.plan_pipeline_builder.html"
-                          title="next chapter">scarajectory.setup.pipeline.plan_pipeline_builder module</a></p>
+    <p class="topless"><a href="scarajectory.setup.pipeline.dsl_pipeline_bundle.html"
+                          title="next chapter">scarajectory.setup.pipeline.dsl_pipeline_bundle module</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -168,10 +180,10 @@ with this program. If not, see &lt;<a class="reference external" href="http://ww
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="scarajectory.setup.pipeline.plan_pipeline_builder.html" title="scarajectory.setup.pipeline.plan_pipeline_builder module"
+          <a href="scarajectory.setup.pipeline.dsl_pipeline_bundle.html" title="scarajectory.setup.pipeline.dsl_pipeline_bundle module"
              >next</a> |</li>
         <li class="right" >
-          <a href="scarajectory.setup.pipeline.html" title="scarajectory.setup.pipeline package"
+          <a href="scarajectory.setup.pipeline.dsl_diagnostic_bundle.html" title="scarajectory.setup.pipeline.dsl_diagnostic_bundle module"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">scarajectory https://github.com/vroncevic/scarajectory/releases documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="modules.html" >scarajectory</a> &#187;</li>

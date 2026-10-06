@@ -60,18 +60,20 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">from</span> <span class="nn">scaralang.core.model.kinematics.transmission_parameters</span> <span class="kn">import</span> <span class="n">TransmissionParameters</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.compiler.binary.step.istep_discretizer</span> <span class="kn">import</span> <span class="n">IStepDiscretizer</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.compiler.binary.step.step_discretizer_factory</span> <span class="kn">import</span> <span class="n">StepDiscretizerFactory</span>
 <span class="kn">from</span> <span class="nn">scaralang.core.service.kinematics.ikinematics_service</span> <span class="kn">import</span> <span class="n">IKinematicsService</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.kinematics.transmission.ijoint_step_transmission_converter</span> <span class="kn">import</span> <span class="n">IJointStepTransmissionConverter</span>
+<span class="kn">from</span> <span class="nn">scaralang.core.service.kinematics.transmission.joint_step_transmission_converter_factory</span> <span class="kn">import</span> <span class="n">JointStepTransmissionConverterFactory</span>
 <span class="kn">from</span> <span class="nn">scaralang.core.service.protocol.ibinary_frame_builder</span> <span class="kn">import</span> <span class="n">IBinaryFrameBuilder</span>
 <span class="kn">from</span> <span class="nn">scaralang.infrastructure.communication.protocol.binary.builder.binary_frame_builder_factory</span> <span class="kn">import</span> <span class="n">BinaryFrameBuilderFactory</span>
 <span class="kn">from</span> <span class="nn">scarajectory.infrastructure.packet.binary_packet_strategy</span> <span class="kn">import</span> <span class="n">BinaryPacketStrategy</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.transmission.transmission_step_calculator</span> <span class="kn">import</span> <span class="n">TransmissionStepCalculator</span>
-<span class="kn">from</span> <span class="nn">scarajectory.infrastructure.transmission.transmission_step_calculator_factory</span> <span class="kn">import</span> <span class="n">TransmissionStepCalculatorFactory</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -107,14 +109,18 @@
 <span class="sd">            :param transmission: TransmissionParameters configuration.</span>
 <span class="sd">            :return: Configured BinaryPacketStrategy instance.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">step_calc</span><span class="p">:</span> <span class="n">TransmissionStepCalculator</span> <span class="o">=</span> <span class="n">TransmissionStepCalculatorFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">transmission</span><span class="o">=</span><span class="n">transmission</span>
+        <span class="n">converter</span><span class="p">:</span> <span class="n">IJointStepTransmissionConverter</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">JointStepTransmissionConverterFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="n">transmission</span><span class="o">=</span><span class="n">transmission</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">discretizer</span><span class="p">:</span> <span class="n">IStepDiscretizer</span> <span class="o">=</span> <span class="n">StepDiscretizerFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">kinematics</span><span class="o">=</span><span class="n">kinematics</span><span class="p">,</span>
+            <span class="n">transmission</span><span class="o">=</span><span class="n">converter</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">BinaryPacketStrategy</span><span class="p">(</span>
-            <span class="n">kinematics</span><span class="o">=</span><span class="n">kinematics</span><span class="p">,</span>
-            <span class="n">transmission</span><span class="o">=</span><span class="n">transmission</span><span class="p">,</span>
+            <span class="n">discretizer</span><span class="o">=</span><span class="n">discretizer</span><span class="p">,</span>
             <span class="n">frame_builder</span><span class="o">=</span><span class="n">BinaryFrameBuilderFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(),</span>
-            <span class="n">step_calculator</span><span class="o">=</span><span class="n">step_calc</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 
@@ -136,14 +142,18 @@
 <span class="sd">            :param frame_builder: IBinaryFrameBuilder implementation.</span>
 <span class="sd">            :return: Configured BinaryPacketStrategy instance.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">step_calc</span><span class="p">:</span> <span class="n">TransmissionStepCalculator</span> <span class="o">=</span> <span class="n">TransmissionStepCalculatorFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">transmission</span><span class="o">=</span><span class="n">transmission</span>
+        <span class="n">converter</span><span class="p">:</span> <span class="n">IJointStepTransmissionConverter</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">JointStepTransmissionConverterFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="n">transmission</span><span class="o">=</span><span class="n">transmission</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">discretizer</span><span class="p">:</span> <span class="n">IStepDiscretizer</span> <span class="o">=</span> <span class="n">StepDiscretizerFactory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">kinematics</span><span class="o">=</span><span class="n">kinematics</span><span class="p">,</span>
+            <span class="n">transmission</span><span class="o">=</span><span class="n">converter</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">BinaryPacketStrategy</span><span class="p">(</span>
-            <span class="n">kinematics</span><span class="o">=</span><span class="n">kinematics</span><span class="p">,</span>
-            <span class="n">transmission</span><span class="o">=</span><span class="n">transmission</span><span class="p">,</span>
+            <span class="n">discretizer</span><span class="o">=</span><span class="n">discretizer</span><span class="p">,</span>
             <span class="n">frame_builder</span><span class="o">=</span><span class="n">frame_builder</span><span class="p">,</span>
-            <span class="n">step_calculator</span><span class="o">=</span><span class="n">step_calc</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 

@@ -7,6 +7,7 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
+   scarajectory.infrastructure.settings.stream.istream_config_loader
    scarajectory.infrastructure.settings.stream.stream_config_loader
    scarajectory.infrastructure.settings.stream.stream_config_loader_factory
 

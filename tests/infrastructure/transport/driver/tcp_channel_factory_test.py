@@ -23,18 +23,14 @@ from __future__ import annotations
 
 from unittest import TestCase, main
 
-from scarajectory.infrastructure.transport.driver.tcp_channel import (
-    TcpChannelDriver,
-)
-from scarajectory.infrastructure.transport.driver.tcp_channel_factory import (
-    TcpChannelDriverFactory,
-)
+from scarajectory.infrastructure.transport.driver.tcp_channel import TcpChannelDriver
+from scarajectory.infrastructure.transport.driver.tcp_channel_factory import TcpChannelDriverFactory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -59,7 +55,7 @@ class TcpChannelDriverFactoryTestCase(TestCase):
     def test_get_version(self) -> None:
         '''Verifies factory exposes semantic version string matching package.'''
         self.assertEqual(
-            TcpChannelDriverFactory.get_version(), '1.0.4'
+            TcpChannelDriverFactory.get_version(), '1.0.3'
         )
 
 

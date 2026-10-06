@@ -68,7 +68,7 @@
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;(C) 2026, https://vroncevic.github.io/scarajectory&#39;</span>
 <span class="n">__credits__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Vladimir Roncevic&#39;</span><span class="p">,</span> <span class="s1">&#39;Python Software Foundation&#39;</span><span class="p">]</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/vroncevic/scarajectory/blob/dev/LICENSE&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.4&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0.3&#39;</span>
 <span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Vladimir Roncevic&#39;</span>
 <span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;elektron.ronca@gmail.com&#39;</span>
 <span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Updated&#39;</span>
@@ -78,18 +78,18 @@
 <a class="viewcode-back" href="../../../../scarajectory.infrastructure.connection.stream_raw_transceiver.html#scarajectory.infrastructure.connection.stream_raw_transceiver.StreamRawTransceiver">[docs]</a>
 <span class="k">class</span> <span class="nc">StreamRawTransceiver</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Transceiver managing raw string command and byte payload transmission.</span>
+<span class="sd">        Transceiver managing raw string command and byte payload transmission.</span>
 
-<span class="sd">    It defines:</span>
+<span class="sd">        It defines:</span>
 
-<span class="sd">        :attributes:</span>
-<span class="sd">            | _connection - Injected IStreamTransportConnection lifecycle instance.</span>
-<span class="sd">            | _transceiver - Injected IStreamTransportTransceiver wire I/O instance.</span>
+<span class="sd">            :attributes:</span>
+<span class="sd">                | _connection - Injected IStreamTransportConnection lifecycle instance.</span>
+<span class="sd">                | _transceiver - Injected IStreamTransportTransceiver wire I/O instance.</span>
 
-<span class="sd">        :methods:</span>
-<span class="sd">            | is_connected - Checks whether transport connection is currently open.</span>
-<span class="sd">            | send_raw_command - Transmits raw string command packet over channel.</span>
-<span class="sd">            | send_raw_bytes - Transmits raw byte payload over active transport.</span>
+<span class="sd">            :methods:</span>
+<span class="sd">                | is_connected - Checks whether transport connection is currently open.</span>
+<span class="sd">                | send_raw_command - Transmits raw string command packet over channel.</span>
+<span class="sd">                | send_raw_bytes - Transmits raw byte payload over active transport.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="n">_connection</span><span class="p">:</span> <span class="n">IStreamTransportConnection</span>
@@ -102,11 +102,11 @@
         <span class="n">transceiver</span><span class="p">:</span> <span class="n">IStreamTransportTransceiver</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Initializes StreamRawTransceiver with connection and transceiver.</span>
+<span class="sd">            Initializes StreamRawTransceiver with connection and transceiver.</span>
 
-<span class="sd">        :param connection: Injected IStreamTransportConnection instance.</span>
-<span class="sd">        :param transceiver: Injected IStreamTransportTransceiver instance.</span>
-<span class="sd">        :exceptions: None.</span>
+<span class="sd">            :param connection: Injected IStreamTransportConnection instance.</span>
+<span class="sd">            :param transceiver: Injected IStreamTransportTransceiver instance.</span>
+<span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IStreamTransportConnection</span><span class="p">]</span> <span class="o">=</span> <span class="n">connection</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_transceiver</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">IStreamTransportTransceiver</span><span class="p">]</span> <span class="o">=</span> <span class="n">transceiver</span>
@@ -115,10 +115,10 @@
 <a class="viewcode-back" href="../../../../scarajectory.infrastructure.connection.stream_raw_transceiver.html#scarajectory.infrastructure.connection.stream_raw_transceiver.StreamRawTransceiver.is_connected">[docs]</a>
     <span class="k">def</span> <span class="nf">is_connected</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Checks whether transport connection is currently open.</span>
+<span class="sd">            Checks whether transport connection is currently open.</span>
 
-<span class="sd">        :return: True if transport is connected, False otherwise.</span>
-<span class="sd">        :exceptions: None.</span>
+<span class="sd">            :return: True if transport is connected, False otherwise.</span>
+<span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">is_connected</span><span class="p">()</span></div>
 
@@ -127,11 +127,11 @@
 <a class="viewcode-back" href="../../../../scarajectory.infrastructure.connection.stream_raw_transceiver.html#scarajectory.infrastructure.connection.stream_raw_transceiver.StreamRawTransceiver.send_raw_command">[docs]</a>
     <span class="k">def</span> <span class="nf">send_raw_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Transmits raw string command packet over communication channel.</span>
+<span class="sd">            Transmits raw string command packet over communication channel.</span>
 
-<span class="sd">        :param cmd: Raw command string to transmit.</span>
-<span class="sd">        :return: True if transmission succeeded, False otherwise.</span>
-<span class="sd">        :exceptions: None.</span>
+<span class="sd">            :param cmd: Raw command string to transmit.</span>
+<span class="sd">            :return: True if transmission succeeded, False otherwise.</span>
+<span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">is_connected</span><span class="p">():</span>
             <span class="k">return</span> <span class="kc">False</span>
@@ -141,18 +141,18 @@
 
 <div class="viewcode-block" id="StreamRawTransceiver.send_raw_bytes">
 <a class="viewcode-back" href="../../../../scarajectory.infrastructure.connection.stream_raw_transceiver.html#scarajectory.infrastructure.connection.stream_raw_transceiver.StreamRawTransceiver.send_raw_bytes">[docs]</a>
-    <span class="k">def</span> <span class="nf">send_raw_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">send_raw_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payload</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Transmits raw byte payload over active transport.</span>
+<span class="sd">            Transmits raw byte payload over active transport.</span>
 
-<span class="sd">        :param data: Raw byte payload.</span>
-<span class="sd">        :return: True if transmission succeeded, False otherwise.</span>
-<span class="sd">        :exceptions: None.</span>
+<span class="sd">            :param payload: Raw byte payload.</span>
+<span class="sd">            :return: True if transmission succeeded, False otherwise.</span>
+<span class="sd">            :exceptions: None.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">is_connected</span><span class="p">():</span>
             <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transceiver</span><span class="o">.</span><span class="n">send_bytes</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transceiver</span><span class="o">.</span><span class="n">send_bytes</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

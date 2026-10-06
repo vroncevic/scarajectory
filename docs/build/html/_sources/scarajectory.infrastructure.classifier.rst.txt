@@ -15,7 +15,9 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
+   scarajectory.infrastructure.classifier.iresponse_classification_registry
    scarajectory.infrastructure.classifier.iresponse_classification_rule
+   scarajectory.infrastructure.classifier.iresponse_parser
    scarajectory.infrastructure.classifier.response_classification_registry
    scarajectory.infrastructure.classifier.response_classification_registry_factory
    scarajectory.infrastructure.classifier.response_classification_rule
