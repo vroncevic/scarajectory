@@ -55,7 +55,6 @@ class TestSCARAjectoryBundle(TestCase):
         '''
         bundle: SCARAjectoryBundle = SCARAjectoryBundleFactory.create_bundle()
         self.assertIsNotNone(bundle.base)
-        self.assertIsNotNone(bundle.service)
         self.assertIsNotNone(bundle.gui)
         self.assertIsNotNone(bundle.streamer)
         self.assertIsNotNone(bundle.cli)
@@ -70,7 +69,6 @@ class TestSCARAjectoryBundle(TestCase):
         data = bundle.to_dict()
         self.assertIsInstance(data, dict)
         self.assertIn('base', data)
-        self.assertIn('service', data)
         self.assertIn('gui', data)
         self.assertIn('streamer', data)
         self.assertIn('cli', data)

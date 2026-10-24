@@ -7,14 +7,10 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.streaming.observer.istream_observer_registry
-   scarajectory.infrastructure.streaming.observer.istream_telemetry_notifier
-   scarajectory.infrastructure.streaming.observer.stream_observer_dispatcher
-   scarajectory.infrastructure.streaming.observer.stream_observer_dispatcher_factory
-   scarajectory.infrastructure.streaming.observer.stream_observer_registry
-   scarajectory.infrastructure.streaming.observer.stream_observer_registry_factory
-   scarajectory.infrastructure.streaming.observer.stream_telemetry_notifier
-   scarajectory.infrastructure.streaming.observer.stream_telemetry_notifier_factory
+   scarajectory.infrastructure.streaming.observer.dispatcher
+   scarajectory.infrastructure.streaming.observer.factory
+   scarajectory.infrastructure.streaming.observer.provides
+   scarajectory.infrastructure.streaming.observer.registry
 
 Module contents
 ---------------

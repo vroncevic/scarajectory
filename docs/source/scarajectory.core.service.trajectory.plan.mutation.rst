@@ -1,17 +1,24 @@
 scarajectory.core.service.trajectory.plan.mutation package
 ==========================================================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   scarajectory.core.service.trajectory.plan.mutation.bulk_mutation
+   scarajectory.core.service.trajectory.plan.mutation.point_mutation
+
 Submodules
 ----------
 
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.core.service.trajectory.plan.mutation.iplan_bulk_mutator
-   scarajectory.core.service.trajectory.plan.mutation.iplan_mutation_service
-   scarajectory.core.service.trajectory.plan.mutation.iplan_point_mutator
-   scarajectory.core.service.trajectory.plan.mutation.plan_mutation_service
-   scarajectory.core.service.trajectory.plan.mutation.plan_mutation_service_factory
+   scarajectory.core.service.trajectory.plan.mutation.dependencies
+   scarajectory.core.service.trajectory.plan.mutation.factory
+   scarajectory.core.service.trajectory.plan.mutation.provides
 
 Module contents
 ---------------

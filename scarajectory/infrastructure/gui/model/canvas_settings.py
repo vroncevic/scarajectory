@@ -22,6 +22,7 @@ Info
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import ClassVar
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -41,11 +42,18 @@ class CanvasSettings:
         It defines:
 
             :attributes:
+                | DEFAULT_Z_MM - Default Z coordinate for new points in mm.
+                | DEFAULT_SPEED_MMS - Default feedrate speed in mm/s.
+                | DEFAULT_ENFORCE_DEADZONE - Flag whether deadzone validation is active.
                 | default_z - Default Z coordinate for new points in mm.
                 | default_speed - Default feedrate speed in mm/s.
                 | enforce_deadzone - Flag whether deadzone validation is active.
     '''
 
-    default_z: float = 20.0
-    default_speed: float = 40.0
-    enforce_deadzone: bool = True
+    DEFAULT_Z_MM: ClassVar[float] = 20.0
+    DEFAULT_SPEED_MMS: ClassVar[float] = 40.0
+    DEFAULT_ENFORCE_DEADZONE: ClassVar[bool] = True
+
+    default_z: float = DEFAULT_Z_MM
+    default_speed: float = DEFAULT_SPEED_MMS
+    enforce_deadzone: bool = DEFAULT_ENFORCE_DEADZONE

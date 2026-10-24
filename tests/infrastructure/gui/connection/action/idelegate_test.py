@@ -1,0 +1,125 @@
+# -*- coding: UTF-8 -*-
+
+'''
+Module
+    idelegate_test.py
+Copyright
+    Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
+    scarajectory is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by the
+    Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    scarajectory is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+    See the GNU General Public License for more details.
+    You should have received a copy of the GNU General Public License along
+    with this program. If not, see <http://www.gnu.org/licenses/>.
+Info
+    Unit testing for IPortConnectionDelegate protocol conformance.
+'''
+
+from __future__ import annotations
+
+from unittest import TestCase, main
+
+from scarajectory.infrastructure.gui.connection.action.idelegate import IPortConnectionDelegate
+
+__author__ = 'Vladimir Roncevic'
+__copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
+__credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
+__license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
+__version__ = '1.0.3'
+__maintainer__ = 'Vladimir Roncevic'
+__email__ = 'elektron.ronca@gmail.com'
+__status__ = 'Updated'
+
+
+class ConformingPortConnectionDelegateStub:
+    '''
+        Conforming stub implementation satisfying IPortConnectionDelegate.
+
+        It defines:
+
+            :methods:
+                | toggle_connection - Toggles communication port connection.
+                | is_connected - Checks if port connection is active.
+    '''
+
+    def toggle_connection(self, port: str = '') -> None:
+        '''
+            Toggles communication port connection.
+
+            :param port: Optional port string.
+            :exceptions: None.
+        '''
+        _ = port
+
+    def is_connected(self) -> bool:
+        '''
+            Checks if port connection is active.
+
+            :return: True always for test stub.
+            :exceptions: None.
+        '''
+        return True
+
+
+class IncompletePortConnectionDelegateStub:
+    '''
+        Non-conforming stub implementation missing toggle_connection.
+
+        It defines:
+
+            :methods:
+                | connect - Irrelevant connection method.
+                | disconnect - Irrelevant disconnection method.
+    '''
+
+    def connect(self) -> None:
+        '''
+            Irrelevant connection method.
+
+            :exceptions: None.
+        '''
+
+    def disconnect(self) -> None:
+        '''
+            Irrelevant disconnection method.
+
+            :exceptions: None.
+        '''
+
+
+class PortConnectionDelegateProtocolTestCase(TestCase):
+    '''
+        Tests IPortConnectionDelegate runtime checkable protocol conformance.
+
+        It defines:
+
+            :methods:
+                | test_protocol_conformance_success - Verifies conforming class passes check.
+                | test_protocol_conformance_failure - Verifies non-conforming class fails check.
+    '''
+
+    def test_protocol_conformance_success(self) -> None:
+        '''
+            Verifies compliant class satisfies IPortConnectionDelegate protocol.
+
+            :exceptions: None.
+        '''
+        stub = ConformingPortConnectionDelegateStub()
+        self.assertIsInstance(stub, IPortConnectionDelegate)
+
+    def test_protocol_conformance_failure(self) -> None:
+        '''
+            Verifies non-compliant class fails IPortConnectionDelegate protocol check.
+
+            :exceptions: None.
+        '''
+        stub = IncompletePortConnectionDelegateStub()
+        self.assertNotIsInstance(stub, IPortConnectionDelegate)
+
+
+if __name__ == '__main__':
+    main()

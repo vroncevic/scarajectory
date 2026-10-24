@@ -7,9 +7,11 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.settings.transmission.iscara_transmission_loader
-   scarajectory.infrastructure.settings.transmission.scara_transmission_loader
-   scarajectory.infrastructure.settings.transmission.scara_transmission_loader_factory
+   scarajectory.infrastructure.settings.transmission.dependencies
+   scarajectory.infrastructure.settings.transmission.factory
+   scarajectory.infrastructure.settings.transmission.iloader
+   scarajectory.infrastructure.settings.transmission.loader
+   scarajectory.infrastructure.settings.transmission.provides
 
 Module contents
 ---------------

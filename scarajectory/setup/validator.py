@@ -27,8 +27,7 @@ from ats_utilities.validation.check_value import not_none
 from ats_utilities.validation.check_type import istype
 
 from scarajectory.setup.bundle import SCARAjectoryBundle
-from scarajectory.core.service.iservice import IService
-from scarajectory.core.service.streaming.istream_playback_controller import IStreamPlaybackController
+from scarajectory.core.service.streaming.playback.icontroller import IPlaybackController
 from scarajectory.infrastructure.gui.igui import IGUI
 from scarajectory.infrastructure.cli.icli import ICLI
 
@@ -67,29 +66,25 @@ class SCARAjectoryBundleValidator:
         msg_bundle_none: str = 'the scarajectory bundle must be provided'
         msg_bundle_istype: str = 'the scarajectory bundle must be an instance of SCARAjectoryBundle'
         msg_base_none: str = 'the base bundle must be provided'
-        msg_service_none: str = 'the service must be provided'
         msg_gui_none: str = 'the gui must be provided'
         msg_streamer_none: str = 'the streamer must be provided'
         msg_cli_none: str = 'the cli must be provided'
         msg_base_istype: str = 'the base bundle must be an instance of BaseBundle'
-        msg_service_istype: str = 'the service must be an instance of IService'
         msg_gui_istype: str = 'the gui must be an instance of IGUI'
-        msg_streamer_istype: str = 'the streamer must be an instance of IStreamPlaybackController'
+        msg_streamer_istype: str = 'the streamer must be an instance of IPlaybackController'
         msg_cli_istype: str = 'the cli must be an instance of ICLI'
 
         not_none(bundle, ctx, msg_bundle_none)
         istype(bundle, SCARAjectoryBundle, ctx, msg_bundle_istype)
 
         not_none(bundle.base, ctx, msg_base_none)
-        not_none(bundle.service, ctx, msg_service_none)
         not_none(bundle.gui, ctx, msg_gui_none)
         not_none(bundle.streamer, ctx, msg_streamer_none)
         not_none(bundle.cli, ctx, msg_cli_none)
 
         istype(bundle.base, BaseBundle, ctx, msg_base_istype)
-        istype(bundle.service, IService, ctx, msg_service_istype)
         istype(bundle.gui, IGUI, ctx, msg_gui_istype)
-        istype(bundle.streamer, IStreamPlaybackController, ctx, msg_streamer_istype)
+        istype(bundle.streamer, IPlaybackController, ctx, msg_streamer_istype)
         istype(bundle.cli, ICLI, ctx, msg_cli_istype)
 
     @classmethod

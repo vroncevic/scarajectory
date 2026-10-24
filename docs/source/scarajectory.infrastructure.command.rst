@@ -1,17 +1,26 @@
 scarajectory.infrastructure.command package
 ===========================================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   scarajectory.infrastructure.command.studio
+
 Submodules
 ----------
 
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.command.command_bundle
-   scarajectory.infrastructure.command.icommand_definition
-   scarajectory.infrastructure.command.icommand_executor
-   scarajectory.infrastructure.command.studio_command_definition
-   scarajectory.infrastructure.command.studio_command_executor
+   scarajectory.infrastructure.command.bundle
+   scarajectory.infrastructure.command.dependencies
+   scarajectory.infrastructure.command.factory
+   scarajectory.infrastructure.command.idefinition
+   scarajectory.infrastructure.command.iexecutor
+   scarajectory.infrastructure.command.provides
 
 Module contents
 ---------------

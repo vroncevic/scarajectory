@@ -23,11 +23,13 @@ from __future__ import annotations
 
 from unittest import TestCase, main
 
-from scarajectory.core.model.state.stream_session import StreamSession
+from scaralang.core.model.dsl.binary.program import BinaryProgram
+
+from scarajectory.core.model.streaming.session import StreamSession
 from scarajectory.infrastructure.worker.iexecution_worker import IExecutionWorker
 
 __author__ = 'Vladimir Roncevic'
-__copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
+__copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
 __version__ = '1.0.3'
@@ -39,14 +41,19 @@ __status__ = 'Updated'
 class ExecutionWorkerStub:
     '''Structural test stub implementing IExecutionWorker.'''
 
-    def start(self, *, session: StreamSession) -> None:
-        '''Starts worker.'''
+    def start_waypoints(self, *, session: StreamSession) -> None:
+        '''Starts worker with waypoints.'''
 
-    def pause(self) -> None:
-        '''Pauses worker.'''
+    def start_program(
+        self,
+        *,
+        session: StreamSession,
+        program: BinaryProgram,
+    ) -> None:
+        '''Starts worker with program.'''
 
-    def resume(self) -> None:
-        '''Resumes worker.'''
+    def set_paused(self, paused: bool) -> None:
+        '''Sets pause state.'''
 
     def stop(self) -> None:
         '''Stops worker.'''
@@ -59,8 +66,11 @@ class ExecutionWorkerStub:
 class IncompleteExecutionWorkerStub:
     '''Incomplete test stub missing is_running method.'''
 
-    def start(self, *, session: StreamSession) -> None:
-        '''Starts worker.'''
+    def start_waypoints(self, *, session: StreamSession) -> None:
+        '''Starts worker with waypoints.'''
+
+    def set_paused(self, paused: bool) -> None:
+        '''Sets pause state.'''
 
 
 class ExecutionWorkerTestCase(TestCase):

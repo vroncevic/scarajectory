@@ -23,13 +23,15 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from scarajectory.core.service.storage.iplan_storage_service import IPlanStorageService
-from scarajectory.core.service.trajectory.plan.itrajectory_history import ITrajectoryHistory
-from scarajectory.core.service.trajectory.plan.mutation.iplan_bulk_mutator import IPlanBulkMutator
-from scarajectory.core.service.trajectory.plan.store.iwaypoint_store import IWaypointStore
-from scarajectory.infrastructure.gui.canvas.navigation.icanvas_view_navigator import ICanvasViewNavigator
+from scarajectory.core.service.storage.iloader import IPlanLoader
+from scarajectory.core.service.storage.istorer import IPlanStorer
+from scarajectory.core.service.trajectory.plan.history.ihistory import ITrajectoryPlanHistory
+from scarajectory.core.service.trajectory.plan.mutation.bulk_mutation.ibulk_mutation import IPlanBulkMutator
+from scarajectory.core.service.trajectory.plan.store.istore import IWaypointStore
+from scarajectory.infrastructure.gui.canvas.navigation.inavigator import ICanvasViewNavigator
 from scarajectory.infrastructure.gui.editor.table.itable import ITable
-from scarajectory.setup.pipeline.dsl_pipeline_bundle import DslPipelineBundle
+from scarajectory.setup.assembly.dsl.bundle import DslPipelineBundle
+from scarajectory.setup.assembly.plan.bundle import PlanPipelineBundle
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -49,19 +51,48 @@ class MenuBundle:
         It defines:
 
             :attributes:
-                | store - Waypoint store interface.
-                | mutation - Plan bulk mutation interface.
-                | history - Trajectory history interface.
-                | storage - Plan storage service interface.
+                | plan - Trajectory plan management pipeline bundle.
+                | loader - Plan loader service interface.
+                | storer - Plan storer service interface.
                 | dsl - SCARA DSL pipeline role services bundle.
                 | navigator - Viewport navigation interface.
                 | table - Waypoint table interface.
+            :properties:
+                | store - Waypoint store interface.
+                | mutation - Plan bulk mutation interface.
+                | history - Trajectory history interface.
     '''
 
-    store: IWaypointStore
-    mutation: IPlanBulkMutator
-    history: ITrajectoryHistory
-    storage: IPlanStorageService
+    plan: PlanPipelineBundle
+    loader: IPlanLoader
+    storer: IPlanStorer
     dsl: DslPipelineBundle
     navigator: ICanvasViewNavigator
     table: ITable
+
+    @property
+    def store(self) -> IWaypointStore:
+        '''
+            Returns waypoint store from plan pipeline.
+
+            :return: IWaypointStore instance.
+        '''
+        return self.plan.store
+
+    @property
+    def mutation(self) -> IPlanBulkMutator:
+        '''
+            Returns plan bulk mutator from plan pipeline.
+
+            :return: IPlanBulkMutator instance.
+        '''
+        return self.plan.mutation
+
+    @property
+    def history(self) -> ITrajectoryPlanHistory:
+        '''
+            Returns trajectory plan history from plan pipeline.
+
+            :return: ITrajectoryPlanHistory instance.
+        '''
+        return self.plan.history

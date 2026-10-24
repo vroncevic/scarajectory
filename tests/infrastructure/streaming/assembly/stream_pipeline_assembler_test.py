@@ -24,10 +24,10 @@ from __future__ import annotations
 from unittest import TestCase, main
 from unittest.mock import MagicMock, patch
 
-from scarajectory.core.model.protocol.protocol_mode import ProtocolMode
+from scaracom.transport.itransport import ITransport
+
 from scarajectory.infrastructure.streaming.assembly.stream_pipeline_assembler import StreamPipelineAssembler
-from scarajectory.infrastructure.streaming.bundle import StreamingBundle
-from scarajectory.infrastructure.transport.bundle import TransportBundle
+from scarajectory.infrastructure.streaming.provides import StreamingProvides
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -46,27 +46,24 @@ class TestStreamPipelineAssembler(TestCase):
         It defines:
 
             :methods:
-                | test_assemble_ascii_pipeline - Tests assembling pipeline in ASCII mode.
+                | test_assemble_pipeline - Tests assembling pipeline with explicit transport.
                 | test_assemble_default - Tests assemble_default helper.
                 | test_get_version - Tests get_version return value.
     '''
 
-    def test_assemble_ascii_pipeline(self) -> None:
+    def test_assemble_pipeline(self) -> None:
         '''
-            Tests assembling pipeline in ASCII mode with mock transport.
+            Tests assembling pipeline with mock transport.
 
             :exceptions: None.
         '''
-        mock_transport = TransportBundle(
-            connection=MagicMock(),
-            transceiver=MagicMock(),
-        )
+        mock_transport = MagicMock(spec=ITransport)
+        mock_transport.is_connected.return_value = False
         bundle = StreamPipelineAssembler.assemble(
             transport=mock_transport,
             queue_capacity=10,
-            protocol_mode=ProtocolMode.ASCII,
         )
-        self.assertIsInstance(bundle, StreamingBundle)
+        self.assertIsInstance(bundle, StreamingProvides)
 
     def test_assemble_default(self) -> None:
         '''
@@ -74,19 +71,17 @@ class TestStreamPipelineAssembler(TestCase):
 
             :exceptions: None.
         '''
-        mock_transport = TransportBundle(
-            connection=MagicMock(),
-            transceiver=MagicMock(),
-        )
+        mock_transport = MagicMock(spec=ITransport)
+        mock_transport.is_connected.return_value = False
+
         with patch(
-            'scarajectory.infrastructure.streaming.assembly.stream_pipeline_assembler.TransportFactory.create_default_transport',
+            'scarajectory.infrastructure.streaming.assembly.stream_pipeline_assembler.TransportFactory.create',
             return_value=mock_transport,
         ):
             bundle = StreamPipelineAssembler.assemble_default(
                 queue_capacity=5,
-                protocol_mode=ProtocolMode.ASCII,
             )
-            self.assertIsInstance(bundle, StreamingBundle)
+            self.assertIsInstance(bundle, StreamingProvides)
 
     def test_get_version(self) -> None:
         '''

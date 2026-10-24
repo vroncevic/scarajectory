@@ -1,6 +1,15 @@
 scarajectory.infrastructure.gui.controls package
 ================================================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   scarajectory.infrastructure.gui.controls.assembly
+   scarajectory.infrastructure.gui.controls.controllers
+
 Submodules
 ----------
 
@@ -8,15 +17,9 @@ Submodules
    :maxdepth: 4
 
    scarajectory.infrastructure.gui.controls.bundle
-   scarajectory.infrastructure.gui.controls.controls_panel
-   scarajectory.infrastructure.gui.controls.controls_panel_factory
-   scarajectory.infrastructure.gui.controls.icontrols_panel
-   scarajectory.infrastructure.gui.controls.itabs_assembler
-   scarajectory.infrastructure.gui.controls.manipulator_controllers_bundle
-   scarajectory.infrastructure.gui.controls.manipulator_controllers_factory
-   scarajectory.infrastructure.gui.controls.tabs_assembler
-   scarajectory.infrastructure.gui.controls.tabs_assembler_factory
-   scarajectory.infrastructure.gui.controls.tabs_bundle
+   scarajectory.infrastructure.gui.controls.factory
+   scarajectory.infrastructure.gui.controls.ipanel
+   scarajectory.infrastructure.gui.controls.panel
 
 Module contents
 ---------------

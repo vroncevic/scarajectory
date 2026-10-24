@@ -23,13 +23,20 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from scarajectory.core.service.trajectory.validation.itrajectory_validator import ITrajectoryValidator
-from scarajectory.core.service.preferences.iconnection_repository import IConnectionRepository
-from scarajectory.core.service.storage.iplan_storage_service import IPlanStorageService
-from scarajectory.core.service.trajectory.plan.mutation.iplan_mutation_service import IPlanMutationService
-from scarajectory.core.service.trajectory.plan.store.iwaypoint_store import IWaypointStore
-from scarajectory.infrastructure.streaming.bundle import StreamingBundle
-from scarajectory.setup.pipeline.dsl_pipeline_bundle import DslPipelineBundle
+from scaracom.transport.preference.irepository import ISerialPreferenceRepository
+
+from scarajectory.core.service.storage.iloader import IPlanLoader
+from scarajectory.core.service.storage.istorer import IPlanStorer
+from scarajectory.core.service.trajectory.plan.mutation.bulk_mutation.ibulk_mutation import IPlanBulkMutator
+from scarajectory.core.service.trajectory.plan.store.istore import IWaypointStore
+from scarajectory.core.service.trajectory.validation.ivalidator import ITrajectoryValidator
+from scarajectory.infrastructure.gui.storage_dependencies import StorageDependencies
+from scarajectory.infrastructure.scaralang.avoidance.iadapter import IDeadZoneAvoidanceAdapter
+from scarajectory.infrastructure.scaralang.provides import ScaralangProvides
+from scarajectory.infrastructure.storage.workspace.imanager import IWorkspaceManager
+from scarajectory.infrastructure.streaming.provides import StreamingProvides
+from scarajectory.setup.assembly.dsl.bundle import DslPipelineBundle
+from scarajectory.setup.assembly.plan.bundle import PlanPipelineBundle
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -41,7 +48,7 @@ __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-@dataclass(slots=True, frozen=True)
+@dataclass(slots=True, frozen=True, kw_only=True)
 class ControlsBundle:
     '''
     Container bundle holding controls panel collaborator dependencies.
@@ -49,30 +56,80 @@ class ControlsBundle:
     It defines:
 
         :attributes:
-            | store - Injected waypoint query port.
-            | mutation - Injected plan mutation service.
+            | plan - Trajectory plan management pipeline bundle.
             | validator - Injected trajectory validator port.
-            | streaming - Injected streaming services bundle.
-            | storage - Injected plan storage service.
+            | streaming - Injected streaming services provides container.
             | dsl - Injected SCARA DSL pipeline bundle.
             | connection_repository - Injected connection repository port.
-        :methods:
-            | streamer - Returns streaming bundle for backward compatibility.
+            | storage - Injected storage dependencies bundle.
+            | scaralang - Injected scaralang subsystem provides container.
+        :properties:
+            | store - Injected waypoint query port.
+            | mutation - Injected plan mutation service.
+            | loader - Injected plan loader port.
+            | storer - Injected plan storer port.
+            | workspace - Injected workspace manager for examples.
+            | avoidance_adapter - Dead zone avoidance and bypass adapter.
     '''
 
-    store: IWaypointStore
-    mutation: IPlanMutationService
+    plan: PlanPipelineBundle
     validator: ITrajectoryValidator
-    streaming: StreamingBundle
-    storage: IPlanStorageService
+    streaming: StreamingProvides
     dsl: DslPipelineBundle
-    connection_repository: IConnectionRepository
+    connection_repository: ISerialPreferenceRepository
+    storage: StorageDependencies
+    scaralang: ScaralangProvides
 
     @property
-    def streamer(self) -> StreamingBundle:
+    def store(self) -> IWaypointStore:
         '''
-        Returns streaming subsystem services bundle.
+        Returns waypoint query and storage port.
 
-        :return: StreamingBundle instance.
+        :return: IWaypointStore instance.
         '''
-        return self.streaming
+        return self.plan.store
+
+    @property
+    def mutation(self) -> IPlanBulkMutator:
+        '''
+        Returns plan mutation service port.
+
+        :return: IPlanBulkMutator instance.
+        '''
+        return self.plan.mutation
+
+    @property
+    def loader(self) -> IPlanLoader:
+        '''
+        Returns trajectory plan loader port.
+
+        :return: IPlanLoader instance.
+        '''
+        return self.storage.loader
+
+    @property
+    def storer(self) -> IPlanStorer:
+        '''
+        Returns trajectory plan storer port.
+
+        :return: IPlanStorer instance.
+        '''
+        return self.storage.storer
+
+    @property
+    def workspace(self) -> IWorkspaceManager:
+        '''
+        Returns user workspace manager.
+
+        :return: IWorkspaceManager instance.
+        '''
+        return self.storage.workspace
+
+    @property
+    def avoidance_adapter(self) -> IDeadZoneAvoidanceAdapter:
+        '''
+        Returns dead zone avoidance adapter.
+
+        :return: IDeadZoneAvoidanceAdapter instance.
+        '''
+        return self.scaralang.dead_zone_avoidance

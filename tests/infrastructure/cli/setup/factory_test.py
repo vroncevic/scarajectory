@@ -57,13 +57,12 @@ class TestCLIBundleFactory(TestCase):
         '''
         sample_bundle: SCARAjectoryBundle = SCARAjectoryBundleFactory.create_bundle()
         opts = CLIBundleOptions(
-            service=sample_bundle.service,
             parser=sample_bundle.base.option_manager,
             gui=sample_bundle.gui,
         )
         bundle = CLIBundleFactory.create_bundle(options=opts)
         self.assertIsNotNone(bundle)
-        self.assertEqual(bundle.service, sample_bundle.service)
+        self.assertEqual(bundle.parser, sample_bundle.base.option_manager)
 
     def test_get_version(self) -> None:
         '''

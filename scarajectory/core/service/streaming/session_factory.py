@@ -23,8 +23,8 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 
-from scarajectory.core.model.state.stream_session import StreamSession
-from scarajectory.core.model.trajectory.waypoint import Waypoint
+from scarajectory.core.model.streaming.session import StreamSession
+from scarajectory.core.model.trajectory.waypoint import TrajectoryWaypoint
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -43,39 +43,49 @@ class SessionFactory:
         It defines:
 
             :methods:
-                | create - Constructs StreamSession instance with explicit or default values.
+                | create_default - Constructs StreamSession instance with empty waypoints and zero start time.
+                | create - Constructs StreamSession instance with provided parameters.
                 | get_version - Returns factory version string.
     '''
+
+    @classmethod
+    def create_default(cls) -> StreamSession:
+        '''
+            Constructs StreamSession instance with empty waypoints and zero start time.
+
+            :return: Default StreamSession instance.
+            :exceptions: None.
+        '''
+        return StreamSession(
+            waypoints=[],
+            sent_count=0,
+            done_count=0,
+            failed_count=0,
+            remote_queue_depth=0,
+            start_time=0.0,
+        )
 
     @classmethod
     def create(
         cls,
         *,
-        waypoints: Sequence[Waypoint] = (),
-        sent_count: int = 0,
-        done_count: int = 0,
-        failed_count: int = 0,
-        remote_queue_depth: int = 0,
-        start_time: float = 0.0,
+        waypoints: Sequence[TrajectoryWaypoint],
+        start_time: float,
     ) -> StreamSession:
         '''
             Constructs StreamSession instance with provided parameters.
 
             :param waypoints: Initial sequence of waypoints.
-            :param sent_count: Number of sent items.
-            :param done_count: Number of completed items.
-            :param failed_count: Number of failed items.
-            :param remote_queue_depth: Microcontroller queue depth.
             :param start_time: Streaming start timestamp.
             :return: StreamSession instance.
             :exceptions: None.
         '''
         return StreamSession(
             waypoints=list(waypoints),
-            sent_count=sent_count,
-            done_count=done_count,
-            failed_count=failed_count,
-            remote_queue_depth=remote_queue_depth,
+            sent_count=0,
+            done_count=0,
+            failed_count=0,
+            remote_queue_depth=0,
             start_time=start_time,
         )
 

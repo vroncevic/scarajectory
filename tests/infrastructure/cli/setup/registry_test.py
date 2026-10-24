@@ -59,19 +59,17 @@ class TestCLIBundleRegistry(TestCase):
         '''
         sample_bundle: SCARAjectoryBundle = SCARAjectoryBundleFactory.create_bundle()
         opts = CLIBundleOptions(
-            service=sample_bundle.service,
             parser=sample_bundle.base.option_manager,
             gui=sample_bundle.gui,
         )
         cli_bundle = CLIBundleFactory.create_bundle(options=opts)
         deps = CLIBundleDependencies(
-            service=cli_bundle.service,
             parser=cli_bundle.parser,
             commands=cli_bundle.commands,
         )
         bundle = CLIBundleRegistry.create_bundle(dependencies=deps)
         self.assertIsNotNone(bundle)
-        self.assertEqual(bundle.service, sample_bundle.service)
+        self.assertEqual(bundle.parser, sample_bundle.base.option_manager)
 
     def test_get_version(self) -> None:
         '''

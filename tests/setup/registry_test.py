@@ -58,14 +58,13 @@ class TestSCARAjectoryBundleRegistry(TestCase):
         sample_bundle: SCARAjectoryBundle = SCARAjectoryBundleFactory.create_bundle()
         deps = SCARAjectoryBundleDependencies(
             base=sample_bundle.base,
-            service=sample_bundle.service,
             gui=sample_bundle.gui,
             streamer=sample_bundle.streamer,
             cli=sample_bundle.cli,
         )
         bundle = SCARAjectoryBundleRegistry.create_bundle(dependencies=deps)
         self.assertIsNotNone(bundle)
-        self.assertEqual(bundle.service, sample_bundle.service)
+        self.assertEqual(bundle.gui, sample_bundle.gui)
 
     def test_get_version(self) -> None:
         '''

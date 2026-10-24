@@ -54,17 +54,15 @@ class TestCLIBundleDependenciesValidator(TestCase):
                 | test_is_valid_success_and_failure - Tests is_valid boolean check.
     '''
 
-    def _create_sample_deps(self) -> CLIBundleDependencies:
+    def create_sample_deps(self) -> CLIBundleDependencies:
         '''Creates a valid CLIBundleDependencies instance for testing.'''
         sample_bundle: SCARAjectoryBundle = SCARAjectoryBundleFactory.create_bundle()
         opts = CLIBundleOptions(
-            service=sample_bundle.service,
             parser=sample_bundle.base.option_manager,
             gui=sample_bundle.gui,
         )
         cli_bundle = CLIBundleFactory.create_bundle(options=opts)
         return CLIBundleDependencies(
-            service=cli_bundle.service,
             parser=cli_bundle.parser,
             commands=cli_bundle.commands,
         )
@@ -75,7 +73,7 @@ class TestCLIBundleDependenciesValidator(TestCase):
 
             :exceptions: None.
         '''
-        deps = self._create_sample_deps()
+        deps = self.create_sample_deps()
         CLIBundleDependenciesValidator.validate(deps)
         self.assertTrue(CLIBundleDependenciesValidator.is_valid(deps))
 
@@ -91,18 +89,16 @@ class TestCLIBundleDependenciesValidator(TestCase):
         with self.assertRaises(ATSTypeError):
             CLIBundleDependenciesValidator.validate('not_a_mapping')  # type: ignore[arg-type]
 
-        deps = self._create_sample_deps()
+        deps = self.create_sample_deps()
         deps_missing = CLIBundleDependencies(
-            service=None,  # type: ignore[arg-type]
-            parser=deps['parser'],
+            parser=None,  # type: ignore[arg-type]
             commands=deps['commands'],
         )
         with self.assertRaises(ATSValueError):
             CLIBundleDependenciesValidator.validate(deps_missing)
 
         deps_wrong_type = CLIBundleDependencies(
-            service='not_a_service',  # type: ignore[arg-type]
-            parser=deps['parser'],
+            parser='not_a_parser',  # type: ignore[arg-type]
             commands=deps['commands'],
         )
         with self.assertRaises(ATSTypeError):
@@ -114,7 +110,7 @@ class TestCLIBundleDependenciesValidator(TestCase):
 
             :exceptions: None.
         '''
-        deps = self._create_sample_deps()
+        deps = self.create_sample_deps()
         self.assertTrue(CLIBundleDependenciesValidator.is_valid(deps))
         self.assertFalse(CLIBundleDependenciesValidator.is_valid(None))  # type: ignore[arg-type]
         self.assertFalse(CLIBundleDependenciesValidator.is_valid('bad_deps'))  # type: ignore[arg-type]

@@ -8,7 +8,8 @@ Subpackages
    :maxdepth: 4
 
    scarajectory.infrastructure.settings.bounds
-   scarajectory.infrastructure.settings.stream
+   scarajectory.infrastructure.settings.communication
+   scarajectory.infrastructure.settings.reader
    scarajectory.infrastructure.settings.transmission
 
 Submodules
@@ -17,9 +18,9 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.settings.isettings_reader
-   scarajectory.infrastructure.settings.settings_reader
-   scarajectory.infrastructure.settings.settings_reader_factory
+   scarajectory.infrastructure.settings.dependencies
+   scarajectory.infrastructure.settings.factory
+   scarajectory.infrastructure.settings.provides
 
 Module contents
 ---------------

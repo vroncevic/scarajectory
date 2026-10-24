@@ -7,8 +7,11 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.core.service.trajectory.plan.history.plan_history_service
-   scarajectory.core.service.trajectory.plan.history.plan_history_service_factory
+   scarajectory.core.service.trajectory.plan.history.dependencies
+   scarajectory.core.service.trajectory.plan.history.factory
+   scarajectory.core.service.trajectory.plan.history.history
+   scarajectory.core.service.trajectory.plan.history.ihistory
+   scarajectory.core.service.trajectory.plan.history.provides
 
 Module contents
 ---------------

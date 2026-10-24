@@ -49,9 +49,14 @@ class StreamerBundleTestCase(TestCase):
     '''
 
     def test_bundle_attributes(self) -> None:
-        '''Verifies all child collaborators are accessible via bundle properties.'''
+        '''
+            Verifies all child collaborators are accessible via bundle properties.
+
+            :exceptions: None.
+        '''
         mock_plan = MagicMock()
         mock_val = MagicMock()
+        mock_avoidance = MagicMock()
         mock_conn = MagicMock()
         mock_playback = MagicMock()
         mock_repo = MagicMock()
@@ -60,24 +65,31 @@ class StreamerBundleTestCase(TestCase):
         bundle = StreamerBundle(
             plan=mock_plan,
             validator=mock_val,
-            connection=mock_conn,
+            avoidance_adapter=mock_avoidance,
+            connection_manager=mock_conn,
             playback_controller=mock_playback,
             connection_repository=mock_repo,
             controllers=mock_ctrls,
         )
         self.assertIs(bundle.plan, mock_plan)
         self.assertIs(bundle.validator, mock_val)
-        self.assertIs(bundle.connection, mock_conn)
+        self.assertIs(bundle.avoidance_adapter, mock_avoidance)
+        self.assertIs(bundle.connection_manager, mock_conn)
         self.assertIs(bundle.playback_controller, mock_playback)
         self.assertIs(bundle.connection_repository, mock_repo)
         self.assertIs(bundle.controllers, mock_ctrls)
 
     def test_bundle_immutability(self) -> None:
-        '''Verifies container cannot be mutated after creation.'''
+        '''
+            Verifies container cannot be mutated after creation.
+
+            :exceptions: None.
+        '''
         bundle = StreamerBundle(
             plan=MagicMock(),
             validator=MagicMock(),
-            connection=MagicMock(),
+            avoidance_adapter=MagicMock(),
+            connection_manager=MagicMock(),
             playback_controller=MagicMock(),
             connection_repository=MagicMock(),
             controllers=MagicMock(),

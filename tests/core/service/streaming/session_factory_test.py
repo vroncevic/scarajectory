@@ -23,8 +23,8 @@ from __future__ import annotations
 
 from unittest import TestCase, main
 
-from scarajectory.core.model.state.stream_session import StreamSession
-from scarajectory.core.model.trajectory.waypoint import Waypoint
+from scarajectory.core.model.streaming.session import StreamSession
+from scarajectory.core.model.trajectory.waypoint import TrajectoryWaypoint
 from scarajectory.core.service.streaming.session_factory import SessionFactory
 
 __author__ = 'Vladimir Roncevic'
@@ -55,7 +55,7 @@ class TestSessionFactory(TestCase):
 
             :exceptions: None.
         '''
-        session: StreamSession = SessionFactory.create()
+        session: StreamSession = SessionFactory.create_default()
         self.assertEqual(session.sent_count, 0)
         self.assertEqual(session.done_count, 0)
         self.assertEqual(session.failed_count, 0)
@@ -67,19 +67,15 @@ class TestSessionFactory(TestCase):
 
             :exceptions: None.
         '''
-        wp = Waypoint(x=10.0, y=20.0, z=5.0, phi=0.0, speed=100.0)
+        wp = TrajectoryWaypoint(x=10.0, y=20.0, z=5.0, phi=0.0, speed=100.0, name='', command='')
         session: StreamSession = SessionFactory.create(
             waypoints=[wp],
-            sent_count=1,
-            done_count=1,
-            failed_count=0,
-            remote_queue_depth=3,
             start_time=123.456,
         )
-        self.assertEqual(session.sent_count, 1)
-        self.assertEqual(session.done_count, 1)
+        self.assertEqual(session.sent_count, 0)
+        self.assertEqual(session.done_count, 0)
         self.assertEqual(session.failed_count, 0)
-        self.assertEqual(session.remote_queue_depth, 3)
+        self.assertEqual(session.remote_queue_depth, 0)
         self.assertEqual(session.start_time, 123.456)
         self.assertEqual(len(session.waypoints), 1)
 

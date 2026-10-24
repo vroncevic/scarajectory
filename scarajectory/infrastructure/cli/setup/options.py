@@ -25,7 +25,6 @@ from typing import TypedDict
 
 from ats_utilities.option.imanager import IOptionManager
 
-from scarajectory.core.service.iservice import IService
 from scarajectory.infrastructure.gui.igui import IGUI
 
 __author__ = 'Vladimir Roncevic'
@@ -45,11 +44,9 @@ class CLIBundleOptions(TypedDict):
         It defines:
 
             :attributes:
-                | service - The service for trajectory execution.
                 | parser - The parser for command line options.
                 | gui - The GUI presentation adapter.
     '''
 
-    service: IService
     parser: IOptionManager
     gui: IGUI

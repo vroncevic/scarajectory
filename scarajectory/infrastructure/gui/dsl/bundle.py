@@ -23,10 +23,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from scarajectory.core.service.storage.iplan_storage_service import IPlanStorageService
-from scarajectory.core.service.trajectory.plan.mutation.iplan_bulk_mutator import IPlanBulkMutator
-from scarajectory.core.service.trajectory.plan.store.iwaypoint_store import IWaypointStore
-from scarajectory.setup.pipeline.dsl_pipeline_bundle import DslPipelineBundle
+from scarajectory.core.service.storage.iloader import IPlanLoader
+from scarajectory.core.service.storage.istorer import IPlanStorer
+from scarajectory.core.service.trajectory.plan.mutation.bulk_mutation.ibulk_mutation import IPlanBulkMutator
+from scarajectory.core.service.trajectory.plan.store.istore import IWaypointStore
+from scarajectory.infrastructure.storage.workspace.imanager import IWorkspaceManager
+from scarajectory.setup.assembly.dsl.bundle import DslPipelineBundle
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -49,10 +51,14 @@ class DslEditorBundle:
                 | store - Active waypoint query and storage service.
                 | mutation - Plan bulk mutation service.
                 | dsl - SCARA DSL pipeline role services bundle.
-                | storage - File storage service for script persistence.
+                | loader - Trajectory plan file reader port.
+                | storer - Trajectory plan file writer port.
+                | workspace - User workspace manager for example catalogs.
     '''
 
     store: IWaypointStore
     mutation: IPlanBulkMutator
     dsl: DslPipelineBundle
-    storage: IPlanStorageService
+    loader: IPlanLoader
+    storer: IPlanStorer
+    workspace: IWorkspaceManager

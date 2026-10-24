@@ -1,0 +1,50 @@
+# ==============================================================================
+# 45_polar_rotary_inspection_sweep.scara - Polar Quadrant Arc Optical Scan
+# ==============================================================================
+# Demonstrates multi-angle polar optical inspection:
+# 1. Circular quadrant arc sweeps (ARC_CCW) tracing an annular workpiece perimeter.
+# 2. Discrete 90-degree 4th-axis yaw re-orientation (MOVE_REL PHI=90.0) at each quadrant.
+# 3. Synchronized sensor dwell delays (WAIT_MS 50) for camera exposure settling.
+# 4. Closed-loop stepper feedback ensuring sub-millimeter angular registration.
+# ==============================================================================
+
+CONFIG MOTOR CLOSED_LOOP
+ENABLE
+HOME
+
+CONFIG ELBOW RIGHT
+SPEED WORK 35.0
+ACCEL 250.0
+TOOL_ORIENT FIXED
+
+# Approach starting inspection vertex (0 degrees polar)
+MOVE_J X=180.0 Y=0.0 Z=25.0 PHI=0.0
+MOVE_L X=180.0 Y=0.0 Z=15.0 PHI=0.0
+WAIT_MS 50
+
+# --- Quadrant 1 (0° to 90°): Arc to top vertex ---
+ZONE EXACT
+ARC_CCW X=140.0 Y=40.0 I=-40.0 J=0.0
+MOVE_REL PHI=90.0 SPEED=45.0
+WAIT_MS 50
+
+# --- Quadrant 2 (90° to 180°): Arc to inner vertex ---
+ARC_CCW X=100.0 Y=0.0 I=0.0 J=-40.0
+MOVE_REL PHI=90.0 SPEED=45.0
+WAIT_MS 50
+
+# --- Quadrant 3 (180° to 270°): Arc to bottom vertex ---
+ARC_CCW X=140.0 Y=-40.0 I=40.0 J=0.0
+MOVE_REL PHI=90.0 SPEED=45.0
+WAIT_MS 50
+
+# --- Quadrant 4 (270° to 360°): Arc back to starting vertex ---
+ARC_CCW X=180.0 Y=0.0 I=0.0 J=40.0
+MOVE_REL PHI=90.0 SPEED=45.0
+WAIT_MS 50
+
+# Inspection complete - lift and return to standby
+RETRACT DIST=20.0 SPEED=40.0
+MOVE_L X=120.0 Y=0.0 Z=30.0 PHI=0.0 SPEED=60.0
+HOME
+DISABLE

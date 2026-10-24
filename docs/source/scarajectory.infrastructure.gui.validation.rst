@@ -7,8 +7,9 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.gui.validation.validation_tab
-   scarajectory.infrastructure.gui.validation.validation_tab_factory
+   scarajectory.infrastructure.gui.validation.dependencies
+   scarajectory.infrastructure.gui.validation.factory
+   scarajectory.infrastructure.gui.validation.tab
 
 Module contents
 ---------------

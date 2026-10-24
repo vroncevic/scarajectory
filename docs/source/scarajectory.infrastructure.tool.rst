@@ -1,16 +1,24 @@
 scarajectory.infrastructure.tool package
 ========================================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   scarajectory.infrastructure.tool.controller
+   scarajectory.infrastructure.tool.worker
+
 Submodules
 ----------
 
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.tool.tool_controller
-   scarajectory.infrastructure.tool.tool_controller_factory
-   scarajectory.infrastructure.tool.valve_pulse_worker
-   scarajectory.infrastructure.tool.valve_pulse_worker_factory
+   scarajectory.infrastructure.tool.dependencies
+   scarajectory.infrastructure.tool.factory
+   scarajectory.infrastructure.tool.provides
 
 Module contents
 ---------------

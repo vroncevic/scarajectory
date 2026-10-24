@@ -22,15 +22,16 @@ Info
 
 from __future__ import annotations
 
-from tkinter import LEFT, VERTICAL, Widget, X, Y
-from tkinter.ttk import Frame, Label, Separator
+from tkinter import Widget
+from tkinter.ttk import Frame
+from typing import Final
 
-from scarajectory.infrastructure.gui.toolbar.tool_selector import ToolbarToolSelector
-from scarajectory.infrastructure.gui.toolbar.navigation_controls import ToolbarNavigationControls
-from scarajectory.infrastructure.gui.toolbar.parameter_inputs import ToolbarParameterInputs
+from scarajectory.infrastructure.gui.toolbar.bundle import ToolbarBundle
+from scarajectory.infrastructure.gui.toolbar.section.bundle import SectionsBundle
+from scarajectory.infrastructure.gui.toolbar.section.iassembler import ISectionsAssembler
 
 __author__ = 'Vladimir Roncevic'
-__copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
+__copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
 __version__ = '1.0.3'
@@ -47,53 +48,31 @@ class Toolbar(Frame):
         It defines:
 
             :attributes:
-                | _tool_selector - CAD tool mode selector subcomponent.
-                | _nav_controls - Navigation and history controls component.
-                | _param_inputs - Parameter defaults and cursor component.
+                | _sections - Container holding mounted toolbar sub-sections.
             :methods:
-                | __init__ - Initializes toolbar container.
-                | mount_controls - Mounts injected toolbar sub-panels.
+                | __init__ - Initializes toolbar container and mounts sections.
                 | set_deadzone - Sets deadzone enforcement checkbox state.
-                | get_cursor_label - Returns cursor info label widget.
+                | get_version - Returns component version string.
     '''
 
-    _tool_selector: ToolbarToolSelector
-    _nav_controls: ToolbarNavigationControls
-    _param_inputs: ToolbarParameterInputs
-
-    def __init__(self, parent: Widget) -> None:
+    def __init__(
+        self,
+        parent: Widget,
+        assembler: ISectionsAssembler,
+        bundle: ToolbarBundle,
+    ) -> None:
         '''
-            Initializes toolbar container.
+            Initializes toolbar container and mounts sections.
 
             :param parent: Parent container widget.
+            :param assembler: Section assembler interface.
+            :param bundle: Toolbar dependency and parameters bundle.
             :exceptions: None.
         '''
         super().__init__(parent, padding=(8, 6))
-
-    def mount_controls(
-        self,
-        tool_selector: ToolbarToolSelector,
-        nav_controls: ToolbarNavigationControls,
-        param_inputs: ToolbarParameterInputs,
-    ) -> None:
-        '''
-            Mounts injected toolbar sub-panels.
-
-            :param tool_selector: Tool selector component.
-            :param nav_controls: Navigation controls component.
-            :param param_inputs: Parameter inputs component.
-            :exceptions: None.
-        '''
-        self._tool_selector = tool_selector
-        self._tool_selector.pack(side=LEFT)
-
-        Separator(self, orient=VERTICAL).pack(side=LEFT, fill=Y, padx=8)
-        self._nav_controls = nav_controls
-        self._nav_controls.pack(side=LEFT)
-
-        Separator(self, orient=VERTICAL).pack(side=LEFT, fill=Y, padx=8)
-        self._param_inputs = param_inputs
-        self._param_inputs.pack(side=LEFT, fill=X, expand=True)
+        self._sections: Final[SectionsBundle] = assembler.assemble_sections(
+            self, bundle
+        )
 
     def set_deadzone(self, enabled: bool) -> None:
         '''
@@ -102,13 +81,13 @@ class Toolbar(Frame):
             :param enabled: True to enforce deadzone, False to disable.
             :exceptions: None.
         '''
-        self._param_inputs.set_deadzone(enabled)
+        self._sections.param_section.set_deadzone(enabled)
 
-    def get_cursor_label(self) -> Label:
+    def get_version(self) -> str:
         '''
-            Returns cursor info label widget.
+            Returns component version string.
 
-            :return: Label widget displaying coordinates and zoom.
+            :return: Version string.
             :exceptions: None.
         '''
-        return self._param_inputs.get_cursor_label()
+        return __version__

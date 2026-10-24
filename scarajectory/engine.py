@@ -87,7 +87,6 @@ class SCARAjectory(Base):
             self._is_initialized = all(
                 component.is_initialized() for component in [
                     bundle.base.option_manager,
-                    bundle.service,
                     bundle.gui,
                     self._cli
                 ] if component

@@ -137,169 +137,184 @@ Tool structure
          │   ├── model/
          │   │   ├── __init__.py
          │   │   ├── jog/
-         │   │   │   ├── __init__.py
-         │   │   │   ├── jog_axis.py
-         │   │   │   ├── jog_command.py
-         │   │   │   └── jog_direction.py
-         │   │   ├── preferences/
-         │   │   │   ├── connection_preference.py
+         │   │   │   ├── axis.py
+         │   │   │   ├── command.py
+         │   │   │   ├── direction.py
          │   │   │   └── __init__.py
-         │   │   ├── protocol/
-         │   │   │   ├── __init__.py
-         │   │   │   ├── protocol_mode.py
-         │   │   │   └── scara_response.py
-         │   │   ├── state/
-         │   │   │   ├── __init__.py
-         │   │   │   ├── stream_session.py
-         │   │   │   └── stream_state.py
          │   │   ├── streaming/
+         │   │   │   ├── config.py
          │   │   │   ├── __init__.py
-         │   │   │   ├── stream_config.py
-         │   │   │   └── stream_pacing_config.py
+         │   │   │   ├── pacing_config.py
+         │   │   │   ├── session.py
+         │   │   │   └── state.py
          │   │   ├── telemetry/
-         │   │   │   ├── diagnostics_bundle.py
-         │   │   │   ├── fault_event.py
+         │   │   │   ├── counts.py
+         │   │   │   ├── diagnostics/
+         │   │   │   │   ├── bundle.py
+         │   │   │   │   ├── comm.py
+         │   │   │   │   ├── driver.py
+         │   │   │   │   ├── errors.py
+         │   │   │   │   ├── __init__.py
+         │   │   │   │   └── steps.py
+         │   │   │   ├── fault.py
          │   │   │   ├── __init__.py
-         │   │   │   ├── move_event.py
-         │   │   │   ├── scara_status.py
-         │   │   │   ├── stream_progress.py
-         │   │   │   └── stream_summary.py
+         │   │   │   ├── move.py
+         │   │   │   ├── progress.py
+         │   │   │   ├── status.py
+         │   │   │   └── summary.py
          │   │   └── trajectory/
+         │   │       ├── __init__.py
          │   │       └── waypoint.py
          │   └── service/
-         │       ├── engine.py
          │       ├── __init__.py
-         │       ├── iservice.py
          │       ├── manipulator/
-         │       │   ├── ijog_controller.py
-         │       │   ├── imotion_controller.py
+         │       │   ├── ijog.py
+         │       │   ├── imotion.py
          │       │   ├── __init__.py
-         │       │   └── iquery_controller.py
-         │       ├── preferences/
-         │       │   ├── connection_preference_factory.py
-         │       │   ├── iconnection_repository.py
-         │       │   └── __init__.py
-         │       ├── service_factory.py
+         │       │   └── iquery.py
          │       ├── storage/
+         │       │   ├── iloader.py
          │       │   ├── __init__.py
-         │       │   ├── iplan_loader.py
-         │       │   ├── iplan_storage_service.py
-         │       │   └── iplan_storer.py
+         │       │   └── istorer.py
          │       ├── streaming/
          │       │   ├── config_factory.py
-         │       │   ├── imotion_streamer.py
-         │       │   ├── __init__.py
-         │       │   ├── istream_control_transmitter.py
-         │       │   ├── istream_dispatcher.py
-         │       │   ├── istream_playback_controller.py
-         │       │   ├── observer/
+         │       │   ├── control/
          │       │   │   ├── __init__.py
-         │       │   │   ├── iobservable.py
+         │       │   │   └── itransmitter.py
+         │       │   ├── __init__.py
+         │       │   ├── observer/
+         │       │   │   ├── idispatcher.py
+         │       │   │   ├── __init__.py
          │       │   │   ├── iobserver.py
-         │       │   │   └── istream_observer_dispatcher.py
-         │       │   ├── session_factory.py
-         │       │   └── stream_pacing_config_factory.py
+         │       │   │   └── iregistry.py
+         │       │   ├── pacing_config_factory.py
+         │       │   ├── playback/
+         │       │   │   ├── icontroller.py
+         │       │   │   └── __init__.py
+         │       │   └── session_factory.py
          │       ├── telemetry/
-         │       │   ├── fault_event_factory.py
+         │       │   ├── diagnostics/
+         │       │   │   ├── bundle_factory.py
+         │       │   │   ├── driver_factory.py
+         │       │   │   ├── errors_factory.py
+         │       │   │   ├── __init__.py
+         │       │   │   └── steps_factory.py
+         │       │   ├── fault_factory.py
          │       │   ├── __init__.py
-         │       │   └── move_event_factory.py
+         │       │   └── move_factory.py
          │       ├── tool/
-         │       │   ├── __init__.py
-         │       │   ├── ipurge_valve_actuator.py
-         │       │   └── itool_controller.py
+         │       │   ├── iactuator.py
+         │       │   ├── icontroller.py
+         │       │   └── __init__.py
          │       └── trajectory/
-         │           ├── contract/
-         │           │   ├── __init__.py
-         │           │   ├── iplan_command_service.py
-         │           │   ├── iplan_persistence_service.py
-         │           │   └── iplan_validation_service.py
          │           ├── history/
+         │           │   ├── dependencies.py
+         │           │   ├── factory.py
          │           │   ├── __init__.py
-         │           │   ├── iplan_history.py
-         │           │   ├── iplan_history_saver.py
-         │           │   ├── plan_history.py
-         │           │   └── plan_history_factory.py
+         │           │   ├── navigator/
+         │           │   │   ├── dependencies.py
+         │           │   │   ├── factory.py
+         │           │   │   ├── inavigator.py
+         │           │   │   ├── __init__.py
+         │           │   │   └── navigator.py
+         │           │   ├── provides.py
+         │           │   ├── saver/
+         │           │   │   ├── dependencies.py
+         │           │   │   ├── factory.py
+         │           │   │   ├── __init__.py
+         │           │   │   ├── isaver.py
+         │           │   │   └── saver.py
+         │           │   └── stack/
+         │           │       ├── factory.py
+         │           │       ├── __init__.py
+         │           │       ├── istack.py
+         │           │       └── stack.py
          │           ├── __init__.py
          │           ├── plan/
          │           │   ├── history/
+         │           │   │   ├── dependencies.py
+         │           │   │   ├── factory.py
+         │           │   │   ├── history.py
+         │           │   │   ├── ihistory.py
          │           │   │   ├── __init__.py
-         │           │   │   ├── plan_history_service.py
-         │           │   │   └── plan_history_service_factory.py
+         │           │   │   └── provides.py
          │           │   ├── __init__.py
-         │           │   ├── itrajectory_history.py
-         │           │   ├── itrajectory_mutable.py
-         │           │   ├── itrajectory_read_only.py
          │           │   ├── mutation/
+         │           │   │   ├── bulk_mutation/
+         │           │   │   │   ├── bulk_mutation.py
+         │           │   │   │   ├── ibulk_mutation.py
+         │           │   │   │   └── __init__.py
+         │           │   │   ├── dependencies.py
+         │           │   │   ├── factory.py
          │           │   │   ├── __init__.py
-         │           │   │   ├── iplan_bulk_mutator.py
-         │           │   │   ├── iplan_mutation_service.py
-         │           │   │   ├── iplan_point_mutator.py
-         │           │   │   ├── plan_mutation_service.py
-         │           │   │   └── plan_mutation_service_factory.py
+         │           │   │   ├── point_mutation/
+         │           │   │   │   ├── __init__.py
+         │           │   │   │   ├── ipoint_mutation.py
+         │           │   │   │   └── point_mutation.py
+         │           │   │   └── provides.py
          │           │   ├── observer/
+         │           │   │   ├── dispatcher.py
+         │           │   │   ├── factory.py
+         │           │   │   ├── idispatcher.py
          │           │   │   ├── __init__.py
-         │           │   │   ├── iplan_observer_dispatcher.py
          │           │   │   ├── itrajectory_observer.py
-         │           │   │   ├── plan_observer_dispatcher.py
-         │           │   │   └── plan_observer_dispatcher_factory.py
+         │           │   │   └── provides.py
          │           │   ├── selection/
+         │           │   │   ├── coordinator/
+         │           │   │   │   ├── coordinator.py
+         │           │   │   │   ├── dependencies.py
+         │           │   │   │   ├── factory.py
+         │           │   │   │   ├── icoordinator.py
+         │           │   │   │   └── __init__.py
+         │           │   │   ├── dependencies.py
+         │           │   │   ├── factory.py
          │           │   │   ├── __init__.py
-         │           │   │   ├── iplan_selection_coordinator.py
-         │           │   │   ├── iplan_selection_manager.py
-         │           │   │   ├── iplan_selection_navigator.py
-         │           │   │   ├── iplan_selection_state.py
-         │           │   │   ├── plan_selection_coordinator.py
-         │           │   │   ├── plan_selection_coordinator_factory.py
-         │           │   │   ├── plan_selection_manager.py
-         │           │   │   ├── plan_selection_manager_factory.py
-         │           │   │   ├── plan_selection_navigator.py
-         │           │   │   ├── plan_selection_navigator_factory.py
-         │           │   │   └── plan_selection_state.py
+         │           │   │   ├── navigator/
+         │           │   │   │   ├── factory.py
+         │           │   │   │   ├── inavigator.py
+         │           │   │   │   ├── __init__.py
+         │           │   │   │   └── navigator.py
+         │           │   │   ├── provides.py
+         │           │   │   └── state/
+         │           │   │       ├── factory.py
+         │           │   │       ├── __init__.py
+         │           │   │       ├── istate.py
+         │           │   │       └── state.py
          │           │   └── store/
+         │           │       ├── bulk_mutator/
+         │           │       │   ├── bulk_mutator.py
+         │           │       │   ├── ibulk_mutator.py
+         │           │       │   └── __init__.py
+         │           │       ├── dependencies.py
+         │           │       ├── factory.py
          │           │       ├── __init__.py
-         │           │       ├── iwaypoint_bulk_mutator.py
-         │           │       ├── iwaypoint_mutator.py
-         │           │       ├── iwaypoint_query.py
-         │           │       ├── iwaypoint_store.py
-         │           │       ├── waypoint_bulk_mutator.py
-         │           │       ├── waypoint_mutator.py
-         │           │       ├── waypoint_query.py
-         │           │       ├── waypoint_store.py
-         │           │       └── waypoint_store_factory.py
+         │           │       ├── istore.py
+         │           │       ├── mutator/
+         │           │       │   ├── imutator.py
+         │           │       │   ├── __init__.py
+         │           │       │   └── mutator.py
+         │           │       ├── provides.py
+         │           │       ├── query/
+         │           │       │   ├── __init__.py
+         │           │       │   ├── iquery.py
+         │           │       │   └── query.py
+         │           │       └── store.py
          │           └── validation/
-         │               └── itrajectory_validator.py
+         │               ├── __init__.py
+         │               └── ivalidator.py
          ├── engine.py
          ├── infrastructure/
          │   ├── barrier/
-         │   │   ├── flow_barrier.py
-         │   │   ├── flow_barrier_factory.py
-         │   │   ├── iflow_barrier.py
-         │   │   └── __init__.py
-         │   ├── classifier/
+         │   │   ├── factory.py
          │   │   ├── __init__.py
-         │   │   ├── iresponse_classification_registry.py
-         │   │   ├── iresponse_classification_rule.py
-         │   │   ├── iresponse_parser.py
-         │   │   ├── response_classification_registry.py
-         │   │   ├── response_classification_registry_factory.py
-         │   │   ├── response_classification_rule.py
-         │   │   ├── response_parser.py
-         │   │   ├── response_parser_factory.py
-         │   │   └── status/
-         │   │       ├── flow_status_classifier.py
-         │   │       ├── flow_status_classifier_factory.py
-         │   │       ├── homing_status_classifier.py
-         │   │       ├── homing_status_classifier_factory.py
-         │   │       ├── iflow_status_classifier.py
-         │   │       ├── ihoming_status_classifier.py
-         │   │       ├── imotion_status_classifier.py
-         │   │       ├── __init__.py
-         │   │       ├── motion_status_classifier.py
-         │   │       └── motion_status_classifier_factory.py
+         │   │   └── provides.py
          │   ├── cli/
+         │   │   ├── dependencies.py
          │   │   ├── engine.py
+         │   │   ├── factory.py
          │   │   ├── icli.py
          │   │   ├── __init__.py
+         │   │   ├── provides.py
          │   │   └── setup/
          │   │       ├── bundle.py
          │   │       ├── dep_validator.py
@@ -312,381 +327,629 @@ Tool structure
          │   │       ├── registry.py
          │   │       └── validator.py
          │   ├── command/
-         │   │   ├── command_bundle.py
-         │   │   ├── icommand_definition.py
-         │   │   ├── icommand_executor.py
+         │   │   ├── bundle.py
+         │   │   ├── dependencies.py
+         │   │   ├── factory.py
+         │   │   ├── idefinition.py
+         │   │   ├── iexecutor.py
          │   │   ├── __init__.py
-         │   │   ├── studio_command_definition.py
-         │   │   └── studio_command_executor.py
+         │   │   ├── provides.py
+         │   │   └── studio/
+         │   │       ├── definition.py
+         │   │       ├── dependencies.py
+         │   │       ├── executor.py
+         │   │       ├── factory.py
+         │   │       ├── __init__.py
+         │   │       └── provides.py
          │   ├── config/
+         │   │   ├── communication.json
+         │   │   ├── communication_scheme.json
          │   │   ├── examples.tgz
          │   │   ├── scara_geometry.json
+         │   │   ├── scara_geometry_scheme.json
+         │   │   ├── scaraemu.json
+         │   │   ├── scaraemu_scheme.json
          │   │   ├── scarajectory.cfg
-         │   │   ├── scarajectory.logo
-         │   │   └── scheme.json
+         │   │   └── scarajectory.logo
          │   ├── connection/
-         │   │   ├── channel_dispatcher.py
-         │   │   ├── channel_dispatcher_factory.py
-         │   │   ├── ibyte_sender.py
-         │   │   ├── ichannel_dispatcher.py
-         │   │   ├── icommand_sender.py
-         │   │   ├── iconnection.py
-         │   │   ├── __init__.py
-         │   │   ├── iraw_channel.py
-         │   │   ├── istream_bytes_receiver.py
-         │   │   ├── istream_connection.py
-         │   │   ├── istream_line_receiver.py
-         │   │   ├── istream_raw_transceiver.py
-         │   │   ├── stream_connection_manager.py
-         │   │   ├── stream_connection_manager_factory.py
-         │   │   ├── stream_raw_transceiver.py
-         │   │   └── stream_raw_transceiver_factory.py
-         │   ├── event/
-         │   │   ├── binary_frame_dispatcher.py
-         │   │   ├── binary_frame_dispatcher_factory.py
-         │   │   ├── ibinary_frame_dispatcher.py
-         │   │   ├── ibinary_frame_handler.py
-         │   │   └── __init__.py
-         │   ├── formatter/
-         │   │   ├── command/
-         │   │   │   ├── config_command_formatter.py
+         │   │   ├── dependencies.py
+         │   │   ├── dispatcher/
+         │   │   │   ├── dependencies.py
+         │   │   │   ├── dispatcher.py
+         │   │   │   ├── factory.py
+         │   │   │   ├── idispatcher.py
          │   │   │   ├── __init__.py
-         │   │   │   ├── jog_command_formatter.py
-         │   │   │   ├── motion_command_formatter.py
-         │   │   │   ├── query_command_formatter.py
-         │   │   │   ├── system_command_formatter.py
-         │   │   │   └── tool_command_formatter.py
-         │   │   ├── command_formatter.py
-         │   │   ├── command_formatter_factory.py
-         │   │   ├── command_templates.py
-         │   │   ├── icommand_formatter.py
-         │   │   └── __init__.py
+         │   │   │   └── provides.py
+         │   │   ├── factory.py
+         │   │   ├── __init__.py
+         │   │   ├── listener/
+         │   │   │   ├── factory.py
+         │   │   │   ├── __init__.py
+         │   │   │   └── listener.py
+         │   │   ├── manager/
+         │   │   │   ├── dependencies.py
+         │   │   │   ├── factory.py
+         │   │   │   ├── imanager.py
+         │   │   │   ├── __init__.py
+         │   │   │   ├── manager.py
+         │   │   │   └── provides.py
+         │   │   ├── provides.py
+         │   │   ├── receiver/
+         │   │   │   ├── bootstrap.py
+         │   │   │   ├── ibytes_receiver.py
+         │   │   │   └── __init__.py
+         │   │   └── router/
+         │   │       ├── factory.py
+         │   │       ├── __init__.py
+         │   │       └── provides.py
          │   ├── gui/
+         │   │   ├── bundle.py
          │   │   ├── canvas/
+         │   │   │   ├── adapter_bundle.py
          │   │   │   ├── bundle.py
-         │   │   │   ├── canvas_event_binder.py
-         │   │   │   ├── canvas_event_binder_factory.py
+         │   │   │   ├── event/
+         │   │   │   │   ├── binder.py
+         │   │   │   │   ├── dependencies.py
+         │   │   │   │   ├── factory.py
+         │   │   │   │   ├── ibinder.py
+         │   │   │   │   └── __init__.py
          │   │   │   ├── handler/
-         │   │   │   │   ├── canvas_drag_handler.py
-         │   │   │   │   ├── canvas_event_context.py
-         │   │   │   │   ├── canvas_mouse_handler.py
-         │   │   │   │   ├── canvas_mouse_handler_factory.py
-         │   │   │   │   ├── canvas_shape_handler.py
-         │   │   │   │   ├── canvas_tool_handler.py
-         │   │   │   │   ├── icanvas_mouse_handler.py
-         │   │   │   │   ├── icanvas_waypoint_builder.py
-         │   │   │   │   ├── __init__.py
-         │   │   │   │   ├── mouse_handler_bundle.py
-         │   │   │   │   ├── mouse_handler_init_bundle.py
-         │   │   │   │   ├── pan/
-         │   │   │   │   │   ├── canvas_viewport_pan_handler.py
-         │   │   │   │   │   ├── canvas_viewport_pan_handler_factory.py
-         │   │   │   │   │   ├── icanvas_viewport_pan_handler.py
+         │   │   │   │   ├── coordinator/
+         │   │   │   │   │   ├── bundle.py
+         │   │   │   │   │   ├── coordinator.py
+         │   │   │   │   │   ├── factory.py
+         │   │   │   │   │   ├── icoordinator.py
          │   │   │   │   │   └── __init__.py
-         │   │   │   │   └── selection/
-         │   │   │   │       ├── canvas_selection_mouse_handler.py
-         │   │   │   │       ├── canvas_selection_mouse_handler_factory.py
-         │   │   │   │       ├── icanvas_selection_mouse_handler.py
-         │   │   │   │       └── __init__.py
+         │   │   │   │   ├── drag/
+         │   │   │   │   │   ├── bundle.py
+         │   │   │   │   │   ├── factory.py
+         │   │   │   │   │   ├── handler.py
+         │   │   │   │   │   ├── ihandler.py
+         │   │   │   │   │   └── __init__.py
+         │   │   │   │   ├── __init__.py
+         │   │   │   │   ├── mouse/
+         │   │   │   │   │   ├── bundle.py
+         │   │   │   │   │   ├── context.py
+         │   │   │   │   │   ├── factory.py
+         │   │   │   │   │   ├── handler.py
+         │   │   │   │   │   ├── ihandler.py
+         │   │   │   │   │   ├── __init__.py
+         │   │   │   │   │   └── init_bundle.py
+         │   │   │   │   ├── pan/
+         │   │   │   │   │   ├── factory.py
+         │   │   │   │   │   ├── handler.py
+         │   │   │   │   │   ├── ihandler.py
+         │   │   │   │   │   └── __init__.py
+         │   │   │   │   ├── selection/
+         │   │   │   │   │   ├── bundle.py
+         │   │   │   │   │   ├── factory.py
+         │   │   │   │   │   ├── handler.py
+         │   │   │   │   │   ├── ihandler.py
+         │   │   │   │   │   └── __init__.py
+         │   │   │   │   ├── shape/
+         │   │   │   │   │   ├── factory.py
+         │   │   │   │   │   ├── handler.py
+         │   │   │   │   │   ├── ibuilder.py
+         │   │   │   │   │   ├── ihandler.py
+         │   │   │   │   │   └── __init__.py
+         │   │   │   │   └── state.py
          │   │   │   ├── icanvas.py
          │   │   │   ├── __init__.py
          │   │   │   ├── navigation/
-         │   │   │   │   ├── canvas_view_navigator.py
-         │   │   │   │   ├── canvas_view_navigator_factory.py
-         │   │   │   │   ├── icanvas_view_navigator.py
-         │   │   │   │   ├── icanvas_view_target.py
-         │   │   │   │   └── __init__.py
-         │   │   │   ├── observer/
-         │   │   │   │   ├── canvas_plan_observer_bridge.py
-         │   │   │   │   ├── canvas_plan_observer_bridge_factory.py
-         │   │   │   │   ├── icanvas_plan_observer_bridge.py
-         │   │   │   │   └── __init__.py
-         │   │   │   ├── render/
-         │   │   │   │   ├── forbidden_zone_renderer.py
-         │   │   │   │   ├── ilayer_renderer.py
+         │   │   │   │   ├── dependencies.py
+         │   │   │   │   ├── factory.py
+         │   │   │   │   ├── inavigator.py
          │   │   │   │   ├── __init__.py
-         │   │   │   │   ├── polar_grid_renderer.py
-         │   │   │   │   ├── preview_renderer.py
-         │   │   │   │   ├── reach_boundary_renderer.py
+         │   │   │   │   ├── itarget.py
+         │   │   │   │   └── navigator.py
+         │   │   │   ├── observer/
+         │   │   │   │   ├── bridge.py
+         │   │   │   │   ├── factory.py
+         │   │   │   │   ├── __init__.py
+         │   │   │   │   └── iredraw_delegate.py
+         │   │   │   ├── renderer/
+         │   │   │   │   ├── boundary/
+         │   │   │   │   │   ├── __init__.py
+         │   │   │   │   │   ├── reach.py
+         │   │   │   │   │   ├── zone.py
+         │   │   │   │   │   └── zone_factory.py
+         │   │   │   │   ├── grid/
+         │   │   │   │   │   ├── __init__.py
+         │   │   │   │   │   └── renderer.py
+         │   │   │   │   ├── __init__.py
+         │   │   │   │   ├── layer/
+         │   │   │   │   │   ├── ilayer.py
+         │   │   │   │   │   └── __init__.py
+         │   │   │   │   ├── preview/
+         │   │   │   │   │   ├── __init__.py
+         │   │   │   │   │   └── renderer.py
          │   │   │   │   ├── renderer.py
-         │   │   │   │   ├── trajectory_renderer.py
-         │   │   │   │   ├── waypoint_node_renderer.py
-         │   │   │   │   └── waypoint_node_renderer_factory.py
+         │   │   │   │   └── trajectory/
+         │   │   │   │       ├── bundle.py
+         │   │   │   │       ├── __init__.py
+         │   │   │   │       ├── node.py
+         │   │   │   │       ├── node_factory.py
+         │   │   │   │       └── renderer.py
+         │   │   │   ├── settings/
+         │   │   │   │   ├── __init__.py
+         │   │   │   │   ├── ipresenter.py
+         │   │   │   │   └── presenter.py
          │   │   │   ├── status/
-         │   │   │   │   ├── canvas_status_presenter.py
-         │   │   │   │   ├── canvas_status_presenter_factory.py
-         │   │   │   │   ├── icanvas_status_presenter.py
+         │   │   │   │   ├── factory.py
+         │   │   │   │   ├── __init__.py
+         │   │   │   │   ├── ipresenter.py
+         │   │   │   │   └── presenter.py
+         │   │   │   ├── tool/
+         │   │   │   │   ├── coordinator.py
+         │   │   │   │   ├── icoordinator.py
          │   │   │   │   └── __init__.py
          │   │   │   ├── trajectory_canvas.py
-         │   │   │   └── trajectory_canvas_factory.py
+         │   │   │   ├── trajectory_canvas_factory.py
+         │   │   │   └── transform/
+         │   │   │       ├── camera.py
+         │   │   │       ├── icamera.py
+         │   │   │       ├── __init__.py
+         │   │   │       ├── iprojector.py
+         │   │   │       ├── projector.py
+         │   │   │       └── transform.py
          │   │   ├── connection/
+         │   │   │   ├── action/
+         │   │   │   │   ├── action.py
+         │   │   │   │   ├── iaction.py
+         │   │   │   │   ├── idelegate.py
+         │   │   │   │   └── __init__.py
          │   │   │   ├── __init__.py
-         │   │   │   ├── iport_connection_delegate.py
-         │   │   │   ├── iport_connection_panel.py
-         │   │   │   ├── null_port_connection_delegate.py
-         │   │   │   └── port_connection_panel.py
+         │   │   │   ├── panel/
+         │   │   │   │   ├── __init__.py
+         │   │   │   │   ├── ipanel.py
+         │   │   │   │   └── panel.py
+         │   │   │   └── selector/
+         │   │   │       ├── __init__.py
+         │   │   │       ├── iselector.py
+         │   │   │       └── selector.py
          │   │   ├── console/
          │   │   │   ├── __init__.py
-         │   │   │   ├── serial_console.py
-         │   │   │   ├── serial_console_builder.py
-         │   │   │   └── serial_console_builder_factory.py
+         │   │   │   └── panel.py
          │   │   ├── controls/
+         │   │   │   ├── assembly/
+         │   │   │   │   ├── assembler.py
+         │   │   │   │   ├── bundle.py
+         │   │   │   │   ├── iassembler.py
+         │   │   │   │   └── __init__.py
          │   │   │   ├── bundle.py
-         │   │   │   ├── controls_panel.py
-         │   │   │   ├── controls_panel_factory.py
-         │   │   │   ├── icontrols_panel.py
+         │   │   │   ├── controllers/
+         │   │   │   │   ├── bundle.py
+         │   │   │   │   ├── factory.py
+         │   │   │   │   └── __init__.py
+         │   │   │   ├── factory.py
          │   │   │   ├── __init__.py
-         │   │   │   ├── itabs_assembler.py
-         │   │   │   ├── manipulator_controllers_bundle.py
-         │   │   │   ├── manipulator_controllers_factory.py
-         │   │   │   ├── tabs_assembler.py
-         │   │   │   ├── tabs_assembler_factory.py
-         │   │   │   └── tabs_bundle.py
+         │   │   │   ├── ipanel.py
+         │   │   │   └── panel.py
+         │   │   ├── dependencies.py
          │   │   ├── dsl/
          │   │   │   ├── bundle.py
-         │   │   │   ├── code_editor.py
-         │   │   │   ├── code_editor_factory.py
-         │   │   │   ├── console_view.py
+         │   │   │   ├── catalog/
+         │   │   │   │   ├── catalog.py
+         │   │   │   │   ├── factory.py
+         │   │   │   │   ├── icatalog.py
+         │   │   │   │   └── __init__.py
+         │   │   │   ├── console/
+         │   │   │   │   ├── console.py
+         │   │   │   │   ├── factory.py
+         │   │   │   │   ├── iconsole.py
+         │   │   │   │   └── __init__.py
          │   │   │   ├── document/
-         │   │   │   │   ├── document_manager.py
-         │   │   │   │   ├── document_manager_factory.py
-         │   │   │   │   ├── example_catalog.py
-         │   │   │   │   ├── example_catalog_factory.py
+         │   │   │   │   ├── factory.py
+         │   │   │   │   ├── imanager.py
+         │   │   │   │   ├── __init__.py
+         │   │   │   │   └── manager.py
+         │   │   │   ├── editor/
+         │   │   │   │   ├── editor.py
+         │   │   │   │   ├── factory.py
+         │   │   │   │   ├── ieditor.py
          │   │   │   │   └── __init__.py
-         │   │   │   ├── dsl_editor_tab.py
-         │   │   │   ├── dsl_editor_tab_factory.py
+         │   │   │   ├── factory.py
          │   │   │   ├── handler/
-         │   │   │   │   ├── binary_handler.py
-         │   │   │   │   ├── binary_handler_bundle.py
-         │   │   │   │   ├── binary_handler_factory.py
-         │   │   │   │   ├── execution_handler.py
-         │   │   │   │   ├── execution_handler_bundle.py
-         │   │   │   │   ├── execution_handler_factory.py
-         │   │   │   │   ├── file_handler.py
-         │   │   │   │   ├── file_handler_bundle.py
-         │   │   │   │   ├── file_handler_factory.py
-         │   │   │   │   ├── ibinary_delegate.py
-         │   │   │   │   ├── iexecution_delegate.py
-         │   │   │   │   ├── ifile_delegate.py
+         │   │   │   │   ├── binary/
+         │   │   │   │   │   ├── bundle.py
+         │   │   │   │   │   ├── factory.py
+         │   │   │   │   │   ├── handler.py
+         │   │   │   │   │   ├── idelegate.py
+         │   │   │   │   │   └── __init__.py
+         │   │   │   │   ├── execution/
+         │   │   │   │   │   ├── bundle.py
+         │   │   │   │   │   ├── factory.py
+         │   │   │   │   │   ├── handler.py
+         │   │   │   │   │   ├── idelegate.py
+         │   │   │   │   │   └── __init__.py
+         │   │   │   │   ├── file/
+         │   │   │   │   │   ├── bundle.py
+         │   │   │   │   │   ├── factory.py
+         │   │   │   │   │   ├── handler.py
+         │   │   │   │   │   ├── idelegate.py
+         │   │   │   │   │   └── __init__.py
          │   │   │   │   └── __init__.py
          │   │   │   ├── __init__.py
+         │   │   │   ├── itab.py
          │   │   │   ├── syntax/
-         │   │   │   │   ├── highlighter.py
-         │   │   │   │   ├── highlighter_factory.py
-         │   │   │   │   ├── ihighlighter.py
+         │   │   │   │   ├── highlighter/
+         │   │   │   │   │   ├── factory.py
+         │   │   │   │   │   ├── highlighter.py
+         │   │   │   │   │   ├── ihighlighter.py
+         │   │   │   │   │   └── __init__.py
          │   │   │   │   ├── __init__.py
-         │   │   │   │   ├── itag_applier.py
-         │   │   │   │   ├── itokenizer.py
-         │   │   │   │   ├── tag_applier.py
-         │   │   │   │   ├── tag_applier_factory.py
+         │   │   │   │   ├── tag/
+         │   │   │   │   │   ├── applier.py
+         │   │   │   │   │   ├── factory.py
+         │   │   │   │   │   ├── iapplier.py
+         │   │   │   │   │   └── __init__.py
          │   │   │   │   ├── token.py
-         │   │   │   │   ├── tokenizer.py
-         │   │   │   │   └── tokenizer_factory.py
-         │   │   │   └── toolbar.py
+         │   │   │   │   └── tokenizer/
+         │   │   │   │       ├── factory.py
+         │   │   │   │       ├── __init__.py
+         │   │   │   │       ├── itokenizer.py
+         │   │   │   │       └── tokenizer.py
+         │   │   │   ├── tab.py
+         │   │   │   └── toolbar/
+         │   │   │       ├── bundle.py
+         │   │   │       ├── factory.py
+         │   │   │       ├── __init__.py
+         │   │   │       ├── itoolbar.py
+         │   │   │       └── toolbar.py
          │   │   ├── editor/
-         │   │   │   ├── __init__.py
-         │   │   │   ├── table/
-         │   │   │   │   ├── bundle.py
+         │   │   │   ├── applier/
+         │   │   │   │   ├── applier.py
+         │   │   │   │   ├── factory.py
+         │   │   │   │   ├── iapplier.py
          │   │   │   │   ├── __init__.py
-         │   │   │   │   ├── itable.py
-         │   │   │   │   ├── selection_handler.py
-         │   │   │   │   ├── selection_handler_factory.py
-         │   │   │   │   └── trajectory_table.py
-         │   │   │   ├── waypoint_coordinate_inputs.py
-         │   │   │   ├── waypoint_edit_applier.py
-         │   │   │   ├── waypoint_edit_applier_factory.py
-         │   │   │   └── waypoint_editor.py
+         │   │   │   │   └── inputs.py
+         │   │   │   ├── editor.py
+         │   │   │   ├── factory.py
+         │   │   │   ├── ieditor.py
+         │   │   │   ├── __init__.py
+         │   │   │   └── table/
+         │   │   │       ├── bundle.py
+         │   │   │       ├── factory.py
+         │   │   │       ├── __init__.py
+         │   │   │       ├── itable.py
+         │   │   │       ├── resize/
+         │   │   │       │   ├── factory.py
+         │   │   │       │   ├── handler.py
+         │   │   │       │   ├── ihandler.py
+         │   │   │       │   └── __init__.py
+         │   │   │       ├── selection/
+         │   │   │       │   ├── factory.py
+         │   │   │       │   ├── handler.py
+         │   │   │       │   ├── ihandler.py
+         │   │   │       │   └── __init__.py
+         │   │   │       └── table.py
          │   │   ├── emulator/
-         │   │   │   ├── emulator_launcher.py
-         │   │   │   ├── emulator_launcher_factory.py
-         │   │   │   ├── iemulator_launcher.py
-         │   │   │   └── __init__.py
+         │   │   │   ├── __init__.py
+         │   │   │   ├── launcher/
+         │   │   │   │   ├── factory.py
+         │   │   │   │   ├── ilauncher.py
+         │   │   │   │   ├── __init__.py
+         │   │   │   │   └── launcher.py
+         │   │   │   └── locator/
+         │   │   │       ├── factory.py
+         │   │   │       ├── ilocator.py
+         │   │   │       ├── __init__.py
+         │   │   │       └── locator.py
+         │   │   ├── factory.py
+         │   │   ├── gui.py
          │   │   ├── igui.py
          │   │   ├── __init__.py
          │   │   ├── layout/
-         │   │   │   ├── canvas_pane_builder.py
-         │   │   │   ├── canvas_pane_builder_factory.py
-         │   │   │   ├── editor_pane_builder.py
-         │   │   │   ├── editor_pane_builder_factory.py
-         │   │   │   ├── icanvas_pane_builder.py
-         │   │   │   ├── ieditor_pane_builder.py
+         │   │   │   ├── builder.py
+         │   │   │   ├── canvas/
+         │   │   │   │   ├── builder.py
+         │   │   │   │   ├── factory.py
+         │   │   │   │   ├── ibuilder.py
+         │   │   │   │   └── __init__.py
+         │   │   │   ├── editor/
+         │   │   │   │   ├── builder.py
+         │   │   │   │   ├── factory.py
+         │   │   │   │   ├── ibuilder.py
+         │   │   │   │   └── __init__.py
+         │   │   │   ├── factory.py
          │   │   │   ├── __init__.py
-         │   │   │   ├── itoolbar_layout_builder.py
-         │   │   │   ├── main_content_builder.py
-         │   │   │   ├── main_content_builder_factory.py
-         │   │   │   ├── toolbar_layout_builder.py
-         │   │   │   └── toolbar_layout_builder_factory.py
+         │   │   │   └── toolbar/
+         │   │   │       ├── builder.py
+         │   │   │       ├── factory.py
+         │   │   │       ├── ibuilder.py
+         │   │   │       └── __init__.py
          │   │   ├── manipulator/
-         │   │   │   ├── imanipulator_action_delegate.py
-         │   │   │   ├── imanipulator_override_panel.py
          │   │   │   ├── __init__.py
          │   │   │   ├── jog/
-         │   │   │   │   ├── axis_grid_panel.py
-         │   │   │   │   ├── axis_grid_panel_factory.py
-         │   │   │   │   ├── controllers_bundle.py
+         │   │   │   │   ├── dependencies.py
+         │   │   │   │   ├── factory.py
          │   │   │   │   ├── __init__.py
-         │   │   │   │   ├── jog_tab.py
-         │   │   │   │   ├── jog_tab_factory.py
-         │   │   │   │   ├── panel_bundle.py
-         │   │   │   │   ├── power_panel.py
-         │   │   │   │   ├── power_panel_factory.py
-         │   │   │   │   ├── raw_command_panel.py
-         │   │   │   │   ├── raw_command_panel_factory.py
-         │   │   │   │   ├── tool_panel.py
-         │   │   │   │   └── tool_panel_factory.py
-         │   │   │   ├── manipulator_override_panel.py
-         │   │   │   └── null_manipulator_action_delegate.py
+         │   │   │   │   ├── panel/
+         │   │   │   │   │   ├── axis_grid.py
+         │   │   │   │   │   ├── bundle.py
+         │   │   │   │   │   ├── __init__.py
+         │   │   │   │   │   ├── power.py
+         │   │   │   │   │   ├── raw_command.py
+         │   │   │   │   │   └── tool.py
+         │   │   │   │   └── tab.py
+         │   │   │   └── override/
+         │   │   │       ├── actuator.py
+         │   │   │       ├── feedrate.py
+         │   │   │       ├── idelegate.py
+         │   │   │       ├── __init__.py
+         │   │   │       └── panel.py
          │   │   ├── menu/
-         │   │   │   ├── app_menu_bar.py
-         │   │   │   ├── app_menu_bar_factory.py
-         │   │   │   ├── builders_bundle.py
+         │   │   │   ├── builder/
+         │   │   │   │   ├── bundle.py
+         │   │   │   │   ├── factory.py
+         │   │   │   │   ├── hotkey.py
+         │   │   │   │   ├── ihotkey.py
+         │   │   │   │   ├── ilayout.py
+         │   │   │   │   ├── __init__.py
+         │   │   │   │   └── layout.py
          │   │   │   ├── bundle.py
-         │   │   │   ├── iapp_menu_bar.py
+         │   │   │   ├── dependencies.py
+         │   │   │   ├── factory.py
+         │   │   │   ├── imenu_bar.py
          │   │   │   ├── __init__.py
-         │   │   │   ├── menu_hotkey_binder.py
-         │   │   │   ├── menu_hotkey_binder_factory.py
-         │   │   │   ├── menu_layout_builder.py
-         │   │   │   └── menu_layout_builder_factory.py
+         │   │   │   └── menu_bar.py
          │   │   ├── model/
-         │   │   │   ├── canvas_interaction_state.py
          │   │   │   ├── canvas_settings.py
          │   │   │   ├── canvas_tool_mode.py
-         │   │   │   ├── __init__.py
-         │   │   │   └── viewport_transform.py
+         │   │   │   └── __init__.py
          │   │   ├── preview/
+         │   │   │   ├── dependencies.py
+         │   │   │   ├── factory.py
          │   │   │   ├── __init__.py
-         │   │   │   ├── preview_tab.py
-         │   │   │   └── preview_tab_factory.py
-         │   │   ├── scarajectory_gui.py
-         │   │   ├── scarajectory_gui_bundle.py
-         │   │   ├── scarajectory_gui_factory.py
-         │   │   ├── scarajectory_gui_init_bundle.py
+         │   │   │   └── tab.py
+         │   │   ├── provides.py
+         │   │   ├── splash/
+         │   │   │   ├── factory.py
+         │   │   │   ├── __init__.py
+         │   │   │   ├── iscreen.py
+         │   │   │   └── screen.py
+         │   │   ├── storage_dependencies.py
          │   │   ├── streaming/
          │   │   │   ├── bundle.py
-         │   │   │   ├── handler/
+         │   │   │   ├── control/
+         │   │   │   │   ├── idelegate.py
          │   │   │   │   ├── __init__.py
-         │   │   │   │   ├── playback_handler_bundle.py
-         │   │   │   │   ├── stream_playback_action_handler.py
-         │   │   │   │   ├── stream_playback_action_handler_factory.py
-         │   │   │   │   ├── stream_tool_action_handler.py
-         │   │   │   │   └── stream_tool_action_handler_factory.py
+         │   │   │   │   └── panel.py
+         │   │   │   ├── controllers_bundle.py
+         │   │   │   ├── factory.py
          │   │   │   ├── __init__.py
          │   │   │   ├── observer/
-         │   │   │   │   ├── gui_stream_observer_bridge.py
-         │   │   │   │   ├── gui_stream_observer_bridge_factory.py
-         │   │   │   │   ├── igui_stream_observer_bridge.py
+         │   │   │   │   ├── bridge.py
+         │   │   │   │   ├── factory.py
+         │   │   │   │   ├── ibridge.py
          │   │   │   │   └── __init__.py
-         │   │   │   ├── panel/
+         │   │   │   ├── playback/
+         │   │   │   │   ├── bundle.py
+         │   │   │   │   ├── factory.py
+         │   │   │   │   ├── handler.py
+         │   │   │   │   └── __init__.py
+         │   │   │   ├── progress/
+         │   │   │   │   ├── adapter.py
+         │   │   │   │   └── __init__.py
+         │   │   │   ├── status/
          │   │   │   │   ├── __init__.py
-         │   │   │   │   ├── istream_control_delegate.py
-         │   │   │   │   ├── istream_status_bar.py
-         │   │   │   │   ├── stream_control_panel.py
-         │   │   │   │   ├── stream_progress_adapter.py
-         │   │   │   │   └── stream_status_bar.py
-         │   │   │   ├── streamer_action_bundle.py
-         │   │   │   ├── streamer_controllers_bundle.py
-         │   │   │   ├── streamer_tab.py
-         │   │   │   └── streamer_tab_factory.py
+         │   │   │   │   ├── istatus_bar.py
+         │   │   │   │   └── status_bar.py
+         │   │   │   ├── tab.py
+         │   │   │   └── tool/
+         │   │   │       ├── factory.py
+         │   │   │       ├── handler.py
+         │   │   │       └── __init__.py
          │   │   ├── theme/
          │   │   │   ├── __init__.py
-         │   │   │   ├── theme_button_styler.py
-         │   │   │   ├── theme_button_styler_factory.py
-         │   │   │   ├── theme_manager.py
-         │   │   │   ├── theme_notebook_styler.py
-         │   │   │   └── theme_notebook_styler_factory.py
+         │   │   │   └── manager.py
          │   │   ├── toolbar/
          │   │   │   ├── bundle.py
+         │   │   │   ├── factory.py
          │   │   │   ├── __init__.py
-         │   │   │   ├── itoolbar.py
-         │   │   │   ├── navigation_controls.py
-         │   │   │   ├── navigation_controls_factory.py
-         │   │   │   ├── parameter_inputs.py
-         │   │   │   ├── parameter_inputs_bundle.py
-         │   │   │   ├── parameter_inputs_factory.py
-         │   │   │   ├── tool_selector.py
-         │   │   │   ├── tool_selector_factory.py
-         │   │   │   ├── toolbar.py
-         │   │   │   └── toolbar_factory.py
+         │   │   │   ├── section/
+         │   │   │   │   ├── assembler.py
+         │   │   │   │   ├── bundle.py
+         │   │   │   │   ├── iassembler.py
+         │   │   │   │   ├── __init__.py
+         │   │   │   │   ├── navigation.py
+         │   │   │   │   ├── parameter.py
+         │   │   │   │   ├── status.py
+         │   │   │   │   └── tool.py
+         │   │   │   └── toolbar.py
          │   │   └── validation/
+         │   │       ├── dependencies.py
+         │   │       ├── factory.py
          │   │       ├── __init__.py
-         │   │       ├── validation_tab.py
-         │   │       └── validation_tab_factory.py
+         │   │       └── tab.py
          │   ├── __init__.py
          │   ├── manipulator/
+         │   │   ├── dependencies.py
+         │   │   ├── factory.py
          │   │   ├── __init__.py
-         │   │   ├── jog_controller.py
-         │   │   ├── jog_controller_factory.py
-         │   │   ├── motion_controller.py
-         │   │   ├── motion_controller_factory.py
-         │   │   ├── query_controller.py
-         │   │   └── query_controller_factory.py
+         │   │   ├── jog/
+         │   │   │   ├── controller.py
+         │   │   │   ├── dependencies.py
+         │   │   │   ├── factory.py
+         │   │   │   ├── __init__.py
+         │   │   │   └── provides.py
+         │   │   ├── motion/
+         │   │   │   ├── controller.py
+         │   │   │   ├── dependencies.py
+         │   │   │   ├── factory.py
+         │   │   │   ├── __init__.py
+         │   │   │   └── provides.py
+         │   │   ├── provides.py
+         │   │   └── query/
+         │   │       ├── controller.py
+         │   │       ├── dependencies.py
+         │   │       ├── factory.py
+         │   │       ├── __init__.py
+         │   │       └── provides.py
          │   ├── pacing/
-         │   │   ├── bundle.py
-         │   │   ├── flow_barrier_coordinator.py
-         │   │   ├── flow_barrier_coordinator_factory.py
-         │   │   ├── flow_pacing_bundle_factory.py
-         │   │   ├── flow_pacing_controller.py
-         │   │   ├── flow_pacing_controller_factory.py
-         │   │   ├── iflow_barrier_coordinator.py
-         │   │   ├── iflow_pacing_controller.py
-         │   │   └── __init__.py
-         │   ├── packet/
-         │   │   ├── binary_packet_strategy.py
-         │   │   ├── binary_packet_strategy_factory.py
+         │   │   ├── controller/
+         │   │   │   ├── controller.py
+         │   │   │   ├── dependencies.py
+         │   │   │   ├── factory.py
+         │   │   │   ├── icontroller.py
+         │   │   │   ├── __init__.py
+         │   │   │   └── provides.py
+         │   │   ├── coordinator/
+         │   │   │   ├── coordinator.py
+         │   │   │   ├── dependencies.py
+         │   │   │   ├── factory.py
+         │   │   │   ├── icoordinator.py
+         │   │   │   ├── __init__.py
+         │   │   │   └── provides.py
+         │   │   ├── dependencies.py
+         │   │   ├── factory.py
          │   │   ├── __init__.py
-         │   │   └── ipacket_strategy.py
+         │   │   └── provides.py
+         │   ├── packet/
+         │   │   ├── dependencies.py
+         │   │   ├── factory.py
+         │   │   ├── __init__.py
+         │   │   ├── istrategy.py
+         │   │   ├── provides.py
+         │   │   └── strategy.py
          │   ├── preferences/
-         │   │   ├── connection_repository.py
-         │   │   ├── connection_repository_factory.py
-         │   │   └── __init__.py
+         │   │   ├── dependencies.py
+         │   │   ├── factory.py
+         │   │   ├── __init__.py
+         │   │   ├── provides.py
+         │   │   └── serial/
+         │   │       ├── dependencies.py
+         │   │       ├── factory.py
+         │   │       ├── __init__.py
+         │   │       ├── provides.py
+         │   │       └── repository.py
+         │   ├── scaralang/
+         │   │   ├── avoidance/
+         │   │   │   ├── adapter.py
+         │   │   │   ├── factory.py
+         │   │   │   ├── iadapter.py
+         │   │   │   └── __init__.py
+         │   │   ├── boundary/
+         │   │   │   ├── adapter.py
+         │   │   │   ├── factory.py
+         │   │   │   ├── iadapter.py
+         │   │   │   └── __init__.py
+         │   │   ├── dependencies.py
+         │   │   ├── discretizer/
+         │   │   │   ├── dependencies.py
+         │   │   │   ├── discretizer.py
+         │   │   │   ├── factory.py
+         │   │   │   ├── __init__.py
+         │   │   │   └── provides.py
+         │   │   ├── factory.py
+         │   │   ├── __init__.py
+         │   │   ├── provides.py
+         │   │   ├── shape/
+         │   │   │   ├── adapter.py
+         │   │   │   ├── factory.py
+         │   │   │   ├── iadapter.py
+         │   │   │   └── __init__.py
+         │   │   └── validation/
+         │   │       ├── adapter.py
+         │   │       ├── bounds_query_adapter.py
+         │   │       ├── dependencies.py
+         │   │       ├── factory.py
+         │   │       ├── ibounds_query.py
+         │   │       └── __init__.py
          │   ├── settings/
          │   │   ├── bounds/
+         │   │   │   ├── dependencies.py
+         │   │   │   ├── factory.py
          │   │   │   ├── __init__.py
-         │   │   │   ├── iscara_bounds_loader.py
-         │   │   │   ├── iscara_bounds_parser.py
-         │   │   │   ├── scara_bounds_loader.py
-         │   │   │   ├── scara_bounds_loader_factory.py
-         │   │   │   ├── scara_bounds_parser.py
-         │   │   │   └── scara_bounds_parser_factory.py
+         │   │   │   ├── loader/
+         │   │   │   │   ├── dependencies.py
+         │   │   │   │   ├── factory.py
+         │   │   │   │   ├── iloader.py
+         │   │   │   │   ├── __init__.py
+         │   │   │   │   ├── loader.py
+         │   │   │   │   └── provides.py
+         │   │   │   ├── parser/
+         │   │   │   │   ├── factory.py
+         │   │   │   │   ├── __init__.py
+         │   │   │   │   ├── iparser.py
+         │   │   │   │   ├── parser.py
+         │   │   │   │   └── provides.py
+         │   │   │   └── provides.py
+         │   │   ├── communication/
+         │   │   │   ├── dependencies.py
+         │   │   │   ├── factory.py
+         │   │   │   ├── iloader.py
+         │   │   │   ├── __init__.py
+         │   │   │   ├── loader.py
+         │   │   │   └── provides.py
+         │   │   ├── dependencies.py
+         │   │   ├── factory.py
          │   │   ├── __init__.py
-         │   │   ├── isettings_reader.py
-         │   │   ├── settings_reader.py
-         │   │   ├── settings_reader_factory.py
-         │   │   ├── stream/
+         │   │   ├── provides.py
+         │   │   ├── reader/
+         │   │   │   ├── dependencies.py
+         │   │   │   ├── factory.py
          │   │   │   ├── __init__.py
-         │   │   │   ├── istream_config_loader.py
-         │   │   │   ├── stream_config_loader.py
-         │   │   │   └── stream_config_loader_factory.py
+         │   │   │   ├── ireader.py
+         │   │   │   ├── provides.py
+         │   │   │   └── reader.py
          │   │   └── transmission/
+         │   │       ├── dependencies.py
+         │   │       ├── factory.py
+         │   │       ├── iloader.py
          │   │       ├── __init__.py
-         │   │       ├── iscara_transmission_loader.py
-         │   │       ├── scara_transmission_loader.py
-         │   │       └── scara_transmission_loader_factory.py
+         │   │       ├── loader.py
+         │   │       └── provides.py
          │   ├── state/
+         │   │   ├── dependencies.py
+         │   │   ├── factory.py
+         │   │   ├── imachine.py
          │   │   ├── __init__.py
-         │   │   ├── istream_state_controller.py
-         │   │   ├── istream_state_machine.py
-         │   │   ├── stream_state_machine.py
-         │   │   └── stream_state_machine_factory.py
+         │   │   ├── machine.py
+         │   │   └── provides.py
          │   ├── storage/
          │   │   ├── config_io/
-         │   │   │   ├── config_io_factory.py
-         │   │   │   ├── iconfig_io_factory.py
-         │   │   │   ├── iconfig_loader.py
-         │   │   │   ├── iconfig_storer.py
-         │   │   │   └── __init__.py
+         │   │   │   ├── dependencies.py
+         │   │   │   ├── factory.py
+         │   │   │   ├── __init__.py
+         │   │   │   ├── loader/
+         │   │   │   │   ├── dependencies.py
+         │   │   │   │   ├── factory.py
+         │   │   │   │   ├── iloader.py
+         │   │   │   │   ├── __init__.py
+         │   │   │   │   ├── loader.py
+         │   │   │   │   └── provides.py
+         │   │   │   ├── provides.py
+         │   │   │   └── storer/
+         │   │   │       ├── dependencies.py
+         │   │   │       ├── factory.py
+         │   │   │       ├── __init__.py
+         │   │   │       ├── istorer.py
+         │   │   │       ├── provides.py
+         │   │   │       └── storer.py
+         │   │   ├── dependencies.py
+         │   │   ├── factory.py
          │   │   ├── __init__.py
-         │   │   ├── plan_loader.py
-         │   │   ├── plan_storage_service.py
-         │   │   ├── plan_storage_service_factory.py
-         │   │   ├── plan_storer.py
-         │   │   ├── trajectory_serializer.py
+         │   │   ├── plan/
+         │   │   │   ├── dependencies.py
+         │   │   │   ├── factory.py
+         │   │   │   ├── __init__.py
+         │   │   │   ├── loader.py
+         │   │   │   ├── provides.py
+         │   │   │   └── storer.py
+         │   │   ├── provides.py
+         │   │   ├── serializer/
+         │   │   │   ├── __init__.py
+         │   │   │   ├── iserializer.py
+         │   │   │   └── serializer.py
          │   │   └── workspace/
+         │   │       ├── config.py
+         │   │       ├── dependencies.py
+         │   │       ├── factory.py
+         │   │       ├── imanager.py
          │   │       ├── __init__.py
-         │   │       ├── iworkspace_service.py
-         │   │       ├── workspace_constants.py
-         │   │       ├── workspace_service.py
-         │   │       └── workspace_service_factory.py
+         │   │       ├── manager.py
+         │   │       └── provides.py
          │   ├── streaming/
          │   │   ├── assembly/
          │   │   │   ├── __init__.py
@@ -695,115 +958,128 @@ Tool structure
          │   │   │   ├── stream_transport_assembler.py
          │   │   │   ├── stream_worker_assembler.py
          │   │   │   └── worker_bundle.py
-         │   │   ├── binary_program_streamer.py
-         │   │   ├── binary_program_streamer_factory.py
-         │   │   ├── bundle.py
-         │   │   ├── ibinary_program_streamer.py
+         │   │   ├── binary/
+         │   │   │   ├── dependencies.py
+         │   │   │   ├── factory.py
+         │   │   │   ├── __init__.py
+         │   │   │   ├── istreamer.py
+         │   │   │   ├── provides.py
+         │   │   │   └── streamer.py
+         │   │   ├── control/
+         │   │   │   ├── dependencies.py
+         │   │   │   ├── factory.py
+         │   │   │   ├── __init__.py
+         │   │   │   ├── provides.py
+         │   │   │   └── transmitter.py
+         │   │   ├── dependencies.py
+         │   │   ├── factory.py
          │   │   ├── __init__.py
          │   │   ├── observer/
+         │   │   │   ├── dispatcher.py
+         │   │   │   ├── factory.py
          │   │   │   ├── __init__.py
-         │   │   │   ├── istream_observer_registry.py
-         │   │   │   ├── istream_telemetry_notifier.py
-         │   │   │   ├── stream_observer_dispatcher.py
-         │   │   │   ├── stream_observer_dispatcher_factory.py
-         │   │   │   ├── stream_observer_registry.py
-         │   │   │   ├── stream_observer_registry_factory.py
-         │   │   │   ├── stream_telemetry_notifier.py
-         │   │   │   └── stream_telemetry_notifier_factory.py
-         │   │   ├── stream_control_transmitter.py
-         │   │   ├── stream_control_transmitter_factory.py
-         │   │   ├── stream_playback_controller.py
-         │   │   └── stream_playback_controller_factory.py
+         │   │   │   ├── provides.py
+         │   │   │   └── registry.py
+         │   │   ├── playback/
+         │   │   │   ├── controller.py
+         │   │   │   ├── dependencies.py
+         │   │   │   ├── factory.py
+         │   │   │   ├── __init__.py
+         │   │   │   └── provides.py
+         │   │   └── provides.py
          │   ├── tool/
-         │   │   ├── __init__.py
-         │   │   ├── tool_controller.py
-         │   │   ├── tool_controller_factory.py
-         │   │   ├── valve_pulse_worker.py
-         │   │   └── valve_pulse_worker_factory.py
-         │   ├── transport/
-         │   │   ├── bundle.py
-         │   │   ├── driver/
-         │   │   │   ├── ichannel.py
+         │   │   ├── controller/
+         │   │   │   ├── controller.py
+         │   │   │   ├── dependencies.py
+         │   │   │   ├── factory.py
          │   │   │   ├── __init__.py
-         │   │   │   ├── serial_channel.py
-         │   │   │   ├── serial_channel_factory.py
-         │   │   │   ├── serial_port_scanner.py
-         │   │   │   ├── tcp_channel.py
-         │   │   │   └── tcp_channel_factory.py
+         │   │   │   └── provides.py
+         │   │   ├── dependencies.py
+         │   │   ├── factory.py
          │   │   ├── __init__.py
-         │   │   ├── istream_transport_connection.py
-         │   │   ├── istream_transport_transceiver.py
-         │   │   ├── listener/
-         │   │   │   ├── __init__.py
-         │   │   │   ├── itransport_listener.py
-         │   │   │   ├── itransport_listener_holder.py
-         │   │   │   ├── null_transport_listener.py
-         │   │   │   ├── stream_ascii_transport_listener.py
-         │   │   │   ├── stream_ascii_transport_listener_factory.py
-         │   │   │   ├── stream_binary_transport_listener.py
-         │   │   │   ├── stream_binary_transport_listener_factory.py
-         │   │   │   └── transport_listener_holder.py
-         │   │   ├── stream_transport_connection.py
-         │   │   ├── stream_transport_connection_factory.py
-         │   │   ├── stream_transport_transceiver.py
-         │   │   ├── stream_transport_transceiver_factory.py
-         │   │   ├── transport_factory.py
+         │   │   ├── provides.py
          │   │   └── worker/
+         │   │       ├── factory.py
          │   │       ├── __init__.py
-         │   │       ├── itransport_reader_worker.py
-         │   │       ├── transport_reader_worker.py
-         │   │       └── transport_reader_worker_factory.py
+         │   │       ├── irunner.py
+         │   │       ├── provides.py
+         │   │       ├── runner.py
+         │   │       └── worker.py
          │   └── worker/
-         │       ├── ascii/
-         │       │   ├── __init__.py
-         │       │   ├── istream_loop_runner.py
-         │       │   ├── istream_queue_drainer.py
-         │       │   ├── istream_step_dispatcher.py
-         │       │   ├── stream_execution_worker.py
-         │       │   ├── stream_execution_worker_factory.py
-         │       │   ├── stream_loop_runner.py
-         │       │   ├── stream_loop_runner_factory.py
-         │       │   ├── stream_queue_drainer.py
-         │       │   ├── stream_queue_drainer_factory.py
-         │       │   ├── stream_step_dispatcher.py
-         │       │   └── stream_step_dispatcher_factory.py
-         │       ├── binary/
-         │       │   ├── binary_loop_runner_bundle.py
-         │       │   ├── binary_queue_drainer.py
-         │       │   ├── binary_queue_drainer_factory.py
-         │       │   ├── binary_step_bundle.py
-         │       │   ├── binary_step_dispatcher.py
-         │       │   ├── binary_step_dispatcher_factory.py
-         │       │   ├── binary_stream_execution_worker.py
-         │       │   ├── binary_stream_execution_worker_factory.py
-         │       │   ├── binary_stream_frame_handler.py
-         │       │   ├── binary_stream_frame_handler_factory.py
-         │       │   ├── binary_stream_loop_runner.py
-         │       │   ├── binary_stream_loop_runner_factory.py
-         │       │   ├── binary_stream_runner_bundle.py
-         │       │   ├── ibinary_queue_drainer.py
-         │       │   ├── ibinary_step_dispatcher.py
-         │       │   ├── ibinary_stream_frame_handler.py
-         │       │   ├── ibinary_stream_loop_runner.py
+         │       ├── dependencies.py
+         │       ├── dispatcher/
+         │       │   ├── bundle.py
+         │       │   ├── dispatcher.py
+         │       │   ├── factory.py
+         │       │   ├── idispatcher.py
          │       │   └── __init__.py
-         │       ├── iexecution_service.py
+         │       ├── drainer/
+         │       │   ├── dependencies.py
+         │       │   ├── drainer.py
+         │       │   ├── factory.py
+         │       │   ├── idrainer.py
+         │       │   └── __init__.py
+         │       ├── execution/
+         │       │   ├── dependencies.py
+         │       │   ├── factory.py
+         │       │   ├── __init__.py
+         │       │   └── worker.py
+         │       ├── factory.py
+         │       ├── handler/
+         │       │   ├── dependencies.py
+         │       │   ├── factory.py
+         │       │   ├── handler.py
+         │       │   ├── ihandler.py
+         │       │   └── __init__.py
+         │       ├── holder.py
          │       ├── iexecution_worker.py
          │       ├── __init__.py
+         │       ├── parser/
+         │       │   ├── bundle.py
+         │       │   └── __init__.py
+         │       ├── provides.py
+         │       ├── receiver/
+         │       │   ├── dependencies.py
+         │       │   ├── factory.py
+         │       │   ├── __init__.py
+         │       │   └── receiver.py
+         │       ├── runner/
+         │       │   ├── bundle.py
+         │       │   ├── factory.py
+         │       │   ├── __init__.py
+         │       │   ├── irunner.py
+         │       │   ├── loop_bundle.py
+         │       │   └── runner.py
          │       └── thread/
-         │           ├── __init__.py
-         │           ├── iworker_thread_coordinator.py
-         │           ├── worker_thread_coordinator.py
-         │           └── worker_thread_coordinator_factory.py
+         │           ├── coordinator.py
+         │           ├── factory.py
+         │           ├── icoordinator.py
+         │           └── __init__.py
          ├── __init__.py
          ├── py.typed
          └── setup/
              ├── assembly/
-             │   ├── app_core_assembler.py
-             │   ├── app_core_bundle.py
-             │   ├── app_presentation_assembler.py
-             │   ├── app_runtime_assembler.py
-             │   ├── app_runtime_bundle.py
-             │   └── __init__.py
+             │   ├── core/
+             │   │   ├── assembler.py
+             │   │   ├── bundle.py
+             │   │   └── __init__.py
+             │   ├── dsl/
+             │   │   ├── assembler.py
+             │   │   ├── bundle.py
+             │   │   ├── diagnostic_bundle.py
+             │   │   └── __init__.py
+             │   ├── __init__.py
+             │   ├── plan/
+             │   │   ├── assembler.py
+             │   │   ├── bundle.py
+             │   │   └── __init__.py
+             │   ├── presentation/
+             │   │   ├── assembler.py
+             │   │   └── __init__.py
+             │   └── runtime/
+             │       ├── assembler.py
+             │       ├── bundle.py
+             │       └── __init__.py
              ├── bundle.py
              ├── dep_validator.py
              ├── dependencies.py
@@ -812,19 +1088,10 @@ Tool structure
              ├── keys.py
              ├── opt_validator.py
              ├── options.py
-             ├── pipeline/
-             │   ├── dsl_diagnostic_bundle.py
-             │   ├── dsl_pipeline_builder.py
-             │   ├── dsl_pipeline_bundle.py
-             │   ├── __init__.py
-             │   ├── plan_pipeline_builder.py
-             │   ├── plan_pipeline_bundle.py
-             │   ├── stream_pipeline_builder.py
-             │   └── stream_pipeline_bundle.py
              ├── registry.py
              └── validator.py
 
-     99 directories, 593 files
+     183 directories, 776 files
 
 ✨ Features
 -----------
@@ -857,8 +1124,8 @@ The robot dimensions and physical boundaries can be customized in ``scara_geomet
      - ``120.0 mm``
      - Secondary arm link length (elbow to wrist).
    * - **r_min**
-     - ``30.0 mm``
-     - Inner singular deadzone radius (:math:`|L_1 - L_2|`).
+     - ``86.08 mm``
+     - Minimum reach radius limit (governed by mechanical joint :math:`J_2 \le 145^\circ` limit; theoretical :math:`|L_1 - L_2| = 30.0\text{ mm}`).
    * - **r_max**
      - ``270.0 mm``
      - Maximum horizontal reach boundary (:math:`L_1 + L_2`).
@@ -1037,7 +1304,7 @@ Example .scara Program: Industrial Pick & Place
 Bundled Industrial .scara Demonstration Programs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-**scarajectory** includes a comprehensive suite of 12 industrial-grade ``.scara`` demonstration programs showcasing the full capabilities of the DSL syntax, kinematics, trajectory smoothing, and pneumatic tool sequencing:
+**scarajectory** includes a comprehensive suite of 50 industrial-grade ``.scara`` demonstration programs showcasing the full capabilities of the DSL syntax, kinematics, trajectory smoothing, and pneumatic tool sequencing:
 
 .. list-table:: Bundled Industrial Demonstration Programs
    :widths: 22 20 28 40
@@ -1095,13 +1362,165 @@ Bundled Industrial .scara Demonstration Programs
      - Full Automation Cycle
      - ``FRAME_SET``, ``MOVE_J``, ``ZONE BLEND``, ``PUMP``, ``VALVE``, ``RETRACT``
      - Comprehensive production pick-and-place cycle combining homing, frames, blended transit, vacuum grip, and blow-off release.
+   * - **13_elbow_reconfiguration.scara**
+     - Arm Pose Configuration
+     - ``CONFIG_ELBOW LEFT/RIGHT``
+     - Dynamic arm posture reconfiguration between Righty and Lefty configurations through intermediate workspace transit.
+   * - **14_singularity_avoidance.scara**
+     - Kinematic Boundary Avoidance
+     - ``SPEED WORK``, ``MOVE_L``
+     - Central singular dead zone bypass detour routing end-effector around unreachable central boundary.
+   * - **15_boundary_reach_limits.scara**
+     - Reach Envelope Inspection
+     - ``MOVE_L``, ``WAIT_MS``
+     - Safe perimeter scanning near maximum reach envelope avoiding outer singular deadband.
+   * - **16_multi_frame_palletizing.scara**
+     - Multi-WCS Palletizing
+     - ``FRAME_SET``, ``PALLET_DEF``, ``MOVE_PALLET``, ``PUMP``, ``VALVE``
+     - Multi-station pick-and-place material handling combining user frames, pallet matrix traversal, and pneumatic grip.
+   * - **17_bidirectional_elbow_assembly.scara**
+     - Bidirectional Reconfiguration
+     - ``CONFIG_ELBOW``, ``MOVE_L``, ``PUMP``, ``VALVE``
+     - Bidirectional elbow reconfiguration cycle (RIGHT -> LEFT -> RIGHT) accessing rear assembly slot and returning to front cradle.
+   * - **18_tangential_contour_dispensing.scara**
+     - Tangential Dispensing
+     - ``TOOL_ORIENT TANGENTIAL``, ``ZONE BLEND``, ``ARC_CW``, ``VALVE``
+     - Continuous fluid dispensing along composite linear and circular arc contours with dynamic tangential nozzle orientation.
+   * - **19_high_speed_sorter_jump.scara**
+     - Quality Sorter Cell
+     - ``JUMP``, ``ACCEL``, ``OVERRIDE``, ``PUMP``, ``VALVE``
+     - High-speed multi-bin sorting sequence using parabolic jump arches, dynamic acceleration scaling, and speed overrides.
+   * - **20_annular_inspection_scan.scara**
+     - Annular Quality Inspection
+     - ``ARC_CCW``, ``ARC_CW``, ``MOVE_L``, ``WAIT_MS``
+     - Multi-level concentric circular inspection scanning clear of inner deadzone and outer boundary singularities.
+   * - **21_relative_motion_incremental.scara**
+     - Incremental Positioning
+     - ``MOVE_REL``, ``WAIT_MS``
+     - Incremental workpiece positioning using relative Cartesian offsets along X, Y, and Z.
+   * - **22_conveyor_tracking_relative.scara**
+     - Conveyor Tracking
+     - ``MOVE_REL``, ``APPROACH``, ``RETRACT``
+     - Dynamic conveyor tracking and pick sequence using relative motions coordinated with line speed.
+   * - **23_bidirectional_arc_contour.scara**
+     - S-Curve Contouring
+     - ``ARC_CW``, ``ARC_CCW``, ``TOOL_ORIENT``
+     - Continuous S-shaped contour combining bidirectional circular arcs with dynamic tangential orientation.
+   * - **24_matrix_pallet_depalletizing.scara**
+     - Dual-Pallet Transfer
+     - ``PALLET_DEF``, ``MOVE_PALLET``, ``PUMP``, ``VALVE``
+     - Automated material transfer between dual matrix pallets (infeed to outfeed) with vacuum grip.
+   * - **25_stepper_motor_calibration.scara**
+     - Stepper Calibration
+     - ``CONFIG_MOTOR``, ``MOVE_J``, ``WAIT_MS``
+     - Dynamic motor drive mode reconfiguration switching between open-loop and closed-loop actuation.
+   * - **26_multi_zone_high_speed_blending.scara**
+     - Multi-Tier Blending
+     - ``ZONE BLEND``, ``SPEED WORK``, ``MOVE_L``
+     - Multi-tier corner zone blending profiles evaluating trajectory continuous curvature smoothing.
+   * - **27_emergency_hold_recovery.scara**
+     - Safety & Interlocks
+     - ``HOLD``, ``RESUME``, ``MOVE_L``
+     - Feed hold, dwell, and resume motion execution state management and recovery routines.
+   * - **28_three_frame_assembly_station.scara**
+     - Multi-WCS Stations
+     - ``FRAME_SET``, ``FRAME_RESET``, ``MOVE_L``
+     - Assembly sequence traversing three distinct user work coordinate frames (assembly, inspection, packaging).
+   * - **29_precision_dispensing_tangent.scara**
+     - Precision Dispensing
+     - ``TOOL_ORIENT TANGENTIAL``, ``MOVE_L``, ``ARC_CW``
+     - Continuous fluid gasket dispensing path around closed boundary with dynamic tangential nozzle tracking.
+   * - **30_complex_automation_workcell.scara**
+     - Full Workcell Routine
+     - ``CONFIG_ELBOW``, ``FRAME_SET``, ``PALLET_DEF``, ``JUMP``
+     - Comprehensive industrial workcell routine combining all core motion primitives, frames, and pallets.
+   * - **31_subroutine_pick_place.scara**
+     - Modular Subroutines
+     - ``DEF``, ``CALL``, ``END``, ``MOVE_L``, ``PUMP``
+     - Reusable macro subroutine encapsulation for industrial pick, transfer, and place cycles.
+   * - **32_repeat_loop_array.scara**
+     - Iterative Array Loops
+     - ``REPEAT``, ``END``, ``MOVE_REL``
+     - Fixed-iteration macro loop scanning an inspection array with incremental relative motions.
+   * - **33_nested_repeat_palletizing.scara**
+     - Nested Macro Loops
+     - ``REPEAT``, ``END``, ``MOVE_REL``, ``APPROACH``
+     - Multi-level nested iteration loops traversing a 2D raster pallet grid without explicit pallet definitions.
+   * - **34_subroutine_with_relative_motion.scara**
+     - Subroutine Relative Motion
+     - ``DEF``, ``CALL``, ``MOVE_REL``, ``CONFIG_ELBOW``
+     - Parameterized dispensing subroutines combined with relative motions across alternating elbow configurations.
+   * - **35_complex_cycle_subroutines_and_loops.scara**
+     - Integrated Workcell Routine
+     - ``DEF``, ``CALL``, ``REPEAT``, ``CONFIG_ELBOW``, ``ZONE``
+     - Enterprise workcell demonstration integrating subroutines, repeat loops, and dynamic reconfiguration.
+   * - **36_spatial_keepout_zones.scara**
+     - Obstacle Avoidance
+     - ``ZONE_DEF BOX``, ``MOVE_L``
+     - Rectangular keep-out obstacle zone definition and collision-free transit around safety perimeter.
+   * - **37_obstacle_avoidance_dual_elbow.scara**
+     - Multi-Obstacle Dual-Elbow
+     - ``ZONE_DEF BOX/CIRCLE``, ``CONFIG_ELBOW``
+     - Multi-obstacle avoidance (box and cylinder) combined with elbow reconfiguration during transit.
+   * - **38_nested_matrix_frame_sorting.scara**
+     - Matrix Frame Sorting
+     - ``DEF``, ``CALL``, ``PALLET_DEF``, ``FRAME_SET``
+     - Subroutine-driven component acquisition from matrix pallet with frame transformation sorting.
+   * - **39_closed_loop_contour_hold_recovery.scara**
+     - Closed-Loop Contouring
+     - ``CONFIG_MOTOR CLOSED_LOOP``, ``ZONE BLEND``, ``HOLD``
+     - High-precision closed-loop contouring with feed hold pause, recovery, and corner rounding.
+   * - **40_pallet_obstacle_jump_transfer.scara**
+     - Obstacle-Aware Palletizing
+     - ``ZONE_DEF``, ``PALLET_DEF``, ``JUMP``, ``MOVE_PALLET``
+     - Collision-aware dual-pallet transfer navigating parabolic jump arches over obstacle boundaries.
+   * - **41_dynamic_feedrate_accel_profiling.scara**
+     - Dynamic Speed Profiling
+     - ``SPEED WORK/RAPID``, ``ACCEL``, ``OVERRIDE``
+     - Multi-stage dynamic feedrate and acceleration profile scheduling for delicate workpiece entry.
+   * - **42_vacuum_decay_pressure_equalization.scara**
+     - Pneumatic Timing
+     - ``PUMP ON/OFF``, ``VALVE ON/OFF``, ``WAIT_MS``
+     - Vacuum decay monitoring and micro-dwell pressure equalization for airtight fixture handling.
+   * - **43_tangential_pocket_milling.scara**
+     - Pocket Milling & Contouring
+     - ``TOOL_ORIENT TANGENTIAL``, ``ARC_CW``, ``MOVE_L``
+     - Multi-depth concentric circular pocket profiling with continuous tool tangency.
+   * - **44_hierarchical_subroutine_chain.scara**
+     - Nested Subroutine Chain
+     - ``DEF``, ``CALL``, ``END``
+     - 3-level hierarchical subroutine call stack expansion (atomic, operation, workflow).
+   * - **45_polar_rotary_inspection_sweep.scara**
+     - Polar Rotary Sweep
+     - ``ARC_CCW``, ``ARC_CW``, ``WAIT_MS``
+     - Polar optical inspection sweeps tracing concentric annular workpiece perimeters.
+   * - **46_rotated_frame_relative_stepping.scara**
+     - Rotated Frame Stepping
+     - ``FRAME_SET``, ``MOVE_REL``, ``APPROACH``
+     - Relative Cartesian incremental stepping within an angled work coordinate frame.
+   * - **47_asymmetric_dual_obstacle_channel.scara**
+     - Channel Corridor Transit
+     - ``ZONE_DEF BOX``, ``MOVE_L``, ``SPEED WORK``
+     - Collision-free trajectory navigation through an asymmetric corridor between keep-out obstacles.
+   * - **48_hybrid_motor_mode_torque_switch.scara**
+     - Hybrid Drive Reconfiguration
+     - ``CONFIG_MOTOR OPEN_LOOP/CLOSED_LOOP``
+     - Runtime stepper drive mode switching between high-speed open-loop and precision closed-loop phases.
+   * - **49_serpentine_raster_dispensing.scara**
+     - Serpentine Surface Raster
+     - ``TOOL_ORIENT TANGENTIAL``, ``ARC_CW``, ``MOVE_L``
+     - Continuous planar serpentine dispensing path with continuous tangential nozzle tracking.
+   * - **50_master_multisystem_production_cell.scara**
+     - Capstone Production Cell
+     - ``CONFIG_ELBOW``, ``CONFIG_MOTOR``, ``ZONE_DEF``, ``DEF``
+     - Master industrial production cell combining all SCARA DSL language, motion, and hardware capabilities.
 
 User Workspace Auto-Provisioning (~/.scarajectory/workspace/)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To allow users to modify, test, and develop custom routines without modifying the installed package assets, **scarajectory** implements an automated personal workspace architecture:
 
-* **Automatic Archive Extraction:** All 12 demonstration scripts are packaged inside ``examples.tgz`` within the package configuration. Upon application launch or when initializing the DSL Editor tab, ``WorkspaceService`` verifies that the workspace directory (``~/.scarajectory/workspace/``) exists. If the folder does not exist or contains no ``.scara`` files, the archive is unpacked automatically into the user's workspace.
+* **Automatic Archive Extraction:** All 50 demonstration scripts are packaged inside ``examples.tgz`` within the package configuration. Upon application launch or when initializing the DSL Editor tab, ``WorkspaceService`` verifies that the workspace directory (``~/.scarajectory/workspace/``) exists. If the folder does not exist or any bundled scripts are absent, the archive unpacks missing examples automatically into the user's workspace.
 * **Integrated Examples Catalog:** The **Examples:** dropdown combobox on the DSL Editor toolbar dynamically discovers and lists all ``.scara`` files present in the user workspace. Selecting an example and clicking **📂 Load Demo** immediately populates the syntax-highlighted editor with the script.
 * **Streamlined File Dialogs:** File operations such as **📂 Open...** (``Ctrl+O``) and **💾 Save As...** (``Ctrl+S``) default directly to ``~/.scarajectory/workspace/``, enabling quick access to user scripts and personal templates.
 * **Safe User Customization:** Users can freely edit existing examples, save variations, or create new industrial programs directly in ``~/.scarajectory/workspace/`` with full persistence.
@@ -1345,7 +1764,7 @@ Mode 3: Direct File Loading in SCARAEmu
 """""""""""""""""""""""""""""""""""""""
 
 * Open **scaraemu** and navigate to the **Trajectories** tab.
-* In the **SCARA DSL Script** dropdown, select any of the 12 bundled programs from the user workspace (e.g. ``12_industrial_pick_place.scara``, ``04_circular_arc.scara``, ``09_pallet_matrix.scara``).
+* In the **SCARA DSL Script** dropdown, select any of the 50 bundled programs from the user workspace (e.g. ``12_industrial_pick_place.scara``, ``04_circular_arc.scara``, ``09_pallet_matrix.scara``).
 * Or click **📂 Load** to load any custom ``.scara`` script or exported ``plan.json`` file.
 
 📚 Docs

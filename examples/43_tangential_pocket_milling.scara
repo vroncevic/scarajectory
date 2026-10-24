@@ -1,0 +1,48 @@
+# ==============================================================================
+# 43_tangential_pocket_milling.scara - Concentric Pocketing with Tool Tangency
+# ==============================================================================
+# Demonstrates multi-depth concentric circular pocket profiling:
+# 1. Continuous tool yaw tracking tangential to arc contours (TOOL_ORIENT TANGENTIAL).
+# 2. Outer circular boundary cut using clockwise circular interpolation (ARC_CW).
+# 3. Incremental radial step-in and depth descent (MOVE_REL X=10.0 Z=-2.0).
+# 4. Inner concentric pocket clearance using counter-clockwise arc (ARC_CCW).
+# 5. Orientation mode restoration to FIXED before clearance retract.
+# ==============================================================================
+
+CONFIG MOTOR CLOSED_LOOP
+ENABLE
+HOME
+
+CONFIG ELBOW RIGHT
+SPEED WORK 40.0
+ACCEL 300.0
+
+# Approach pocket machining location above workpiece
+MOVE_J X=140.0 Y=0.0 Z=20.0 PHI=0.0
+MOVE_L X=140.0 Y=0.0 Z=5.0 PHI=0.0
+
+# Enable continuous tangential yaw tracking
+TOOL_ORIENT TANGENTIAL
+ZONE BLEND 5.0
+
+# --- Layer 1: Outer Circular Boundary (R=20mm, Clockwise) ---
+ARC_CW X=180.0 Y=0.0 I=20.0 J=0.0
+ARC_CW X=140.0 Y=0.0 I=-20.0 J=0.0
+
+# --- Radial Infeed & Depth Step-Down ---
+ZONE EXACT
+MOVE_REL X=10.0 Y=0.0 Z=-2.0 SPEED=20.0
+
+# --- Layer 2: Inner Concentric Pocket (R=10mm, Counter-Clockwise) ---
+ZONE BLEND 3.0
+ARC_CCW X=170.0 Y=0.0 I=10.0 J=0.0
+ARC_CCW X=150.0 Y=0.0 I=-10.0 J=0.0
+
+# Complete machining and restore fixed tool orientation
+ZONE EXACT
+TOOL_ORIENT FIXED
+RETRACT DIST=25.0 SPEED=40.0
+
+MOVE_L X=120.0 Y=0.0 Z=30.0 PHI=0.0 SPEED=60.0
+HOME
+DISABLE

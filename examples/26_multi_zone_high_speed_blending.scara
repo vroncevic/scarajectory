@@ -1,0 +1,33 @@
+# ==============================================================================
+# 26_multi_zone_high_speed_blending.scara - Multi-Tier Corner Zone Blending
+# ==============================================================================
+# Evaluates multi-tier corner zone blending profiles during continuous motion.
+# Transitions from wide high-speed rounding (ZONE BLEND 25.0) down to moderate
+# blending (ZONE BLEND 10.0) and finishes with exact position stopping (ZONE FINE).
+# ==============================================================================
+
+ENABLE
+HOME
+
+# Tier 1: High-speed coarse trajectory rounding with 25mm blend radius
+ZONE BLEND 25.0
+SPEED WORK 90.0
+
+MOVE_L X=130.0 Y=-40.0 Z=30.0 PHI=0.0
+MOVE_L X=180.0 Y=-40.0 Z=30.0 PHI=0.0
+MOVE_L X=180.0 Y=0.0 Z=30.0 PHI=15.0
+
+# Tier 2: Medium tolerance corner blending with 10mm radius
+ZONE BLEND 10.0
+SPEED WORK 60.0
+
+MOVE_L X=150.0 Y=20.0 Z=25.0 PHI=15.0
+MOVE_L X=130.0 Y=40.0 Z=25.0 PHI=0.0
+
+# Tier 3: Zero-tolerance exact stop for inspection target
+ZONE FINE
+SPEED WORK 30.0
+MOVE_L X=120.0 Y=40.0 Z=15.0 PHI=0.0
+
+# Dwell at inspection station
+WAIT_MS 150

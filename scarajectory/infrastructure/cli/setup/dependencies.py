@@ -26,8 +26,7 @@ from typing import TypedDict
 
 from ats_utilities.option.imanager import IOptionManager
 
-from scarajectory.core.service.iservice import IService
-from scarajectory.infrastructure.command.command_bundle import CommandBundle
+from scarajectory.infrastructure.command.bundle import CommandBundle
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -46,11 +45,9 @@ class CLIBundleDependencies(TypedDict):
         It defines:
 
             :attributes:
-                | service - The service for trajectory execution.
                 | parser - The parser for command line options.
                 | commands - The sequence of command pairs.
     '''
 
-    service: IService
     parser: IOptionManager
     commands: Sequence[CommandBundle]

@@ -1,0 +1,55 @@
+# ==============================================================================
+# 31_subroutine_pick_place.scara - Subroutine Modularity for Industrial Handling
+# ==============================================================================
+# Demonstrates reusable subroutine encapsulation (DEF / CALL / END) in scaralang:
+# 1. Standard initialization with homing and work/rapid speed presets.
+# 2. Encapsulated pick subroutine (DEF PICK_COMPONENT) with approach, vacuum,
+#    settling dwell, and retraction.
+# 3. Encapsulated place subroutine (DEF PLACE_COMPONENT) with approach, vacuum cut,
+#    positive pressure blow-off pulse, and retraction.
+# 4. Multi-station transfer sequence invoking routines across workcell positions.
+# 5. Return to safe transit coordinate and motor de-energization.
+# ==============================================================================
+
+CONFIG MOTOR CLOSED_LOOP
+ENABLE
+HOME
+
+SPEED WORK 50.0
+SPEED RAPID 100.0
+
+# Subroutine: Vertical engagement and vacuum acquisition
+DEF PICK_COMPONENT
+APPROACH DIST=10.0 SPEED=20.0
+PUMP ON
+WAIT_MS 50
+RETRACT DIST=10.0 SPEED=50.0
+END
+
+# Subroutine: Vertical insertion, vacuum release and positive blow-off
+DEF PLACE_COMPONENT
+APPROACH DIST=10.0 SPEED=20.0
+PUMP OFF
+VALVE ON
+WAIT_MS 30
+VALVE OFF
+RETRACT DIST=10.0 SPEED=50.0
+END
+
+# Main transfer cycle between Station A and Station B
+MOVE_L X=150.0 Y=-50.0 Z=20.0 PHI=0.0 SPEED=60.0
+CALL PICK_COMPONENT
+
+MOVE_L X=150.0 Y=50.0 Z=20.0 PHI=45.0 SPEED=60.0
+CALL PLACE_COMPONENT
+
+# Secondary transfer cycle between Station C and Station D
+MOVE_L X=180.0 Y=-30.0 Z=20.0 PHI=0.0 SPEED=60.0
+CALL PICK_COMPONENT
+
+MOVE_L X=180.0 Y=30.0 Z=20.0 PHI=45.0 SPEED=60.0
+CALL PLACE_COMPONENT
+
+# Safe parking pose and de-energize
+MOVE_L X=140.0 Y=0.0 Z=35.0 PHI=0.0 SPEED=80.0
+DISABLE

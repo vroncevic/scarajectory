@@ -8,7 +8,10 @@ Subpackages
    :maxdepth: 4
 
    scarajectory.infrastructure.streaming.assembly
+   scarajectory.infrastructure.streaming.binary
+   scarajectory.infrastructure.streaming.control
    scarajectory.infrastructure.streaming.observer
+   scarajectory.infrastructure.streaming.playback
 
 Submodules
 ----------
@@ -16,14 +19,9 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.streaming.binary_program_streamer
-   scarajectory.infrastructure.streaming.binary_program_streamer_factory
-   scarajectory.infrastructure.streaming.bundle
-   scarajectory.infrastructure.streaming.ibinary_program_streamer
-   scarajectory.infrastructure.streaming.stream_control_transmitter
-   scarajectory.infrastructure.streaming.stream_control_transmitter_factory
-   scarajectory.infrastructure.streaming.stream_playback_controller
-   scarajectory.infrastructure.streaming.stream_playback_controller_factory
+   scarajectory.infrastructure.streaming.dependencies
+   scarajectory.infrastructure.streaming.factory
+   scarajectory.infrastructure.streaming.provides
 
 Module contents
 ---------------

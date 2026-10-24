@@ -1,20 +1,24 @@
 scarajectory.infrastructure.pacing package
 ==========================================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   scarajectory.infrastructure.pacing.controller
+   scarajectory.infrastructure.pacing.coordinator
+
 Submodules
 ----------
 
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.pacing.bundle
-   scarajectory.infrastructure.pacing.flow_barrier_coordinator
-   scarajectory.infrastructure.pacing.flow_barrier_coordinator_factory
-   scarajectory.infrastructure.pacing.flow_pacing_bundle_factory
-   scarajectory.infrastructure.pacing.flow_pacing_controller
-   scarajectory.infrastructure.pacing.flow_pacing_controller_factory
-   scarajectory.infrastructure.pacing.iflow_barrier_coordinator
-   scarajectory.infrastructure.pacing.iflow_pacing_controller
+   scarajectory.infrastructure.pacing.dependencies
+   scarajectory.infrastructure.pacing.factory
+   scarajectory.infrastructure.pacing.provides
 
 Module contents
 ---------------

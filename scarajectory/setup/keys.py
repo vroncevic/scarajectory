@@ -26,8 +26,7 @@ from types import MappingProxyType
 
 from ats_utilities.base.setup.bundle import BaseBundle
 
-from scarajectory.core.service.iservice import IService
-from scarajectory.core.service.streaming.istream_playback_controller import IStreamPlaybackController
+from scarajectory.core.service.streaming.playback.icontroller import IPlaybackController
 from scarajectory.infrastructure.gui.igui import IGUI
 from scarajectory.infrastructure.cli.icli import ICLI
 
@@ -49,7 +48,6 @@ class SCARAjectoryBundleKeys:
 
             :attributes:
                 | DEPENDENCY_BASE - Base bundle key.
-                | DEPENDENCY_SERVICE - Service key.
                 | DEPENDENCY_GUI - GUI adapter key.
                 | DEPENDENCY_STREAMER - Robot communication streamer key.
                 | DEPENDENCY_CLI - CLI adapter key.
@@ -68,7 +66,6 @@ class SCARAjectoryBundleKeys:
     '''
 
     DEPENDENCY_BASE: ClassVar[str] = 'base'
-    DEPENDENCY_SERVICE: ClassVar[str] = 'service'
     DEPENDENCY_GUI: ClassVar[str] = 'gui'
     DEPENDENCY_STREAMER: ClassVar[str] = 'streamer'
     DEPENDENCY_CLI: ClassVar[str] = 'cli'
@@ -93,9 +90,8 @@ class SCARAjectoryBundleKeys:
         '''
         return MappingProxyType({
             cls.DEPENDENCY_BASE: BaseBundle,
-            cls.DEPENDENCY_SERVICE: IService,
             cls.DEPENDENCY_GUI: IGUI,
-            cls.DEPENDENCY_STREAMER: IStreamPlaybackController,
+            cls.DEPENDENCY_STREAMER: IPlaybackController,
             cls.DEPENDENCY_CLI: ICLI,
         })
 

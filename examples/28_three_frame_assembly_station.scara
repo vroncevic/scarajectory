@@ -1,0 +1,42 @@
+# ==============================================================================
+# 28_three_frame_assembly_station.scara - Multi-Station Work Coordinate Frames
+# ==============================================================================
+# Demonstrates robotic operations across three distinct coordinate systems:
+# 1. Base robot frame (World origin).
+# 2. Feeder station frame (Rotated 20 deg, shifted to X=120, Y=-40).
+# 3. Assembly jig frame (Rotated -15 deg, shifted to X=150, Y=30).
+# Verifies FRAME_SET coordinate transformations and FRAME_RESET base restoration.
+# ==============================================================================
+
+ENABLE
+HOME
+
+SPEED WORK 50.0
+
+# Station 1: Feeder Station Frame
+FRAME_SET X=120.0 Y=-40.0 ANGLE=20.0
+
+# Operations in Station 1 local coordinates
+MOVE_L X=0.0 Y=0.0 Z=20.0 PHI=0.0
+MOVE_L X=20.0 Y=0.0 Z=10.0 PHI=0.0
+PUMP ON
+WAIT_MS 60
+MOVE_L X=20.0 Y=0.0 Z=30.0 PHI=0.0
+
+# Station 2: Assembly Jig Frame
+FRAME_SET X=150.0 Y=30.0 ANGLE=-15.0
+
+# Operations in Station 2 local coordinates
+MOVE_L X=0.0 Y=0.0 Z=30.0 PHI=0.0
+MOVE_L X=15.0 Y=15.0 Z=10.0 PHI=0.0
+PUMP OFF
+VALVE ON
+WAIT_MS 40
+VALVE OFF
+MOVE_L X=15.0 Y=15.0 Z=30.0 PHI=0.0
+
+# Restore base robot coordinate system
+FRAME_RESET
+
+# Return to base home clearance pose
+MOVE_L X=130.0 Y=0.0 Z=40.0 PHI=0.0 SPEED=70.0

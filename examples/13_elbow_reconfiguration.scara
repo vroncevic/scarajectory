@@ -1,0 +1,32 @@
+# ==============================================================================
+# 13_elbow_reconfiguration.scara - Kinematic Elbow Reconfiguration (RIGHT to LEFT)
+# ==============================================================================
+# Demonstrates transition between Righty and Lefty arm configurations to reach
+# a point in the rear workspace sector that violates J1 limits in Righty configuration.
+#
+# Scenario:
+# 1. P1: Work point in front quadrant (X=150.0, Y=100.0, Z=20.0).
+# 2. P1_RETRACT: Vertical tool lift to safe clearance height (Z=40.0).
+# 3. TRANSIT: Safe-height transit pose (X=130.0, Y=-225.2, Z=40.0) where arm reconfigures.
+# 4. CONFIG ELBOW LEFT: Switch to Lefty kinematic branch for rear sector access.
+# 5. P2_ALIGN: Align above destination at safe height (X=-248.3, Y=-87.8, Z=40.0).
+# 6. P2: Descent to target work point (X=-248.3, Y=-87.8, Z=20.0).
+# ==============================================================================
+
+ENABLE
+HOME
+
+SPEED WORK 50.0
+SPEED RAPID 120.0
+
+# Initial work position
+MOVE_L X=150.0 Y=100.0 Z=20.0 PHI=0.0
+
+# Reconfiguration maneuver: Retract -> Transit -> Align -> Approach
+MOVE_L X=150.0 Y=100.0 Z=40.0 PHI=0.0
+MOVE_L X=130.0 Y=-225.2 Z=40.0 PHI=0.0
+
+CONFIG ELBOW LEFT
+
+MOVE_L X=-248.3 Y=-87.8 Z=40.0 PHI=0.0
+MOVE_L X=-248.3 Y=-87.8 Z=20.0 PHI=0.0

@@ -1,0 +1,42 @@
+# ==============================================================================
+# 29_precision_dispensing_tangent.scara - Adhesive Bead Dispensing Path
+# ==============================================================================
+# Executes continuous adhesive gasket dispensing along a closed perimeter.
+# Coordinated with automatic tangential nozzle heading (TOOL_ORIENT TANGENTIAL),
+# pneumatic dispensing valve activation, and pre-dispense stabilization dwells.
+# ==============================================================================
+
+ENABLE
+HOME
+
+# Rapid position to dispense start location with fine stop
+MOVE_L X=130.0 Y=-20.0 Z=30.0 PHI=0.0 SPEED=90.0
+MOVE_L X=130.0 Y=-20.0 Z=15.0 PHI=0.0 SPEED=40.0
+
+# Engage dispensing flow and allow pressure equalization at start pose
+PUMP ON
+WAIT_MS 50
+
+# Activate tangent orientation tracking and continuous blending for perimeter
+TOOL_ORIENT TANGENTIAL
+ZONE BLEND 8.0
+SPEED WORK 35.0
+
+# Trace perimeter bead
+MOVE_L X=170.0 Y=-20.0 Z=15.0
+MOVE_L X=170.0 Y=20.0 Z=15.0
+MOVE_L X=130.0 Y=20.0 Z=15.0
+MOVE_L X=130.0 Y=-20.0 Z=15.0
+
+# Precise stop at end of contour before valve cutoff
+ZONE FINE
+TOOL_ORIENT FIXED
+
+# Cut off fluid flow with anti-drip blowback
+PUMP OFF
+VALVE ON
+WAIT_MS 30
+VALVE OFF
+
+# Retract to clearance height
+MOVE_L X=130.0 Y=-20.0 Z=40.0 PHI=0.0 SPEED=80.0

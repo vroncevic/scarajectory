@@ -7,9 +7,9 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler
-   scarajectory.infrastructure.gui.canvas.handler.pan.canvas_viewport_pan_handler_factory
-   scarajectory.infrastructure.gui.canvas.handler.pan.icanvas_viewport_pan_handler
+   scarajectory.infrastructure.gui.canvas.handler.pan.factory
+   scarajectory.infrastructure.gui.canvas.handler.pan.handler
+   scarajectory.infrastructure.gui.canvas.handler.pan.ihandler
 
 Module contents
 ---------------

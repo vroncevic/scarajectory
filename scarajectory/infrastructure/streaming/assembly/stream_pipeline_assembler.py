@@ -21,31 +21,33 @@ Info
 
 from __future__ import annotations
 
-from scaralang.infrastructure.communication.protocol.binary.builder.binary_frame_builder_factory import BinaryFrameBuilderFactory
+from scaracom.transport.factory import TransportFactory
+from scaracom.transport.itransport import ITransport
 
-from scarajectory.core.model.protocol.protocol_mode import ProtocolMode
-from scarajectory.core.model.state.stream_session import StreamSession
+from scaralang.infrastructure.protocol.builder.factory import BuilderFactory
+
+from scarajectory.core.model.streaming.session import StreamSession
 from scarajectory.core.service.streaming.session_factory import SessionFactory
-from scarajectory.infrastructure.worker.iexecution_worker import IExecutionWorker
-from scarajectory.infrastructure.connection.stream_connection_manager import StreamConnectionManager
-from scarajectory.infrastructure.connection.stream_raw_transceiver import StreamRawTransceiver
-from scarajectory.infrastructure.pacing.bundle import FlowPacingBundle
-from scarajectory.infrastructure.state.stream_state_machine import StreamStateMachine
-from scarajectory.infrastructure.state.stream_state_machine_factory import StreamStateMachineFactory
+from scarajectory.infrastructure.connection.listener.factory import StreamTransportListenerFactory
+from scarajectory.infrastructure.connection.listener.listener import StreamTransportListener
+from scarajectory.infrastructure.connection.receiver.bootstrap import BootstrapBytesReceiver
+from scarajectory.infrastructure.pacing.provides import PacingProvides
+from scarajectory.infrastructure.state.dependencies import StateDependencies
+from scarajectory.infrastructure.state.factory import StateFactory
+from scarajectory.infrastructure.state.imachine import IStreamStateMachine
 from scarajectory.infrastructure.streaming.assembly.stream_pacing_assembler import StreamPacingAssembler
 from scarajectory.infrastructure.streaming.assembly.stream_transport_assembler import StreamTransportAssembler
 from scarajectory.infrastructure.streaming.assembly.stream_worker_assembler import StreamWorkerAssembler
 from scarajectory.infrastructure.streaming.assembly.worker_bundle import WorkerBundle
-from scarajectory.infrastructure.streaming.binary_program_streamer_factory import BinaryProgramStreamerFactory
-from scarajectory.infrastructure.streaming.bundle import StreamingBundle
-from scarajectory.infrastructure.streaming.stream_control_transmitter import StreamControlTransmitter
-from scarajectory.infrastructure.streaming.stream_control_transmitter_factory import StreamControlTransmitterFactory
-from scarajectory.infrastructure.streaming.observer.stream_observer_dispatcher import StreamObserverDispatcher
-from scarajectory.infrastructure.streaming.observer.stream_observer_dispatcher_factory import StreamObserverDispatcherFactory
-from scarajectory.infrastructure.streaming.stream_playback_controller import StreamPlaybackController
-from scarajectory.infrastructure.streaming.stream_playback_controller_factory import StreamPlaybackControllerFactory
-from scarajectory.infrastructure.transport.bundle import TransportBundle
-from scarajectory.infrastructure.transport.transport_factory import TransportFactory
+from scarajectory.infrastructure.streaming.binary.dependencies import BinaryDependencies
+from scarajectory.infrastructure.streaming.binary.factory import BinaryFactory
+from scarajectory.infrastructure.streaming.control.dependencies import ControlDependencies
+from scarajectory.infrastructure.streaming.control.factory import ControlFactory
+from scarajectory.infrastructure.streaming.observer.factory import ObserverFactory
+from scarajectory.infrastructure.streaming.playback.dependencies import PlaybackDependencies
+from scarajectory.infrastructure.streaming.playback.factory import PlaybackFactory
+from scarajectory.infrastructure.streaming.provides import StreamingProvides
+from scarajectory.infrastructure.worker.iexecution_worker import IExecutionWorker
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -59,87 +61,90 @@ __status__ = 'Updated'
 
 class StreamPipelineAssembler:
     '''
-    Assembler constructing fully-wired streaming pipeline services.
+        Assembler constructing fully-wired streaming pipeline services.
 
-    It defines:
+        It defines:
 
-        :methods:
-            | assemble - Assembles streaming pipeline with explicit transport.
-            | assemble_default - Assembles streaming with default transport.
-            | get_version - Returns assembler version string.
+            :methods:
+                | assemble - Assembles streaming pipeline with explicit transport.
+                | assemble_default - Assembles streaming with default transport.
+                | get_version - Returns assembler version string.
     '''
 
     @classmethod
     def assemble(
         cls,
-        transport: TransportBundle,
+        transport: ITransport,
         *,
         queue_capacity: int = 16,
-        protocol_mode: ProtocolMode = ProtocolMode.BINARY,
-    ) -> StreamingBundle:
+    ) -> StreamingProvides:
         '''
-        Assembles streaming pipeline services and returns StreamingBundle.
+            Assembles streaming pipeline services and returns StreamingProvides.
 
-        :param transport: Required TransportBundle parameter instance.
-        :param queue_capacity: Flow control buffer capacity integer.
-        :param protocol_mode: Active ProtocolMode enum value.
-        :return: Fully wired StreamingBundle instance.
+            :param transport: Required ITransport parameter instance.
+            :param queue_capacity: Flow control buffer capacity integer.
+            :return: Fully wired StreamingProvides instance.
         '''
-        conn_mgr: StreamConnectionManager
-        raw_xceiver: StreamRawTransceiver
-        conn_mgr, raw_xceiver = StreamTransportAssembler.assemble(
-            transport, protocol_mode=protocol_mode
+        state_machine: IStreamStateMachine = StateFactory.create(
+            StateDependencies()
+        ).stream_state_machine
+        observer_provides = ObserverFactory.create()
+        initial_receiver: BootstrapBytesReceiver = BootstrapBytesReceiver()
+        listener: StreamTransportListener = StreamTransportListenerFactory.create(
+            dispatcher=observer_provides.stream_observer_dispatcher,
+            bytes_receiver=initial_receiver,
         )
-        state_machine: StreamStateMachine = StreamStateMachineFactory.create()
-        dispatcher: StreamObserverDispatcher = (
-            StreamObserverDispatcherFactory.create()
+        transport_bundle = StreamTransportAssembler.assemble(
+            transport,
+            listener=listener,
         )
-        pacing_bundle: FlowPacingBundle = StreamPacingAssembler.assemble(
+        pacing_provides: PacingProvides = StreamPacingAssembler.assemble(
             queue_capacity=queue_capacity
         )
         worker: IExecutionWorker = StreamWorkerAssembler.assemble(
-            transport.connection,
+            transport_bundle[2],
             WorkerBundle(
-                pacing_bundle=pacing_bundle,
-                raw_transceiver=raw_xceiver,
+                pacing_provides=pacing_provides,
+                raw_transceiver=transport_bundle[1],
                 state_machine=state_machine,
-                dispatcher=dispatcher,
+                dispatcher=observer_provides.stream_observer_dispatcher,
             ),
-            protocol_mode,
         )
-        session: StreamSession = SessionFactory.create()
-        ctrl_transmitter: StreamControlTransmitter = (
-            StreamControlTransmitterFactory.create(
-                raw_transceiver=raw_xceiver,
-                frame_builder=BinaryFrameBuilderFactory.create(),
+        builders = BuilderFactory.create()
+        ctrl_transmitter = ControlFactory.create(
+            ControlDependencies(
+                raw_transceiver=transport_bundle[1],
+                system_builder=builders.system,
+                frame_packer=builders.packer,
             )
-        )
-        playback_ctrl: StreamPlaybackController = (
-            StreamPlaybackControllerFactory.create(
-                connection=conn_mgr,
-                barrier_coordinator=pacing_bundle.barrier_coordinator,
-                state_machine=state_machine,
-                dispatcher=dispatcher,
-                worker=worker,
+        ).control_transmitter
+        playback_ctrl = PlaybackFactory.create(
+            PlaybackDependencies(
+                connection_manager=transport_bundle[0],
+                flow_barrier_coordinator=pacing_provides.flow_barrier_coordinator,
+                stream_state_machine=state_machine,
+                stream_observer_dispatcher=observer_provides.stream_observer_dispatcher,
+                execution_worker=worker,
                 control_transmitter=ctrl_transmitter,
-                session=session,
-                protocol_mode=protocol_mode,
             )
-        )
-        binary_streamer = BinaryProgramStreamerFactory().create(
-            connection=conn_mgr,
-            state_machine=state_machine,
-            dispatcher=dispatcher,
-            worker=worker,
-            session=session,
-        )
+        ).playback_controller
+        session: StreamSession = SessionFactory.create_default()
 
-        return StreamingBundle(
-            connection=conn_mgr,
-            raw_channel=raw_xceiver,
+        return StreamingProvides(
+            connection_manager=transport_bundle[0],
+            raw_channel=transport_bundle[1],
             playback_controller=playback_ctrl,
-            dispatcher=dispatcher,
-            binary_streamer=binary_streamer,
+            registry=observer_provides.stream_observer_registry,
+            dispatcher=observer_provides.stream_observer_dispatcher,
+            binary_streamer=BinaryFactory.create(
+                BinaryDependencies(
+                    connection_manager=transport_bundle[0],
+                    stream_state_machine=state_machine,
+                    stream_observer_dispatcher=observer_provides.stream_observer_dispatcher,
+                    execution_worker=worker,
+                    session=session,
+                )
+            ).binary_streamer,
         )
 
     @classmethod
@@ -147,26 +152,23 @@ class StreamPipelineAssembler:
         cls,
         *,
         queue_capacity: int = 16,
-        protocol_mode: ProtocolMode = ProtocolMode.BINARY,
-    ) -> StreamingBundle:
+    ) -> StreamingProvides:
         '''
-        Assembles streaming pipeline using default transport.
+            Assembles streaming pipeline using default transport.
 
-        :param queue_capacity: Flow control buffer capacity integer.
-        :param protocol_mode: Active ProtocolMode enum value.
-        :return: Fully wired StreamingBundle instance.
+            :param queue_capacity: Flow control buffer capacity integer.
+            :return: Fully wired StreamingProvides instance.
         '''
         return cls.assemble(
-            transport=TransportFactory.create_default_transport(),
+            transport=TransportFactory.create(),
             queue_capacity=queue_capacity,
-            protocol_mode=protocol_mode,
         )
 
     @classmethod
     def get_version(cls) -> str:
         '''
-        Returns assembler version string.
+            Returns assembler version string.
 
-        :return: Version string.
+            :return: Version string.
         '''
         return __version__

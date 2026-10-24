@@ -16,7 +16,7 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Infrastructure settings adapters for robot configuration loading.
+    Initializes the scarajectory.infrastructure.settings package.
 '''
 
 from __future__ import annotations

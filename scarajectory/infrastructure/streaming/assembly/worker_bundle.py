@@ -23,10 +23,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from scarajectory.infrastructure.connection.stream_raw_transceiver import StreamRawTransceiver
-from scarajectory.infrastructure.pacing.bundle import FlowPacingBundle
-from scarajectory.infrastructure.state.stream_state_machine import StreamStateMachine
-from scarajectory.infrastructure.streaming.observer.stream_observer_dispatcher import StreamObserverDispatcher
+from scaracom.bridge.transceiver.transceiver import RawTransceiver
+
+from scarajectory.core.service.streaming.observer.idispatcher import IStreamObserverDispatcher
+from scarajectory.infrastructure.pacing.provides import PacingProvides
+from scarajectory.infrastructure.state.imachine import IStreamStateMachine
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -46,13 +47,22 @@ class WorkerBundle:
     It defines:
 
         :attributes:
-            | pacing_bundle - FlowPacingBundle holding pacing and barrier collaborators.
-            | raw_transceiver - StreamRawTransceiver wire channel instance.
+            | pacing_provides - PacingProvides holding pacing and barrier collaborators.
+            | raw_transceiver - RawTransceiver wire channel instance.
             | state_machine - StreamStateMachine lifecycle tracking instance.
-            | dispatcher - StreamObserverDispatcher event notification sink.
+            | dispatcher - IStreamObserverDispatcher event notification sink.
     '''
 
-    pacing_bundle: FlowPacingBundle
-    raw_transceiver: StreamRawTransceiver
-    state_machine: StreamStateMachine
-    dispatcher: StreamObserverDispatcher
+    pacing_provides: PacingProvides
+    raw_transceiver: RawTransceiver
+    state_machine: IStreamStateMachine
+    dispatcher: IStreamObserverDispatcher
+
+    @property
+    def pacing_bundle(self) -> PacingProvides:
+        '''
+        Backward compatibility property returning pacing_provides.
+
+        :return: PacingProvides instance.
+        '''
+        return self.pacing_provides

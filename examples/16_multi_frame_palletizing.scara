@@ -1,0 +1,73 @@
+# ==============================================================================
+# 16_multi_frame_palletizing.scara - Dual Coordinate Frame Palletizing Cycle
+# ==============================================================================
+# Demonstrates multi-coordinate-frame transformation and matrix palletizing:
+# 1. Shifts coordinate system to Infeed Station A (FRAME_SET).
+# 2. Performs pneumatic part pickup with sensor dwell.
+# 3. Resets to base coordinate frame (FRAME_RESET).
+# 4. Defines and populates a 2x2 blister tray matrix (PALLET_DEF / MOVE_PALLET).
+# 5. Executes a second cycle transferring component to a different pallet slot.
+# ==============================================================================
+
+ENABLE
+HOME
+
+SPEED WORK 40.0
+SPEED RAPID 120.0
+
+# ----------------------------------------------------
+# 1. Infeed Pick Station (WCS Frame A at X=130, Y=40)
+# ----------------------------------------------------
+FRAME_SET X=130.0 Y=40.0 ANGLE=0.0
+MOVE_L X=0.0 Y=0.0 Z=35.0 PHI=0.0
+MOVE_L X=0.0 Y=0.0 Z=10.0 PHI=0.0
+
+# Engage vacuum pump and allow 60ms suction buildup
+PUMP ON
+WAIT_MS 60
+
+# Lift to local clearance height and reset to base robot frame
+MOVE_L X=0.0 Y=0.0 Z=35.0 PHI=0.0
+FRAME_RESET
+
+# ----------------------------------------------------
+# 2. Outfeed Pallet Grid (2x2 Matrix at X=130, Y=-50)
+# ----------------------------------------------------
+PALLET_DEF TRAY ROWS=2 COLS=2 DX=25.0 DY=25.0 X=130.0 Y=-50.0 ANGLE=0.0
+
+# Place first component into Cell 0 (Row 0, Col 0)
+MOVE_PALLET TRAY INDEX=0 Z=35.0
+MOVE_PALLET TRAY INDEX=0 Z=15.0
+
+# Pneumatic part blow-off release
+PUMP OFF
+VALVE ON
+WAIT_MS 40
+VALVE OFF
+
+# Retract to transit height
+MOVE_PALLET TRAY INDEX=0 Z=35.0
+
+# ----------------------------------------------------
+# 3. Second Pick & Place Transfer Cycle
+# ----------------------------------------------------
+FRAME_SET X=130.0 Y=40.0 ANGLE=0.0
+MOVE_L X=20.0 Y=0.0 Z=10.0 PHI=0.0
+PUMP ON
+WAIT_MS 60
+MOVE_L X=20.0 Y=0.0 Z=35.0 PHI=0.0
+FRAME_RESET
+
+# Place second component into Cell 3 (Row 1, Col 1)
+MOVE_PALLET TRAY INDEX=3 Z=35.0
+MOVE_PALLET TRAY INDEX=3 Z=15.0
+
+PUMP OFF
+VALVE ON
+WAIT_MS 40
+VALVE OFF
+
+MOVE_PALLET TRAY INDEX=3 Z=35.0
+
+# Return to base standby park pose
+MOVE_L X=150.0 Y=0.0 Z=35.0 PHI=0.0

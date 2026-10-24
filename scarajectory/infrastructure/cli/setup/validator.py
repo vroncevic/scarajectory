@@ -29,7 +29,6 @@ from ats_utilities.validation.check_value import not_none
 from ats_utilities.validation.check_type import istype
 
 from scarajectory.infrastructure.cli.setup.bundle import CLIBundle
-from scarajectory.core.service.iservice import IService
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -66,21 +65,17 @@ class CLIBundleValidator:
         ctx: str = 'cli_bundle_validator::validate(...)'
         msg_bundle_none: str = 'the cli bundle must be provided'
         msg_bundle_istype: str = 'the cli bundle must be an instance of CLIBundle'
-        msg_service_none: str = 'the service must be provided'
         msg_parser_none: str = 'the parser must be provided'
         msg_commands_none: str = 'the commands sequence must be provided'
-        msg_service_istype: str = 'the service must be an instance of IService'
         msg_parser_istype: str = 'the parser must be an instance of IOptionManager'
         msg_commands_istype: str = 'the commands sequence must be an instance of Sequence'
 
         not_none(bundle, ctx, msg_bundle_none)
         istype(bundle, CLIBundle, ctx, msg_bundle_istype)
 
-        not_none(bundle.service, ctx, msg_service_none)
         not_none(bundle.parser, ctx, msg_parser_none)
         not_none(bundle.commands, ctx, msg_commands_none)
 
-        istype(bundle.service, IService, ctx, msg_service_istype)
         istype(bundle.parser, IOptionManager, ctx, msg_parser_istype)
         istype(bundle.commands, Sequence, ctx, msg_commands_istype)
 

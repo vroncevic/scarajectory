@@ -1,0 +1,61 @@
+# ==============================================================================
+# 44_hierarchical_subroutine_chain.scara - Multi-Level Nested Subroutine Calls
+# ==============================================================================
+# Demonstrates 3-level hierarchical subroutine call stack expansion:
+# 1. Level 1 (Atomic): GRIP_PART and DROP_PART encapsulate vertical motion and vacuum.
+# 2. Level 2 (Task): TRANSFER_STATION calls atomic routines with station targeting.
+# 3. Level 3 (Master): BATCH_TRANSFER orchestrates full multi-station transfer cycle.
+# 4. Strict recursion depth tracking and parameter stack integrity verification.
+# ==============================================================================
+
+CONFIG MOTOR CLOSED_LOOP
+ENABLE
+HOME
+
+CONFIG ELBOW RIGHT
+SPEED WORK 40.0
+ACCEL 300.0
+
+# --- Level 1: Atomic Vacuum Gripper Subroutines ---
+DEF GRIP_PART
+    ZONE EXACT
+    APPROACH DIST=10.0 SPEED=20.0
+    PUMP ON
+    WAIT_MS 40
+    RETRACT DIST=10.0 SPEED=35.0
+END
+
+DEF DROP_PART
+    ZONE EXACT
+    APPROACH DIST=10.0 SPEED=20.0
+    PUMP OFF
+    VALVE ON
+    WAIT_MS 30
+    VALVE OFF
+    RETRACT DIST=10.0 SPEED=35.0
+END
+
+# --- Level 2: Composite Station Transfer Subroutines ---
+DEF TRANSFER_TO_NEST
+    MOVE_L X=140.0 Y=-40.0 Z=25.0 PHI=0.0 SPEED=50.0
+    CALL GRIP_PART
+    MOVE_L X=180.0 Y=30.0 Z=25.0 PHI=30.0 SPEED=50.0
+    CALL DROP_PART
+END
+
+# --- Level 3: Master Orchestration Subroutine ---
+DEF BATCH_TRANSFER
+    CALL TRANSFER_TO_NEST
+    MOVE_L X=150.0 Y=-30.0 Z=25.0 PHI=10.0 SPEED=50.0
+    CALL GRIP_PART
+    MOVE_L X=190.0 Y=40.0 Z=25.0 PHI=40.0 SPEED=50.0
+    CALL DROP_PART
+END
+
+# Main Program Execution invoking Master Subroutine
+CALL BATCH_TRANSFER
+
+# Safe return to home standby
+MOVE_L X=120.0 Y=0.0 Z=30.0 PHI=0.0 SPEED=60.0
+HOME
+DISABLE

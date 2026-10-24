@@ -1,0 +1,63 @@
+# ==============================================================================
+# 41_dynamic_feedrate_accel_profiling.scara - Multi-Stage Dynamic Profile Scaling
+# ==============================================================================
+# Demonstrates multi-stage dynamic velocity and acceleration scheduling:
+# 1. Low-acceleration, throttled feedrate delicate entry into workpiece zone.
+# 2. Dynamic speed override scaling (OVERRIDE 60% -> 100% -> 120% -> 80%).
+# 3. High-acceleration path segment for long-distance horizontal transfer.
+# 4. Controlled deceleration and settling dwell before fixture docking.
+# 5. Continuous path blending (ZONE BLEND 10.0) transitioning to exact stop (ZONE EXACT).
+# ==============================================================================
+
+CONFIG MOTOR CLOSED_LOOP
+ENABLE
+HOME
+
+CONFIG ELBOW RIGHT
+
+# --- Phase 1: Delicate Engagement Setup ---
+# Gentle acceleration and throttled feedrate for close-tolerance positioning
+ACCEL 100.0
+SPEED WORK 25.0
+OVERRIDE 60
+
+MOVE_L X=130.0 Y=-50.0 Z=25.0 PHI=0.0
+MOVE_L X=140.0 Y=-30.0 Z=15.0 PHI=10.0
+
+# Vacuum pickup engagement
+PUMP ON
+WAIT_MS 40
+
+# --- Phase 2: High-Acceleration Rapid Transfer ---
+# Boost acceleration, feedrate, and corner rounding for rapid transfer
+ZONE BLEND 10.0
+ACCEL 450.0
+SPEED WORK 85.0
+OVERRIDE 100
+
+MOVE_L X=180.0 Y=0.0 Z=15.0 PHI=25.0
+OVERRIDE 120
+MOVE_L X=190.0 Y=40.0 Z=15.0 PHI=35.0
+
+# --- Phase 3: Controlled Deceleration & Docking ---
+# Reduce speed override and enforce exact stop for precision placement
+ZONE EXACT
+OVERRIDE 80
+ACCEL 150.0
+SPEED WORK 30.0
+
+MOVE_L X=160.0 Y=60.0 Z=15.0 PHI=45.0
+APPROACH DIST=8.0 SPEED=15.0
+
+# Pneumatic placement sequence
+PUMP OFF
+VALVE ON
+WAIT_MS 40
+VALVE OFF
+RETRACT DIST=8.0 SPEED=30.0
+
+# Return to safe standby
+SPEED RAPID 120.0
+MOVE_J X=120.0 Y=0.0 Z=30.0 PHI=0.0
+HOME
+DISABLE

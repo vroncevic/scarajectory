@@ -60,7 +60,6 @@ class TestCLIBundleOptionsValidator(TestCase):
         '''
         bundle: SCARAjectoryBundle = SCARAjectoryBundleFactory.create_bundle()
         opts = CLIBundleOptions(
-            service=bundle.service,
             parser=bundle.base.option_manager,
             gui=bundle.gui,
         )
@@ -81,16 +80,14 @@ class TestCLIBundleOptionsValidator(TestCase):
 
         bundle: SCARAjectoryBundle = SCARAjectoryBundleFactory.create_bundle()
         opts_none_attr = CLIBundleOptions(
-            service=None,  # type: ignore[arg-type]
-            parser=bundle.base.option_manager,
+            parser=None,  # type: ignore[arg-type]
             gui=bundle.gui,
         )
         with self.assertRaises(ATSValueError):
             CLIBundleOptionsValidator.validate(opts_none_attr)
 
         opts_wrong_type = CLIBundleOptions(
-            service='not_a_service',  # type: ignore[arg-type]
-            parser=bundle.base.option_manager,
+            parser='not_a_parser',  # type: ignore[arg-type]
             gui=bundle.gui,
         )
         with self.assertRaises(ATSTypeError):
@@ -104,7 +101,6 @@ class TestCLIBundleOptionsValidator(TestCase):
         '''
         bundle: SCARAjectoryBundle = SCARAjectoryBundleFactory.create_bundle()
         opts = CLIBundleOptions(
-            service=bundle.service,
             parser=bundle.base.option_manager,
             gui=bundle.gui,
         )

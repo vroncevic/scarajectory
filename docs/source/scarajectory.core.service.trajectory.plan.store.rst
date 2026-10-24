@@ -1,21 +1,27 @@
 scarajectory.core.service.trajectory.plan.store package
 =======================================================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   scarajectory.core.service.trajectory.plan.store.bulk_mutator
+   scarajectory.core.service.trajectory.plan.store.mutator
+   scarajectory.core.service.trajectory.plan.store.query
+
 Submodules
 ----------
 
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.core.service.trajectory.plan.store.iwaypoint_bulk_mutator
-   scarajectory.core.service.trajectory.plan.store.iwaypoint_mutator
-   scarajectory.core.service.trajectory.plan.store.iwaypoint_query
-   scarajectory.core.service.trajectory.plan.store.iwaypoint_store
-   scarajectory.core.service.trajectory.plan.store.waypoint_bulk_mutator
-   scarajectory.core.service.trajectory.plan.store.waypoint_mutator
-   scarajectory.core.service.trajectory.plan.store.waypoint_query
-   scarajectory.core.service.trajectory.plan.store.waypoint_store
-   scarajectory.core.service.trajectory.plan.store.waypoint_store_factory
+   scarajectory.core.service.trajectory.plan.store.dependencies
+   scarajectory.core.service.trajectory.plan.store.factory
+   scarajectory.core.service.trajectory.plan.store.istore
+   scarajectory.core.service.trajectory.plan.store.provides
+   scarajectory.core.service.trajectory.plan.store.store
 
 Module contents
 ---------------

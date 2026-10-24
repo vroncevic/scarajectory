@@ -1,0 +1,42 @@
+# ==============================================================================
+# 22_conveyor_tracking_relative.scara - Relative Conveyor Tracking
+# ==============================================================================
+# Demonstrates incremental workpiece tracking over a moving conveyor belt.
+# Utilizes relative offsets (MOVE_REL) for tracking synchronization,
+# paired with high-speed approach/retract and pneumatic part transfer.
+# ==============================================================================
+
+ENABLE
+HOME
+
+# Set travel and working speeds
+SPEED WORK 60.0
+SPEED RAPID 120.0
+
+# Synchronize robot to conveyor entry station
+MOVE_L X=140.0 Y=-50.0 Z=35.0 PHI=0.0
+
+# Wait for optical sensor trigger
+WAIT_MS 50
+
+# Track moving belt along positive Y while descending
+MOVE_REL X=0.0 Y=25.0 Z=-15.0 SPEED=40.0
+APPROACH DIST=15.0 SPEED=25.0
+
+# Grasp component via vacuum
+PUMP ON
+WAIT_MS 80
+RETRACT DIST=20.0 SPEED=90.0
+
+# Transfer tracked part to buffer table
+MOVE_REL X=30.0 Y=-40.0 Z=10.0 PHI=20.0 SPEED=70.0
+MOVE_L X=170.0 Y=20.0 Z=15.0 PHI=0.0
+
+# Release component with blow-off pulse
+PUMP OFF
+VALVE ON
+WAIT_MS 40
+VALVE OFF
+
+# Return to clearance height
+MOVE_REL Z=25.0 SPEED=100.0

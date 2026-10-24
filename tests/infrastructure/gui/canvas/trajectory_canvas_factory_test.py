@@ -25,6 +25,8 @@ from tkinter import Tk
 from unittest import TestCase, main
 from unittest.mock import MagicMock
 
+from scarajectory.core.service.trajectory.plan.mutation.provides import MutationProvides
+from scarajectory.infrastructure.gui.canvas.adapter_bundle import CanvasAdapterBundle
 from scarajectory.infrastructure.gui.canvas.bundle import CanvasBundle
 from scarajectory.infrastructure.gui.canvas.trajectory_canvas import TrajectoryCanvas
 from scarajectory.infrastructure.gui.canvas.trajectory_canvas_factory import TrajectoryCanvasFactory
@@ -72,10 +74,18 @@ class TestTrajectoryCanvasFactory(TestCase):
         bundle = CanvasBundle(
             store=MagicMock(),
             selection=MagicMock(),
-            mutation=MagicMock(),
+            mutations=MutationProvides(
+                plan_point_mutator=MagicMock(),
+                plan_bulk_mutator=MagicMock(),
+            ),
             dispatcher=mock_dispatcher,
             validator=mock_validator,
             settings=settings,
+            adapters=CanvasAdapterBundle(
+                avoidance=MagicMock(),
+                planner=MagicMock(),
+                boundary=MagicMock(),
+            ),
         )
         canvas = TrajectoryCanvasFactory.create(self.root, bundle=bundle)
         self.assertIsInstance(canvas, TrajectoryCanvas)

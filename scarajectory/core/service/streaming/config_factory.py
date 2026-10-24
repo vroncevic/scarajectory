@@ -21,8 +21,9 @@ Info
 
 from __future__ import annotations
 
-from scarajectory.core.model.protocol.protocol_mode import ProtocolMode
-from scarajectory.core.model.streaming.stream_config import StreamConfig
+from typing import ClassVar
+
+from scarajectory.core.model.streaming.config import StreamConfig
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -40,38 +41,57 @@ class ConfigFactory:
 
         It defines:
 
+            :constants:
+                | DEFAULT_PORT - Default serial port device path.
+                | DEFAULT_BAUDRATE - Default baudrate frequency.
+                | DEFAULT_TIMEOUT - Default communication timeout in seconds.
+                | DEFAULT_QUEUE_CAPACITY - Default remote ring buffer queue capacity.
             :methods:
+                | create_default - Constructs StreamConfig with standard default parameters.
                 | create - Constructs StreamConfig using explicit configuration parameters.
                 | get_version - Returns factory version string.
     '''
+
+    DEFAULT_PORT: ClassVar[str] = '/dev/ttyUSB0'
+    DEFAULT_BAUDRATE: ClassVar[int] = 115200
+    DEFAULT_TIMEOUT: ClassVar[float] = 0.1
+    DEFAULT_QUEUE_CAPACITY: ClassVar[int] = 16
+
+    @classmethod
+    def create_default(cls) -> StreamConfig:
+        '''
+            Constructs and returns a StreamConfig instance with standard default parameters.
+
+            :return: Default StreamConfig model instance.
+            :exceptions: None.
+        '''
+        return StreamConfig(
+            port=cls.DEFAULT_PORT,
+            baudrate=cls.DEFAULT_BAUDRATE,
+            timeout=cls.DEFAULT_TIMEOUT,
+            queue_capacity=cls.DEFAULT_QUEUE_CAPACITY,
+        )
 
     @classmethod
     def create(
         cls,
         *,
-        port: str = '/dev/ttyUSB0',
-        baudrate: int = 115200,
-        timeout: float = 0.1,
-        queue_capacity: int = 16,
-        protocol_mode: ProtocolMode = ProtocolMode.BINARY,
+        port: str,
+        baudrate: int,
     ) -> StreamConfig:
         '''
             Constructs and returns a StreamConfig instance with explicit parameters.
 
             :param port: Communication port path or IP:port address.
             :param baudrate: Baudrate frequency integer.
-            :param timeout: Communication timeout float.
-            :param queue_capacity: Ring buffer capacity integer.
-            :param protocol_mode: ProtocolMode enum (ASCII or BINARY).
             :return: Configured StreamConfig model instance.
             :exceptions: None.
         '''
         return StreamConfig(
             port=port,
             baudrate=baudrate,
-            timeout=timeout,
-            queue_capacity=queue_capacity,
-            protocol_mode=protocol_mode,
+            timeout=cls.DEFAULT_TIMEOUT,
+            queue_capacity=cls.DEFAULT_QUEUE_CAPACITY,
         )
 
     @classmethod

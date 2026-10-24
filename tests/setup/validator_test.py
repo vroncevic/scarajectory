@@ -76,8 +76,7 @@ class TestSCARAjectoryBundleValidator(TestCase):
         valid_bundle: SCARAjectoryBundle = SCARAjectoryBundleFactory.create_bundle()
         invalid_bundle = SCARAjectoryBundle(
             base=valid_bundle.base,
-            service='not_a_service',  # type: ignore[arg-type]
-            gui=valid_bundle.gui,
+            gui='not_a_gui',  # type: ignore[arg-type]
             streamer=valid_bundle.streamer,
             cli=valid_bundle.cli,
         )

@@ -1,0 +1,117 @@
+# -*- coding: UTF-8 -*-
+
+'''
+Module
+    factory_test.py
+Copyright
+    Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
+    scarajectory is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by the
+    Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    scarajectory is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+    See the GNU General Public License for more details.
+    You should have received a copy of the GNU General Public License along
+    with this program. If not, see <http://www.gnu.org/licenses/>.
+Info
+    Unit tests for SCARAjectoryBundleFactory and SCARAjectory top-level engine.
+'''
+
+from __future__ import annotations
+
+from unittest import TestCase, main
+
+from scarajectory.engine import SCARAjectory
+from scarajectory.setup.factory import SCARAjectoryBundleFactory
+from scarajectory.setup.keys import SCARAjectoryBundleKeys
+
+__author__ = 'Vladimir Roncevic'
+__copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
+__credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
+__license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
+__version__ = '1.0.3'
+__maintainer__ = 'Vladimir Roncevic'
+__email__ = 'elektron.ronca@gmail.com'
+__status__ = 'Updated'
+
+
+class TestBundleFactory(TestCase):
+    '''
+        Test cases for SCARAjectoryBundleFactory and SCARAjectory life cycle.
+
+        It defines:
+
+            :methods:
+                | test_factory_creation - Tests creating bundle components.
+                | test_factory_custom_geometry - Tests custom options.
+                | test_engine_lifecycle - Tests engine initialization status.
+    '''
+
+    def test_factory_creation(self) -> None:
+        '''
+            Tests default bundle assembly.
+
+            :exceptions: None.
+        '''
+        bundle = SCARAjectoryBundleFactory.create_bundle()
+        self.assertIsNotNone(bundle)
+        self.assertIsNotNone(bundle.base)
+        self.assertIsNotNone(bundle.gui)
+        self.assertIsNotNone(bundle.streamer)
+        self.assertIsNotNone(bundle.cli)
+
+    def test_factory_custom_geometry(self) -> None:
+        '''
+            Tests custom kinematic parameter injection.
+
+            :exceptions: None.
+        '''
+        options = {
+            SCARAjectoryBundleKeys.OPTION_L1: 160.0,
+            SCARAjectoryBundleKeys.OPTION_L2: 130.0,
+            SCARAjectoryBundleKeys.OPTION_Z_MIN: -10.0,
+            SCARAjectoryBundleKeys.OPTION_Z_MAX: 90.0,
+        }
+        bundle = SCARAjectoryBundleFactory.create_bundle_with_options(
+            options=options
+        )
+        self.assertIsNotNone(bundle)
+        bounds = SCARAjectoryBundleFactory.resolve_bounds_with_options(
+            options=options,
+            context_bundle=bundle.base.context_bundle,
+        )
+        self.assertEqual(bounds.links.l1, 160.0)
+        self.assertEqual(bounds.links.l2, 130.0)
+
+    def test_engine_lifecycle(self) -> None:
+        '''
+            Tests engine instantiation.
+
+            :exceptions: None.
+        '''
+        bundle = SCARAjectoryBundleFactory.create_bundle()
+        app = SCARAjectory(bundle)
+        self.assertTrue(app.is_initialized())
+
+    def test_resolve_bounds_and_version(self) -> None:
+        '''
+            Tests bounds resolution with default/speed options and factory version.
+
+            :exceptions: None.
+        '''
+        bounds_default = SCARAjectoryBundleFactory.resolve_bounds()
+        self.assertIsNotNone(bounds_default)
+        options = {
+            SCARAjectoryBundleKeys.OPTION_MIN_SPEED: 15.0,
+            SCARAjectoryBundleKeys.OPTION_MAX_SPEED: 450.0,
+        }
+        bundle = SCARAjectoryBundleFactory.create_bundle_with_options(options=options)
+        self.assertIsNotNone(bundle)
+        version = SCARAjectoryBundleFactory.get_version()
+        self.assertTrue(isinstance(version, str) and len(version) > 0)
+
+
+if __name__ == '__main__':
+    main()

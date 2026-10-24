@@ -1,0 +1,41 @@
+# ==============================================================================
+# 15_boundary_reach_limits.scara - Outer Workspace Envelope & Singularity Margin
+# ==============================================================================
+# Demonstrates precision trajectory execution near the outer reach perimeter
+# while respecting the boundary singularity margin and J2 deadband limits.
+#
+# SCARA Kinematic Workspace Constraints:
+# - Link Lengths:              L1 = 150.0 mm, L2 = 150.0 mm.
+# - Theoretical Max Reach:     R_max = 300.0 mm (J2 = 0 deg singularity).
+# - Singularity Outer Margin:  5.0 mm -> Safe Limit R_safe = 295.0 mm.
+# - Singularity J2 Deadband:   |J2| >= 5.0 deg (0.0873 rad).
+#
+# Scenario:
+# 1. P1: Approach inspection start pose (X=200.0, Y=0.0, Z=20.0).
+# 2. P1_LIFT: Lift to scanning elevation (Z=40.0).
+# 3. Outer arc scan operating at safe radius R = 280.0 mm (J2 = 42.1 deg > 5.0 deg):
+#    - P_OUTER_1: (X=242.5, Y=140.0, Z=40.0, R=280.0 mm)
+#    - P_OUTER_2: (X=280.0, Y=0.0, Z=40.0, R=280.0 mm)
+#    - P_OUTER_3: (X=242.5, Y=-140.0, Z=40.0, R=280.0 mm)
+# 4. Return to stable intermediate position (X=150.0, Y=0.0, Z=20.0).
+# ==============================================================================
+
+ENABLE
+HOME
+
+SPEED WORK 40.0
+SPEED RAPID 100.0
+
+# 1. Approach inspection starting pose
+MOVE_L X=200.0 Y=0.0 Z=20.0 PHI=0.0
+
+# 2. Lift to scanning elevation
+MOVE_L X=200.0 Y=0.0 Z=40.0 PHI=0.0
+
+# 3. Scan outer perimeter at safe radius R=280.0 mm (well within R_safe=295.0 mm)
+MOVE_L X=242.5 Y=140.0 Z=40.0 PHI=0.0
+MOVE_L X=280.0 Y=0.0 Z=40.0 PHI=0.0
+MOVE_L X=242.5 Y=-140.0 Z=40.0 PHI=0.0
+
+# 4. Return to stable intermediate position
+MOVE_L X=150.0 Y=0.0 Z=20.0 PHI=0.0

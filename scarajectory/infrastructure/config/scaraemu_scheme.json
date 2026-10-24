@@ -1,0 +1,18 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "SCARAEmuConfiguration",
+    "type": "object",
+    "properties": {
+        "tool_path": {
+            "type": "string"
+        },
+        "main_module": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "tool_path",
+        "main_module"
+    ],
+    "additionalProperties": false
+}

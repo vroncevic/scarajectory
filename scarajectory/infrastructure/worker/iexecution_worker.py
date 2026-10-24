@@ -23,10 +23,12 @@ from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
-from scarajectory.core.model.state.stream_session import StreamSession
+from scaralang.core.model.dsl.binary.program import BinaryProgram
+
+from scarajectory.core.model.streaming.session import StreamSession
 
 __author__ = 'Vladimir Roncevic'
-__copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
+__copyright__ = 'Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
 __version__ = '1.0.3'
@@ -43,28 +45,38 @@ class IExecutionWorker(Protocol):
         It defines:
 
             :methods:
-                | start - Starts worker execution for given stream session.
-                | pause - Pauses active stream transmission.
-                | resume - Resumes paused stream transmission.
+                | start_waypoints - Starts worker execution for waypoint session.
+                | start_program - Starts worker execution for binary program.
+                | set_paused - Updates stream transmission pause state.
                 | stop - Aborts and terminates active stream transmission.
                 | is_running - Checks whether execution worker thread is actively running.
     '''
 
-    def start(self, *, session: StreamSession) -> None:
+    def start_waypoints(self, *, session: StreamSession) -> None:
         '''
-            Starts worker execution for given stream session.
+            Starts worker execution for given stream session waypoints.
 
             :param session: Active stream session model.
         '''
 
-    def pause(self) -> None:
+    def start_program(
+        self,
+        *,
+        session: StreamSession,
+        program: BinaryProgram,
+    ) -> None:
         '''
-            Pauses active stream transmission.
+            Starts worker execution for pre-compiled binary program.
+
+            :param session: Active stream session model.
+            :param program: Pre-compiled binary program.
         '''
 
-    def resume(self) -> None:
+    def set_paused(self, paused: bool) -> None:
         '''
-            Resumes paused stream transmission.
+            Updates stream transmission pause state.
+
+            :param paused: True to pause, False to resume.
         '''
 
     def stop(self) -> None:

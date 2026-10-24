@@ -1,0 +1,54 @@
+# ==============================================================================
+# 46_rotated_frame_relative_stepping.scara - Rotated WCS with Relative Stepping
+# ==============================================================================
+# Demonstrates relative Cartesian incremental stepping inside a rotated frame:
+# 1. Angled fixture work coordinate system definition (FRAME_SET ... ANGLE=30.0).
+# 2. Local coordinate origin positioning (MOVE_L X=0.0 Y=0.0 Z=20.0).
+# 3. Relative Cartesian incremental steps (MOVE_REL) projected along rotated axes.
+# 4. Raster zig-zag inspection sweep relative to the 30-degree inclined fixture.
+# 5. Restoration of world base coordinate system via FRAME_RESET.
+# ==============================================================================
+
+CONFIG MOTOR CLOSED_LOOP
+ENABLE
+HOME
+
+CONFIG ELBOW RIGHT
+SPEED WORK 35.0
+ACCEL 300.0
+
+# Set inclined station work coordinate system at (120, 20) rotated 30 degrees
+FRAME_SET X=120.0 Y=20.0 ANGLE=30.0
+
+# Move to origin of inclined work fixture
+MOVE_L X=0.0 Y=0.0 Z=20.0 PHI=0.0 SPEED=40.0
+
+# Execute relative zig-zag inspection passes in rotated frame coordinates
+# Pass 1: Forward along local +X axis
+MOVE_REL X=25.0 Y=0.0 SPEED=30.0
+WAIT_MS 30
+
+# Shift along local +Y axis
+MOVE_REL X=0.0 Y=12.0 SPEED=25.0
+WAIT_MS 30
+
+# Pass 2: Reverse along local -X axis
+MOVE_REL X=-25.0 Y=0.0 SPEED=30.0
+WAIT_MS 30
+
+# Shift along local +Y axis
+MOVE_REL X=0.0 Y=12.0 SPEED=25.0
+WAIT_MS 30
+
+# Pass 3: Forward along local +X axis
+MOVE_REL X=25.0 Y=0.0 SPEED=30.0
+WAIT_MS 30
+
+# Reset coordinate frame back to world base origin
+FRAME_RESET
+
+# Return to world clearance standby
+RETRACT DIST=15.0 SPEED=35.0
+MOVE_L X=120.0 Y=0.0 Z=30.0 PHI=0.0 SPEED=50.0
+HOME
+DISABLE

@@ -1,0 +1,54 @@
+# ==============================================================================
+# 37_obstacle_avoidance_dual_elbow.scara - Multi-Obstacle Dual-Elbow Assembly
+# ==============================================================================
+# Demonstrates advanced combination of:
+# 1. Multi-obstacle keep-out zones (rectangular BOX barrier and circular CIRCLE post).
+# 2. Dynamic arm reconfiguration (CONFIG ELBOW RIGHT and CONFIG ELBOW LEFT).
+# 3. Collision-free trajectory skirting around obstacles into opposing work nests.
+# 4. Coordinated vertical slide approach and vacuum pneumatic handling.
+# 5. Exact stop mode transitions ensuring clean pneumatic actuation boundaries.
+# ==============================================================================
+
+CONFIG MOTOR CLOSED_LOOP
+ENABLE
+HOME
+
+CONFIG ELBOW RIGHT
+SPEED WORK 40.0
+SPEED RAPID 90.0
+
+# Define physical workcell obstacles: protective barrier wall and camera pillar
+ZONE_DEF BARRIER_WALL BOX X_MIN=70.0 X_MAX=110.0 Y_MIN=-30.0 Y_MAX=30.0
+ZONE_DEF CAMERA_POST CIRCLE X=190.0 Y=40.0 RADIUS=15.0
+
+# Safe corridor approach navigating clear of barrier wall in RIGHT elbow mode
+MOVE_L X=150.0 Y=-70.0 Z=25.0 PHI=0.0 SPEED=40.0
+MOVE_L X=180.0 Y=-10.0 Z=25.0 PHI=15.0 SPEED=40.0
+
+# Switch arm kinematic configuration to LEFT branch for left-side assembly nest
+CONFIG ELBOW LEFT
+MOVE_L X=140.0 Y=80.0 Z=25.0 PHI=30.0 SPEED=35.0
+
+# Precision component pickup at left-side station
+ZONE EXACT
+APPROACH DIST=8.0 SPEED=20.0
+PUMP ON
+WAIT_MS 60
+RETRACT DIST=8.0 SPEED=35.0
+
+# Return transit through safe corridor and switch back to RIGHT elbow configuration
+MOVE_L X=180.0 Y=-10.0 Z=25.0 PHI=15.0 SPEED=40.0
+CONFIG ELBOW RIGHT
+MOVE_L X=150.0 Y=-70.0 Z=25.0 PHI=0.0 SPEED=40.0
+
+# Component placement at right-side output fixture
+APPROACH DIST=8.0 SPEED=20.0
+PUMP OFF
+VALVE ON
+WAIT_MS 40
+VALVE OFF
+RETRACT DIST=8.0 SPEED=35.0
+
+# Safe return to home park position
+HOME
+DISABLE

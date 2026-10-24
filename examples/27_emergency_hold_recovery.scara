@@ -1,0 +1,34 @@
+# ==============================================================================
+# 27_emergency_hold_recovery.scara - Feed Hold & E-Stop Recovery Cycle
+# ==============================================================================
+# Demonstrates execution state management and recovery routines.
+# Tests controlled pause (HOLD) with subsequent continuation (RESUME),
+# followed by an emergency stop abort (ESTOP) and complete re-homing sequence.
+# ==============================================================================
+
+ENABLE
+HOME
+
+SPEED WORK 60.0
+
+# Initial process motion towards work zone
+MOVE_L X=140.0 Y=-20.0 Z=25.0 PHI=0.0
+
+# External safety curtain trip simulation: Pause trajectory
+HOLD
+WAIT_MS 200
+
+# Safety condition cleared: Resume trajectory execution
+RESUME
+MOVE_L X=170.0 Y=-20.0 Z=25.0 PHI=0.0
+MOVE_L X=170.0 Y=20.0 Z=25.0 PHI=15.0
+
+# Critical interlock violation simulation: Abort motion immediately
+ESTOP
+
+# Operator recovery: Re-energize stepper drivers and re-home kinematics
+ENABLE
+HOME
+
+# Safe return to neutral standby coordinate
+MOVE_L X=130.0 Y=0.0 Z=40.0 PHI=0.0 SPEED=40.0

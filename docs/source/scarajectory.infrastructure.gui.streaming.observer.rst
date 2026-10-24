@@ -7,9 +7,9 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.gui.streaming.observer.gui_stream_observer_bridge
-   scarajectory.infrastructure.gui.streaming.observer.gui_stream_observer_bridge_factory
-   scarajectory.infrastructure.gui.streaming.observer.igui_stream_observer_bridge
+   scarajectory.infrastructure.gui.streaming.observer.bridge
+   scarajectory.infrastructure.gui.streaming.observer.factory
+   scarajectory.infrastructure.gui.streaming.observer.ibridge
 
 Module contents
 ---------------

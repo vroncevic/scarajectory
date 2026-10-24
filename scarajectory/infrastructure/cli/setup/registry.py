@@ -66,7 +66,6 @@ class CLIBundleRegistry:
         CLIBundleDependenciesValidator.validate(dependencies)
 
         bundle: CLIBundle = CLIBundle(
-            service=dependencies.get(CLIBundleKeys.DEPENDENCY_SERVICE) if dependencies else None,
             parser=dependencies.get(CLIBundleKeys.DEPENDENCY_PARSER) if dependencies else None,
             commands=dependencies.get(CLIBundleKeys.DEPENDENCY_COMMANDS) if dependencies else None
         )

@@ -1,0 +1,9 @@
+{
+    "port": "str",
+    "baudrate": "int",
+    "timeout": "float",
+    "queue_capacity": "int",
+    "send_delay": "float",
+    "throttle_delay": "float",
+    "poll_delay": "float"
+}

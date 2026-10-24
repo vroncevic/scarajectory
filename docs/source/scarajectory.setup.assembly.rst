@@ -1,17 +1,17 @@
 scarajectory.setup.assembly package
 ===================================
 
-Submodules
-----------
+Subpackages
+-----------
 
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.setup.assembly.app_core_assembler
-   scarajectory.setup.assembly.app_core_bundle
-   scarajectory.setup.assembly.app_presentation_assembler
-   scarajectory.setup.assembly.app_runtime_assembler
-   scarajectory.setup.assembly.app_runtime_bundle
+   scarajectory.setup.assembly.core
+   scarajectory.setup.assembly.dsl
+   scarajectory.setup.assembly.plan
+   scarajectory.setup.assembly.presentation
+   scarajectory.setup.assembly.runtime
 
 Module contents
 ---------------

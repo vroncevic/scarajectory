@@ -24,15 +24,14 @@ from __future__ import annotations
 from unittest import TestCase, main
 from unittest.mock import MagicMock
 
-from scarajectory.core.model.protocol.protocol_mode import ProtocolMode
-from scarajectory.infrastructure.worker.iexecution_worker import IExecutionWorker
-from scarajectory.infrastructure.barrier.flow_barrier_factory import FlowBarrierFactory
-from scarajectory.infrastructure.pacing.bundle import FlowPacingBundle
-from scarajectory.infrastructure.pacing.flow_pacing_bundle_factory import FlowPacingBundleFactory
-from scarajectory.infrastructure.state.stream_state_machine_factory import StreamStateMachineFactory
+from scarajectory.infrastructure.pacing.provides import PacingProvides
+from scarajectory.infrastructure.state.dependencies import StateDependencies
+from scarajectory.infrastructure.state.factory import StateFactory
+from scarajectory.infrastructure.streaming.assembly.stream_pacing_assembler import StreamPacingAssembler
 from scarajectory.infrastructure.streaming.assembly.stream_worker_assembler import StreamWorkerAssembler
 from scarajectory.infrastructure.streaming.assembly.worker_bundle import WorkerBundle
-from scarajectory.infrastructure.streaming.observer.stream_observer_dispatcher_factory import StreamObserverDispatcherFactory
+from scarajectory.infrastructure.streaming.observer.factory import ObserverFactory
+from scarajectory.infrastructure.worker.iexecution_worker import IExecutionWorker
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -46,52 +45,70 @@ __status__ = 'Updated'
 
 class TestStreamWorkerAssembler(TestCase):
     '''
-        Test cases verifying StreamWorkerAssembler behavior.
+    Test cases verifying StreamWorkerAssembler behavior.
+
+    It defines:
+
+        :methods:
+            | setUp - Prepares mock collaborators and WorkerBundle.
+            | test_assemble - Tests assembly of execution worker and listener binding.
+            | test_assemble_binary_worker - Tests direct assembly of binary execution worker.
+            | test_get_version - Tests get_version returns string.
     '''
 
     def setUp(self) -> None:
-        barrier = FlowBarrierFactory.create()
-        self.pacing_bundle: FlowPacingBundle = FlowPacingBundleFactory.create(
-            barrier=barrier, capacity=16
+        '''
+        Prepares mock collaborators and WorkerBundle.
+
+        :exceptions: None.
+        '''
+        self.pacing_provides: PacingProvides = StreamPacingAssembler.assemble(
+            queue_capacity=16
         )
         self.mock_transceiver = MagicMock()
-        self.state_machine = StreamStateMachineFactory.create()
-        self.dispatcher = StreamObserverDispatcherFactory.create()
+        self.state_machine = StateFactory.create(
+            StateDependencies()
+        ).stream_state_machine
+        self.dispatcher = ObserverFactory.create().stream_observer_dispatcher
         self.mock_connection = MagicMock()
         self.bundle: WorkerBundle = WorkerBundle(
-            pacing_bundle=self.pacing_bundle,
+            pacing_provides=self.pacing_provides,
             raw_transceiver=self.mock_transceiver,
             state_machine=self.state_machine,
             dispatcher=self.dispatcher,
         )
 
-    def test_assemble_ascii_worker(self) -> None:
+    def test_assemble(self) -> None:
         '''
-            Tests assembly of ASCII execution worker and listener binding.
+        Tests assembly of execution worker and listener binding.
+
+        :exceptions: None.
         '''
         worker: IExecutionWorker = StreamWorkerAssembler.assemble(
             self.mock_connection,
             self.bundle,
-            ProtocolMode.ASCII,
         )
         self.assertIsInstance(worker, IExecutionWorker)
         self.mock_connection.set_listener.assert_called_once()
 
     def test_assemble_binary_worker(self) -> None:
         '''
-            Tests assembly of binary execution worker and listener binding.
+        Tests direct assembly of binary execution worker and listener binding.
+
+        :exceptions: None.
         '''
-        worker: IExecutionWorker = StreamWorkerAssembler.assemble(
+        worker: IExecutionWorker = StreamWorkerAssembler.assemble_binary(
             self.mock_connection,
             self.bundle,
-            ProtocolMode.BINARY,
         )
         self.assertIsInstance(worker, IExecutionWorker)
         self.mock_connection.set_listener.assert_called_once()
 
     def test_get_version(self) -> None:
         '''
-            Tests get_version returns string.
+        Tests get_version returns string.
+
+        :exceptions: None.
         '''
         self.assertIsInstance(StreamWorkerAssembler.get_version(), str)
 

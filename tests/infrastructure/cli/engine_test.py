@@ -27,12 +27,11 @@ from unittest.mock import MagicMock
 from ats_utilities.exceptions import ATSRuntimeError, ATSValueError
 from ats_utilities.option.imanager import IOptionManager
 
-from scarajectory.core.service.iservice import IService
 from scarajectory.infrastructure.cli.engine import CLI
 from scarajectory.infrastructure.cli.setup.bundle import CLIBundle
-from scarajectory.infrastructure.command.command_bundle import CommandBundle
-from scarajectory.infrastructure.command.icommand_definition import ICommandDefinition
-from scarajectory.infrastructure.command.icommand_executor import ICommandExecutor
+from scarajectory.infrastructure.command.bundle import CommandBundle
+from scarajectory.infrastructure.command.idefinition import ICommandDefinition
+from scarajectory.infrastructure.command.iexecutor import ICommandExecutor
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -51,7 +50,7 @@ class CLITestCase(TestCase):
         It defines:
 
             :methods:
-                | setUp - Initializes mock service, parser, and executor bundle.
+                | setUp - Initializes mock parser and executor bundle.
                 | test_initialization_and_str - Verifies initialization flag and string format.
                 | test_run_success - Verifies successful command dispatch and return values.
                 | test_run_command_not_found - Verifies error result when command is unregistered.
@@ -60,7 +59,6 @@ class CLITestCase(TestCase):
 
     def setUp(self) -> None:
         '''Initializes mock CLI collaborators before each test.'''
-        self.mock_service = MagicMock(spec=IService)
         self.mock_parser = MagicMock(spec=IOptionManager)
         self.mock_definition = MagicMock(spec=ICommandDefinition)
         self.mock_definition.name = 'test_cmd'
@@ -71,7 +69,6 @@ class CLITestCase(TestCase):
             executor=self.mock_executor,
         )
         self.bundle = CLIBundle(
-            service=self.mock_service,
             parser=self.mock_parser,
             commands=[cmd_bundle],
         )
@@ -97,7 +94,7 @@ class CLITestCase(TestCase):
         result = cli.run()
         self.assertEqual(result, expected)
         self.mock_executor.execute.assert_called_once_with(
-            params={'target': 'studio'}, service=self.mock_service
+            params={'target': 'studio'}, service=None
         )
 
     def test_run_command_not_found(self) -> None:

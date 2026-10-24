@@ -7,9 +7,11 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.packet.binary_packet_strategy
-   scarajectory.infrastructure.packet.binary_packet_strategy_factory
-   scarajectory.infrastructure.packet.ipacket_strategy
+   scarajectory.infrastructure.packet.dependencies
+   scarajectory.infrastructure.packet.factory
+   scarajectory.infrastructure.packet.istrategy
+   scarajectory.infrastructure.packet.provides
+   scarajectory.infrastructure.packet.strategy
 
 Module contents
 ---------------

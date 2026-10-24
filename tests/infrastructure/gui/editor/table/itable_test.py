@@ -67,12 +67,20 @@ class TableProtocolTestCase(TestCase):
     '''
 
     def test_protocol_conformance_success(self) -> None:
-        '''Verifies compliant class satisfies ITable protocol.'''
+        '''
+            Verifies compliant class satisfies ITable protocol.
+
+            :exceptions: None.
+        '''
         stub = ConformingTableStub()
         self.assertIsInstance(stub, ITable)
 
     def test_protocol_conformance_failure(self) -> None:
-        '''Verifies non-compliant class fails ITable protocol check.'''
+        '''
+            Verifies non-compliant class fails ITable protocol check.
+
+            :exceptions: None.
+        '''
         stub = IncompleteTableStub()
         self.assertNotIsInstance(stub, ITable)
 

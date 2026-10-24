@@ -1,0 +1,33 @@
+# ==============================================================================
+# 25_stepper_motor_calibration.scara - Stepper Motor Open/Closed Loop Modes
+# ==============================================================================
+# Tests dynamic stepper motor drive mode reconfiguration (CONFIG MOTOR).
+# Verifies transitions between OPEN_LOOP (high speed, lower torque holding)
+# and CLOSED_LOOP (field-oriented encoder feedback, peak holding torque).
+# ==============================================================================
+
+ENABLE
+HOME
+
+# Execute high-speed open-loop traverse across workspace
+SPEED WORK 80.0
+MOVE_L X=150.0 Y=-30.0 Z=30.0 PHI=0.0
+MOVE_L X=180.0 Y=20.0 Z=30.0 PHI=25.0
+
+# Dwell for vibration settling
+WAIT_MS 100
+
+# Switch motor control stage to closed-loop encoder feedback
+CONFIG MOTOR CLOSED_LOOP
+
+# Perform precision alignment in closed-loop mode
+SPEED WORK 25.0
+MOVE_L X=180.0 Y=20.0 Z=10.0 PHI=25.0
+MOVE_L X=170.0 Y=30.0 Z=10.0 PHI=0.0
+
+# Revert to standard open-loop mode for return traverse
+CONFIG MOTOR OPEN_LOOP
+MOVE_L X=150.0 Y=0.0 Z=40.0 PHI=0.0 SPEED=60.0
+
+# De-energize drive stages
+DISABLE

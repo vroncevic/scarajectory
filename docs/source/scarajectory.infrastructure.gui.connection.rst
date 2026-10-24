@@ -1,16 +1,15 @@
 scarajectory.infrastructure.gui.connection package
 ==================================================
 
-Submodules
-----------
+Subpackages
+-----------
 
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.gui.connection.iport_connection_delegate
-   scarajectory.infrastructure.gui.connection.iport_connection_panel
-   scarajectory.infrastructure.gui.connection.null_port_connection_delegate
-   scarajectory.infrastructure.gui.connection.port_connection_panel
+   scarajectory.infrastructure.gui.connection.action
+   scarajectory.infrastructure.gui.connection.panel
+   scarajectory.infrastructure.gui.connection.selector
 
 Module contents
 ---------------

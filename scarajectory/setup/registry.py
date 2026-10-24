@@ -21,10 +21,11 @@ Info
 
 from __future__ import annotations
 
+from typing import cast
+
 from ats_utilities.base.setup.bundle import BaseBundle
 
-from scarajectory.core.service.iservice import IService
-from scarajectory.core.service.streaming.istream_playback_controller import IStreamPlaybackController
+from scarajectory.core.service.streaming.playback.icontroller import IPlaybackController
 from scarajectory.infrastructure.gui.igui import IGUI
 from scarajectory.infrastructure.cli.icli import ICLI
 from scarajectory.setup.bundle import SCARAjectoryBundle
@@ -67,15 +68,24 @@ class SCARAjectoryBundleRegistry:
         '''
         SCARAjectoryBundleDependenciesValidator.validate(dependencies)
 
-        base: BaseBundle | None = dependencies.get(SCARAjectoryBundleKeys.DEPENDENCY_BASE) if dependencies else None
-        service: IService | None = dependencies.get(SCARAjectoryBundleKeys.DEPENDENCY_SERVICE) if dependencies else None
-        gui: IGUI | None = dependencies.get(SCARAjectoryBundleKeys.DEPENDENCY_GUI) if dependencies else None
-        streamer: IStreamPlaybackController | None = dependencies.get(SCARAjectoryBundleKeys.DEPENDENCY_STREAMER) if dependencies else None
-        cli: ICLI | None = dependencies.get(SCARAjectoryBundleKeys.DEPENDENCY_CLI) if dependencies else None
+        base: BaseBundle = cast(
+            BaseBundle, dependencies[SCARAjectoryBundleKeys.DEPENDENCY_BASE]
+        )
+        gui: IGUI = cast(
+            IGUI, dependencies[SCARAjectoryBundleKeys.DEPENDENCY_GUI]
+        )
+        streamer: IPlaybackController = cast(
+            IPlaybackController,
+            dependencies[SCARAjectoryBundleKeys.DEPENDENCY_STREAMER],
+        )
+        cli: ICLI = cast(
+            ICLI, dependencies[SCARAjectoryBundleKeys.DEPENDENCY_CLI]
+        )
 
         bundle: SCARAjectoryBundle = SCARAjectoryBundle(
-            base=base, service=service, gui=gui, streamer=streamer, cli=cli
+            base=base, gui=gui, streamer=streamer, cli=cli
         )
+
         SCARAjectoryBundleValidator.validate(bundle)
 
         return bundle

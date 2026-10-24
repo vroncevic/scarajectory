@@ -1,0 +1,56 @@
+# ==============================================================================
+# 34_subroutine_with_relative_motion.scara - Multi-Station Dispensing Subroutine
+# ==============================================================================
+# Demonstrates combining subroutines (DEF / CALL) with relative motion (MOVE_REL)
+# across alternating kinematic elbow configurations (CONFIG ELBOW RIGHT / LEFT):
+# 1. Closed-loop drive configuration, robot homing, and speed presets.
+# 2. Encapsulated bead dispensing subroutine (DEF DISPENSE_BEAD):
+#    - Tool engagement (APPROACH).
+#    - Dispensing valve activation (VALVE ON).
+#    - Relative 10x10 mm square contour execution via MOVE_REL increments.
+#    - Valve cutoff (VALVE OFF), dwell settling, and vertical clearance (RETRACT).
+# 3. Invocation at Station 1 with right elbow configuration.
+# 4. Elbow flip to left configuration and invocation at Station 2.
+# 5. Elbow flip back to right configuration and invocation at Station 3.
+# 6. Safe transit return and motor de-energization.
+# ==============================================================================
+
+CONFIG MOTOR CLOSED_LOOP
+ENABLE
+HOME
+
+SPEED WORK 35.0
+SPEED RAPID 90.0
+
+# Subroutine: Square perimeter dispensing bead with pneumatic valve gating
+DEF DISPENSE_BEAD
+APPROACH DIST=5.0 SPEED=15.0
+VALVE ON
+WAIT_MS 20
+MOVE_REL X=10.0 Y=0.0 Z=0.0 PHI=0.0 SPEED=20.0
+MOVE_REL X=0.0 Y=10.0 Z=0.0 PHI=0.0 SPEED=20.0
+MOVE_REL X=-10.0 Y=0.0 Z=0.0 PHI=0.0 SPEED=20.0
+MOVE_REL X=0.0 Y=-10.0 Z=0.0 PHI=0.0 SPEED=20.0
+VALVE OFF
+WAIT_MS 20
+RETRACT DIST=5.0 SPEED=40.0
+END
+
+# Station 1: Dispense pattern with Right Elbow posture
+CONFIG ELBOW RIGHT
+MOVE_L X=150.0 Y=-40.0 Z=20.0 PHI=0.0 SPEED=60.0
+CALL DISPENSE_BEAD
+
+# Station 2: Dispense pattern with Left Elbow posture
+CONFIG ELBOW LEFT
+MOVE_L X=150.0 Y=40.0 Z=20.0 PHI=0.0 SPEED=60.0
+CALL DISPENSE_BEAD
+
+# Station 3: Dispense pattern with Right Elbow posture
+CONFIG ELBOW RIGHT
+MOVE_L X=180.0 Y=0.0 Z=20.0 PHI=0.0 SPEED=60.0
+CALL DISPENSE_BEAD
+
+# Transit to safe park position and disable
+MOVE_L X=140.0 Y=0.0 Z=35.0 PHI=0.0 SPEED=70.0
+DISABLE

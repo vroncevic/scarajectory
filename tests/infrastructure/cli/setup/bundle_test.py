@@ -50,11 +50,10 @@ class TestCLIBundle(TestCase):
                 | test_to_dict - Tests dictionary conversion of CLI bundle.
     '''
 
-    def _create_sample_cli_bundle(self) -> CLIBundle:
+    def create_sample_cli_bundle(self) -> CLIBundle:
         '''Creates a valid CLIBundle instance for testing.'''
         sample_bundle: SCARAjectoryBundle = SCARAjectoryBundleFactory.create_bundle()
         opts = CLIBundleOptions(
-            service=sample_bundle.service,
             parser=sample_bundle.base.option_manager,
             gui=sample_bundle.gui,
         )
@@ -66,8 +65,7 @@ class TestCLIBundle(TestCase):
 
             :exceptions: None.
         '''
-        cli_bundle = self._create_sample_cli_bundle()
-        self.assertIsNotNone(cli_bundle.service)
+        cli_bundle = self.create_sample_cli_bundle()
         self.assertIsNotNone(cli_bundle.parser)
         self.assertIsNotNone(cli_bundle.commands)
 
@@ -77,10 +75,9 @@ class TestCLIBundle(TestCase):
 
             :exceptions: None.
         '''
-        cli_bundle = self._create_sample_cli_bundle()
+        cli_bundle = self.create_sample_cli_bundle()
         data = cli_bundle.to_dict()
         self.assertIsInstance(data, dict)
-        self.assertIn('service', data)
         self.assertIn('parser', data)
         self.assertIn('commands', data)
 

@@ -61,7 +61,6 @@ class TestSCARAjectoryBundleDependenciesValidator(TestCase):
         bundle: SCARAjectoryBundle = SCARAjectoryBundleFactory.create_bundle()
         deps = SCARAjectoryBundleDependencies(
             base=bundle.base,
-            service=bundle.service,
             gui=bundle.gui,
             streamer=bundle.streamer,
             cli=bundle.cli,
@@ -84,7 +83,6 @@ class TestSCARAjectoryBundleDependenciesValidator(TestCase):
         bundle: SCARAjectoryBundle = SCARAjectoryBundleFactory.create_bundle()
         deps_missing = SCARAjectoryBundleDependencies(
             base=bundle.base,
-            service=bundle.service,
             gui=bundle.gui,
             streamer=bundle.streamer,
             cli=None,  # type: ignore[arg-type]
@@ -101,7 +99,6 @@ class TestSCARAjectoryBundleDependenciesValidator(TestCase):
         bundle: SCARAjectoryBundle = SCARAjectoryBundleFactory.create_bundle()
         deps = SCARAjectoryBundleDependencies(
             base=bundle.base,
-            service=bundle.service,
             gui=bundle.gui,
             streamer=bundle.streamer,
             cli=bundle.cli,

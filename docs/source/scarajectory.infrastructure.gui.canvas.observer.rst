@@ -7,9 +7,9 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.gui.canvas.observer.canvas_plan_observer_bridge
-   scarajectory.infrastructure.gui.canvas.observer.canvas_plan_observer_bridge_factory
-   scarajectory.infrastructure.gui.canvas.observer.icanvas_plan_observer_bridge
+   scarajectory.infrastructure.gui.canvas.observer.bridge
+   scarajectory.infrastructure.gui.canvas.observer.factory
+   scarajectory.infrastructure.gui.canvas.observer.iredraw_delegate
 
 Module contents
 ---------------

@@ -23,7 +23,7 @@ from __future__ import annotations
 
 from unittest import TestCase, main
 
-from scarajectory.infrastructure.pacing.bundle import FlowPacingBundle
+from scarajectory.infrastructure.pacing.provides import PacingProvides
 from scarajectory.infrastructure.streaming.assembly.stream_pacing_assembler import StreamPacingAssembler
 
 __author__ = 'Vladimir Roncevic'
@@ -43,18 +43,22 @@ class TestStreamPacingAssembler(TestCase):
 
     def test_assemble_flow_pacing_bundle(self) -> None:
         '''
-            Tests assembly of FlowPacingBundle with specified capacity.
+            Tests assembly of PacingProvides with specified capacity.
         '''
-        bundle: FlowPacingBundle = StreamPacingAssembler.assemble(
+        provides: PacingProvides = StreamPacingAssembler.assemble(
             queue_capacity=32
         )
-        self.assertIsInstance(bundle, FlowPacingBundle)
-        self.assertEqual(bundle.pacing_controller.capacity, 32)
-        self.assertTrue(bundle.barrier_coordinator.is_barrier_clear())
+        self.assertIsInstance(provides, PacingProvides)
+        self.assertEqual(getattr(provides.flow_pacing_controller, 'capacity'), 32)
+        self.assertTrue(
+            provides.flow_barrier_coordinator.is_barrier_clear()
+        )
 
     def test_get_version(self) -> None:
         '''
             Tests get_version returns string.
+
+            :exceptions: None.
         '''
         self.assertIsInstance(StreamPacingAssembler.get_version(), str)
 

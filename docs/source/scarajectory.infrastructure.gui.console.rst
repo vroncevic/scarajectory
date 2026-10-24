@@ -7,9 +7,7 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.gui.console.serial_console
-   scarajectory.infrastructure.gui.console.serial_console_builder
-   scarajectory.infrastructure.gui.console.serial_console_builder_factory
+   scarajectory.infrastructure.gui.console.panel
 
 Module contents
 ---------------

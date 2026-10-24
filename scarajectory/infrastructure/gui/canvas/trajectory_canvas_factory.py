@@ -24,20 +24,23 @@ from __future__ import annotations
 from tkinter import Widget
 
 from scarajectory.infrastructure.gui.canvas.bundle import CanvasBundle
-from scarajectory.infrastructure.gui.canvas.canvas_event_binder import CanvasEventBinder
-from scarajectory.infrastructure.gui.canvas.canvas_event_binder_factory import CanvasEventBinderFactory
-from scarajectory.infrastructure.gui.canvas.observer.canvas_plan_observer_bridge import CanvasPlanObserverBridge
-from scarajectory.infrastructure.gui.canvas.observer.canvas_plan_observer_bridge_factory import CanvasPlanObserverBridgeFactory
-from scarajectory.infrastructure.gui.canvas.status.canvas_status_presenter import CanvasStatusPresenter
-from scarajectory.infrastructure.gui.canvas.status.canvas_status_presenter_factory import CanvasStatusPresenterFactory
-from scarajectory.infrastructure.gui.canvas.navigation.canvas_view_navigator import CanvasViewNavigator
-from scarajectory.infrastructure.gui.canvas.navigation.canvas_view_navigator_factory import CanvasViewNavigatorFactory
-from scarajectory.infrastructure.gui.canvas.handler.canvas_mouse_handler import CanvasMouseHandler
-from scarajectory.infrastructure.gui.canvas.handler.canvas_mouse_handler_factory import CanvasMouseHandlerFactory
-from scarajectory.infrastructure.gui.canvas.handler.mouse_handler_init_bundle import MouseHandlerInitBundle
+from scarajectory.infrastructure.gui.canvas.event.binder import CanvasEventBinder
+from scarajectory.infrastructure.gui.canvas.event.dependencies import EventBinderDependencies
+from scarajectory.infrastructure.gui.canvas.event.factory import CanvasEventBinderFactory
+from scarajectory.infrastructure.gui.canvas.handler.mouse.factory import CanvasMouseHandlerFactory
+from scarajectory.infrastructure.gui.canvas.handler.mouse.handler import CanvasMouseHandler
+from scarajectory.infrastructure.gui.canvas.handler.mouse.init_bundle import MouseHandlerInitBundle
+from scarajectory.infrastructure.gui.canvas.handler.state import CanvasInteractionState
+from scarajectory.infrastructure.gui.canvas.navigation.dependencies import CanvasViewNavigatorDependencies
+from scarajectory.infrastructure.gui.canvas.navigation.factory import CanvasViewNavigatorFactory
+from scarajectory.infrastructure.gui.canvas.navigation.navigator import CanvasViewNavigator
+from scarajectory.infrastructure.gui.canvas.observer.bridge import CanvasPlanObserverBridge
+from scarajectory.infrastructure.gui.canvas.observer.factory import CanvasPlanObserverBridgeFactory
+from scarajectory.infrastructure.gui.canvas.status.factory import CanvasStatusPresenterFactory
+from scarajectory.infrastructure.gui.canvas.status.presenter import CanvasStatusPresenter
 from scarajectory.infrastructure.gui.canvas.trajectory_canvas import TrajectoryCanvas
-from scarajectory.infrastructure.gui.model.canvas_interaction_state import CanvasInteractionState
-from scarajectory.infrastructure.gui.model.viewport_transform import ViewportTransform
+from scarajectory.infrastructure.gui.canvas.transform.camera import ViewportCamera
+from scarajectory.infrastructure.gui.canvas.transform.transform import ViewportTransform
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -80,31 +83,40 @@ class TrajectoryCanvasFactory:
         mouse_init_bundle = MouseHandlerInitBundle(
             store=bundle.store,
             selection=bundle.selection,
-            mutation=bundle.mutation,
+            mutations=bundle.mutations,
             vp=vp,
             state=state,
+            adapters=bundle.adapters,
+            validator=bundle.validator,
         )
         mouse_handler: CanvasMouseHandler = (
             CanvasMouseHandlerFactory.create_default(mouse_init_bundle)
         )
         canvas = TrajectoryCanvas(parent, bundle=bundle, vp=vp, state=state)
+        camera = ViewportCamera(vp)
         navigator: CanvasViewNavigator = CanvasViewNavigatorFactory.create(
-            viewport=vp, validator=bundle.validator, target=canvas
+            CanvasViewNavigatorDependencies(
+                camera=camera,
+                validator=bundle.validator,
+                target=canvas,
+            )
         )
         status_presenter: CanvasStatusPresenter = (
             CanvasStatusPresenterFactory.create()
         )
         canvas.attach_presentation(navigator, status_presenter)
         observer_bridge: CanvasPlanObserverBridge = (
-            CanvasPlanObserverBridgeFactory.create(canvas.redraw)
+            CanvasPlanObserverBridgeFactory.create(canvas)
         )
         bundle.dispatcher.add_observer(observer_bridge)
 
         event_binder: CanvasEventBinder = CanvasEventBinderFactory.create(
-            canvas,
-            mouse_handler=mouse_handler,
-            navigator=navigator,
-            status_presenter=status_presenter,
+            EventBinderDependencies(
+                canvas=canvas,
+                mouse_handler=mouse_handler,
+                navigator=navigator,
+                status_presenter=status_presenter,
+            )
         )
         event_binder.bind_events()
 

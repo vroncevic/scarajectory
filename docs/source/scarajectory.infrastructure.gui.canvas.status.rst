@@ -7,9 +7,9 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.gui.canvas.status.canvas_status_presenter
-   scarajectory.infrastructure.gui.canvas.status.canvas_status_presenter_factory
-   scarajectory.infrastructure.gui.canvas.status.icanvas_status_presenter
+   scarajectory.infrastructure.gui.canvas.status.factory
+   scarajectory.infrastructure.gui.canvas.status.ipresenter
+   scarajectory.infrastructure.gui.canvas.status.presenter
 
 Module contents
 ---------------

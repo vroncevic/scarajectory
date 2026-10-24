@@ -23,12 +23,14 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from scarajectory.core.service.trajectory.validation.itrajectory_validator import ITrajectoryValidator
-from scarajectory.infrastructure.connection.istream_connection import IStreamConnection
-from scarajectory.core.service.preferences.iconnection_repository import IConnectionRepository
-from scarajectory.core.service.streaming.istream_playback_controller import IStreamPlaybackController
-from scarajectory.core.service.trajectory.plan.itrajectory_read_only import ITrajectoryReadOnly
-from scarajectory.infrastructure.gui.streaming.streamer_controllers_bundle import StreamerControllersBundle
+from scaracom.transport.preference.irepository import ISerialPreferenceRepository
+
+from scarajectory.core.service.streaming.playback.icontroller import IPlaybackController
+from scarajectory.core.service.trajectory.plan.store.query.iquery import IWaypointQuery
+from scarajectory.core.service.trajectory.validation.ivalidator import ITrajectoryValidator
+from scarajectory.infrastructure.connection.manager.imanager import IConnectionManager
+from scarajectory.infrastructure.gui.streaming.controllers_bundle import StreamerControllersBundle
+from scarajectory.infrastructure.scaralang.avoidance.iadapter import IDeadZoneAvoidanceAdapter
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -50,15 +52,17 @@ class StreamerBundle:
             :attributes:
                 | plan - Active trajectory plan read-only abstraction.
                 | validator - Kinematic reachability validator port.
-                | connection - Stream transport connection controller.
+                | avoidance_adapter - Dead zone avoidance and detour planner adapter.
+                | connection_manager - Stream transport connection controller.
                 | playback_controller - Motion trajectory playback controller.
                 | connection_repository - Connection preferences repository.
                 | controllers - Injected manipulator sub-controllers bundle.
     '''
 
-    plan: ITrajectoryReadOnly
+    plan: IWaypointQuery
     validator: ITrajectoryValidator
-    connection: IStreamConnection
-    playback_controller: IStreamPlaybackController
-    connection_repository: IConnectionRepository
+    avoidance_adapter: IDeadZoneAvoidanceAdapter
+    connection_manager: IConnectionManager
+    playback_controller: IPlaybackController
+    connection_repository: ISerialPreferenceRepository
     controllers: StreamerControllersBundle

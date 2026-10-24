@@ -23,7 +23,7 @@ from __future__ import annotations
 
 from typing import Protocol, runtime_checkable
 
-from scarajectory.core.model.telemetry.stream_progress import StreamProgress
+from scarajectory.core.model.telemetry.progress import StreamProgress
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'

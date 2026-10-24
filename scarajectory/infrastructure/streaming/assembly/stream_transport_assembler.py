@@ -16,17 +16,25 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Assembles physical connection manager and transceiver for streaming.
+    Assembles physical connection manager, transceiver, and coordinator for streaming.
 '''
 
 from __future__ import annotations
 
-from scarajectory.core.model.protocol.protocol_mode import ProtocolMode
-from scarajectory.infrastructure.connection.stream_connection_manager import StreamConnectionManager
-from scarajectory.infrastructure.connection.stream_connection_manager_factory import StreamConnectionManagerFactory
-from scarajectory.infrastructure.connection.stream_raw_transceiver import StreamRawTransceiver
-from scarajectory.infrastructure.connection.stream_raw_transceiver_factory import StreamRawTransceiverFactory
-from scarajectory.infrastructure.transport.bundle import TransportBundle
+from typing import cast
+
+from scaracom.bridge.coordinator.icoordinator import IConnectionCoordinator
+from scaracom.bridge.dependencies import BridgeDependencies
+from scaracom.bridge.factory import BridgeFactory
+from scaracom.bridge.listener.itransport_listener import ITransportListener
+from scaracom.bridge.provides import BridgeProvides
+from scaracom.bridge.transceiver.transceiver import RawTransceiver
+from scaracom.transport.itransport import ITransport
+
+from scarajectory.infrastructure.connection.manager.dependencies import ManagerDependencies
+from scarajectory.infrastructure.connection.manager.factory import ManagerFactory
+from scarajectory.infrastructure.connection.manager.manager import ConnectionManager
+from scarajectory.infrastructure.connection.manager.provides import ManagerProvides
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -40,44 +48,47 @@ __status__ = 'Updated'
 
 class StreamTransportAssembler:
     '''
-        Sub-assembler for connection manager and raw transceiver components.
+        Sub-assembler for connection manager, raw transceiver, and coordinator components.
 
         It defines:
 
             :methods:
-                | assemble - Constructs connection manager and transceiver.
+                | assemble - Constructs connection manager, transceiver, and coordinator.
                 | get_version - Returns assembler version string.
     '''
 
     @classmethod
     def assemble(
         cls,
-        transport: TransportBundle,
+        transport: ITransport,
         *,
-        protocol_mode: ProtocolMode = ProtocolMode.BINARY,
-    ) -> tuple[StreamConnectionManager, StreamRawTransceiver]:
+        listener: ITransportListener,
+    ) -> tuple[ConnectionManager, RawTransceiver, IConnectionCoordinator]:
         '''
-            Constructs and returns connection manager and transceiver tuple.
+            Constructs and returns connection manager, transceiver, and coordinator tuple.
 
-            :param transport: TransportBundle parameter instance.
-            :param protocol_mode: Active protocol mode.
-            :return: Tuple of (StreamConnectionManager, StreamRawTransceiver).
+            :param transport: Injected ITransport communication layer instance.
+            :param listener: Injected ITransportListener event sink instance.
+            :return: Tuple of (ConnectionManager, RawTransceiver, IConnectionCoordinator).
             :exceptions: None.
         '''
-        conn_manager: StreamConnectionManager = (
-            StreamConnectionManagerFactory.create(
-                connection=transport.connection,
-                protocol_mode=protocol_mode,
+        bridge_provides: BridgeProvides = BridgeFactory.create(
+            BridgeDependencies(
+                transport=transport,
+                listener=listener,
             )
         )
-        raw_transceiver: StreamRawTransceiver = (
-            StreamRawTransceiverFactory.create(
-                connection=transport.connection,
-                transceiver=transport.transceiver,
+        conn_provides: ManagerProvides = ManagerFactory.create(
+            ManagerDependencies(
+                connection_coordinator=bridge_provides.coordinator,
             )
         )
 
-        return conn_manager, raw_transceiver
+        return (
+            conn_provides.connection_manager,
+            cast(RawTransceiver, bridge_provides.transceiver),
+            bridge_provides.coordinator,
+        )
 
     @classmethod
     def get_version(cls) -> str:

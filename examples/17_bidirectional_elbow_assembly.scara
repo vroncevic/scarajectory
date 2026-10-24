@@ -1,0 +1,72 @@
+# ==============================================================================
+# 17_bidirectional_elbow_assembly.scara - Dual Elbow Reconfiguration Assembly
+# ==============================================================================
+# Demonstrates bidirectional kinematic arm reconfiguration (RIGHT -> LEFT -> RIGHT)
+# in a complex industrial assembly routine:
+#
+# 1. Phase 1 (RIGHT Elbow): Picks part from front-right feeder (X=150.0, Y=100.0).
+# 2. Transition 1 (RIGHT -> LEFT): Retracts to Z=40.0, transits via intermediate
+#    pose (X=130.0, Y=-225.2), switches to LEFT elbow, and aligns above the rear
+#    chassis cavity (X=-248.3, Y=-87.8) unreachable with RIGHT elbow.
+# 3. Insertion: Descends to Z=20.0, delivers part, and retracts to Z=40.0.
+# 4. Transition 2 (LEFT -> RIGHT): Transits via intermediate pose back to RIGHT
+#    elbow, aligns above front inspection cradle (X=170.0, Y=-50.0), and seats part.
+# 5. Parking: Returns to safe standby position (X=150.0, Y=0.0, Z=30.0).
+# ==============================================================================
+
+ENABLE
+HOME
+
+SPEED WORK 40.0
+SPEED RAPID 120.0
+
+# ----------------------------------------------------
+# Phase 1: Pick from Feeder in RIGHT Elbow Configuration
+# ----------------------------------------------------
+CONFIG ELBOW RIGHT
+MOVE_L X=150.0 Y=100.0 Z=40.0 PHI=0.0
+MOVE_L X=150.0 Y=100.0 Z=20.0 PHI=0.0
+
+# Grip component
+PUMP ON
+WAIT_MS 80
+MOVE_L X=150.0 Y=100.0 Z=40.0 PHI=0.0
+
+# ----------------------------------------------------
+# Phase 2: Reconfigure RIGHT -> LEFT to Access Rear Cavity
+# ----------------------------------------------------
+# Singularity transit pose
+MOVE_L X=130.0 Y=-225.2 Z=40.0 PHI=0.0
+
+# Switch kinematic branch to LEFT elbow
+CONFIG ELBOW LEFT
+
+# Align above rear chassis target
+MOVE_L X=-248.3 Y=-87.8 Z=40.0 PHI=0.0
+MOVE_L X=-248.3 Y=-87.8 Z=20.0 PHI=0.0
+
+# Release component into rear fixture
+PUMP OFF
+VALVE ON
+WAIT_MS 50
+VALVE OFF
+
+# Retract from assembly cavity
+MOVE_L X=-248.3 Y=-87.8 Z=40.0 PHI=0.0
+
+# ----------------------------------------------------
+# Phase 3: Reconfigure LEFT -> RIGHT to Deposit Sub-Assembly
+# ----------------------------------------------------
+# Transit through intermediate pose
+MOVE_L X=130.0 Y=-225.2 Z=40.0 PHI=0.0
+
+# Switch back to RIGHT elbow
+CONFIG ELBOW RIGHT
+
+# Align above front inspection cradle
+MOVE_L X=170.0 Y=-50.0 Z=40.0 PHI=0.0
+MOVE_L X=170.0 Y=-50.0 Z=15.0 PHI=0.0
+MOVE_L X=170.0 Y=-50.0 Z=40.0 PHI=0.0
+
+# Return to center park pose
+MOVE_L X=150.0 Y=0.0 Z=30.0 PHI=0.0

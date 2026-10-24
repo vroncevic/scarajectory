@@ -26,8 +26,7 @@ from dataclasses import dataclass
 from ats_utilities.base.setup.bundle import BaseBundle
 from ats_utilities.utils.reflection import instance_to_dict
 
-from scarajectory.core.service.iservice import IService
-from scarajectory.core.service.streaming.istream_playback_controller import IStreamPlaybackController
+from scarajectory.core.service.streaming.playback.icontroller import IPlaybackController
 from scarajectory.infrastructure.gui.igui import IGUI
 from scarajectory.infrastructure.cli.icli import ICLI
 
@@ -50,7 +49,6 @@ class SCARAjectoryBundle:
 
             :attributes:
                 | base - Base ATS bundle with logger, options, and info managers.
-                | service - Core trajectory orchestration service.
                 | gui - GUI presentation adapter.
                 | streamer - Robot communication streamer.
                 | cli - Command-line interface adapter.
@@ -59,9 +57,8 @@ class SCARAjectoryBundle:
     '''
 
     base: BaseBundle
-    service: IService
     gui: IGUI
-    streamer: IStreamPlaybackController
+    streamer: IPlaybackController
     cli: ICLI
 
     def to_dict(self) -> dict[str, object]:

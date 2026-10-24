@@ -23,7 +23,6 @@ from __future__ import annotations
 
 from ats_utilities.option.imanager import IOptionManager
 
-from scarajectory.core.service.iservice import IService
 from scarajectory.infrastructure.gui.igui import IGUI
 from scarajectory.infrastructure.cli.setup.options import CLIBundleOptions
 from scarajectory.infrastructure.cli.setup.opt_validator import CLIBundleOptionsValidator
@@ -31,11 +30,8 @@ from scarajectory.infrastructure.cli.setup.bundle import CLIBundle
 from scarajectory.infrastructure.cli.setup.keys import CLIBundleKeys
 from scarajectory.infrastructure.cli.setup.registry import CLIBundleRegistry
 from scarajectory.infrastructure.cli.setup.dependencies import CLIBundleDependencies
-from scarajectory.infrastructure.command.command_bundle import CommandBundle
-from scarajectory.infrastructure.command.icommand_definition import ICommandDefinition
-from scarajectory.infrastructure.command.icommand_executor import ICommandExecutor
-from scarajectory.infrastructure.command.studio_command_definition import StudioCommandDefinition
-from scarajectory.infrastructure.command.studio_command_executor import StudioCommandExecutor
+from scarajectory.infrastructure.command.dependencies import CommandDependencies
+from scarajectory.infrastructure.command.factory import CommandFactory
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -78,18 +74,16 @@ class CLIBundleFactory:
         '''
         CLIBundleOptionsValidator.validate(options)
 
-        service: IService = options[CLIBundleKeys.OPTION_SERVICE]
         parser: IOptionManager = options[CLIBundleKeys.OPTION_PARSER]
         gui: IGUI = options[CLIBundleKeys.OPTION_GUI]
 
-        studio_definition: ICommandDefinition = StudioCommandDefinition()
-        studio_executor: ICommandExecutor[ICommandDefinition, object, object, object] = StudioCommandExecutor(
-            definition=studio_definition, gui=gui
-        )
-        studio_cmd: CommandBundle = CommandBundle(definition=studio_definition, executor=studio_executor)
+        command_provides = CommandFactory.create(CommandDependencies(gui=gui))
 
         return CLIBundleRegistry.create_bundle(
-            dependencies=CLIBundleDependencies(service=service, parser=parser, commands=[studio_cmd])
+            dependencies=CLIBundleDependencies(
+                parser=parser,
+                commands=list(command_provides.commands),
+            )
         )
 
     @classmethod

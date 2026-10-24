@@ -19,6 +19,7 @@ Subpackages
    scarajectory.infrastructure.gui.menu
    scarajectory.infrastructure.gui.model
    scarajectory.infrastructure.gui.preview
+   scarajectory.infrastructure.gui.splash
    scarajectory.infrastructure.gui.streaming
    scarajectory.infrastructure.gui.theme
    scarajectory.infrastructure.gui.toolbar
@@ -30,11 +31,13 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
+   scarajectory.infrastructure.gui.bundle
+   scarajectory.infrastructure.gui.dependencies
+   scarajectory.infrastructure.gui.factory
+   scarajectory.infrastructure.gui.gui
    scarajectory.infrastructure.gui.igui
-   scarajectory.infrastructure.gui.scarajectory_gui
-   scarajectory.infrastructure.gui.scarajectory_gui_bundle
-   scarajectory.infrastructure.gui.scarajectory_gui_factory
-   scarajectory.infrastructure.gui.scarajectory_gui_init_bundle
+   scarajectory.infrastructure.gui.provides
+   scarajectory.infrastructure.gui.storage_dependencies
 
 Module contents
 ---------------

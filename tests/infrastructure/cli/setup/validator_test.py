@@ -54,11 +54,10 @@ class TestCLIBundleValidator(TestCase):
                 | test_is_valid_success_and_failure - Tests is_valid boolean check.
     '''
 
-    def _create_sample_cli_bundle(self) -> CLIBundle:
+    def create_sample_cli_bundle(self) -> CLIBundle:
         '''Creates a valid CLIBundle instance for testing.'''
         sample_bundle: SCARAjectoryBundle = SCARAjectoryBundleFactory.create_bundle()
         opts = CLIBundleOptions(
-            service=sample_bundle.service,
             parser=sample_bundle.base.option_manager,
             gui=sample_bundle.gui,
         )
@@ -70,7 +69,7 @@ class TestCLIBundleValidator(TestCase):
 
             :exceptions: None.
         '''
-        cli_bundle = self._create_sample_cli_bundle()
+        cli_bundle = self.create_sample_cli_bundle()
         CLIBundleValidator.validate(cli_bundle)
         self.assertTrue(CLIBundleValidator.is_valid(cli_bundle))
 
@@ -86,10 +85,9 @@ class TestCLIBundleValidator(TestCase):
         with self.assertRaises(ATSTypeError):
             CLIBundleValidator.validate('not_a_bundle')  # type: ignore[arg-type]
 
-        cli_bundle = self._create_sample_cli_bundle()
+        cli_bundle = self.create_sample_cli_bundle()
         invalid_cli_bundle = CLIBundle(
-            service='not_a_service',  # type: ignore[arg-type]
-            parser=cli_bundle.parser,
+            parser='not_a_parser',  # type: ignore[arg-type]
             commands=cli_bundle.commands,
         )
         with self.assertRaises(ATSTypeError):
@@ -101,7 +99,7 @@ class TestCLIBundleValidator(TestCase):
 
             :exceptions: None.
         '''
-        cli_bundle = self._create_sample_cli_bundle()
+        cli_bundle = self.create_sample_cli_bundle()
         self.assertTrue(CLIBundleValidator.is_valid(cli_bundle))
         self.assertFalse(CLIBundleValidator.is_valid(None))  # type: ignore[arg-type]
         self.assertFalse(CLIBundleValidator.is_valid('bad_bundle'))  # type: ignore[arg-type]

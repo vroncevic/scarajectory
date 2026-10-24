@@ -42,7 +42,7 @@ class ITrajectoryObserver(Protocol):
 
             :methods:
                 | on_trajectory_updated - Called whenever points are added, modified, or cleared.
-                | on_point_selected - Called when a specific waypoint is selected in canvas or table.
+                | get_version - Returns observer component version string.
     '''
 
     def on_trajectory_updated(self) -> None:
@@ -50,9 +50,9 @@ class ITrajectoryObserver(Protocol):
             Called whenever points are added, modified, reordered, or cleared.
         '''
 
-    def on_point_selected(self, index: int) -> None:
+    def get_version(self) -> str:
         '''
-            Called when a specific waypoint is selected in canvas or table.
+            Returns observer component version string.
 
-            :param index: Selected point index (-1 for none).
+            :return: Component version string.
         '''

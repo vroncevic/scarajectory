@@ -1,0 +1,56 @@
+# ==============================================================================
+# 49_serpentine_raster_dispensing.scara - Serpentine Surface Raster Dispensing
+# ==============================================================================
+# Demonstrates continuous planar serpentine (meander) dispensing path:
+# 1. Continuous tangential tool orientation tracking (TOOL_ORIENT TANGENTIAL).
+# 2. Linear raster passes alternated with 180-degree circular U-turn arcs.
+# 3. Alternating clockwise (ARC_CW) and counter-clockwise (ARC_CCW) turns.
+# 4. Continuous path corner blending (ZONE BLEND 4.0) preventing velocity drops.
+# 5. Clean pneumatic nozzle shutoff, tool orientation restoration, and retract.
+# ==============================================================================
+
+CONFIG MOTOR CLOSED_LOOP
+ENABLE
+HOME
+
+CONFIG ELBOW RIGHT
+SPEED WORK 45.0
+ACCEL 350.0
+
+# Approach start of dispensing raster grid
+MOVE_J X=130.0 Y=-18.0 Z=25.0 PHI=0.0
+MOVE_L X=130.0 Y=-18.0 Z=10.0 PHI=0.0
+
+# Enable tangential tracking and continuous blending for fluid bead dispensing
+TOOL_ORIENT TANGENTIAL
+ZONE BLEND 4.0
+
+# --- Pass 1: Linear Stroke (+X) ---
+MOVE_L X=180.0 Y=-18.0 Z=10.0
+
+# --- Turn 1: 180° Clockwise U-Turn to Row 2 ---
+ARC_CW X=180.0 Y=-6.0 I=0.0 J=6.0
+
+# --- Pass 2: Linear Stroke (-X) ---
+MOVE_L X=130.0 Y=-6.0 Z=10.0
+
+# --- Turn 2: 180° Counter-Clockwise U-Turn to Row 3 ---
+ARC_CCW X=130.0 Y=6.0 I=0.0 J=6.0
+
+# --- Pass 3: Linear Stroke (+X) ---
+MOVE_L X=180.0 Y=6.0 Z=10.0
+
+# --- Turn 3: 180° Clockwise U-Turn to Row 4 ---
+ARC_CW X=180.0 Y=18.0 I=0.0 J=6.0
+
+# --- Pass 4: Linear Stroke (-X) ---
+MOVE_L X=130.0 Y=18.0 Z=10.0
+
+# End of dispensing raster - settle and restore fixed orientation
+ZONE EXACT
+TOOL_ORIENT FIXED
+RETRACT DIST=20.0 SPEED=40.0
+
+MOVE_L X=120.0 Y=0.0 Z=30.0 PHI=0.0 SPEED=60.0
+HOME
+DISABLE

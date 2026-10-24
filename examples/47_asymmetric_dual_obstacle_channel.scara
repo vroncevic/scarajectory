@@ -1,0 +1,53 @@
+# ==============================================================================
+# 47_asymmetric_dual_obstacle_channel.scara - Asymmetric Obstacle Channel Transit
+# ==============================================================================
+# Demonstrates collision-free navigation through an asymmetric corridor:
+# 1. Rectangular enclosure obstacle (ZONE_DEF ENCLOSURE BOX).
+# 2. Circular cylindrical pillar obstacle (ZONE_DEF COLUMN CIRCLE).
+# 3. Narrow transit corridor weaving between the two keep-out boundaries.
+# 4. Corner zone rounding (ZONE BLEND 5.0) for continuous high-speed transit.
+# 5. Station inspection dwell and reverse corridor egress back to base.
+# ==============================================================================
+
+CONFIG MOTOR CLOSED_LOOP
+ENABLE
+HOME
+
+CONFIG ELBOW RIGHT
+SPEED WORK 40.0
+SPEED RAPID 100.0
+ACCEL 300.0
+
+# Define rectangular fixture enclosure obstacle
+ZONE_DEF ENCLOSURE BOX X_MIN=110.0 X_MAX=145.0 Y_MIN=-70.0 Y_MAX=-30.0
+
+# Define cylindrical inspection column obstacle
+ZONE_DEF COLUMN CIRCLE X=160.0 Y=25.0 RADIUS=22.0
+
+# Move to corridor entry waypoint (radius r=100.0mm > R_min=77.6mm)
+MOVE_L X=100.0 Y=0.0 Z=25.0 PHI=0.0 SPEED=45.0
+
+# Weave through clearance channel between enclosure and column
+ZONE BLEND 5.0
+MOVE_L X=140.0 Y=-15.0 Z=25.0 PHI=10.0 SPEED=55.0
+MOVE_L X=190.0 Y=-10.0 Z=25.0 PHI=20.0 SPEED=55.0
+MOVE_L X=200.0 Y=30.0 Z=25.0 PHI=35.0 SPEED=50.0
+
+# Terminal destination at inspection station
+ZONE EXACT
+MOVE_L X=160.0 Y=65.0 Z=25.0 PHI=45.0 SPEED=40.0
+APPROACH DIST=10.0 SPEED=20.0
+WAIT_MS 50
+RETRACT DIST=10.0 SPEED=30.0
+
+# Reverse egress through clearance channel back to base
+ZONE BLEND 5.0
+MOVE_L X=200.0 Y=30.0 Z=25.0 PHI=35.0 SPEED=50.0
+MOVE_L X=190.0 Y=-10.0 Z=25.0 PHI=20.0 SPEED=55.0
+MOVE_L X=140.0 Y=-15.0 Z=25.0 PHI=10.0 SPEED=55.0
+
+# Safe corridor exit
+ZONE EXACT
+MOVE_L X=100.0 Y=0.0 Z=25.0 PHI=0.0 SPEED=45.0
+HOME
+DISABLE

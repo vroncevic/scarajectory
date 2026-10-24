@@ -7,9 +7,9 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.worker.thread.iworker_thread_coordinator
-   scarajectory.infrastructure.worker.thread.worker_thread_coordinator
-   scarajectory.infrastructure.worker.thread.worker_thread_coordinator_factory
+   scarajectory.infrastructure.worker.thread.coordinator
+   scarajectory.infrastructure.worker.thread.factory
+   scarajectory.infrastructure.worker.thread.icoordinator
 
 Module contents
 ---------------

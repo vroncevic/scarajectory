@@ -1,0 +1,54 @@
+# ==============================================================================
+# 30_complex_automation_workcell.scara - Complete Industrial Workcell Routine
+# ==============================================================================
+# Comprehensive integration stress-testing compiler, decompiler, and validators:
+# 1. Closed-loop stepper drive mode initialization (CONFIG MOTOR).
+# 2. Right-elbow pallet depalletizing with approach/retract and vacuum grasp.
+# 3. Parabolic clearance arch transfer (JUMP) between work cells.
+# 4. Kinematic elbow flip reconfiguration (CONFIG ELBOW LEFT).
+# 5. Local work coordinate frame transformation (FRAME_SET / FRAME_RESET).
+# 6. Coordinated pneumatic ejection and drive de-energization (DISABLE).
+# ==============================================================================
+
+CONFIG MOTOR CLOSED_LOOP
+ENABLE
+HOME
+
+CONFIG ELBOW RIGHT
+SPEED RAPID 100.0
+SPEED WORK 50.0
+
+# Define input supply tray in base coordinates: 2 rows x 2 cols, dx=20, dy=20
+PALLET_DEF INFEED ROWS=2 COLS=2 DX=20.0 DY=20.0
+
+# Pick component from INFEED cell 0
+MOVE_PALLET INFEED INDEX=0 Z=15.0
+APPROACH DIST=10.0 SPEED=20.0
+PUMP ON
+WAIT_MS 60
+RETRACT DIST=10.0 SPEED=60.0
+
+# 3D parabolic jump arch over clearance barrier to assembly zone (Z=15 + ARCH=20 = 35 <= 50)
+JUMP X=150.0 Y=20.0 Z=15.0 ARCH=20.0 SPEED=70.0
+
+# Reconfigure kinematic elbow orientation to reach constrained fixture
+CONFIG ELBOW LEFT
+
+# Switch to rotated assembly fixture local frame
+FRAME_SET X=140.0 Y=20.0 ANGLE=15.0
+
+# Insert part at fixture local coordinate (0, 0)
+MOVE_L X=0.0 Y=0.0 Z=15.0 PHI=0.0 SPEED=40.0
+APPROACH DIST=10.0 SPEED=15.0
+PUMP OFF
+VALVE ON
+WAIT_MS 40
+VALVE OFF
+RETRACT DIST=10.0 SPEED=50.0
+
+# Restore base robot frame
+FRAME_RESET
+
+# Return to safe neutral standby coordinate
+MOVE_L X=130.0 Y=0.0 Z=35.0 PHI=0.0 SPEED=80.0
+DISABLE

@@ -16,15 +16,16 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Assembles flow barrier and pacing controller into a FlowPacingBundle for streaming.
+    Assembles flow barrier and pacing controller into a PacingProvides for streaming.
 '''
 
 from __future__ import annotations
 
-from scarajectory.infrastructure.barrier.flow_barrier import FlowBarrier
-from scarajectory.infrastructure.barrier.flow_barrier_factory import FlowBarrierFactory
-from scarajectory.infrastructure.pacing.bundle import FlowPacingBundle
-from scarajectory.infrastructure.pacing.flow_pacing_bundle_factory import FlowPacingBundleFactory
+from scarajectory.infrastructure.barrier.factory import BarrierFactory
+from scarajectory.infrastructure.barrier.provides import BarrierProvides
+from scarajectory.infrastructure.pacing.dependencies import PacingDependencies
+from scarajectory.infrastructure.pacing.factory import PacingFactory
+from scarajectory.infrastructure.pacing.provides import PacingProvides
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
@@ -43,7 +44,7 @@ class StreamPacingAssembler:
         It defines:
 
             :methods:
-                | assemble - Constructs configured FlowPacingBundle.
+                | assemble - Constructs configured PacingProvides.
                 | get_version - Returns assembler version string.
     '''
 
@@ -52,19 +53,21 @@ class StreamPacingAssembler:
         cls,
         *,
         queue_capacity: int = 16,
-    ) -> FlowPacingBundle:
+    ) -> PacingProvides:
         '''
-            Constructs and returns configured FlowPacingBundle instance.
+            Constructs and returns configured PacingProvides instance.
 
             :param queue_capacity: Queue depth limit integer.
-            :return: FlowPacingBundle instance.
+            :return: PacingProvides instance.
             :exceptions: None.
         '''
-        barrier: FlowBarrier = FlowBarrierFactory.create()
+        barrier_provides: BarrierProvides = BarrierFactory.create()
 
-        return FlowPacingBundleFactory.create(
-            barrier=barrier,
-            capacity=queue_capacity,
+        return PacingFactory.create(
+            PacingDependencies(
+                flow_barrier=barrier_provides.flow_barrier,
+                capacity=queue_capacity,
+            )
         )
 
     @classmethod
