@@ -1099,7 +1099,7 @@ Tool structure
 * **Interactive Vector CAD Editor**: Real-time vector drafting with dedicated Point, Line, Rectangle, Circle, and Freehand tools with live vertex dragging and viewport zoom/pan.
 * **Kinematic Reachability & Deadzone Enforcement**: Annular geometric validation ensuring trajectories stay within reachable workspace boundaries (:math:`R_{min} = |L_1 - L_2|`, :math:`R_{max} = L_1 + L_2`).
 * **Undo / Redo Transaction Stack**: Non-destructive history management for waypoint additions, modifications, insertions, and deletions (``Ctrl+Z``, ``Ctrl+Y``).
-* **ASCII Protocol Generation**: Generates micro-command streaming packets for RP2040 firmware (``<pt#X#Y#Z#PHI#SPEED#end>``).
+* **Binary Protocol Frame Generation**: Formats trajectory waypoints into wire-protocol binary frames packed with CRC16 and delimiters.
 * **Sliding Window Hardware Streaming**: Multi-threaded USB serial (``/dev/ttyACM0``) and TCP socket streaming with dynamic ACK tracking, auto-pause on buffer full, and progress monitoring.
 * **Manual Jogging & Diagnostics**: Interactive jog grid (X, Y, Z, Phi), vacuum pump and release valve toggles, homing, status queries, and raw serial command console.
 * **Configurable Kinematics & Dimensions**: Dynamic robot link lengths (:math:`L_1, L_2`), stroke limits (:math:`Z_{min}, Z_{max}`), and speed bounds configurable via CLI options and JSON schema.
@@ -1525,117 +1525,6 @@ To allow users to modify, test, and develop custom routines without modifying th
 * **Streamlined File Dialogs:** File operations such as **📂 Open...** (``Ctrl+O``) and **💾 Save As...** (``Ctrl+S``) default directly to ``~/.scarajectory/workspace/``, enabling quick access to user scripts and personal templates.
 * **Safe User Customization:** Users can freely edit existing examples, save variations, or create new industrial programs directly in ``~/.scarajectory/workspace/`` with full persistence.
 
-📡 Unified Serial ASCII Communication Protocol
-----------------------------------------------
-
-All communication between **scarajectory**, the physical **scara_base** firmware, and the **scaraemu** digital twin is governed by a packetized ASCII streaming protocol:
-
-Command Packets (PC to Robot)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. list-table:: Command Packets
-   :widths: 35 35 40
-   :header-rows: 1
-
-   * - Command Packet
-     - Description
-     - Response Handshake
-   * - ``<pt#X#Y#Z#PHI#SPEED#end>``
-     - Push Cartesian trajectory point to FIFO motion buffer
-     - ``<RESP:ACK#QUEUE=n>`` then ``<RESP:MOVE_DONE#...>``
-   * - ``<CMD:JOG#axis#step>``
-     - Incremental manual jog (``X``, ``Y``, ``Z``, ``P``) by ``step`` mm/deg
-     - ``<RESP:ACK#JOG_QUEUED#QUEUE=n>``
-   * - ``<CMD:OVERRIDE#percent>``
-     - Real-time feedrate override scaling (``10`` to ``200`` %)
-     - ``<RESP:ACK#OVERRIDE=percent>``
-   * - ``<CMD:WAIT#ms>``
-     - Synchronous dwell delay pause on motion controller
-     - ``<RESP:ACK#WAIT_DONE#MS=ms>``
-   * - ``<CMD:PUMP#1>`` / ``<CMD:PUMP#0>``
-     - Energize / de-energize vacuum pump actuator
-     - ``<RESP:ACK#PUMP_ON>`` / ``<RESP:ACK#PUMP_OFF>``
-   * - ``<CMD:VALVE#1>`` / ``<CMD:VALVE#0>``
-     - Open / close pneumatic air release valve
-     - ``<RESP:ACK#VALVE_ON>`` / ``<RESP:ACK#VALVE_OFF>``
-   * - ``<CMD:HOME>``
-     - Execute multi-axis homing and calibrate zero
-     - ``<RESP:ACK#HOMING_STARTED>`` then ``<RESP:HOMED_SUCCESS#...>``
-   * - ``<CMD:ENABLE>`` / ``<CMD:DISABLE>``
-     - Energize / de-energize stepper driver stages
-     - ``<RESP:ACK#MOTORS_ENABLED>`` / ``<RESP:ACK#MOTORS_DISABLED>``
-   * - ``<CMD:ESTOP>``
-     - Instant emergency stop and motion queue abort
-     - ``<RESP:ACK#ESTOP_TRIGGERED>``
-   * - ``<CMD:HOLD>`` / ``<CMD:RESUME>``
-     - Decelerate to feed hold / resume paused trajectory
-     - ``<RESP:ACK#FEED_HOLD_ACTIVE>`` / ``<RESP:ACK#MOTION_RESUMED>``
-   * - ``<CMD:STATUS>``
-     - Query operational machine state and endstop flags
-     - ``<RESP:STATUS#STATE=...#ENDSTOPS=...>``
-   * - ``<CMD:GETPOS>``
-     - Read active Cartesian tool coordinates and orientation
-     - ``<RESP:POS#X=...#Y=...#Z=...#PHI=...>``
-   * - ``<CMD:SET_ELBOW#LEFT|RIGHT>``
-     - Select inverse kinematic arm solution branch
-     - ``<RESP:ACK#ELBOW=LEFT|RIGHT>``
-   * - ``<CMD:GET_ELBOW>``
-     - Query active elbow configuration branch
-     - ``<RESP:ELBOW#CONFIG=LEFT|RIGHT>``
-   * - ``<CMD:GET_CONFIG>``
-     - Read persisted geometry, dynamics, and stroke bounds
-     - ``<RESP:CONFIG#L1=...#L2=...#MIN_SPD=...>``
-   * - ``<CMD:SET_CONFIG#...>``
-     - Update robot link lengths, stroke, and speed bounds
-     - ``<RESP:ACK#CONFIG_STORED...>``
-   * - ``<CMD:SAVE_CONFIG>``
-     - Commit active configuration to RP2040 Flash (CRC32)
-     - ``<RESP:ACK#CONFIG_SAVED>``
-   * - ``<CMD:RESET_CONFIG>``
-     - Restore factory default geometry and kinematic bounds
-     - ``<RESP:ACK#CONFIG_RESET>``
-
-Microcontroller Response Packets (Robot to PC)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. list-table:: Response Packets
-   :widths: 35 25 50
-   :header-rows: 1
-
-   * - Response Packet
-     - Category
-     - Streamer Meaning
-   * - ``<RESP:ACK#QUEUE=n>``
-     - Acknowledgment
-     - Waypoint accepted into ring buffer; ``n`` slots remaining.
-   * - ``<RESP:MOVE_DONE#X=..#Y=..#Z=..#PHI=..>``
-     - Move Complete
-     - Physical execution of waypoint completed. Advances done counter.
-   * - ``<RESP:ACK#WAIT_DONE#...>``
-     - Action Complete
-     - Hardware dwell delay elapsed. Advances streamer progress.
-   * - ``<RESP:ACK#PUMP_ON|OFF>``
-     - Action Complete
-     - Tool actuation complete. Advances streamer progress.
-   * - ``<RESP:ACK#VALVE_ON|OFF>``
-     - Action Complete
-     - Valve actuation complete. Advances streamer progress.
-   * - ``<RESP:HOMED_SUCCESS#...>``
-     - Homing Complete
-     - Machine homed and zero-reference established.
-   * - ``<RESP:NACK_BUFFER_FULL>``
-     - Flow Control
-     - Microcontroller queue full; streamer enters auto-pause.
-   * - ``<RESP:NACK_ESTOP_ACTIVE>``
-     - Error / Safety
-     - E-Stop asserted; all motions rejected until reset.
-   * - ``<RESP:NACK_OUT_OF_REACH>``
-     - Kinematic Rejection
-     - Target coordinate outside reachable arm envelope (:math:`R_{max}`).
-   * - ``<RESP:NACK_SINGULARITY_LIMIT>``
-     - Kinematic Rejection
-     - Target inside inner deadzone (:math:`R_{min} = |L_1 - L_2|`).
-
 📊 Code coverage
 ----------------
 
@@ -1709,8 +1598,8 @@ Interactive Motion Planning Workflow
 2. **Kinematic Validation**:
    * Open the **Plan Validation** tab and run validation against reachability limits (:math:`L_1 = 150\text{ mm}, L_2 = 120\text{ mm}`).
    * Verify total path length and estimated execution time.
-3. **ASCII Program Preview**:
-   * Inspect the formatted ASCII micro-command stream (``<pt#...#end>``) under the **Program Preview** tab.
+3. **Program Preview**:
+   * Inspect the exported SCARA DSL trajectory program under the **Program Preview** tab.
 4. **Hardware Streaming & Execution**:
    * Connect to ``/dev/ttyACM0`` (or TCP host) under the **Hardware Streamer** tab.
    * Trigger streaming to execute real-time motion on the physical SCARA robot.
@@ -1756,9 +1645,9 @@ Mode 2: Real-Time Closed-Loop TCP Streaming
 6. In the **Port** dropdown, select **127.0.0.1:8888 (Digital Twin)**.
 7. Click **Connect**. The status bar updates to ``Streamer: Connected to 127.0.0.1:8888``.
 8. Click **Stream Trajectory** (or use the **Manual Jog** controls):
-   * Trajectory waypoints (``<pt#X#Y#Z#PHI#SPEED#end>``) stream live over the loopback TCP socket.
+   * Trajectory waypoints stream live as binary protocol frames over the loopback TCP socket.
    * **scaraemu** smoothly animates the dual-link arm and carriage along the path.
-   * Closed-loop protocol acknowledgments (``<RESP:ACK#QUEUE=1>``, ``<RESP:MOVE_DONE#...>``) flow back to **scarajectory**, dynamically driving the streaming progress bar.
+   * Closed-loop protocol acknowledgments flow back to **scarajectory**, dynamically driving the streaming progress bar.
 
 Mode 3: Direct File Loading in SCARAEmu
 """""""""""""""""""""""""""""""""""""""
