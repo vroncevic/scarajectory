@@ -1,0 +1,52 @@
+# -*- coding: UTF-8 -*-
+
+'''
+Module
+    provides.py
+Copyright
+    Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
+    scarajectory is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by the
+    Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    scarajectory is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+    See the GNU General Public License for more details.
+    You should have received a copy of the GNU General Public License along
+    with this program. If not, see <http://www.gnu.org/licenses/>.
+Info
+    Outbound provides container encapsulating mutation service and granular interfaces.
+'''
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+
+from scarajectory.core.service.trajectory.plan.mutation.bulk_mutation.ibulk_mutation import IPlanBulkMutator
+from scarajectory.core.service.trajectory.plan.mutation.point_mutation.ipoint_mutation import IPlanPointMutator
+
+__author__ = 'Vladimir Roncevic'
+__copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
+__credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
+__license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
+__version__ = '1.0.3'
+__maintainer__ = 'Vladimir Roncevic'
+__email__ = 'elektron.ronca@gmail.com'
+__status__ = 'Updated'
+
+
+@dataclass(frozen=True, slots=True)
+class MutationProvides:
+    '''
+        Provides container encapsulating granular mutator interfaces.
+
+        It defines:
+
+            :attributes:
+                | plan_point_mutator - Granular point mutator interface.
+                | plan_bulk_mutator - Granular bulk mutator interface.
+    '''
+
+    plan_point_mutator: IPlanPointMutator
+    plan_bulk_mutator: IPlanBulkMutator

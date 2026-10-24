@@ -7,9 +7,9 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.core.service.trajectory.contract
    scarajectory.core.service.trajectory.history
    scarajectory.core.service.trajectory.plan
+   scarajectory.core.service.trajectory.validation
 
 Module contents
 ---------------

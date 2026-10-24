@@ -7,8 +7,8 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.core.service.tool.ipurge_valve_actuator
-   scarajectory.core.service.tool.itool_controller
+   scarajectory.core.service.tool.iactuator
+   scarajectory.core.service.tool.icontroller
 
 Module contents
 ---------------

@@ -7,9 +7,9 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.core.service.streaming.observer.iobservable
+   scarajectory.core.service.streaming.observer.idispatcher
    scarajectory.core.service.streaming.observer.iobserver
-   scarajectory.core.service.streaming.observer.istream_observer_dispatcher
+   scarajectory.core.service.streaming.observer.iregistry
 
 Module contents
 ---------------

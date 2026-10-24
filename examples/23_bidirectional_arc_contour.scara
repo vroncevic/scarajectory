@@ -1,0 +1,36 @@
+# ==============================================================================
+# 23_bidirectional_arc_contour.scara - S-Curve Arc Contouring with Tangent Tool
+# ==============================================================================
+# Traces a continuous S-shaped contour combining clockwise (ARC_CW) and
+# counter-clockwise (ARC_CCW) arcs with automatic tangential orientation
+# (TOOL_ORIENT TANGENTIAL) and corner path blending (ZONE BLEND).
+# ==============================================================================
+
+ENABLE
+HOME
+
+# Activate auto-tangent tracking for end-effector heading
+TOOL_ORIENT TANGENTIAL
+
+# Smooth path blending between segments
+ZONE BLEND 10.0
+SPEED WORK 45.0
+
+# Approach start of S-curve profile
+MOVE_L X=120.0 Y=-30.0 Z=25.0
+
+# First curve lobe: Clockwise arc (center at X=140, Y=-30 -> I=20, J=0)
+ARC_CW X=160.0 Y=-30.0 I=20.0 J=0.0
+
+# Tangent transition to second curve lobe
+MOVE_L X=160.0 Y=0.0 Z=25.0
+
+# Second curve lobe: Counter-clockwise arc (center at X=140, Y=0 -> I=-20, J=0)
+ARC_CCW X=120.0 Y=0.0 I=-20.0 J=0.0
+
+# Final linear exit segment with fine zone stop
+ZONE FINE
+MOVE_L X=120.0 Y=30.0 Z=25.0 SPEED=30.0
+
+# Restore fixed tool orientation
+TOOL_ORIENT FIXED

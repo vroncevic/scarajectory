@@ -24,17 +24,19 @@ from __future__ import annotations
 from unittest import TestCase, main
 from unittest.mock import MagicMock
 
-from scarajectory.core.model.protocol.protocol_mode import ProtocolMode
-from scarajectory.infrastructure.connection.stream_connection_manager import StreamConnectionManager
-from scarajectory.infrastructure.connection.stream_raw_transceiver import StreamRawTransceiver
+from scaracom.bridge.coordinator.icoordinator import IConnectionCoordinator
+from scaracom.bridge.listener.itransport_listener import ITransportListener
+from scaracom.bridge.transceiver.transceiver import RawTransceiver
+from scaracom.transport.itransport import ITransport
+
+from scarajectory.infrastructure.connection.manager.manager import ConnectionManager
 from scarajectory.infrastructure.streaming.assembly.stream_transport_assembler import StreamTransportAssembler
-from scarajectory.infrastructure.transport.bundle import TransportBundle
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -47,21 +49,24 @@ class TestStreamTransportAssembler(TestCase):
 
     def test_assemble_components(self) -> None:
         '''
-            Tests assembly of connection manager and raw transceiver.
+            Tests assembly of connection manager, raw transceiver, and coordinator.
+
+            :exceptions: None.
         '''
-        mock_transport = TransportBundle(
-            connection=MagicMock(),
-            transceiver=MagicMock(),
+        mock_transport = MagicMock(spec=ITransport)
+        mock_listener = MagicMock(spec=ITransportListener)
+        conn_mgr, raw_xceiver, coordinator = StreamTransportAssembler.assemble(
+            mock_transport, listener=mock_listener
         )
-        conn_mgr, raw_xceiver = StreamTransportAssembler.assemble(
-            mock_transport, protocol_mode=ProtocolMode.ASCII
-        )
-        self.assertIsInstance(conn_mgr, StreamConnectionManager)
-        self.assertIsInstance(raw_xceiver, StreamRawTransceiver)
+        self.assertIsInstance(conn_mgr, ConnectionManager)
+        self.assertIsInstance(raw_xceiver, RawTransceiver)
+        self.assertIsInstance(coordinator, IConnectionCoordinator)
 
     def test_get_version(self) -> None:
         '''
             Tests get_version returns string.
+
+            :exceptions: None.
         '''
         self.assertIsInstance(StreamTransportAssembler.get_version(), str)
 

@@ -8,7 +8,6 @@ Subpackages
    :maxdepth: 4
 
    scarajectory.setup.assembly
-   scarajectory.setup.pipeline
 
 Submodules
 ----------

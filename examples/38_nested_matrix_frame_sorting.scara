@@ -1,0 +1,80 @@
+# ==============================================================================
+# 38_nested_matrix_frame_sorting.scara - Nested Frame Matrix Sorting Routine
+# ==============================================================================
+# Demonstrates advanced combination of:
+# 1. Parameterized modular subroutines (DEF / CALL) for vacuum acquisition.
+# 2. Dynamic feedrate override modulation (OVERRIDE 60%, 100%, 120%).
+# 3. Work Coordinate System transformation (FRAME_SET and FRAME_RESET) at 30 deg.
+# 4. Nested iteration loops (REPEAT 2 outer and REPEAT 2 inner).
+# 5. Incremental relative motions (MOVE_REL) executed within local fixture frame.
+# 6. Smooth blend-to-exact zone transitions (ZONE BLEND R=6.0 to ZONE EXACT).
+# ==============================================================================
+
+CONFIG MOTOR CLOSED_LOOP
+ENABLE
+HOME
+
+CONFIG ELBOW RIGHT
+SPEED WORK 50.0
+SPEED RAPID 120.0
+
+# Subroutine: Vertical engagement and vacuum acquisition
+DEF ACQUIRE_PART
+ZONE EXACT
+APPROACH DIST=6.0 SPEED=20.0
+PUMP ON
+WAIT_MS 40
+RETRACT DIST=6.0 SPEED=40.0
+END
+
+# Subroutine: Vertical insertion, vacuum release and positive blow-off
+DEF DEPOSIT_PART
+ZONE EXACT
+APPROACH DIST=6.0 SPEED=20.0
+PUMP OFF
+VALVE ON
+WAIT_MS 30
+VALVE OFF
+RETRACT DIST=6.0 SPEED=40.0
+END
+
+# Navigate to component infeed station in world coordinates
+MOVE_L X=140.0 Y=-50.0 Z=20.0 PHI=0.0 SPEED=50.0
+CALL ACQUIRE_PART
+
+# High-speed rapid transfer to angled inspection platform
+OVERRIDE 120.0
+MOVE_L X=160.0 Y=30.0 Z=30.0 PHI=15.0 SPEED=60.0
+OVERRIDE 100.0
+
+# Shift coordinates to local inspection frame angled at 30 degrees
+FRAME_SET X=160.0 Y=30.0 ANGLE=30.0
+
+# Precision tactile scanning at reduced feedrate override
+OVERRIDE 60.0
+ZONE EXACT
+MOVE_L X=0.0 Y=0.0 Z=20.0 PHI=0.0 SPEED=25.0
+
+# Nested 2x2 multi-point inspection scan using relative motions
+REPEAT 2
+MOVE_REL X=10.0 Y=0.0 Z=0.0 SPEED=20.0
+REPEAT 2
+APPROACH DIST=4.0 SPEED=15.0
+WAIT_MS 30
+RETRACT DIST=4.0 SPEED=30.0
+MOVE_REL X=0.0 Y=10.0 Z=0.0 SPEED=20.0
+END
+END
+
+# Restore normal speed override and reset to world base coordinate system
+OVERRIDE 100.0
+FRAME_RESET
+
+# Transfer verified component to sorted output nest
+MOVE_L X=130.0 Y=70.0 Z=20.0 PHI=0.0 SPEED=45.0
+CALL DEPOSIT_PART
+
+# Return to safe park position and power down
+MOVE_L X=130.0 Y=0.0 Z=35.0 PHI=0.0 SPEED=60.0
+HOME
+DISABLE

@@ -24,10 +24,5 @@
     "gear_ratio_j1": 4.0,
     "gear_ratio_j2": 4.0,
     "gear_ratio_j4": 1.0,
-    "leadscrew_pitch_z": 8.0,
-    "baudrate": 115200.0,
-    "timeout": 0.1,
-    "default_feedrate_scale": 100.0,
-    "queue_capacity": 16.0,
-    "protocol_mode": "binary"
+    "leadscrew_pitch_z": 8.0
 }

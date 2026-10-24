@@ -1,0 +1,40 @@
+# ==============================================================================
+# 36_spatial_keepout_zones.scara - Spatial Keep-Out Obstacle Avoidance
+# ==============================================================================
+# Demonstrates user-defined spatial keep-out obstacle zones:
+# 1. Rectangular boundary keep-out obstacle definition (ZONE_DEF ... BOX).
+# 2. Circular perimeter keep-out obstacle definition (ZONE_DEF ... CIRCLE).
+# 3. Path planning skirting safely around keep-out obstacles without collisions.
+# ==============================================================================
+
+CONFIG MOTOR CLOSED_LOOP
+ENABLE
+HOME
+
+CONFIG ELBOW RIGHT
+SPEED WORK 40.0
+SPEED RAPID 90.0
+
+# Define rectangular obstacle zone for fixture stand
+ZONE_DEF FIXTURE_STAND BOX X_MIN=80.0 X_MAX=120.0 Y_MIN=-60.0 Y_MAX=-20.0
+
+# Define circular obstacle zone for camera inspection pillar
+ZONE_DEF INSPECTION_PILLAR CIRCLE X=160.0 Y=50.0 RADIUS=20.0
+
+# Safe transit move navigating clear of fixture stand and pillar
+MOVE_L X=150.0 Y=-80.0 Z=25.0 PHI=0.0 SPEED=45.0
+MOVE_L X=200.0 Y=0.0 Z=25.0 PHI=15.0 SPEED=40.0
+MOVE_L X=160.0 Y=90.0 Z=25.0 PHI=30.0 SPEED=35.0
+
+# Actuation sequence at safe inspection waypoint
+PUMP ON
+WAIT_MS 50
+PUMP OFF
+VALVE ON
+WAIT_MS 30
+VALVE OFF
+
+# Safe return path to home standby
+MOVE_L X=150.0 Y=-80.0 Z=25.0 PHI=0.0 SPEED=45.0
+HOME
+DISABLE

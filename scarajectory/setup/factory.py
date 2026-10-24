@@ -28,28 +28,32 @@ from ats_utilities.base.setup.factory import BaseBundleFactory
 from ats_utilities.base.setup.options import BaseBundleOptions
 from ats_utilities.context.bundle import ContextBundle
 from ats_utilities.context.factory import ContextBundleFactory
-from scaralang.core.model.kinematics.scara_bounds import ScaraBounds
-from scarajectory.core.service.settings.iscara_bounds_loader import IScaraBoundsLoader
-from scarajectory.infrastructure.settings.bounds.scara_bounds_loader_factory import ScaraBoundsLoaderFactory
-from scarajectory.infrastructure.settings.settings_reader import SettingsReader
-from scarajectory.infrastructure.settings.settings_reader_factory import SettingsReaderFactory
-from scarajectory.setup.assembly.app_core_assembler import AppCoreAssembler
-from scarajectory.setup.assembly.app_core_bundle import AppCoreBundle
-from scarajectory.setup.assembly.app_presentation_assembler import AppPresentationAssembler
-from scarajectory.setup.assembly.app_runtime_assembler import AppRuntimeAssembler
-from scarajectory.setup.assembly.app_runtime_bundle import AppRuntimeBundle
+
+from scaralang.core.model.kinematics.profile.bounds import ScaraBounds
+from scarajectory.infrastructure.settings.bounds.loader.iloader import IScaraBoundsLoader
+from scarajectory.infrastructure.settings.dependencies import SettingsDependencies
+from scarajectory.infrastructure.settings.factory import SettingsFactory
+from scarajectory.infrastructure.settings.provides import SettingsProvides
+from scarajectory.infrastructure.settings.reader.reader import SettingsReader
+from scarajectory.infrastructure.storage.config_io.dependencies import ConfigIODependencies
+from scarajectory.infrastructure.storage.config_io.factory import ConfigIOFactory
+from scarajectory.setup.assembly.core.assembler import AppCoreAssembler
+from scarajectory.setup.assembly.core.bundle import AppCoreBundle
+from scarajectory.setup.assembly.plan.assembler import PlanPipelineBuilder
+from scarajectory.setup.assembly.plan.bundle import PlanPipelineBundle
+from scarajectory.setup.assembly.presentation.assembler import AppPresentationAssembler
+from scarajectory.setup.assembly.runtime.assembler import AppRuntimeAssembler
+from scarajectory.setup.assembly.runtime.bundle import AppRuntimeBundle
 from scarajectory.setup.bundle import SCARAjectoryBundle
 from scarajectory.setup.keys import SCARAjectoryBundleKeys
 from scarajectory.setup.opt_validator import SCARAjectoryBundleOptionsValidator
 from scarajectory.setup.options import SCARAjectoryBundleOptions
-from scarajectory.setup.pipeline.plan_pipeline_builder import PlanPipelineBuilder
-from scarajectory.setup.pipeline.plan_pipeline_bundle import PlanPipelineBundle
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -72,8 +76,7 @@ class SCARAjectoryBundleFactory:
     '''
 
     _info_file: str = join(
-        dirname(dirname(abspath(__file__))),
-        'infrastructure', 'config', 'scarajectory.cfg'
+        dirname(dirname(abspath(__file__))), 'infrastructure', 'config', 'scarajectory.cfg'
     )
 
     @classmethod
@@ -104,6 +107,7 @@ class SCARAjectoryBundleFactory:
             :exceptions: None.
         '''
         opts_dict: dict[str, object] = {}
+
         if SCARAjectoryBundleKeys.OPTION_L1 in options:
             opts_dict['l1'] = options[SCARAjectoryBundleKeys.OPTION_L1]
         if SCARAjectoryBundleKeys.OPTION_L2 in options:
@@ -121,11 +125,18 @@ class SCARAjectoryBundleFactory:
                 SCARAjectoryBundleKeys.OPTION_MAX_SPEED
             ]
 
-        reader: SettingsReader = SettingsReaderFactory.create_with_context(
-            context_bundle=context_bundle
+        io_provides = ConfigIOFactory.create(
+            ConfigIODependencies(context_bundle=context_bundle)
         )
-        loader: IScaraBoundsLoader = ScaraBoundsLoaderFactory.create_with_reader(
-            reader=reader
+        settings_provides: SettingsProvides = SettingsFactory.create(
+            SettingsDependencies(
+                config_loader=io_provides.config_loader,
+                config_path=SettingsReader.DEFAULT_GEOMETRY_CONFIG,
+                scheme_path=SettingsReader.DEFAULT_SCHEME_CONFIG,
+            )
+        )
+        loader: IScaraBoundsLoader = (
+            settings_provides.bounds_provides.bounds_loader
         )
 
         if opts_dict:

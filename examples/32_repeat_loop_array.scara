@@ -1,0 +1,35 @@
+# ==============================================================================
+# 32_repeat_loop_array.scara - Iterative Inspection Array via REPEAT Loop
+# ==============================================================================
+# Demonstrates fixed-iteration macro loops (REPEAT / END) with relative motions:
+# 1. Closed-loop motor initialization, robot homing, and speed presets.
+# 2. Linear motion to initial datum inspection feature.
+# 3. Macro loop (REPEAT 4) performing an automated probe cycle:
+#    - Vertical approach probe to surface level.
+#    - Sensor acquisition dwell delay (WAIT_MS).
+#    - Vertical retraction to transit clearance plane.
+#    - Relative diagonal indexing step (MOVE_REL) to the next inspection point.
+# 4. Return to home transit pose and drive de-energization.
+# ==============================================================================
+
+CONFIG MOTOR CLOSED_LOOP
+ENABLE
+HOME
+
+SPEED WORK 40.0
+SPEED RAPID 80.0
+
+# Transit to initial inspection feature coordinate
+MOVE_L X=120.0 Y=-30.0 Z=20.0 PHI=0.0 SPEED=50.0
+
+# 4-point linear inspection scan using iterative macro loop
+REPEAT 4
+APPROACH DIST=5.0 SPEED=15.0
+WAIT_MS 40
+RETRACT DIST=5.0 SPEED=30.0
+MOVE_REL X=15.0 Y=15.0 Z=0.0 PHI=0.0 SPEED=25.0
+END
+
+# Return to safe park position and disable motors
+MOVE_L X=130.0 Y=0.0 Z=30.0 PHI=0.0 SPEED=60.0
+DISABLE

@@ -27,14 +27,13 @@ from types import MappingProxyType
 
 from ats_utilities.option.imanager import IOptionManager
 
-from scarajectory.core.service.iservice import IService
 from scarajectory.infrastructure.gui.igui import IGUI
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -47,10 +46,8 @@ class CLIBundleKeys:
         It defines:
 
             :attributes:
-                | DEPENDENCY_SERVICE - The service interface constant of the CLI bundle.
                 | DEPENDENCY_PARSER - The parser interface constant of the CLI bundle.
                 | DEPENDENCY_COMMANDS - The commands constant of the CLI bundle.
-                | OPTION_SERVICE - The service option constant of the CLI bundle.
                 | OPTION_PARSER - The parser option constant of the CLI bundle.
                 | OPTION_GUI - The GUI option constant of the CLI bundle.
             :methods:
@@ -58,11 +55,9 @@ class CLIBundleKeys:
                 | get_option_to_type - Returns the mapping of the CLI bundle options to their types.
     '''
 
-    DEPENDENCY_SERVICE: ClassVar[str] = 'service'
     DEPENDENCY_PARSER: ClassVar[str] = 'parser'
     DEPENDENCY_COMMANDS: ClassVar[str] = 'commands'
 
-    OPTION_SERVICE: ClassVar[str] = 'service'
     OPTION_PARSER: ClassVar[str] = 'parser'
     OPTION_GUI: ClassVar[str] = 'gui'
 
@@ -75,7 +70,6 @@ class CLIBundleKeys:
             :exceptions: None.
         '''
         return MappingProxyType({
-            cls.DEPENDENCY_SERVICE: IService,
             cls.DEPENDENCY_PARSER: IOptionManager,
             cls.DEPENDENCY_COMMANDS: Sequence,
         })
@@ -89,7 +83,6 @@ class CLIBundleKeys:
             :exceptions: None.
         '''
         return MappingProxyType({
-            cls.OPTION_SERVICE: IService,
             cls.OPTION_PARSER: IOptionManager,
             cls.OPTION_GUI: IGUI,
         })

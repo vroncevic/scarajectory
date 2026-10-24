@@ -23,16 +23,17 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from scarajectory.core.service.trajectory.plan.mutation.iplan_point_mutator import IPlanPointMutator
-from scarajectory.core.service.trajectory.plan.observer.iplan_observer_dispatcher import IPlanObserverDispatcher
-from scarajectory.core.service.trajectory.plan.selection.iplan_selection_coordinator import IPlanSelectionCoordinator
-from scarajectory.core.service.trajectory.plan.store.iwaypoint_store import IWaypointStore
+from scarajectory.core.service.trajectory.plan.mutation.point_mutation.ipoint_mutation import IPlanPointMutator
+from scarajectory.core.service.trajectory.plan.observer.idispatcher import IPlanObserverDispatcher
+from scarajectory.core.service.trajectory.plan.selection.coordinator.icoordinator import IPlanSelectionCoordinator
+from scarajectory.core.service.trajectory.plan.store.istore import IWaypointStore
+from scarajectory.core.service.trajectory.validation.ivalidator import ITrajectoryValidator
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -50,9 +51,11 @@ class TableBundle:
                 | selection - Selection coordinator collaborator.
                 | mutation - Plan mutation service collaborator.
                 | dispatcher - Observer dispatcher collaborator.
+                | validator - Kinematic reachability validator collaborator.
     '''
 
     store: IWaypointStore
     selection: IPlanSelectionCoordinator
     mutation: IPlanPointMutator
     dispatcher: IPlanObserverDispatcher
+    validator: ITrajectoryValidator

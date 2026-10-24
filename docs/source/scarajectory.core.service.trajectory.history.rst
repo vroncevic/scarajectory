@@ -1,16 +1,25 @@
 scarajectory.core.service.trajectory.history package
 ====================================================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   scarajectory.core.service.trajectory.history.navigator
+   scarajectory.core.service.trajectory.history.saver
+   scarajectory.core.service.trajectory.history.stack
+
 Submodules
 ----------
 
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.core.service.trajectory.history.iplan_history
-   scarajectory.core.service.trajectory.history.iplan_history_saver
-   scarajectory.core.service.trajectory.history.plan_history
-   scarajectory.core.service.trajectory.history.plan_history_factory
+   scarajectory.core.service.trajectory.history.dependencies
+   scarajectory.core.service.trajectory.history.factory
+   scarajectory.core.service.trajectory.history.provides
 
 Module contents
 ---------------

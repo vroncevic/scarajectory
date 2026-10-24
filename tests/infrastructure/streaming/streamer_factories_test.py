@@ -22,39 +22,29 @@ Info
 from __future__ import annotations
 
 from unittest import TestCase, main
-from unittest.mock import MagicMock
 
-from scarajectory.core.model.state.stream_state import StreamState
-from scarajectory.core.service.barrier.iflow_barrier import IFlowBarrier
-from scarajectory.core.service.classifier.iflow_status_classifier import IFlowStatusClassifier
-from scarajectory.core.service.classifier.ihoming_status_classifier import IHomingStatusClassifier
-from scarajectory.core.service.classifier.imotion_status_classifier import IMotionStatusClassifier
-from scarajectory.core.service.classifier.iresponse_parser import IResponseParser
-from scarajectory.core.service.connection.iconnection import IConnection
-from scarajectory.core.service.connection.iraw_channel import IRawChannel
-from scarajectory.core.service.streaming.ibinary_program_streamer import IBinaryProgramStreamer
-from scarajectory.core.service.streaming.istream_dispatcher import IStreamDispatcher
-from scarajectory.core.service.streaming.istream_playback_controller import IStreamPlaybackController
-from scarajectory.core.service.streaming.stream_pacing_config_factory import StreamPacingConfigFactory
-from scarajectory.core.service.worker.icommand_formatter import ICommandFormatter
-from scarajectory.infrastructure.barrier.flow_barrier_factory import FlowBarrierFactory
-from scarajectory.infrastructure.classifier.status.flow_status_classifier_factory import FlowStatusClassifierFactory
-from scarajectory.infrastructure.classifier.status.homing_status_classifier_factory import HomingStatusClassifierFactory
-from scarajectory.infrastructure.classifier.status.motion_status_classifier_factory import MotionStatusClassifierFactory
-from scarajectory.infrastructure.classifier.response_parser_factory import ResponseParserFactory
-from scarajectory.infrastructure.formatter.command_formatter_factory import CommandFormatterFactory
-from scarajectory.infrastructure.pacing.flow_pacing_bundle_factory import FlowPacingBundleFactory
-from scarajectory.infrastructure.state.stream_state_machine_factory import StreamStateMachineFactory
+from scaracom.bridge.transceiver.ichannel import IRawChannel
+from scaracom.flow.barrier.ibarrier import IFlowBarrier
+
+from scarajectory.core.model.streaming.state import StreamState
+from scarajectory.core.service.streaming.observer.idispatcher import IStreamObserverDispatcher
+from scarajectory.core.service.streaming.observer.iregistry import IStreamObserverRegistry
+from scarajectory.core.service.streaming.playback.icontroller import IPlaybackController
+from scarajectory.infrastructure.barrier.factory import BarrierFactory
+from scarajectory.infrastructure.connection.manager.imanager import IConnectionManager
+from scarajectory.infrastructure.state.dependencies import StateDependencies
+from scarajectory.infrastructure.state.factory import StateFactory
+from scarajectory.infrastructure.streaming.assembly.stream_pacing_assembler import StreamPacingAssembler
 from scarajectory.infrastructure.streaming.assembly.stream_pipeline_assembler import StreamPipelineAssembler
-from scarajectory.infrastructure.streaming.bundle import StreamingBundle
-from scarajectory.infrastructure.streaming.observer.stream_observer_dispatcher_factory import StreamObserverDispatcherFactory
-from scarajectory.infrastructure.worker.stream_execution_worker_factory import StreamExecutionWorkerFactory
+from scarajectory.infrastructure.streaming.binary.istreamer import IBinaryStreamer
+from scarajectory.infrastructure.streaming.observer.factory import ObserverFactory
+from scarajectory.infrastructure.streaming.provides import StreamingProvides
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -63,44 +53,42 @@ __status__ = 'Updated'
 class StreamerFactoriesTestCase(TestCase):
     '''
         Test cases verifying factory instantiation of sub-components.
+
+        It defines:
+
+            :methods:
+                | test_barrier_and_flow_controller_factories - Tests flow barrier and pacing.
+                | test_state_factory - Tests StateFactory.
+                | test_observer_dispatcher_factory - Tests StreamObserverDispatcherFactory.
+                | test_stream_pipeline_assembler - Tests StreamPipelineAssembler assembly.
     '''
-
-    def test_classifier_and_formatter_factories(self) -> None:
-        '''
-            Tests classifier and command formatter factories.
-        '''
-        flow_classifier = FlowStatusClassifierFactory.create()
-        self.assertIsInstance(flow_classifier, IFlowStatusClassifier)
-
-        homing_classifier = HomingStatusClassifierFactory.create()
-        self.assertIsInstance(homing_classifier, IHomingStatusClassifier)
-
-        motion_classifier = MotionStatusClassifierFactory.create()
-        self.assertIsInstance(motion_classifier, IMotionStatusClassifier)
-
-        response_parser = ResponseParserFactory.create()
-        self.assertIsInstance(response_parser, IResponseParser)
-
-        cmd_formatter = CommandFormatterFactory.create()
-        self.assertIsInstance(cmd_formatter, ICommandFormatter)
 
     def test_barrier_and_flow_controller_factories(self) -> None:
         '''
             Tests FlowBarrier and FlowController factories.
-        '''
-        barrier = FlowBarrierFactory.create()
-        self.assertIsInstance(barrier, IFlowBarrier)
-        self.assertTrue(barrier.is_barrier_clear())
 
-        pacing_bundle = FlowPacingBundleFactory.create(barrier=barrier, capacity=10)
-        self.assertEqual(pacing_bundle.pacing_controller.capacity, 10)
-        self.assertTrue(pacing_bundle.barrier_coordinator.is_barrier_clear())
+            :exceptions: None.
+        '''
+        flow_barrier = BarrierFactory.create().flow_barrier
+        self.assertIsInstance(flow_barrier, IFlowBarrier)
+        self.assertTrue(flow_barrier.is_barrier_clear())
 
-    def test_state_machine_factory(self) -> None:
+        pacing_provides = StreamPacingAssembler.assemble(queue_capacity=10)
+        self.assertEqual(
+            getattr(pacing_provides.flow_pacing_controller, 'capacity'),
+            10,
+        )
+        self.assertTrue(
+            pacing_provides.flow_barrier_coordinator.is_barrier_clear()
+        )
+
+    def test_state_factory(self) -> None:
         '''
-            Tests StreamStateMachineFactory.
+            Tests StateFactory.
+
+            :exceptions: None.
         '''
-        state_machine = StreamStateMachineFactory.create()
+        state_machine = StateFactory.create(StateDependencies()).stream_state_machine
         self.assertEqual(state_machine.state, StreamState.IDLE)
         state_machine.transition_to(StreamState.STREAMING)
         self.assertEqual(state_machine.state, StreamState.STREAMING)
@@ -108,41 +96,33 @@ class StreamerFactoriesTestCase(TestCase):
     def test_observer_dispatcher_factory(self) -> None:
         '''
             Tests StreamObserverDispatcherFactory.
-        '''
-        dispatcher = StreamObserverDispatcherFactory.create()
-        self.assertFalse(dispatcher.has_observers())
 
-    def test_execution_worker_factory(self) -> None:
+            :exceptions: None.
         '''
-            Tests StreamExecutionWorkerFactory.
-        '''
-        mock_sender = MagicMock()
-        barrier = FlowBarrierFactory.create()
-        pacing_bundle = FlowPacingBundleFactory.create(barrier=barrier, capacity=8)
-        state_controller = StreamStateMachineFactory.create()
-        observer_dispatcher = StreamObserverDispatcherFactory.create()
-        pacing_config = StreamPacingConfigFactory.create_ascii()
-
-        worker = StreamExecutionWorkerFactory.create(
-            pacing_bundle=pacing_bundle,
-            command_sender=mock_sender,
-            state_controller=state_controller,
-            observer_dispatcher=observer_dispatcher,
-            pacing_config=pacing_config,
+        observer_provides = ObserverFactory.create()
+        self.assertIsInstance(
+            observer_provides.stream_observer_dispatcher,
+            IStreamObserverDispatcher,
         )
-        self.assertFalse(worker.is_running())
+        self.assertEqual(
+            len(observer_provides.stream_observer_registry.get_observers()),
+            0,
+        )
 
     def test_stream_pipeline_assembler(self) -> None:
         '''
             Tests StreamPipelineAssembler assembly and fine-grained interface contracts.
+
+            :exceptions: None.
         '''
         bundle = StreamPipelineAssembler.assemble_default()
-        self.assertIsInstance(bundle, StreamingBundle)
-        self.assertIsInstance(bundle.connection, IConnection)
+        self.assertIsInstance(bundle, StreamingProvides)
+        self.assertIsInstance(bundle.connection_manager, IConnectionManager)
         self.assertIsInstance(bundle.raw_channel, IRawChannel)
-        self.assertIsInstance(bundle.playback_controller, IStreamPlaybackController)
-        self.assertIsInstance(bundle.dispatcher, IStreamDispatcher)
-        self.assertIsInstance(bundle.binary_streamer, IBinaryProgramStreamer)
+        self.assertIsInstance(bundle.playback_controller, IPlaybackController)
+        self.assertIsInstance(bundle.registry, IStreamObserverRegistry)
+        self.assertIsInstance(bundle.dispatcher, IStreamObserverDispatcher)
+        self.assertIsInstance(bundle.binary_streamer, IBinaryStreamer)
 
 
 if __name__ == '__main__':

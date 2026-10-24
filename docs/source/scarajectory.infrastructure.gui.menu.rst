@@ -1,21 +1,25 @@
 scarajectory.infrastructure.gui.menu package
 ============================================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   scarajectory.infrastructure.gui.menu.builder
+
 Submodules
 ----------
 
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.gui.menu.app_menu_bar
-   scarajectory.infrastructure.gui.menu.app_menu_bar_factory
-   scarajectory.infrastructure.gui.menu.builders_bundle
    scarajectory.infrastructure.gui.menu.bundle
-   scarajectory.infrastructure.gui.menu.iapp_menu_bar
-   scarajectory.infrastructure.gui.menu.menu_hotkey_binder
-   scarajectory.infrastructure.gui.menu.menu_hotkey_binder_factory
-   scarajectory.infrastructure.gui.menu.menu_layout_builder
-   scarajectory.infrastructure.gui.menu.menu_layout_builder_factory
+   scarajectory.infrastructure.gui.menu.dependencies
+   scarajectory.infrastructure.gui.menu.factory
+   scarajectory.infrastructure.gui.menu.imenu_bar
+   scarajectory.infrastructure.gui.menu.menu_bar
 
 Module contents
 ---------------

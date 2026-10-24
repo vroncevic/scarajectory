@@ -30,7 +30,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -47,23 +47,30 @@ class TableBundleTestCase(TestCase):
     '''
 
     def test_bundle_creation_and_attributes(self) -> None:
-        '''Verifies TableBundle stores and exposes injected collaborators.'''
+        '''
+            Verifies TableBundle stores and exposes injected collaborators.
+
+            :exceptions: None.
+        '''
         mock_store = MagicMock()
         mock_selection = MagicMock()
         mock_mutation = MagicMock()
         mock_dispatcher = MagicMock()
+        mock_validator = MagicMock()
 
         bundle = TableBundle(
             store=mock_store,
             selection=mock_selection,
             mutation=mock_mutation,
             dispatcher=mock_dispatcher,
+            validator=mock_validator,
         )
 
         self.assertIs(bundle.store, mock_store)
         self.assertIs(bundle.selection, mock_selection)
         self.assertIs(bundle.mutation, mock_mutation)
         self.assertIs(bundle.dispatcher, mock_dispatcher)
+        self.assertIs(bundle.validator, mock_validator)
 
 
 if __name__ == '__main__':

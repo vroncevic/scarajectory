@@ -1,0 +1,65 @@
+# ==============================================================================
+# 19_high_speed_sorter_jump.scara - Multi-Bin Quality Sorter with JUMP Arches
+# ==============================================================================
+# Demonstrates high-throughput pick-and-place sorting between multiple bins:
+#
+# 1. Picks component from incoming inspection conveyor (X=150.0, Y=60.0).
+# 2. Executes high-speed parabolic arch (JUMP ARCH=20.0, SPEED=130.0) to Bin 1 (Pass).
+# 3. Executes return JUMP with dynamic acceleration tuning (ACCEL 350 -> 250).
+# 4. Sorts second part to Bin 2 (Rework) with reduced feedrate override (OVERRIDE 85%).
+# 5. Tests vertical stroke boundary clearance within [-50.0, 50.0] mm.
+# ==============================================================================
+
+ENABLE
+HOME
+
+SPEED RAPID 140.0
+SPEED WORK 45.0
+ACCEL 350.0
+
+# ----------------------------------------------------
+# Cycle 1: Pick from Feeder -> Sort to Pass Bin 1
+# ----------------------------------------------------
+MOVE_L X=150.0 Y=60.0 Z=20.0 PHI=0.0
+MOVE_L X=150.0 Y=60.0 Z=5.0 PHI=0.0
+
+# Vacuum grasp
+PUMP ON
+WAIT_MS 60
+MOVE_L X=150.0 Y=60.0 Z=20.0 PHI=0.0
+
+# High-speed parabolic jump to Bin 1 (Pass)
+OVERRIDE 100.0
+JUMP X=180.0 Y=-20.0 Z=10.0 ARCH=20.0 SPEED=130.0
+
+# Release
+PUMP OFF
+VALVE ON
+WAIT_MS 40
+VALVE OFF
+
+# ----------------------------------------------------
+# Cycle 2: Pick from Feeder -> Sort to Rework Bin 2
+# ----------------------------------------------------
+JUMP X=150.0 Y=60.0 Z=5.0 ARCH=25.0 SPEED=130.0
+
+# Vacuum grasp
+PUMP ON
+WAIT_MS 60
+MOVE_L X=150.0 Y=60.0 Z=20.0 PHI=0.0
+
+# Gentle jump to Bin 2 (Rework) with reduced acceleration & override
+ACCEL 250.0
+OVERRIDE 85.0
+JUMP X=160.0 Y=-70.0 Z=10.0 ARCH=20.0 SPEED=100.0
+
+# Release
+PUMP OFF
+VALVE ON
+WAIT_MS 40
+VALVE OFF
+
+# Return to standby park pose
+ACCEL 300.0
+OVERRIDE 100.0
+MOVE_L X=150.0 Y=0.0 Z=25.0 PHI=0.0

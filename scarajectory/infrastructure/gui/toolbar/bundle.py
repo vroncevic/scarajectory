@@ -23,17 +23,17 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from scarajectory.core.service.trajectory.plan.itrajectory_history import ITrajectoryHistory
+from scarajectory.core.service.trajectory.plan.history.ihistory import ITrajectoryPlanHistory
 from scarajectory.infrastructure.gui.canvas.icanvas import ICanvas
-from scarajectory.infrastructure.gui.canvas.status.icanvas_status_presenter import ICanvasStatusPresenter
-from scarajectory.infrastructure.gui.canvas.navigation.icanvas_view_navigator import ICanvasViewNavigator
+from scarajectory.infrastructure.gui.canvas.navigation.inavigator import ICanvasViewNavigator
+from scarajectory.infrastructure.gui.canvas.status.ipresenter import ICanvasStatusPresenter
 from scarajectory.infrastructure.gui.model.canvas_settings import CanvasSettings
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -59,7 +59,7 @@ class ToolbarBundle:
     canvas: ICanvas
     navigator: ICanvasViewNavigator
     status_presenter: ICanvasStatusPresenter
-    history: ITrajectoryHistory
+    history: ITrajectoryPlanHistory
     r_min: float
     r_max: float
     settings: CanvasSettings

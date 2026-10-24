@@ -1,17 +1,26 @@
 scarajectory.infrastructure.storage package
 ===========================================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   scarajectory.infrastructure.storage.config_io
+   scarajectory.infrastructure.storage.plan
+   scarajectory.infrastructure.storage.serializer
+   scarajectory.infrastructure.storage.workspace
+
 Submodules
 ----------
 
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.storage.plan_loader
-   scarajectory.infrastructure.storage.plan_storage_service
-   scarajectory.infrastructure.storage.plan_storage_service_factory
-   scarajectory.infrastructure.storage.plan_storer
-   scarajectory.infrastructure.storage.trajectory_serializer
+   scarajectory.infrastructure.storage.dependencies
+   scarajectory.infrastructure.storage.factory
+   scarajectory.infrastructure.storage.provides
 
 Module contents
 ---------------

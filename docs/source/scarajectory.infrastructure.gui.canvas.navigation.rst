@@ -7,10 +7,11 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.gui.canvas.navigation.canvas_view_navigator
-   scarajectory.infrastructure.gui.canvas.navigation.canvas_view_navigator_factory
-   scarajectory.infrastructure.gui.canvas.navigation.icanvas_view_navigator
-   scarajectory.infrastructure.gui.canvas.navigation.icanvas_view_target
+   scarajectory.infrastructure.gui.canvas.navigation.dependencies
+   scarajectory.infrastructure.gui.canvas.navigation.factory
+   scarajectory.infrastructure.gui.canvas.navigation.inavigator
+   scarajectory.infrastructure.gui.canvas.navigation.itarget
+   scarajectory.infrastructure.gui.canvas.navigation.navigator
 
 Module contents
 ---------------

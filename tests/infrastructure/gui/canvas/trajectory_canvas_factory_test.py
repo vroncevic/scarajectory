@@ -25,6 +25,8 @@ from tkinter import Tk
 from unittest import TestCase, main
 from unittest.mock import MagicMock
 
+from scarajectory.core.service.trajectory.plan.mutation.provides import MutationProvides
+from scarajectory.infrastructure.gui.canvas.adapter_bundle import CanvasAdapterBundle
 from scarajectory.infrastructure.gui.canvas.bundle import CanvasBundle
 from scarajectory.infrastructure.gui.canvas.trajectory_canvas import TrajectoryCanvas
 from scarajectory.infrastructure.gui.canvas.trajectory_canvas_factory import TrajectoryCanvasFactory
@@ -34,7 +36,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -72,15 +74,21 @@ class TestTrajectoryCanvasFactory(TestCase):
         bundle = CanvasBundle(
             store=MagicMock(),
             selection=MagicMock(),
-            mutation=MagicMock(),
+            mutations=MutationProvides(
+                plan_point_mutator=MagicMock(),
+                plan_bulk_mutator=MagicMock(),
+            ),
             dispatcher=mock_dispatcher,
             validator=mock_validator,
             settings=settings,
+            adapters=CanvasAdapterBundle(
+                avoidance=MagicMock(),
+                planner=MagicMock(),
+                boundary=MagicMock(),
+            ),
         )
         canvas = TrajectoryCanvasFactory.create(self.root, bundle=bundle)
         self.assertIsInstance(canvas, TrajectoryCanvas)
-        self.assertIsNotNone(canvas.navigator)
-        self.assertIsNotNone(canvas.status_presenter)
         mock_dispatcher.add_observer.assert_called_once()
         canvas.destroy()
 

@@ -1,0 +1,49 @@
+# ==============================================================================
+# 42_vacuum_decay_pressure_equalization.scara - Vacuum Decay & Pressure Equalization
+# ==============================================================================
+# Demonstrates advanced pneumatic handling and micro-dwell timing:
+# 1. Controlled vertical approach to airtight inspection chamber fixture.
+# 2. Multi-tier settling dwell (WAIT_MS 30ms -> 80ms -> 150ms).
+# 3. Micro-step compliance descent (MOVE_REL Z=0.5) following vacuum draw.
+# 4. Multi-phase pressure equalization blow-off pulse (primary exhaust, dwell,
+#    secondary pressure equalization puff).
+# 5. Clean pneumatic sequencing eliminating flyby warnings and contention.
+# ==============================================================================
+
+CONFIG MOTOR CLOSED_LOOP
+ENABLE
+HOME
+
+CONFIG ELBOW LEFT
+SPEED WORK 35.0
+ACCEL 250.0
+
+# Position over sealed testing station nest
+MOVE_L X=140.0 Y=-30.0 Z=25.0 PHI=0.0
+APPROACH DIST=15.0 SPEED=20.0
+WAIT_MS 30
+
+# Phase 1: Vacuum seal establishment
+PUMP ON
+WAIT_MS 80
+
+# Phase 2: Micro-step compliance draw down & seal stabilization
+MOVE_REL Z=0.5 SPEED=10.0
+WAIT_MS 150
+
+# Phase 3: Multi-phase pressure equalization release
+PUMP OFF
+VALVE ON
+WAIT_MS 35
+VALVE OFF
+WAIT_MS 40
+VALVE ON
+WAIT_MS 20
+VALVE OFF
+
+# Retract from testing station nest
+RETRACT DIST=15.5 SPEED=35.0
+MOVE_L X=120.0 Y=0.0 Z=30.0 PHI=0.0 SPEED=50.0
+
+HOME
+DISABLE

@@ -1,19 +1,27 @@
 scarajectory.infrastructure.connection package
 ==============================================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   scarajectory.infrastructure.connection.dispatcher
+   scarajectory.infrastructure.connection.listener
+   scarajectory.infrastructure.connection.manager
+   scarajectory.infrastructure.connection.receiver
+   scarajectory.infrastructure.connection.router
+
 Submodules
 ----------
 
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.connection.channel_dispatcher
-   scarajectory.infrastructure.connection.channel_dispatcher_factory
-   scarajectory.infrastructure.connection.istream_raw_transceiver
-   scarajectory.infrastructure.connection.stream_connection_manager
-   scarajectory.infrastructure.connection.stream_connection_manager_factory
-   scarajectory.infrastructure.connection.stream_raw_transceiver
-   scarajectory.infrastructure.connection.stream_raw_transceiver_factory
+   scarajectory.infrastructure.connection.dependencies
+   scarajectory.infrastructure.connection.factory
+   scarajectory.infrastructure.connection.provides
 
 Module contents
 ---------------

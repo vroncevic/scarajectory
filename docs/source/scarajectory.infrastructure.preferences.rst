@@ -1,14 +1,23 @@
 scarajectory.infrastructure.preferences package
 ===============================================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   scarajectory.infrastructure.preferences.serial
+
 Submodules
 ----------
 
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.preferences.connection_repository
-   scarajectory.infrastructure.preferences.connection_repository_factory
+   scarajectory.infrastructure.preferences.dependencies
+   scarajectory.infrastructure.preferences.factory
+   scarajectory.infrastructure.preferences.provides
 
 Module contents
 ---------------

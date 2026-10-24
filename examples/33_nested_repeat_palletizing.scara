@@ -1,0 +1,38 @@
+# ==============================================================================
+# 33_nested_repeat_palletizing.scara - 2D Raster Pallet Grid via Nested REPEAT
+# ==============================================================================
+# Demonstrates multi-level nested macro loops (REPEAT / END) in scaralang:
+# 1. Closed-loop drive configuration, homing calibration, and nominal speeds.
+# 2. Linear motion to pallet grid datum origin (Row 0, Col 0).
+# 3. Outer iteration loop (REPEAT 3) traversing grid rows:
+#    - Inner iteration loop (REPEAT 4) traversing columns across each row.
+#    - Dispense/probe routine at each grid node (APPROACH, dwell, RETRACT).
+#    - Relative X-axis column increment (MOVE_REL X=12.0).
+#    - Row carriage return stepping X back (-48.0) and indexing Y forward (+15.0).
+# 4. Safe transit return and motor de-energization.
+# ==============================================================================
+
+CONFIG MOTOR CLOSED_LOOP
+ENABLE
+HOME
+
+SPEED WORK 40.0
+SPEED RAPID 80.0
+
+# Position end-effector at pallet origin datum
+MOVE_L X=130.0 Y=-30.0 Z=20.0 PHI=0.0 SPEED=50.0
+
+# 2D Grid raster: 3 rows x 4 columns
+REPEAT 3
+    REPEAT 4
+        APPROACH DIST=5.0 SPEED=20.0
+        WAIT_MS 20
+        RETRACT DIST=5.0 SPEED=40.0
+        MOVE_REL X=12.0 Y=0.0 Z=0.0 PHI=0.0 SPEED=30.0
+    END
+    MOVE_REL X=-48.0 Y=15.0 Z=0.0 PHI=0.0 SPEED=35.0
+END
+
+# Transit to parking clearance plane and disable actuators
+MOVE_L X=130.0 Y=0.0 Z=35.0 PHI=0.0 SPEED=70.0
+DISABLE

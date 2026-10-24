@@ -25,38 +25,58 @@ from struct import pack
 from unittest import TestCase, main
 from unittest.mock import MagicMock
 
+from scaralang.core.model.dsl.binary.axis_peak_steps import AxisPeakSteps
 from scaralang.core.model.dsl.binary.binary_program_telemetry import BinaryProgramTelemetry
 from scaralang.core.model.dsl.binary.program import BinaryProgram
-from scaralang.core.model.dsl.binary.step import Step
-from scaralang.core.model.protocol.message_id import MessageId
-from scaralang.core.service.kinematics.kinematics_service_factory import KinematicsServiceFactory
-from scaralang.infrastructure.communication.protocol.binary.builder.binary_frame_builder_factory import BinaryFrameBuilderFactory
-from scaralang.infrastructure.communication.protocol.binary.parser.binary_frame_parser_factory import BinaryFrameParserFactory
+from scaralang.core.model.dsl.binary.step import BinaryStep, JointStepCoordinates
+from scaralang.core.model.protocol.message import MessageId
+from scaralang.core.service.compiler.binary.step.discretizer.dependencies import DiscretizerDependencies
+from scaralang.core.service.compiler.binary.step.discretizer.factory import StepDiscretizerFactory
+from scaralang.core.service.compiler.binary.step.duration.factory import SegmentDurationCalculatorFactory
+from scaralang.core.service.kinematics.dependencies import KinematicsDependencies
+from scaralang.core.service.kinematics.factory import KinematicsFactory
+from scaralang.core.service.kinematics.profile.default_scara_profile import DefaultScaraProfile
+from scaralang.core.service.kinematics.provides import KinematicsProvides
+from scaralang.core.service.kinematics.transmission.factory import TransmissionFactory
+from scaralang.infrastructure.protocol.builder.factory import BuilderFactory
+from scaralang.infrastructure.protocol.builder.packer import BinaryFramePacker
+from scaralang.infrastructure.protocol.builder.system import BinarySystemFrameBuilder
+from scaralang.infrastructure.protocol.parser.factory import ParserFactory
 
-from scarajectory.core.model.protocol.protocol_mode import ProtocolMode
-from scarajectory.core.model.trajectory.waypoint import Waypoint
-from scarajectory.core.service.state.session_factory import SessionFactory
-from scarajectory.core.service.streaming.stream_pacing_config_factory import StreamPacingConfigFactory
-from scarajectory.infrastructure.barrier.flow_barrier_factory import FlowBarrierFactory
-from scarajectory.infrastructure.event.binary_frame_dispatcher_factory import BinaryFrameDispatcherFactory
-from scarajectory.infrastructure.manipulator.jog_controller_factory import JogControllerFactory
-from scarajectory.infrastructure.manipulator.motion_controller_factory import MotionControllerFactory
-from scarajectory.infrastructure.manipulator.query_controller_factory import QueryControllerFactory
-from scarajectory.infrastructure.pacing.bundle import FlowPacingBundle
-from scarajectory.infrastructure.pacing.flow_pacing_bundle_factory import FlowPacingBundleFactory
-from scarajectory.infrastructure.packet.binary_packet_strategy_factory import BinaryPacketStrategyFactory
-from scarajectory.infrastructure.settings.bounds.scara_bounds_loader_factory import ScaraBoundsLoaderFactory
-from scarajectory.infrastructure.settings.transmission.scara_transmission_loader_factory import ScaraTransmissionLoaderFactory
-from scarajectory.infrastructure.state.stream_state_machine_factory import StreamStateMachineFactory
-from scarajectory.infrastructure.streaming.observer.stream_observer_dispatcher_factory import StreamObserverDispatcherFactory
-from scarajectory.infrastructure.tool.tool_controller_factory import ToolControllerFactory
-from scarajectory.infrastructure.worker.binary.binary_stream_execution_worker_factory import BinaryStreamExecutionWorkerFactory
+from ats_utilities.context.bundle import ContextBundle
+from ats_utilities.context.factory import ContextBundleFactory
+
+from scarajectory.core.model.trajectory.waypoint import TrajectoryWaypoint
+from scarajectory.core.service.streaming.session_factory import SessionFactory
+from scarajectory.core.service.streaming.pacing_config_factory import StreamPacingConfigFactory
+from scarajectory.infrastructure.connection.router.factory import RouterFactory
+from scarajectory.infrastructure.manipulator.dependencies import ManipulatorDependencies
+from scarajectory.infrastructure.manipulator.factory import ManipulatorFactory
+from scarajectory.infrastructure.manipulator.provides import ManipulatorProvides
+from scarajectory.infrastructure.pacing.provides import PacingProvides
+from scarajectory.infrastructure.packet.strategy import BinaryPacketStrategy
+from scarajectory.infrastructure.settings.bounds.loader.loader import ScaraBoundsLoader
+from scarajectory.infrastructure.settings.dependencies import SettingsDependencies
+from scarajectory.infrastructure.settings.factory import SettingsFactory
+from scarajectory.infrastructure.settings.reader.reader import SettingsReader
+from scarajectory.infrastructure.settings.transmission.loader import ScaraTransmissionLoader
+from scarajectory.infrastructure.state.dependencies import StateDependencies
+from scarajectory.infrastructure.state.factory import StateFactory
+from scarajectory.infrastructure.storage.config_io.dependencies import ConfigIODependencies
+from scarajectory.infrastructure.storage.config_io.factory import ConfigIOFactory
+from scarajectory.infrastructure.streaming.assembly.stream_pacing_assembler import StreamPacingAssembler
+from scarajectory.infrastructure.streaming.observer.factory import ObserverFactory
+from scarajectory.infrastructure.tool.dependencies import ToolDependencies
+from scarajectory.infrastructure.tool.factory import ToolFactory
+from scarajectory.infrastructure.worker.dependencies import WorkerDependencies
+from scarajectory.infrastructure.worker.factory import WorkerFactory
+from scarajectory.infrastructure.worker.parser.bundle import ParserBundle
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -94,29 +114,74 @@ class MockStreamer:
         '''Capture raw string command.'''
         self.sent_commands.append(cmd)
 
-    def send_raw_bytes(self, data: bytes) -> bool:
+    def send_raw_bytes(self, payload: bytes) -> bool:
         '''Capture raw byte packet.'''
-        self.sent_bytes.append(data)
+        self.sent_bytes.append(payload)
         return True
 
 
 class TestBinaryStreamer(TestCase):
     '''Test cases verifying binary packet formatting, execution worker, and controller commands.'''
 
+    frame_packer: BinaryFramePacker
+    system_builder: BinarySystemFrameBuilder
+    strategy: BinaryPacketStrategy
+
     def setUp(self) -> None:
-        self.bounds = ScaraBoundsLoaderFactory.create().load_bounds()
-        self.transmission = ScaraTransmissionLoaderFactory.create().load_transmission()
-        self.kinematics = KinematicsServiceFactory.create(bounds=self.bounds)
-        self.frame_builder = BinaryFrameBuilderFactory.create()
-        self.frame_parser = BinaryFrameParserFactory.create()
+        bundle: ContextBundle = ContextBundleFactory.create_bundle()
+        io_provides = ConfigIOFactory.create(
+            ConfigIODependencies(context_bundle=bundle)
+        )
+        settings_provides = SettingsFactory.create(
+            SettingsDependencies(
+                config_loader=io_provides.config_loader,
+                config_path=SettingsReader.DEFAULT_GEOMETRY_CONFIG,
+                scheme_path=SettingsReader.DEFAULT_SCHEME_CONFIG,
+            )
+        )
+        bounds_loader = ScaraBoundsLoader(
+            settings_reader=settings_provides.settings_reader,
+            bounds_parser=settings_provides.bounds_provides.bounds_parser,
+        )
+        bounds = bounds_loader.load_bounds()
+        transmission_loader = ScaraTransmissionLoader(
+            settings_reader=settings_provides.settings_reader,
+        )
+        transmission = transmission_loader.load_transmission()
+        kinematics_provides: KinematicsProvides = KinematicsFactory.create(
+            dependencies=KinematicsDependencies(
+                bounds=bounds,
+                dls_config=DefaultScaraProfile.create_dls_config(),
+            )
+        )
+        builder_provides = BuilderFactory.create()
+        self.frame_packer = BinaryFramePacker()
+        self.system_builder = BinarySystemFrameBuilder(packer=self.frame_packer)
+        self.motion_builder = builder_provides.motion
+        self.actuator_builder = builder_provides.actuator
+        self.frame_parser = ParserFactory.create().parser
+        converter = TransmissionFactory.create(
+            transmission=transmission
+        )
+        duration_calc = SegmentDurationCalculatorFactory.create()
+        discretizer = StepDiscretizerFactory.create(
+            dependencies=DiscretizerDependencies(
+                spatial=kinematics_provides.spatial,
+                numerical_spatial=kinematics_provides.numerical_spatial,
+                transmission=converter,
+                duration_calculator=duration_calc,
+            )
+        )
+        self.strategy = BinaryPacketStrategy(
+            step_discretizer=discretizer,
+            motion_frame_builder=self.motion_builder,
+            frame_packer=self.frame_packer,
+        )
 
     def test_binary_packet_strategy(self) -> None:
         '''Tests formatting of waypoints into packed binary move frames.'''
-        strategy = BinaryPacketStrategyFactory.create(
-            kinematics=self.kinematics,
-            transmission=self.transmission,
-        )
-        waypoint = Waypoint(x=150.0, y=100.0, z=10.0, speed=50.0)
+        strategy = self.strategy
+        waypoint = TrajectoryWaypoint(x=150.0, y=100.0, z=10.0, speed=50.0, phi=0.0, name='', command='')
         raw_frame = strategy.format_waypoint_packet(waypoint=waypoint, seq_num=1)
         self.assertGreater(len(raw_frame), 0)
         self.assertEqual(raw_frame[0], 0xAA)
@@ -128,27 +193,24 @@ class TestBinaryStreamer(TestCase):
     def test_manipulator_controller_binary_mode(self) -> None:
         '''Tests robot manipulator commands dispatched as binary frames.'''
         mock = MockStreamer()
-        motion_ctrl = MotionControllerFactory.create(
-            raw_channel=mock,
-            frame_builder=self.frame_builder,
-            protocol_mode=ProtocolMode.BINARY,
+        manipulator_provides: ManipulatorProvides = ManipulatorFactory.create(
+            ManipulatorDependencies(
+                raw_channel=mock,
+                system_builder=self.system_builder,
+                frame_packer=self.frame_packer,
+            )
         )
-        tool_ctrl = ToolControllerFactory.create(
-            raw_channel=mock,
-            frame_builder=self.frame_builder,
-            protocol_mode=ProtocolMode.BINARY,
-        )
-        jog_ctrl = JogControllerFactory.create(
-            raw_channel=mock,
-            frame_builder=self.frame_builder,
-            protocol_mode=ProtocolMode.BINARY,
-        )
-        query_ctrl = QueryControllerFactory.create(
-            raw_channel=mock,
-            frame_builder=self.frame_builder,
-            protocol_mode=ProtocolMode.BINARY,
-        )
-        self.assertTrue(motion_ctrl.is_connected())
+        motion_ctrl = manipulator_provides.motion_controller
+        jog_ctrl = manipulator_provides.jog_controller
+        query_ctrl = manipulator_provides.query_controller
+        tool_ctrl = ToolFactory.create(
+            ToolDependencies(
+                raw_channel=mock,
+                actuator_builder=self.actuator_builder,
+                frame_packer=self.frame_packer,
+            )
+        ).tool_controller
+        self.assertTrue(mock.is_connected())
 
         self.assertTrue(motion_ctrl.home())
         self.assertTrue(motion_ctrl.enable())
@@ -173,174 +235,167 @@ class TestBinaryStreamer(TestCase):
         enable_frame = mock.sent_bytes[1]
         self.assertEqual(enable_frame[2], int(MessageId.CMD_ENABLE))
 
-    def test_manipulator_controller_ascii_mode(self) -> None:
-        '''Tests robot manipulator commands dispatched as ASCII strings.'''
-        mock = MockStreamer()
-        motion_ctrl = MotionControllerFactory.create(
-            raw_channel=mock,
-            frame_builder=self.frame_builder,
-            protocol_mode=ProtocolMode.ASCII,
-        )
-        self.assertTrue(motion_ctrl.is_connected())
-
-        self.assertTrue(motion_ctrl.home())
-        self.assertTrue(motion_ctrl.enable())
-        self.assertTrue(motion_ctrl.disable())
-
-        self.assertEqual(len(mock.sent_bytes), 0)
-        self.assertEqual(len(mock.sent_commands), 3)
-        self.assertIn('HOME', mock.sent_commands[0])
-        self.assertIn('ENABLE', mock.sent_commands[1])
-        self.assertIn('DISABLE', mock.sent_commands[2])
-
     def test_binary_stream_execution_worker_lifecycle(self) -> None:
         '''Tests worker lifecycle and processing of binary ACK and move event responses.'''
-        strategy = BinaryPacketStrategyFactory.create(
-            kinematics=self.kinematics,
-            transmission=self.transmission,
+        pacing_bundle1: PacingProvides = StreamPacingAssembler.assemble(
+            queue_capacity=4
         )
-        barrier1 = FlowBarrierFactory.create()
-        pacing_bundle1: FlowPacingBundle = FlowPacingBundleFactory.create(
-            barrier=barrier1, capacity=4
-        )
-        sent_chunks: list[bytes] = []
-        byte_sender = MockByteSender(sent_chunks)
-        state_controller = StreamStateMachineFactory.create()
-        observer_dispatcher = StreamObserverDispatcherFactory.create()
+        state_controller = StateFactory.create(
+            StateDependencies()
+        ).stream_state_machine
+        observer_dispatcher = ObserverFactory.create().stream_observer_dispatcher
         pacing_config = StreamPacingConfigFactory.create(
             send_delay=0.001,
             throttle_delay=0.001,
             poll_delay=0.001,
         )
+        parser_bundle1 = ParserBundle(
+            frame_parser=ParserFactory.create().parser,
+            response_unpacker=ParserFactory.create().response_unpacker,
+        )
+        worker_provides1 = WorkerFactory.create(
+            WorkerDependencies(
+                pacing_bundle=pacing_bundle1,
+                packet_strategy=self.strategy,
+                byte_sender=MockByteSender([]),
+                state_controller=state_controller,
+                observer_dispatcher=observer_dispatcher,
+                pacing_config=pacing_config,
+                parser_bundle=parser_bundle1,
+            )
+        )
+        worker = worker_provides1.execution_worker
+        receiver = worker_provides1.bytes_receiver
 
-        worker = BinaryStreamExecutionWorkerFactory.create(
-            pacing_bundle=pacing_bundle1,
-            packet_strategy=strategy,
-            byte_sender=byte_sender,
-            state_controller=state_controller,
-            observer_dispatcher=observer_dispatcher,
-            pacing_config=pacing_config,
+        session = SessionFactory.create(
+            waypoints=[
+                TrajectoryWaypoint(x=150.0, y=50.0, z=0.0, speed=10.0, phi=0.0, name='', command=''),
+                TrajectoryWaypoint(x=160.0, y=60.0, z=0.0, speed=10.0, phi=0.0, name='', command=''),
+            ],
+            start_time=0.0,
         )
 
-        waypoints = [
-            Waypoint(x=150.0, y=50.0, z=0.0, speed=10.0),
-            Waypoint(x=160.0, y=60.0, z=0.0, speed=10.0),
-        ]
-        session = SessionFactory.create(waypoints=waypoints)
-
-        worker.start(session=session)
+        worker.start_waypoints(session=session)
         self.assertTrue(worker.is_running())
 
         # Feed ACK frame
-        ack_frame = self.frame_builder.build_frame(
+        ack_frame = self.frame_packer.build_frame(
             msg_id=MessageId.RESP_ACK,
             seq_num=0,
             payload=bytes([int(MessageId.CMD_MOVE_JOINT_STEPS), 3]),
         )
-        worker.handle_incoming_bytes(self.frame_builder.pack_frame(frame=ack_frame))
+        receiver.handle_incoming_bytes(self.frame_packer.pack_frame(frame=ack_frame))
 
         # Feed MoveEvent DONE for segment 0
-        move_done = self.frame_builder.build_frame(
+        move_done = self.frame_packer.build_frame(
             msg_id=MessageId.RESP_MOVE_EVENT,
             seq_num=1,
             payload=pack('<BI', 2, 0),
         )
-        worker.handle_incoming_bytes(self.frame_builder.pack_frame(frame=move_done))
+        receiver.handle_incoming_bytes(self.frame_packer.pack_frame(frame=move_done))
         self.assertEqual(session.done_count, 1)
 
-        worker.pause()
-        worker.resume()
+        worker.set_paused(True)
+        worker.set_paused(False)
         worker.stop()
         self.assertFalse(worker.is_running())
 
     def test_binary_stream_execution_worker_program(self) -> None:
         '''Tests execution of compiled BinaryProgram instances through execution worker.'''
-        strategy = BinaryPacketStrategyFactory.create(
-            kinematics=self.kinematics,
-            transmission=self.transmission,
+        pacing_bundle2: PacingProvides = StreamPacingAssembler.assemble(
+            queue_capacity=4
         )
-        barrier2 = FlowBarrierFactory.create()
-        pacing_bundle2: FlowPacingBundle = FlowPacingBundleFactory.create(
-            barrier=barrier2, capacity=4
-        )
-        sent_chunks: list[bytes] = []
-        byte_sender = MockByteSender(sent_chunks)
-        state_controller = StreamStateMachineFactory.create()
-        observer_dispatcher = StreamObserverDispatcherFactory.create()
+        state_controller = StateFactory.create(
+            StateDependencies()
+        ).stream_state_machine
+        observer_dispatcher = ObserverFactory.create().stream_observer_dispatcher
         pacing_config = StreamPacingConfigFactory.create(
             send_delay=0.001,
             throttle_delay=0.001,
             poll_delay=0.001,
         )
-
-        worker = BinaryStreamExecutionWorkerFactory.create(
-            pacing_bundle=pacing_bundle2,
-            packet_strategy=strategy,
-            byte_sender=byte_sender,
-            state_controller=state_controller,
-            observer_dispatcher=observer_dispatcher,
-            pacing_config=pacing_config,
+        parser_bundle2 = ParserBundle(
+            frame_parser=ParserFactory.create().parser,
+            response_unpacker=ParserFactory.create().response_unpacker,
         )
+        worker = WorkerFactory.create(
+            WorkerDependencies(
+                pacing_bundle=pacing_bundle2,
+                packet_strategy=self.strategy,
+                byte_sender=MockByteSender([]),
+                state_controller=state_controller,
+                observer_dispatcher=observer_dispatcher,
+                pacing_config=pacing_config,
+                parser_bundle=parser_bundle2,
+            )
+        ).execution_worker
 
-        step_frame = self.frame_builder.build_system_cmd(
-            msg_id=MessageId.CMD_ENABLE,
-            seq_num=0,
-        )
-        step_bytes = self.frame_builder.pack_frame(frame=step_frame)
-        step = Step(
-            frame=step_frame,
-            raw_bytes=step_bytes,
-            duration_us=1000,
-            target_steps=(0, 0, 0, 0),
-            description='ENABLE',
-            line_number=1,
+        step_bytes = self.frame_packer.pack_frame(
+            frame=self.system_builder.build_system_cmd(
+                msg_id=MessageId.CMD_ENABLE,
+                seq_num=0,
+            )
         )
         program = BinaryProgram(
-            steps=(step,),
+            steps=(
+                BinaryStep(
+                    frame=self.system_builder.build_system_cmd(
+                        msg_id=MessageId.CMD_ENABLE,
+                        seq_num=0,
+                    ),
+                    raw_bytes=step_bytes,
+                    duration_us=1000,
+                    target_steps=JointStepCoordinates(j1=0, j2=0, z=0, j4=0),
+                    description='ENABLE',
+                    line_number=1,
+                ),
+            ),
             raw_bytes=step_bytes,
             total_duration_us=1000,
             instruction_count=1,
-            step_counts=(0, 0, 0, 0),
+            step_counts=JointStepCoordinates(j1=0, j2=0, z=0, j4=0),
             telemetry=BinaryProgramTelemetry(
                 source_instructions=1,
                 compiled_steps=1,
                 duration_us=1000,
                 duration_s=0.001,
-                peak_j1_steps=0,
-                peak_j2_steps=0,
-                peak_z_steps=0,
-                peak_j4_steps=0,
+                peak_steps=AxisPeakSteps(
+                    peak_j1_steps=0,
+                    peak_j2_steps=0,
+                    peak_z_steps=0,
+                    peak_j4_steps=0,
+                ),
                 total_wire_bytes=len(step_bytes),
             ),
         )
-        session = SessionFactory.create(waypoints=())
+        session = SessionFactory.create_default()
 
         worker.start_program(session=session, program=program)
         worker.stop()
         self.assertFalse(worker.is_running())
 
     def test_binary_frame_dispatcher(self) -> None:
-        '''Tests binary frame dispatcher dispatching frames to registered handlers.'''
-        dispatcher = BinaryFrameDispatcherFactory.create()
+        '''Tests binary frame router routing frames to registered handlers.'''
+        router = RouterFactory.create().frame_router
         mock_handler = MagicMock()
-        dispatcher.register_handler(
+        router.register_handler(
             int(MessageId.RESP_ACK),
             mock_handler,
         )
-        ack_frame = self.frame_builder.build_frame(
+        ack_frame = self.frame_packer.build_frame(
             msg_id=int(MessageId.RESP_ACK),
             seq_num=42,
             payload=bytes([1, 15]),
         )
-        self.assertTrue(dispatcher.dispatch(ack_frame))
+        self.assertTrue(router.route(ack_frame))
         mock_handler.handle_frame.assert_called_once_with(ack_frame)
 
         # Unknown ID
-        dummy_frame = self.frame_builder.build_frame(
+        dummy_frame = self.frame_packer.build_frame(
             msg_id=int(MessageId.CMD_NONE),
             seq_num=0,
         )
-        self.assertFalse(dispatcher.dispatch(dummy_frame))
+        self.assertFalse(router.route(dummy_frame))
 
 
 if __name__ == '__main__':

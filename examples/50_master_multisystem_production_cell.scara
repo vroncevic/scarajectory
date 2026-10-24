@@ -1,0 +1,124 @@
+# ==============================================================================
+# 50_master_multisystem_production_cell.scara - Master Industrial Automation Cell
+# ==============================================================================
+# Comprehensive capstone production routine combining all SCARA DSL capabilities:
+# 1. Closed-loop servo feedback and kinematic elbow branch control.
+# 2. Geometric keep-out obstacle zone (ZONE_DEF TOWER CIRCLE).
+# 3. Dual infeed and outfeed matrix pallet grids (PALLET_DEF FEEDER and OUT_TRAY).
+# 4. Modular subroutines (DEF / CALL) for vacuum grip, release, and dispensing.
+# 5. Local work coordinate frame transformation (FRAME_SET and FRAME_RESET).
+# 6. Continuous circular bead dispensing with dynamic tool tangency (TOOL_ORIENT).
+# 7. Collision-free corridor transit and 3D parabolic clearance jumps (JUMP).
+# 8. Dynamic speed override scaling and blend-to-exact zone transitions.
+# ==============================================================================
+
+CONFIG MOTOR CLOSED_LOOP
+ENABLE
+HOME
+
+CONFIG ELBOW RIGHT
+SPEED WORK 45.0
+SPEED RAPID 120.0
+ACCEL 350.0
+OVERRIDE 100
+
+# Define central obstacle keep-out zone for inspection pillar
+ZONE_DEF TOWER CIRCLE X=155.0 Y=0.0 RADIUS=22.0
+
+# Define 2-slot infeed feeder pallet and 2-slot outfeed packaging pallet
+PALLET_DEF FEEDER ROWS=2 COLS=1 DX=0.0 DY=20.0 X=110.0 Y=-50.0
+PALLET_DEF OUT_TRAY ROWS=2 COLS=1 DX=0.0 DY=20.0 X=110.0 Y=40.0
+
+# --- Modular Subroutine: Vacuum Pick Cycle ---
+DEF PICK_CYCLE
+    ZONE EXACT
+    APPROACH DIST=8.0 SPEED=20.0
+    PUMP ON
+    WAIT_MS 40
+    RETRACT DIST=8.0 SPEED=35.0
+END
+
+# --- Modular Subroutine: Vacuum Place & Positive Blow-Off ---
+DEF PLACE_CYCLE
+    ZONE EXACT
+    APPROACH DIST=8.0 SPEED=20.0
+    PUMP OFF
+    VALVE ON
+    WAIT_MS 30
+    VALVE OFF
+    RETRACT DIST=8.0 SPEED=35.0
+END
+
+# --- Modular Subroutine: Gasket Seal Dispensing in Local Frame ---
+DEF DISPENSE_GASKET
+    FRAME_SET X=175.0 Y=50.0 ANGLE=15.0
+    TOOL_ORIENT TANGENTIAL
+    ZONE BLEND 4.0
+    MOVE_L X=10.0 Y=0.0 Z=15.0 SPEED=30.0
+    ARC_CW X=30.0 Y=0.0 I=10.0 J=0.0
+    ARC_CW X=10.0 Y=0.0 I=-10.0 J=0.0
+    ZONE EXACT
+    TOOL_ORIENT FIXED
+    FRAME_RESET
+END
+
+# ==============================================================================
+# --- Production Cycle 1: Infeed Slot 0 -> Dispensing -> Outfeed Slot 0 ---
+# ==============================================================================
+
+# 1. Acquire component from infeed feeder slot 0
+MOVE_PALLET FEEDER INDEX=0 Z=20.0
+CALL PICK_CYCLE
+
+# 2. 3D parabolic jump arch clearing infeed nest
+JUMP X=130.0 Y=-40.0 Z=25.0 ARCH=10.0 SPEED=60.0
+
+# 3. High-speed corridor transit circumventing central tower obstacle
+ZONE BLEND 5.0
+MOVE_L X=190.0 Y=-30.0 Z=25.0 PHI=15.0 SPEED=55.0
+MOVE_L X=205.0 Y=0.0 Z=25.0 PHI=30.0 SPEED=50.0
+MOVE_L X=190.0 Y=30.0 Z=25.0 PHI=35.0 SPEED=55.0
+
+# 4. Dock at dispensing nest and apply circumferential gasket bead
+ZONE EXACT
+MOVE_L X=175.0 Y=50.0 Z=20.0 PHI=15.0 SPEED=40.0
+CALL DISPENSE_GASKET
+
+# 5. Transfer to outfeed packaging tray slot 0
+MOVE_PALLET OUT_TRAY INDEX=0 Z=20.0
+CALL PLACE_CYCLE
+
+# ==============================================================================
+# --- Production Cycle 2: Infeed Slot 1 -> Dispensing -> Outfeed Slot 1 ---
+# ==============================================================================
+
+# 6. Return corridor transit around obstacle to infeed station
+ZONE BLEND 5.0
+MOVE_L X=190.0 Y=30.0 Z=25.0 PHI=35.0 SPEED=55.0
+MOVE_L X=205.0 Y=0.0 Z=25.0 PHI=30.0 SPEED=50.0
+MOVE_L X=190.0 Y=-30.0 Z=25.0 PHI=15.0 SPEED=55.0
+
+# 7. Acquire component from infeed feeder slot 1
+ZONE EXACT
+MOVE_PALLET FEEDER INDEX=1 Z=20.0
+CALL PICK_CYCLE
+
+# 8. Corridor transfer to dispensing nest
+ZONE BLEND 5.0
+MOVE_L X=190.0 Y=-30.0 Z=25.0 PHI=15.0 SPEED=55.0
+MOVE_L X=205.0 Y=0.0 Z=25.0 PHI=30.0 SPEED=50.0
+MOVE_L X=190.0 Y=30.0 Z=25.0 PHI=35.0 SPEED=55.0
+
+# 9. Apply gasket bead
+ZONE EXACT
+MOVE_L X=175.0 Y=50.0 Z=20.0 PHI=15.0 SPEED=40.0
+CALL DISPENSE_GASKET
+
+# 10. Deposit finished component in outfeed slot 1
+MOVE_PALLET OUT_TRAY INDEX=1 Z=20.0
+CALL PLACE_CYCLE
+
+# Safe park and system shutdown
+MOVE_L X=120.0 Y=0.0 Z=30.0 PHI=0.0 SPEED=60.0
+HOME
+DISABLE

@@ -1,0 +1,9 @@
+{
+    "port": "/dev/ttyUSB0",
+    "baudrate": 115200,
+    "timeout": 0.1,
+    "queue_capacity": 16,
+    "send_delay": 0.005,
+    "throttle_delay": 0.01,
+    "poll_delay": 0.02
+}

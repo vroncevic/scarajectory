@@ -1,0 +1,54 @@
+# ==============================================================================
+# 48_hybrid_motor_mode_torque_switch.scara - Dynamic Open/Closed Loop Switching
+# ==============================================================================
+# Demonstrates runtime stepper actuation mode switching between cycle phases:
+# 1. Homing and calibration in high-precision closed-loop feedback mode.
+# 2. High-speed unconstrained transfer using open-loop mode (CONFIG MOTOR OPEN_LOOP).
+# 3. Precision engagement and contact seating in closed-loop mode (CONFIG MOTOR CLOSED_LOOP).
+# 4. Clean pneumatic pick-and-place sequence coordinated with motor mode transitions.
+# ==============================================================================
+
+CONFIG MOTOR CLOSED_LOOP
+ENABLE
+HOME
+
+CONFIG ELBOW RIGHT
+
+# --- Phase 1: High-Speed Rapid Transfer in Open-Loop Mode ---
+CONFIG MOTOR OPEN_LOOP
+SPEED RAPID 160.0
+MOVE_J X=140.0 Y=-50.0 Z=30.0 PHI=0.0
+
+# --- Phase 2: Delicate Engagement in Closed-Loop Mode ---
+CONFIG MOTOR CLOSED_LOOP
+SPEED WORK 25.0
+ZONE EXACT
+
+MOVE_L X=140.0 Y=-50.0 Z=15.0 PHI=0.0
+APPROACH DIST=8.0 SPEED=15.0
+PUMP ON
+WAIT_MS 40
+RETRACT DIST=8.0 SPEED=25.0
+
+# --- Phase 3: High-Speed Inter-Station Transfer in Open-Loop Mode ---
+CONFIG MOTOR OPEN_LOOP
+SPEED RAPID 150.0
+MOVE_J X=180.0 Y=30.0 Z=30.0 PHI=30.0
+
+# --- Phase 4: Precision Placement in Closed-Loop Mode ---
+CONFIG MOTOR CLOSED_LOOP
+SPEED WORK 25.0
+ZONE EXACT
+
+MOVE_L X=180.0 Y=30.0 Z=15.0 PHI=30.0
+APPROACH DIST=8.0 SPEED=15.0
+PUMP OFF
+VALVE ON
+WAIT_MS 30
+VALVE OFF
+RETRACT DIST=8.0 SPEED=30.0
+
+# Safe return to standby
+MOVE_L X=120.0 Y=0.0 Z=30.0 PHI=0.0 SPEED=50.0
+HOME
+DISABLE

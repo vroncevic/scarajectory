@@ -16,7 +16,7 @@ Copyright
     You should have received a copy of the GNU General Public License along
     with this program. If not, see <http://www.gnu.org/licenses/>.
 Info
-    Defines pure Waypoint data model representing a single 4-DOF motion target point.
+    Defines pure TrajectoryWaypoint data model representing a single 4-DOF motion target point.
 '''
 
 from __future__ import annotations
@@ -27,16 +27,16 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
-class Waypoint:
+class TrajectoryWaypoint:
     '''
-        Pure immutable waypoint entity representing target coordinates, tool orientation and speed.
+        Pure immutable trajectory waypoint entity representing target coordinates, tool orientation and speed.
 
         It defines:
 
@@ -44,16 +44,16 @@ class Waypoint:
                 | x - X Cartesian coordinate in mm.
                 | y - Y Cartesian coordinate in mm.
                 | z - Z height coordinate in mm.
-                | speed - Motion feedrate speed in mm/s.
                 | phi - Tool orientation rotation angle in degrees.
-                | name - Optional waypoint identifier.
-                | command - Optional raw protocol command string associated with point.
+                | speed - Motion feedrate speed in mm/s.
+                | name - Waypoint identifier.
+                | command - Raw protocol command string associated with point.
     '''
 
     x: float
     y: float
     z: float
+    phi: float
     speed: float
-    phi: float = 0.0
-    name: str = ''
-    command: str = ''
+    name: str
+    command: str

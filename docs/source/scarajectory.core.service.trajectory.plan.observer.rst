@@ -7,10 +7,11 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.core.service.trajectory.plan.observer.iplan_observer_dispatcher
+   scarajectory.core.service.trajectory.plan.observer.dispatcher
+   scarajectory.core.service.trajectory.plan.observer.factory
+   scarajectory.core.service.trajectory.plan.observer.idispatcher
    scarajectory.core.service.trajectory.plan.observer.itrajectory_observer
-   scarajectory.core.service.trajectory.plan.observer.plan_observer_dispatcher
-   scarajectory.core.service.trajectory.plan.observer.plan_observer_dispatcher_factory
+   scarajectory.core.service.trajectory.plan.observer.provides
 
 Module contents
 ---------------

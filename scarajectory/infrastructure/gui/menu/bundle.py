@@ -23,19 +23,21 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from scaralang.core.service.dsl.iscara_dsl_service import IScaraDslService
-from scarajectory.core.service.storage.iplan_storage_service import IPlanStorageService
-from scarajectory.core.service.trajectory.plan.itrajectory_history import ITrajectoryHistory
-from scarajectory.core.service.trajectory.plan.mutation.iplan_bulk_mutator import IPlanBulkMutator
-from scarajectory.core.service.trajectory.plan.store.iwaypoint_store import IWaypointStore
-from scarajectory.infrastructure.gui.canvas.navigation.icanvas_view_navigator import ICanvasViewNavigator
+from scarajectory.core.service.storage.iloader import IPlanLoader
+from scarajectory.core.service.storage.istorer import IPlanStorer
+from scarajectory.core.service.trajectory.plan.history.ihistory import ITrajectoryPlanHistory
+from scarajectory.core.service.trajectory.plan.mutation.bulk_mutation.ibulk_mutation import IPlanBulkMutator
+from scarajectory.core.service.trajectory.plan.store.istore import IWaypointStore
+from scarajectory.infrastructure.gui.canvas.navigation.inavigator import ICanvasViewNavigator
 from scarajectory.infrastructure.gui.editor.table.itable import ITable
+from scarajectory.setup.assembly.dsl.bundle import DslPipelineBundle
+from scarajectory.setup.assembly.plan.bundle import PlanPipelineBundle
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -49,19 +51,48 @@ class MenuBundle:
         It defines:
 
             :attributes:
+                | plan - Trajectory plan management pipeline bundle.
+                | loader - Plan loader service interface.
+                | storer - Plan storer service interface.
+                | dsl - SCARA DSL pipeline role services bundle.
+                | navigator - Viewport navigation interface.
+                | table - Waypoint table interface.
+            :properties:
                 | store - Waypoint store interface.
                 | mutation - Plan bulk mutation interface.
                 | history - Trajectory history interface.
-                | storage - Plan storage service interface.
-                | dsl_service - SCARA DSL service interface.
-                | navigator - Viewport navigation interface.
-                | table - Waypoint table interface.
     '''
 
-    store: IWaypointStore
-    mutation: IPlanBulkMutator
-    history: ITrajectoryHistory
-    storage: IPlanStorageService
-    dsl_service: IScaraDslService
+    plan: PlanPipelineBundle
+    loader: IPlanLoader
+    storer: IPlanStorer
+    dsl: DslPipelineBundle
     navigator: ICanvasViewNavigator
     table: ITable
+
+    @property
+    def store(self) -> IWaypointStore:
+        '''
+            Returns waypoint store from plan pipeline.
+
+            :return: IWaypointStore instance.
+        '''
+        return self.plan.store
+
+    @property
+    def mutation(self) -> IPlanBulkMutator:
+        '''
+            Returns plan bulk mutator from plan pipeline.
+
+            :return: IPlanBulkMutator instance.
+        '''
+        return self.plan.mutation
+
+    @property
+    def history(self) -> ITrajectoryPlanHistory:
+        '''
+            Returns trajectory plan history from plan pipeline.
+
+            :return: ITrajectoryPlanHistory instance.
+        '''
+        return self.plan.history

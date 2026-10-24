@@ -1,15 +1,14 @@
 scarajectory.infrastructure.gui.emulator package
 ================================================
 
-Submodules
-----------
+Subpackages
+-----------
 
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.gui.emulator.emulator_launcher
-   scarajectory.infrastructure.gui.emulator.emulator_launcher_factory
-   scarajectory.infrastructure.gui.emulator.iemulator_launcher
+   scarajectory.infrastructure.gui.emulator.launcher
+   scarajectory.infrastructure.gui.emulator.locator
 
 Module contents
 ---------------

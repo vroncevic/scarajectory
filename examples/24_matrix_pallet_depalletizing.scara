@@ -1,0 +1,50 @@
+# ==============================================================================
+# 24_matrix_pallet_depalletizing.scara - Dual Pallet Transfer Matrix
+# ==============================================================================
+# Demonstrates dual-pallet automation transferring components from an input
+# feeder tray (SOURCE 2x2) into a dense output sorting tray (DEST 3x2).
+# Validates PALLET_DEF grid calculation, MOVE_PALLET indexing, and vacuum transfer.
+# ==============================================================================
+
+ENABLE
+HOME
+
+# Define source tray: 2 rows x 2 cols, dx=30mm, dy=30mm, origin at (120, -50)
+PALLET_DEF SOURCE ROWS=2 COLS=2 DX=30.0 DY=30.0 X=120.0 Y=-50.0 ANGLE=0.0
+
+# Define destination tray: 3 rows x 2 cols, dx=20mm, dy=25mm, origin at (130, 20)
+PALLET_DEF DEST ROWS=3 COLS=2 DX=20.0 DY=25.0 X=130.0 Y=20.0 ANGLE=0.0
+
+SPEED WORK 60.0
+
+# Pick Part 1 from SOURCE index 0
+MOVE_PALLET SOURCE INDEX=0 Z=25.0
+APPROACH DIST=15.0 SPEED=20.0
+PUMP ON
+WAIT_MS 80
+RETRACT DIST=15.0 SPEED=60.0
+
+# Place Part 1 to DEST index 0
+MOVE_PALLET DEST INDEX=0 Z=25.0
+APPROACH DIST=15.0 SPEED=20.0
+PUMP OFF
+VALVE ON
+WAIT_MS 40
+VALVE OFF
+RETRACT DIST=15.0 SPEED=60.0
+
+# Pick Part 2 from SOURCE index 3
+MOVE_PALLET SOURCE INDEX=3 Z=25.0
+APPROACH DIST=15.0 SPEED=20.0
+PUMP ON
+WAIT_MS 80
+RETRACT DIST=15.0 SPEED=60.0
+
+# Place Part 2 to DEST index 5
+MOVE_PALLET DEST INDEX=5 Z=25.0
+APPROACH DIST=15.0 SPEED=20.0
+PUMP OFF
+VALVE ON
+WAIT_MS 40
+VALVE OFF
+RETRACT DIST=15.0 SPEED=60.0

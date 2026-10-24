@@ -1,0 +1,25 @@
+# ==============================================================================
+# 21_relative_motion_incremental.scara - Relative Cartesian Incremental Motion
+# ==============================================================================
+# Demonstrates incremental tool positioning using MOVE_REL instructions.
+# Coordinates specify relative offsets (delta X, delta Y, delta Z, delta PHI)
+# applied incrementally from the current end-effector pose.
+# ==============================================================================
+
+ENABLE
+HOME
+
+# Set work and rapid feedrates
+SPEED WORK 50.0
+SPEED RAPID 120.0
+
+# Move to initial Cartesian position
+MOVE_L X=150.0 Y=0.0 Z=30.0 PHI=0.0
+
+# Incremental relative moves
+MOVE_REL X=20.0 Y=20.0
+MOVE_REL X=-10.0 Y=30.0 Z=-5.0 PHI=15.0 SPEED=40.0
+MOVE_REL X=-30.0 Y=-20.0 Z=10.0 PHI=-15.0
+MOVE_REL X=20.0 Y=-30.0 Z=-5.0
+
+WAIT_MS 100

@@ -7,8 +7,10 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.core.model.streaming.stream_config
-   scarajectory.core.model.streaming.stream_pacing_config
+   scarajectory.core.model.streaming.config
+   scarajectory.core.model.streaming.pacing_config
+   scarajectory.core.model.streaming.session
+   scarajectory.core.model.streaming.state
 
 Module contents
 ---------------

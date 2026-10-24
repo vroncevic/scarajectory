@@ -1,23 +1,24 @@
 scarajectory.infrastructure.gui.layout package
 ==============================================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   scarajectory.infrastructure.gui.layout.canvas
+   scarajectory.infrastructure.gui.layout.editor
+   scarajectory.infrastructure.gui.layout.toolbar
+
 Submodules
 ----------
 
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.gui.layout.canvas_pane_builder
-   scarajectory.infrastructure.gui.layout.canvas_pane_builder_factory
-   scarajectory.infrastructure.gui.layout.editor_pane_builder
-   scarajectory.infrastructure.gui.layout.editor_pane_builder_factory
-   scarajectory.infrastructure.gui.layout.icanvas_pane_builder
-   scarajectory.infrastructure.gui.layout.ieditor_pane_builder
-   scarajectory.infrastructure.gui.layout.itoolbar_layout_builder
-   scarajectory.infrastructure.gui.layout.main_content_builder
-   scarajectory.infrastructure.gui.layout.main_content_builder_factory
-   scarajectory.infrastructure.gui.layout.toolbar_layout_builder
-   scarajectory.infrastructure.gui.layout.toolbar_layout_builder_factory
+   scarajectory.infrastructure.gui.layout.builder
+   scarajectory.infrastructure.gui.layout.factory
 
 Module contents
 ---------------

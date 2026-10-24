@@ -1,0 +1,91 @@
+# ==============================================================================
+# 40_pallet_obstacle_jump_transfer.scara - Obstacle-Aware Dual-Pallet Transfer
+# ==============================================================================
+# Demonstrates advanced combination of:
+# 1. Dual matrix pallet definitions (PALLET_DEF INFEED_TRAY and OUTFEED_TRAY).
+# 2. Geometric keep-out obstacle avoidance (ZONE_DEF CENTRAL_COLUMN CIRCLE).
+# 3. 3D parabolic arch pick-and-place clearing staging nests (JUMP).
+# 4. Safe transit corridor circumventing central keep-out barrier.
+# 5. Modular vacuum handling subroutines (DEF PICK_CYCLE and PLACE_CYCLE).
+# 6. Zero-indexed cell positioning (MOVE_PALLET).
+# 7. Closed-loop stepper feedback control and exact-stop boundary settling.
+# ==============================================================================
+
+CONFIG MOTOR CLOSED_LOOP
+ENABLE
+HOME
+
+CONFIG ELBOW RIGHT
+SPEED WORK 45.0
+SPEED RAPID 100.0
+
+# Define central inspection column keep-out obstacle
+ZONE_DEF CENTRAL_COLUMN CIRCLE X=160.0 Y=0.0 RADIUS=25.0
+
+# Subroutine: Vertical engagement, suction grip, and lift retract
+DEF PICK_CYCLE
+ZONE EXACT
+APPROACH DIST=8.0 SPEED=20.0
+PUMP ON
+WAIT_MS 40
+RETRACT DIST=8.0 SPEED=40.0
+END
+
+# Subroutine: Insertion descent, positive blow-off release, and retract
+DEF PLACE_CYCLE
+ZONE EXACT
+APPROACH DIST=8.0 SPEED=20.0
+PUMP OFF
+VALVE ON
+WAIT_MS 30
+VALVE OFF
+RETRACT DIST=8.0 SPEED=40.0
+END
+
+# Define 2x2 infeed tray (lower quadrant) and 2x2 outfeed tray (upper quadrant)
+PALLET_DEF INFEED_TRAY ROWS=2 COLS=2 DX=15.0 DY=15.0 X=110.0 Y=-50.0
+PALLET_DEF OUTFEED_TRAY ROWS=2 COLS=2 DX=15.0 DY=15.0 X=110.0 Y=20.0
+
+# --- Transfer Cycle 1: INFEED[0] to OUTFEED[0] ---
+# Move to infeed cell 0 and pick component
+MOVE_PALLET INFEED_TRAY INDEX=0 Z=20.0
+CALL PICK_CYCLE
+
+# Fast 3D jump to infeed exit staging point
+JUMP X=130.0 Y=-50.0 Z=25.0 ARCH=12.0 SPEED=60.0
+
+# Navigate safe transit corridor around central circular obstacle
+MOVE_L X=190.0 Y=-45.0 Z=25.0 PHI=0.0 SPEED=50.0
+MOVE_L X=210.0 Y=0.0 Z=25.0 PHI=15.0 SPEED=45.0
+MOVE_L X=190.0 Y=45.0 Z=25.0 PHI=30.0 SPEED=50.0
+
+# Jump to target pallet entry staging point
+JUMP X=130.0 Y=20.0 Z=25.0 ARCH=12.0 SPEED=60.0
+
+# Position over outfeed cell 0 and place component
+MOVE_PALLET OUTFEED_TRAY INDEX=0 Z=20.0
+CALL PLACE_CYCLE
+
+# --- Transfer Cycle 2: INFEED[1] to OUTFEED[1] ---
+# Return via safe corridor around central obstacle
+MOVE_L X=190.0 Y=45.0 Z=25.0 PHI=30.0 SPEED=50.0
+MOVE_L X=210.0 Y=0.0 Z=25.0 PHI=15.0 SPEED=45.0
+MOVE_L X=190.0 Y=-45.0 Z=25.0 PHI=0.0 SPEED=50.0
+
+# Pick second component from infeed cell 1
+MOVE_PALLET INFEED_TRAY INDEX=1 Z=20.0
+CALL PICK_CYCLE
+
+# Navigate corridor to outfeed
+MOVE_L X=190.0 Y=-45.0 Z=25.0 PHI=0.0 SPEED=50.0
+MOVE_L X=210.0 Y=0.0 Z=25.0 PHI=15.0 SPEED=45.0
+MOVE_L X=190.0 Y=45.0 Z=25.0 PHI=30.0 SPEED=50.0
+
+# Deposit into outfeed cell 1
+MOVE_PALLET OUTFEED_TRAY INDEX=1 Z=20.0
+CALL PLACE_CYCLE
+
+# Safe park and system shutdown
+MOVE_L X=120.0 Y=0.0 Z=35.0 PHI=0.0 SPEED=60.0
+HOME
+DISABLE

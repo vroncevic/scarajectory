@@ -1,0 +1,69 @@
+# ==============================================================================
+# 39_closed_loop_contour_hold_recovery.scara - Closed-Loop Blend Hold Recovery
+# ==============================================================================
+# Demonstrates advanced combination of:
+# 1. Closed-loop stepper drive mode configuration (CONFIG MOTOR CLOSED_LOOP).
+# 2. Dynamic trajectory acceleration tuning (ACCEL 450.0 mm/s^2).
+# 3. Continuous 4th-axis yaw alignment tangential to curve (TOOL_ORIENT TANGENT).
+# 4. Composite bidirectional circular arcs (ARC_CW and ARC_CCW).
+# 5. Fly-by corner rounding and transition blending (ZONE BLEND R=8.0).
+# 6. Mid-contour trajectory feed hold for vision inspection (HOLD).
+# 7. Hardware sensor dwell settling (WAIT_MS 80).
+# 8. Seamless trajectory resumption (RESUME) to complete closed gasket profile.
+# 9. Exact stop mode switch (ZONE EXACT) for clean cutoff and pneumatic seal.
+# ==============================================================================
+
+CONFIG MOTOR CLOSED_LOOP
+ENABLE
+HOME
+
+CONFIG ELBOW RIGHT
+ACCEL 450.0
+SPEED WORK 40.0
+SPEED RAPID 100.0
+
+# Align tool wrist tangent to path and activate corner blending
+TOOL_ORIENT TANGENTIAL
+ZONE BLEND R=8.0
+
+# Approach initial contour start point
+MOVE_L X=150.0 Y=-30.0 Z=25.0 PHI=0.0 SPEED=45.0
+ZONE EXACT
+APPROACH DIST=10.0 SPEED=20.0
+
+# Engage adhesive dispensing pump with dwell
+PUMP ON
+WAIT_MS 40
+
+# Restore corner blending for smooth circular contouring
+ZONE BLEND R=8.0
+
+# First circular dispensing arc (clockwise)
+ARC_CW X=190.0 Y=10.0 I=0.0 J=40.0
+
+# Mid-contour optical seam verification: exact stop hold
+ZONE EXACT
+HOLD
+WAIT_MS 80
+RESUME
+ZONE BLEND R=8.0
+
+# Reverse circular transition arc (counter-clockwise S-blend)
+ARC_CCW X=210.0 Y=50.0 I=20.0 J=20.0
+
+# Linear interconnect closing the contour perimeter
+MOVE_L X=170.0 Y=30.0 Z=15.0 PHI=0.0 SPEED=35.0
+ARC_CW X=150.0 Y=-30.0 I=-20.0 J=-30.0
+
+# Exact stop finish, dispenser cutoff, and positive pressure relief
+ZONE EXACT
+PUMP OFF
+VALVE ON
+WAIT_MS 30
+VALVE OFF
+
+# Retract end-effector, park robot, and de-energize drives
+RETRACT DIST=10.0 SPEED=40.0
+MOVE_L X=140.0 Y=0.0 Z=35.0 PHI=0.0 SPEED=50.0
+HOME
+DISABLE

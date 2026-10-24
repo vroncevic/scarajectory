@@ -1,0 +1,53 @@
+# ==============================================================================
+# 20_annular_inspection_scan.scara - Multi-Level Concentric Annular Inspection
+# ==============================================================================
+# Demonstrates 4-DOF inspection routines navigating the annular workspace bounds:
+#
+# 1. Inner Annular Scan (R = 140 mm):
+#    - Scans concentric seam via circular arc interpolation (ARC_CCW / ARC_CW).
+#    - Maintains safe radial distance from central base dead zone (R_min = 77.6 mm).
+# 2. Outer Annular Perimeter Scan (R = 250 mm):
+#    - Transits to outer reach and scans 90-degree quadrant arc.
+#    - Respects outer singularity margin (safe limit R_safe = 295.0 mm).
+# 3. Executes sensor trigger dwell pauses (WAIT_MS) and returns to safe standby.
+# ==============================================================================
+
+ENABLE
+HOME
+
+SPEED RAPID 120.0
+SPEED WORK 40.0
+
+# ----------------------------------------------------
+# 1. Inner Annular Seam Inspection (Radius R=140 mm)
+# ----------------------------------------------------
+MOVE_L X=140.0 Y=0.0 Z=30.0 PHI=0.0
+MOVE_L X=140.0 Y=0.0 Z=15.0 PHI=0.0
+
+# Circular arc scan (arc around origin from (140, 0) to (99, 99))
+ARC_CCW X=99.0 Y=99.0 I=-140.0 J=0.0 SPEED=30.0
+WAIT_MS 60
+
+# Reverse arc back to baseline
+ARC_CW X=140.0 Y=0.0 I=-99.0 J=-99.0 SPEED=30.0
+MOVE_L X=140.0 Y=0.0 Z=35.0 PHI=0.0
+
+# ----------------------------------------------------
+# 2. Outer Annular Perimeter Scan (Radius R=250 mm)
+# ----------------------------------------------------
+# Transit to outer perimeter (well within safe limit R_safe=295 mm)
+MOVE_L X=250.0 Y=0.0 Z=35.0 PHI=0.0 SPEED=80.0
+MOVE_L X=250.0 Y=0.0 Z=20.0 PHI=0.0 SPEED=35.0
+
+# Counter-clockwise arc scan around origin from (250, 0) to (176.8, 176.8)
+ARC_CCW X=176.8 Y=176.8 I=-250.0 J=0.0 SPEED=35.0
+WAIT_MS 80
+
+# Return arc back to baseline
+ARC_CW X=250.0 Y=0.0 I=-176.8 J=-176.8 SPEED=35.0
+
+# ----------------------------------------------------
+# 3. Retract & Standby Parking
+# ----------------------------------------------------
+MOVE_L X=250.0 Y=0.0 Z=35.0 PHI=0.0 SPEED=80.0
+MOVE_L X=150.0 Y=0.0 Z=25.0 PHI=0.0 SPEED=80.0

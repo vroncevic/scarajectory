@@ -1,0 +1,52 @@
+# ==============================================================================
+# 18_tangential_contour_dispensing.scara - Continuous Tangential Gasket Dispensing
+# ==============================================================================
+# Demonstrates high-precision sealant or adhesive dispensing along a composite
+# closed geometric contour combining linear paths and circular arc corners:
+#
+# 1. TOOL_ORIENT TANGENTIAL automatically calculates and rotates the 4th axis (PHI)
+#    to maintain normal/tangent alignment to the contour heading throughout the path.
+# 2. ZONE BLEND R=10.0 smooths corner transitions without halting flow rate.
+# 3. VALVE ON activates dispensing nozzle during path execution.
+# 4. Restores TOOL_ORIENT FIXED and ZONE FINE for controlled departure.
+# ==============================================================================
+
+ENABLE
+HOME
+
+SPEED RAPID 120.0
+SPEED WORK 35.0
+
+# Approach start of flange contour
+MOVE_L X=130.0 Y=0.0 Z=30.0 PHI=0.0
+MOVE_L X=130.0 Y=0.0 Z=10.0 PHI=0.0
+
+# Enable auto-tangent tracking for dispensing nozzle
+TOOL_ORIENT TANGENTIAL
+ZONE BLEND 10.0
+
+# Engage dispensing valve
+VALVE ON
+WAIT_MS 30
+
+# Dispense rectangular profile with rounded arc corners
+MOVE_L X=170.0 Y=0.0 Z=10.0
+ARC_CW X=180.0 Y=10.0 I=0.0 J=10.0
+MOVE_L X=180.0 Y=40.0 Z=10.0
+ARC_CW X=170.0 Y=50.0 I=-10.0 J=0.0
+MOVE_L X=130.0 Y=50.0 Z=10.0
+ARC_CW X=120.0 Y=40.0 I=0.0 J=-10.0
+MOVE_L X=120.0 Y=10.0 Z=10.0
+ARC_CW X=130.0 Y=0.0 I=10.0 J=0.0
+
+# Cut dispensing valve
+VALVE OFF
+WAIT_MS 30
+
+# Restore fixed orientation and precision stop
+TOOL_ORIENT FIXED
+ZONE FINE
+
+# Lift nozzle to safe transit height and return
+MOVE_L X=130.0 Y=0.0 Z=40.0 PHI=0.0
+MOVE_L X=150.0 Y=0.0 Z=30.0 PHI=0.0

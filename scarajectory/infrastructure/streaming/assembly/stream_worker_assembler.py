@@ -21,32 +21,50 @@ Info
 
 from __future__ import annotations
 
-from scaralang.core.model.kinematics.scara_bounds import ScaraBounds
-from scaralang.core.model.kinematics.transmission_parameters import TransmissionParameters
-from scaralang.core.service.kinematics.ikinematics_service import IKinematicsService
-from scaralang.core.service.kinematics.kinematics_service_factory import KinematicsServiceFactory
+from ats_utilities.context.factory import ContextBundleFactory
 
-from scarajectory.core.model.protocol.protocol_mode import ProtocolMode
-from scarajectory.core.service.streaming.stream_pacing_config_factory import StreamPacingConfigFactory
-from scarajectory.core.service.worker.iexecution_worker import IExecutionWorker
-from scarajectory.infrastructure.packet.binary_packet_strategy import BinaryPacketStrategy
-from scarajectory.infrastructure.packet.binary_packet_strategy_factory import BinaryPacketStrategyFactory
-from scarajectory.infrastructure.settings.bounds.scara_bounds_loader_factory import ScaraBoundsLoaderFactory
-from scarajectory.infrastructure.settings.transmission.scara_transmission_loader_factory import ScaraTransmissionLoaderFactory
+from scaracom.bridge.coordinator.icoordinator import IConnectionCoordinator
+
+from scaralang.core.model.kinematics.profile.bounds import ScaraBounds
+from scaralang.core.service.compiler.binary.step.discretizer.idiscretizer import IStepDiscretizer
+from scaralang.core.service.compiler.binary.step.duration.factory import SegmentDurationCalculatorFactory
+from scaralang.core.service.kinematics.dependencies import KinematicsDependencies
+from scaralang.core.service.kinematics.factory import KinematicsFactory
+from scaralang.core.service.kinematics.profile.default_scara_profile import DefaultScaraProfile
+from scaralang.core.service.kinematics.provides import KinematicsProvides
+from scaralang.core.service.kinematics.transmission.factory import TransmissionFactory
+from scaralang.core.service.kinematics.transmission.iconverter import IJointStepTransmissionConverter
+from scaralang.infrastructure.protocol.builder.factory import BuilderFactory
+from scaralang.infrastructure.protocol.parser.factory import ParserFactory
+
+from scarajectory.core.model.streaming.pacing_config import StreamPacingConfig
+from scarajectory.infrastructure.connection.listener.factory import StreamTransportListenerFactory
+from scarajectory.infrastructure.packet.dependencies import PacketDependencies
+from scarajectory.infrastructure.packet.factory import PacketFactory
+from scarajectory.infrastructure.packet.istrategy import IPacketStrategy
+from scarajectory.infrastructure.scaralang.discretizer.dependencies import DiscretizerDependencies
+from scarajectory.infrastructure.scaralang.discretizer.factory import DualElbowStepDiscretizerFactory
+from scarajectory.infrastructure.settings.communication.dependencies import CommunicationSettingsDependencies
+from scarajectory.infrastructure.settings.communication.factory import CommunicationSettingsFactory
+from scarajectory.infrastructure.settings.communication.loader import CommunicationSettingsLoader
+from scarajectory.infrastructure.settings.dependencies import SettingsDependencies
+from scarajectory.infrastructure.settings.factory import SettingsFactory
+from scarajectory.infrastructure.settings.provides import SettingsProvides
+from scarajectory.infrastructure.settings.reader.reader import SettingsReader
+from scarajectory.infrastructure.storage.config_io.dependencies import ConfigIODependencies
+from scarajectory.infrastructure.storage.config_io.factory import ConfigIOFactory
 from scarajectory.infrastructure.streaming.assembly.worker_bundle import WorkerBundle
-from scarajectory.infrastructure.transport.istream_transport_connection import IStreamTransportConnection
-from scarajectory.infrastructure.transport.listener.stream_ascii_transport_listener import StreamAsciiTransportListener
-from scarajectory.infrastructure.transport.listener.stream_ascii_transport_listener_factory import StreamAsciiTransportListenerFactory
-from scarajectory.infrastructure.transport.listener.stream_binary_transport_listener import StreamBinaryTransportListener
-from scarajectory.infrastructure.transport.listener.stream_binary_transport_listener_factory import StreamBinaryTransportListenerFactory
-from scarajectory.infrastructure.worker.binary.binary_stream_execution_worker_factory import BinaryStreamExecutionWorkerFactory
-from scarajectory.infrastructure.worker.stream_execution_worker_factory import StreamExecutionWorkerFactory
+from scarajectory.infrastructure.worker.dependencies import WorkerDependencies
+from scarajectory.infrastructure.worker.factory import WorkerFactory
+from scarajectory.infrastructure.worker.iexecution_worker import IExecutionWorker
+from scarajectory.infrastructure.worker.parser.bundle import ParserBundle
+from scarajectory.infrastructure.worker.provides import WorkerProvides
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -61,14 +79,13 @@ class StreamWorkerAssembler:
             :methods:
                 | assemble - Constructs worker based on protocol mode.
                 | assemble_binary - Constructs BinaryStreamExecutionWorker.
-                | assemble_ascii - Constructs StreamExecutionWorker.
                 | get_version - Returns assembler version string.
     '''
 
     @classmethod
     def assemble_binary(
         cls,
-        connection: IStreamTransportConnection,
+        connection: IConnectionCoordinator,
         bundle: WorkerBundle,
     ) -> IExecutionWorker:
         '''
@@ -79,90 +96,98 @@ class StreamWorkerAssembler:
             :return: Fully configured binary IExecutionWorker instance.
             :exceptions: None.
         '''
-        bounds_loader = ScaraBoundsLoaderFactory.create()
-        trans_loader = ScaraTransmissionLoaderFactory.create()
-        bounds: ScaraBounds = bounds_loader.load_bounds()
-        transmission: TransmissionParameters = trans_loader.load_transmission()
-        kinematics: IKinematicsService = KinematicsServiceFactory.create(
-            bounds=bounds
-        )
-        packet_strategy: BinaryPacketStrategy = (
-            BinaryPacketStrategyFactory.create(
-                kinematics=kinematics,
-                transmission=transmission,
+        io_provides = ConfigIOFactory.create(
+            ConfigIODependencies(
+                context_bundle=ContextBundleFactory.create_bundle()
             )
         )
-        pacing_config = StreamPacingConfigFactory.create_binary()
-        worker: IExecutionWorker = BinaryStreamExecutionWorkerFactory.create(
-            pacing_bundle=bundle.pacing_bundle,
-            packet_strategy=packet_strategy,
-            byte_sender=bundle.raw_transceiver,
-            state_controller=bundle.state_machine,
-            observer_dispatcher=bundle.dispatcher,
-            pacing_config=pacing_config,
+        settings_provides: SettingsProvides = SettingsFactory.create(
+            SettingsDependencies(
+                config_loader=io_provides.config_loader,
+                config_path=SettingsReader.DEFAULT_GEOMETRY_CONFIG,
+                scheme_path=SettingsReader.DEFAULT_SCHEME_CONFIG,
+            )
         )
-        binary_listener: StreamBinaryTransportListener = (
-            StreamBinaryTransportListenerFactory.create(
-                bytes_receiver=worker,
+        bounds: ScaraBounds = (
+            settings_provides.bounds_provides.bounds_loader.load_bounds()
+        )
+        kinematics_provides: KinematicsProvides = KinematicsFactory.create(
+            dependencies=KinematicsDependencies(
+                bounds=bounds,
+                dls_config=DefaultScaraProfile.create_dls_config(),
+            )
+        )
+        converter: IJointStepTransmissionConverter = (
+            TransmissionFactory.create(
+                transmission=settings_provides.transmission_provides.transmission_loader.load_transmission()
+            )
+        )
+        discretizer: IStepDiscretizer = DualElbowStepDiscretizerFactory.create(
+            dependencies=DiscretizerDependencies(
+                spatial=kinematics_provides.spatial,
+                numerical_spatial=kinematics_provides.numerical_spatial,
+                transmission=converter,
+                duration_calculator=SegmentDurationCalculatorFactory.create(),
+                bounds=bounds,
+            ),
+        )
+        builder_provides = BuilderFactory.create()
+        packet_strategy: IPacketStrategy = PacketFactory.create(
+            dependencies=PacketDependencies(
+                step_discretizer=discretizer,
+                motion_frame_builder=builder_provides.motion,
+                frame_packer=builder_provides.packer,
+            )
+        ).packet_strategy
+        pacing_config: StreamPacingConfig = (
+            CommunicationSettingsFactory.create(
+                CommunicationSettingsDependencies(
+                    config_loader=io_provides.config_loader,
+                    config_path=CommunicationSettingsLoader.DEFAULT_COMMUNICATION_CONFIG,
+                    scheme_path=CommunicationSettingsLoader.DEFAULT_SCHEME_CONFIG,
+                )
+            ).settings_loader.load_pacing_config()
+        )
+        parser_provides = ParserFactory.create()
+        parser_bundle: ParserBundle = ParserBundle(
+            frame_parser=parser_provides.parser,
+            response_unpacker=parser_provides.response_unpacker,
+        )
+        worker_provides: WorkerProvides = WorkerFactory.create(
+            WorkerDependencies(
+                pacing_bundle=bundle.pacing_bundle,
+                packet_strategy=packet_strategy,
+                byte_sender=bundle.raw_transceiver,
+                state_controller=bundle.state_machine,
+                observer_dispatcher=bundle.dispatcher,
+                pacing_config=pacing_config,
+                parser_bundle=parser_bundle,
+            )
+        )
+        connection.set_listener(
+            StreamTransportListenerFactory.create(
+                bytes_receiver=worker_provides.bytes_receiver,
                 dispatcher=bundle.dispatcher,
             )
         )
-        connection.set_listener(binary_listener)
 
-        return worker
-
-    @classmethod
-    def assemble_ascii(
-        cls,
-        connection: IStreamTransportConnection,
-        bundle: WorkerBundle,
-    ) -> IExecutionWorker:
-        '''
-            Constructs and binds ascii execution worker and transport listener.
-
-            :param connection: Injected IStreamTransportConnection instance.
-            :param bundle: Injected WorkerBundle parameter object.
-            :return: Fully configured ascii IExecutionWorker instance.
-            :exceptions: None.
-        '''
-        ascii_pacing_config = StreamPacingConfigFactory.create_ascii()
-        ascii_worker: IExecutionWorker = StreamExecutionWorkerFactory.create(
-            pacing_bundle=bundle.pacing_bundle,
-            command_sender=bundle.raw_transceiver,
-            state_controller=bundle.state_machine,
-            observer_dispatcher=bundle.dispatcher,
-            pacing_config=ascii_pacing_config,
-        )
-        ascii_listener: StreamAsciiTransportListener = (
-            StreamAsciiTransportListenerFactory.create(
-                line_receiver=ascii_worker,
-                dispatcher=bundle.dispatcher,
-            )
-        )
-        connection.set_listener(ascii_listener)
-
-        return ascii_worker
+        return worker_provides.execution_worker
 
     @classmethod
     def assemble(
         cls,
-        connection: IStreamTransportConnection,
+        connection: IConnectionCoordinator,
         bundle: WorkerBundle,
-        protocol_mode: ProtocolMode,
     ) -> IExecutionWorker:
         '''
-            Constructs and binds worker based on active protocol mode.
+            Constructs and binds worker.
 
             :param connection: Injected IStreamTransportConnection instance.
             :param bundle: Injected WorkerBundle parameter object.
-            :param protocol_mode: Active protocol mode enum.
             :return: Fully configured IExecutionWorker instance.
             :exceptions: None.
         '''
-        if protocol_mode == ProtocolMode.BINARY:
-            return cls.assemble_binary(connection, bundle)
-
-        return cls.assemble_ascii(connection, bundle)
+        return cls.assemble_binary(connection, bundle)
 
     @classmethod
     def get_version(cls) -> str:

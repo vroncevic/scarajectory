@@ -23,22 +23,24 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from scaralang.core.service.dsl.iscara_dsl_service import IScaraDslService
-from scarajectory.core.service.storage.iplan_storage_service import IPlanStorageService
-from scarajectory.core.service.trajectory.plan.mutation.iplan_bulk_mutator import IPlanBulkMutator
-from scarajectory.core.service.trajectory.plan.store.iwaypoint_store import IWaypointStore
+from scarajectory.core.service.storage.iloader import IPlanLoader
+from scarajectory.core.service.storage.istorer import IPlanStorer
+from scarajectory.core.service.trajectory.plan.mutation.bulk_mutation.ibulk_mutation import IPlanBulkMutator
+from scarajectory.core.service.trajectory.plan.store.istore import IWaypointStore
+from scarajectory.infrastructure.storage.workspace.imanager import IWorkspaceManager
+from scarajectory.setup.assembly.dsl.bundle import DslPipelineBundle
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
 
 
-@dataclass(frozen=True)
+@dataclass(slots=True, frozen=True)
 class DslEditorBundle:
     '''
         Immutable container holding core dependencies for the SCARA DSL script editor.
@@ -48,11 +50,15 @@ class DslEditorBundle:
             :attributes:
                 | store - Active waypoint query and storage service.
                 | mutation - Plan bulk mutation service.
-                | dsl_service - SCARA DSL interpretation and serialization service.
-                | storage - File storage service for script persistence.
+                | dsl - SCARA DSL pipeline role services bundle.
+                | loader - Trajectory plan file reader port.
+                | storer - Trajectory plan file writer port.
+                | workspace - User workspace manager for example catalogs.
     '''
 
     store: IWaypointStore
     mutation: IPlanBulkMutator
-    dsl_service: IScaraDslService
-    storage: IPlanStorageService
+    dsl: DslPipelineBundle
+    loader: IPlanLoader
+    storer: IPlanStorer
+    workspace: IWorkspaceManager

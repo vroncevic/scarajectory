@@ -7,8 +7,11 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.state.stream_state_machine
-   scarajectory.infrastructure.state.stream_state_machine_factory
+   scarajectory.infrastructure.state.dependencies
+   scarajectory.infrastructure.state.factory
+   scarajectory.infrastructure.state.imachine
+   scarajectory.infrastructure.state.machine
+   scarajectory.infrastructure.state.provides
 
 Module contents
 ---------------

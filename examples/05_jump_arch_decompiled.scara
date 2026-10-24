@@ -1,0 +1,9 @@
+# SCARA DSL Script decompiled from binary stream
+# Frame Count: 6
+
+ENABLE
+HOME
+MOVE_L X 139.97 Y 50.01 Z 10.00 PHI 0.00
+MOVE_L X 139.97 Y 50.01 Z 45.00 PHI 0.00
+MOVE_L X 180.00 Y -40.00 Z 45.00 PHI 0.00
+MOVE_L X 180.00 Y -40.00 Z 15.00 PHI 0.00

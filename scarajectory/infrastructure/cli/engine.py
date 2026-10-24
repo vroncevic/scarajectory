@@ -29,15 +29,14 @@ from ats_utilities.utils.reflection import to_str
 
 from scarajectory.infrastructure.cli.setup.bundle import CLIBundle
 from scarajectory.infrastructure.cli.setup.validator import CLIBundleValidator
-from scarajectory.core.service.iservice import IService
-from scarajectory.infrastructure.command.icommand_definition import ICommandDefinition
-from scarajectory.infrastructure.command.icommand_executor import ICommandExecutor
+from scarajectory.infrastructure.command.idefinition import ICommandDefinition
+from scarajectory.infrastructure.command.iexecutor import ICommandExecutor
 
 __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -50,23 +49,21 @@ class CLI:
         It defines:
 
             :attributes:
-                | _service - Trajectory orchestrator service.
                 | _parser - Argument parser for parsing CLI command args.
                 | _executors - Map of command names to command executor instances.
             :methods:
-                | __init__ - Initializes the CLI with service, parser and commands list.
+                | __init__ - Initializes the CLI with parser and commands list.
                 | run - Parses command line arguments and runs selected command strategy.
                 | is_initialized - Checks if the CLI is initialized.
                 | __str__ - Returns the CLI as string representation.
     '''
 
-    _service: IService
     _parser: IOptionManager
     _executors: Mapping[str, ICommandExecutor[ICommandDefinition, object, object, object]]
 
     def __init__(self, bundle: CLIBundle) -> None:
         '''
-            Initializes the CLI with service, parser and commands list.
+            Initializes the CLI with parser and commands list.
 
             :param bundle: Bundle containing CLI adapters.
             :exceptions:
@@ -75,7 +72,6 @@ class CLI:
                 |                its attributes must be instances of their respective types.
         '''
         CLIBundleValidator.validate(bundle)
-        self._service = bundle.service
         self._parser = bundle.parser
         self._executors = {pair.definition.name: pair.executor for pair in bundle.commands}
         self._parser.register_commands([pair.definition for pair in bundle.commands])
@@ -92,9 +88,10 @@ class CLI:
         '''
         try:
             command_name, params = self._parser.parse_command()
+
             if command_name in self._executors:
                 executor: ICommandExecutor[ICommandDefinition, object, object, object] = self._executors[command_name]
-                return executor.execute(params=params, service=self._service)
+                return executor.execute(params=params, service=None)
 
             return {
                 'returncode': 1, 'stdout': '', 'stderr': 'cli::run - command not found'

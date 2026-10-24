@@ -7,7 +7,14 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.worker.binary
+   scarajectory.infrastructure.worker.dispatcher
+   scarajectory.infrastructure.worker.drainer
+   scarajectory.infrastructure.worker.execution
+   scarajectory.infrastructure.worker.handler
+   scarajectory.infrastructure.worker.parser
+   scarajectory.infrastructure.worker.receiver
+   scarajectory.infrastructure.worker.runner
+   scarajectory.infrastructure.worker.thread
 
 Submodules
 ----------
@@ -15,16 +22,11 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.worker.istream_queue_drainer
-   scarajectory.infrastructure.worker.istream_step_dispatcher
-   scarajectory.infrastructure.worker.stream_execution_worker
-   scarajectory.infrastructure.worker.stream_execution_worker_factory
-   scarajectory.infrastructure.worker.stream_loop_runner
-   scarajectory.infrastructure.worker.stream_loop_runner_factory
-   scarajectory.infrastructure.worker.stream_queue_drainer
-   scarajectory.infrastructure.worker.stream_queue_drainer_factory
-   scarajectory.infrastructure.worker.stream_step_dispatcher
-   scarajectory.infrastructure.worker.stream_step_dispatcher_factory
+   scarajectory.infrastructure.worker.dependencies
+   scarajectory.infrastructure.worker.factory
+   scarajectory.infrastructure.worker.holder
+   scarajectory.infrastructure.worker.iexecution_worker
+   scarajectory.infrastructure.worker.provides
 
 Module contents
 ---------------

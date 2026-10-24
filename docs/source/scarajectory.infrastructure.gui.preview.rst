@@ -7,8 +7,9 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.gui.preview.preview_tab
-   scarajectory.infrastructure.gui.preview.preview_tab_factory
+   scarajectory.infrastructure.gui.preview.dependencies
+   scarajectory.infrastructure.gui.preview.factory
+   scarajectory.infrastructure.gui.preview.tab
 
 Module contents
 ---------------

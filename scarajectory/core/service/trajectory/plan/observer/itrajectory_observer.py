@@ -27,7 +27,7 @@ __author__ = 'Vladimir Roncevic'
 __copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
 __credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
 __license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
-__version__ = '1.0.4'
+__version__ = '1.0.3'
 __maintainer__ = 'Vladimir Roncevic'
 __email__ = 'elektron.ronca@gmail.com'
 __status__ = 'Updated'
@@ -42,7 +42,7 @@ class ITrajectoryObserver(Protocol):
 
             :methods:
                 | on_trajectory_updated - Called whenever points are added, modified, or cleared.
-                | on_point_selected - Called when a specific waypoint is selected in canvas or table.
+                | get_version - Returns observer component version string.
     '''
 
     def on_trajectory_updated(self) -> None:
@@ -50,9 +50,9 @@ class ITrajectoryObserver(Protocol):
             Called whenever points are added, modified, reordered, or cleared.
         '''
 
-    def on_point_selected(self, index: int) -> None:
+    def get_version(self) -> str:
         '''
-            Called when a specific waypoint is selected in canvas or table.
+            Returns observer component version string.
 
-            :param index: Selected point index (-1 for none).
+            :return: Component version string.
         '''

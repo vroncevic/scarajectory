@@ -7,9 +7,12 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.infrastructure.gui.streaming.handler
+   scarajectory.infrastructure.gui.streaming.control
    scarajectory.infrastructure.gui.streaming.observer
-   scarajectory.infrastructure.gui.streaming.panel
+   scarajectory.infrastructure.gui.streaming.playback
+   scarajectory.infrastructure.gui.streaming.progress
+   scarajectory.infrastructure.gui.streaming.status
+   scarajectory.infrastructure.gui.streaming.tool
 
 Submodules
 ----------
@@ -18,10 +21,9 @@ Submodules
    :maxdepth: 4
 
    scarajectory.infrastructure.gui.streaming.bundle
-   scarajectory.infrastructure.gui.streaming.streamer_action_bundle
-   scarajectory.infrastructure.gui.streaming.streamer_controllers_bundle
-   scarajectory.infrastructure.gui.streaming.streamer_tab
-   scarajectory.infrastructure.gui.streaming.streamer_tab_factory
+   scarajectory.infrastructure.gui.streaming.controllers_bundle
+   scarajectory.infrastructure.gui.streaming.factory
+   scarajectory.infrastructure.gui.streaming.tab
 
 Module contents
 ---------------

@@ -1,0 +1,62 @@
+# -*- coding: UTF-8 -*-
+
+'''
+Module
+    bundle.py
+Copyright
+    Copyright (C) 2026 Vladimir Roncevic <elektron.ronca@gmail.com>
+    scarajectory is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by the
+    Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    scarajectory is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+    See the GNU General Public License for more details.
+    You should have received a copy of the GNU General Public License along
+    with this program. If not, see <http://www.gnu.org/licenses/>.
+Info
+    Parameter bundle holding collaborators for step dispatching.
+'''
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+
+from scaracom.bridge.transceiver.ibyte_sender import IByteSender
+
+from scarajectory.core.service.streaming.observer.idispatcher import IStreamObserverDispatcher
+from scarajectory.infrastructure.pacing.controller.icontroller import IFlowPacingController
+from scarajectory.infrastructure.packet.istrategy import IPacketStrategy
+from scarajectory.infrastructure.state.imachine import IStreamStateMachine
+
+__author__ = 'Vladimir Roncevic'
+__copyright__ = '(C) 2026, https://vroncevic.github.io/scarajectory'
+__credits__ = ['Vladimir Roncevic', 'Python Software Foundation']
+__license__ = 'https://github.com/vroncevic/scarajectory/blob/dev/LICENSE'
+__version__ = '1.0.3'
+__maintainer__ = 'Vladimir Roncevic'
+__email__ = 'elektron.ronca@gmail.com'
+__status__ = 'Updated'
+
+
+@dataclass(slots=True, frozen=True, kw_only=True)
+class StepBundle:
+    '''
+        Immutable parameter bundle holding collaborators for step dispatching.
+
+        It defines:
+
+            :attributes:
+                | flow_pacing - IFlowPacingController managing buffer capacity.
+                | packet_strategy - IPacketStrategy encoding waypoints to binary frames.
+                | byte_sender - IByteSender transmitting raw byte stream to transport.
+                | state_controller - IStreamStateMachine providing stream lifecycle state.
+                | observer_dispatcher - IStreamObserverDispatcher publishing telemetry progress.
+    '''
+
+    flow_pacing: IFlowPacingController
+    packet_strategy: IPacketStrategy
+    byte_sender: IByteSender
+    state_controller: IStreamStateMachine
+    observer_dispatcher: IStreamObserverDispatcher

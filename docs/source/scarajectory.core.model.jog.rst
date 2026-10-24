@@ -7,9 +7,9 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   scarajectory.core.model.jog.jog_axis
-   scarajectory.core.model.jog.jog_command
-   scarajectory.core.model.jog.jog_direction
+   scarajectory.core.model.jog.axis
+   scarajectory.core.model.jog.command
+   scarajectory.core.model.jog.direction
 
 Module contents
 ---------------

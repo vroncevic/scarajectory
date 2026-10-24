@@ -1,0 +1,87 @@
+# ==============================================================================
+# 35_complex_cycle_subroutines_and_loops.scara - Integrated Automated Workcell
+# ==============================================================================
+# Comprehensive enterprise demonstration unifying all scaralang macro constructs:
+# 1. Closed-loop drive configuration, robot homing, and dual speed presets.
+# 2. Reusable modular subroutines for part handling:
+#    - DEF GRASP_CYCLE: Vertical approach, vacuum pump activation, dwell, retract.
+#    - DEF RELEASE_CYCLE: Vertical approach, vacuum cut, blow-off valve, retract.
+# 3. Parametric 2x2 pallet matrix definition (PALLET_DEF FEED_TRAY).
+# 4. Multi-station pallet transfers utilizing:
+#    - Indexed pallet positioning (MOVE_PALLET).
+#    - Modular subroutine calls (CALL GRASP_CYCLE).
+#    - 3D parabolic obstacle clearance arch (JUMP).
+#    - Local coordinate frame transformation (FRAME_SET / FRAME_RESET).
+#    - Modular part placement (CALL RELEASE_CYCLE).
+# 5. Iterative inspection cycle using macro loops (REPEAT 2) with relative offsets.
+# 6. Return to safe transit coordinate and motor de-energization.
+# ==============================================================================
+
+CONFIG MOTOR CLOSED_LOOP
+ENABLE
+HOME
+
+CONFIG ELBOW RIGHT
+SPEED WORK 45.0
+SPEED RAPID 100.0
+
+# Subroutine: Vertical engagement and vacuum acquisition
+DEF GRASP_CYCLE
+APPROACH DIST=8.0 SPEED=20.0
+PUMP ON
+WAIT_MS 40
+RETRACT DIST=8.0 SPEED=45.0
+END
+
+# Subroutine: Vertical insertion, vacuum release and positive blow-off
+DEF RELEASE_CYCLE
+APPROACH DIST=8.0 SPEED=20.0
+PUMP OFF
+VALVE ON
+WAIT_MS 30
+VALVE OFF
+RETRACT DIST=8.0 SPEED=45.0
+END
+
+# Define input supply tray matrix: 2 rows x 2 columns, pitch 15 mm
+PALLET_DEF FEED_TRAY ROWS=2 COLS=2 DX=15.0 DY=15.0
+
+# --- Transfer 1: Pallet Cell 0 to Fixture Position 0 ---
+MOVE_PALLET FEED_TRAY INDEX=0 Z=20.0
+CALL GRASP_CYCLE
+
+# 3D parabolic arch transfer over fixture fence (Z=20 + ARCH=15 = 35 <= 50)
+JUMP X=150.0 Y=20.0 Z=20.0 ARCH=15.0 SPEED=60.0
+
+# Transform to local fixture frame (angled at 20 degrees)
+FRAME_SET X=150.0 Y=20.0 ANGLE=20.0
+MOVE_L X=0.0 Y=0.0 Z=20.0 PHI=0.0 SPEED=30.0
+CALL RELEASE_CYCLE
+FRAME_RESET
+
+# --- Transfer 2: Pallet Cell 1 to Fixture Position 1 ---
+MOVE_PALLET FEED_TRAY INDEX=1 Z=20.0
+CALL GRASP_CYCLE
+
+# 3D parabolic arch transfer
+JUMP X=150.0 Y=20.0 Z=20.0 ARCH=15.0 SPEED=60.0
+
+# Insert at second fixture nest in local coordinates
+FRAME_SET X=150.0 Y=20.0 ANGLE=20.0
+MOVE_L X=15.0 Y=0.0 Z=20.0 PHI=0.0 SPEED=30.0
+CALL RELEASE_CYCLE
+FRAME_RESET
+
+# --- Post-Assembly Verification: Automated Inspection Scan ---
+MOVE_L X=140.0 Y=-20.0 Z=25.0 PHI=0.0 SPEED=50.0
+
+REPEAT 2
+APPROACH DIST=5.0 SPEED=20.0
+WAIT_MS 25
+RETRACT DIST=5.0 SPEED=40.0
+MOVE_REL X=10.0 Y=10.0 Z=0.0 PHI=0.0 SPEED=30.0
+END
+
+# Return to safe park position and disable drives
+MOVE_L X=130.0 Y=0.0 Z=35.0 PHI=0.0 SPEED=70.0
+DISABLE

@@ -1,0 +1,48 @@
+# ==============================================================================
+# 14_singularity_avoidance.scara - Central Singularity & Dead Zone Detour Routing
+# ==============================================================================
+# Demonstrates trajectory execution transferring between opposite work zones
+# across the robot cell while safely bypassing the central base singularity dead zone.
+#
+# SCARA Kinematic Workspace Constraints:
+# - Mechanical Inner Dead Zone: R_min = 77.6 mm (J2 folded limit 150 deg).
+# - Base Singularity:          At origin (0.0, 0.0) where Jacobian loses rank.
+# - Safe Annular Reach:        77.6 mm <= R <= 295.0 mm.
+#
+# Scenario:
+# 1. P1_WORK: Work point in positive quadrant (X=60.0, Y=140.0, Z=20.0).
+# 2. P1_LIFT: Tool lift to clearance height (Z=40.0).
+# 3. Direct linear move to target P2 (X=60.0, Y=-140.0) would pass through
+#    (X=60.0, Y=0.0) where R=60.0 mm < R_min (77.6 mm), crashing into the inner
+#    mechanical dead zone / singularity.
+# 4. Safe Trajectory Detour:
+#    - Routes outward along tangential clearance waypoints at R ~ 150-160 mm:
+#      DETOUR_1: (X=140.0, Y=60.0, Z=40.0, R=152.3 mm)
+#      DETOUR_2: (X=160.0, Y=0.0, Z=40.0, R=160.0 mm)
+#      DETOUR_3: (X=140.0, Y=-60.0, Z=40.0, R=152.3 mm)
+#    - Approaches target in negative quadrant: P2_LIFT (X=60.0, Y=-140.0, Z=40.0).
+#    - Lowers tool to destination work point: P2_WORK (X=60.0, Y=-140.0, Z=20.0).
+# ==============================================================================
+
+ENABLE
+HOME
+
+SPEED WORK 40.0
+SPEED RAPID 120.0
+
+# 1. Initial work operation in Zone A
+MOVE_L X=60.0 Y=140.0 Z=20.0 PHI=0.0
+
+# 2. Lift to safe clearance height
+MOVE_L X=60.0 Y=140.0 Z=40.0 PHI=0.0
+
+# 3. Tangential detour around inner singularity (R >= 150 mm > R_min 77.6 mm)
+MOVE_L X=140.0 Y=60.0 Z=40.0 PHI=0.0
+MOVE_L X=160.0 Y=0.0 Z=40.0 PHI=0.0
+MOVE_L X=140.0 Y=-60.0 Z=40.0 PHI=0.0
+
+# 4. Align above destination Zone B
+MOVE_L X=60.0 Y=-140.0 Z=40.0 PHI=0.0
+
+# 5. Descent to final work point in Zone B
+MOVE_L X=60.0 Y=-140.0 Z=20.0 PHI=0.0
