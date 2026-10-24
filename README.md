@@ -33,6 +33,7 @@ other information that should be provided before the modules are installed.
     - [🌐 SCARA Ecosystem & Dual-Mode Motor Actuation](#-scara-ecosystem--dual-mode-motor-actuation)
   - [✨ Features](#-features)
   - [📐 SCARA Kinematic & Geometric Configuration](#-scara-kinematic--geometric-configuration)
+    - [🔄 Singularity Dead Zone Avoidance & Dual-Elbow Routing](#-singularity-dead-zone-avoidance--dual-elbow-routing)
   - [📜 SCARA Domain-Specific Language (DSL) & `.scara` Programs](#-scara-domain-specific-language-dsl--scara-programs)
     - [SCARA DSL Instruction Reference](#scara-dsl-instruction-reference)
     - [Example `.scara` Program: Industrial Pick & Place](#example-scara-program-industrial-pick--place)
